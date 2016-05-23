@@ -234,3 +234,9 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/KSFramework/Assets/Plugins/Editor/KEngineEditor
+/KSFramework/Assets/Plugins/KEngine
+/KSFramework/Library
+/KSFramework/Temp
+/KSFramework/*.csproj
+/KSFramework/*.sln

@@ -1,0 +1,11 @@
+﻿Key	Value	Comment		
+[string]	[string]	[string]		
+ProductRelPath	../Product	
+AssetBundleBuildRelPath	../Product/Bundles	
+StreamingBundlesFolderName	Bundles	
+AssetBundleExt	.bytes	
+IsLoadAssetBundle	1	
+UIModuleBridge	KSFramework.UGUISLuaBridge	
+SettingSourcePath	Product/SettingSource	
+SettingCompiledPath	Assets/Resources/Setting	settings where compile to?	
+SettingResourcesPath	Setting	Folder in Resources	
