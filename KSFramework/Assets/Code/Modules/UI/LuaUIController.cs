@@ -35,8 +35,7 @@ namespace KSFramework
         public override void OnOpen(params object[] args)
         {
             // 编辑器模式下，记录
-            if (KLogger.IsUnityEditor)
-                LastOnOpenArgs = args;
+            LastOnOpenArgs = args;
 
             base.OnOpen(args);
             CheckInitScript();
@@ -123,8 +122,11 @@ namespace KSFramework
         /// </summary>
         public void ReloadLua()
         {
-            _luaTable.Dispose();
-            _luaTable = null;
+            if (_luaTable != null)
+            {
+                _luaTable.Dispose();
+                _luaTable = null;
+            }
         }
     }
 }

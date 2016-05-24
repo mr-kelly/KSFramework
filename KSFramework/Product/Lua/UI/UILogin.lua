@@ -1,26 +1,28 @@
-local UIBase = import("UI/UIBase")
+local UIBase = import("KSFramework/UIBase")
 
-UILogin = {}
-setmetatable(UILogin, UIBase)
+local UILogin = {}
+extends(UILogin, UIBase)
 
 -- Maybe you have many `UILogin` instance? create a new function!
 -- Always write a New function is best practices
 function UILogin.New(controller)
-    return new(UILogin, function(tb)
-        tb.Controller = controller
-    end)
+    local newUILogin = new(UILogin)
+    newUILogin.Controller = controller
+    print(newUILogin)
+    return newUILogin
 end
 
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)
 
-    local text = self:GetControl("UnityEngine.UI.Text", "Login")
+    local text = self:GetUIText("Login")
     text.text = 'Login Interface !!!'
 
-    local btn = self:GetControl("UnityEngine.UI.Button", "Button")
+    local btn = self:GetUIButton("Button")
     print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), btn:GetType().FullName))
 
     if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
+        btn.onClick:RemoveAllListeners()
         btn.onClick:AddListener(function()
             print('Click the button!!!')
         end)

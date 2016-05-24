@@ -49,20 +49,18 @@ namespace KSFramework.Editor
             }
             foreach (var kv in UIModule.Instance.UIWindows)
             {
+                var luaController = kv.Value.UIWindow as LuaUIController;
+                if (luaController) // 只处理LuaUIController
                 {
-                    var luaController = kv.Value.UIWindow as LuaUIController;
-                    if (luaController) // 只处理LuaUIController
-                    {
-                        var inOpenState = UIModule.Instance.IsOpen(kv.Key);
-                        if (inOpenState)
-                            UIModule.Instance.CloseWindow(kv.Key);
+                    var inOpenState = UIModule.Instance.IsOpen(kv.Key);
+                    if (inOpenState)
+                        UIModule.Instance.CloseWindow(kv.Key);
 
-                        luaController.ReloadLua();
-                        KLogger.LogWarning("Reload Lua - {0}", kv.Key);
+                    luaController.ReloadLua();
+                    KLogger.LogWarning("Reload Lua - {0}", kv.Key);
 
-                        if (inOpenState)
-                            UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);
-                    }
+                    if (inOpenState)
+                        UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);
                 }
             }
         }
