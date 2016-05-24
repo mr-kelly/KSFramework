@@ -35,11 +35,29 @@ namespace KSFramework.Editor
             EditorApplication.OpenScene(mainScene);
         }
 
+        [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]
+        public static void ReloadLuaCache()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                KLogger.LogError("Reload UI only when your editor is playing!");
+                return;
+            }
+            foreach (var kv in UIModule.Instance.UIWindows)
+            {
+                var luaController = kv.Value.UIWindow as LuaUIController;
+                if (luaController) // 只处理LuaUIController
+                {
+                    luaController.ReloadLua();
+                    KLogger.LogWarning("Reload Lua - {0}", kv.Key);
+                }
+            }
+        }
         /// <summary>
         /// 找到所有的LuaUIController被进行Reload
         /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
         /// </summary>
-        [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]
+        [MenuItem("KEngine/UI(UGUI)/Reload Lua + ReOpen UI #%&r")]
         public static void ReloadUI()
         {
             if (!EditorApplication.isPlaying)
