@@ -67,6 +67,7 @@ namespace SLua
             return new HashSet<string>
             {
                 //"NLuaTest.Mock"
+                "AppSettings",
             };
         }
 
