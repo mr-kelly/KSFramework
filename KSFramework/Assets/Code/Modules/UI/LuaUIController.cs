@@ -10,11 +10,17 @@ using UnityEngine.UI;
 namespace KSFramework
 {
     /// <summary>
-    /// Auto Add Lua
+    /// 自动根据UIName和UITemplateName，寻找适合的Lua脚本执行
     /// </summary>
-    public class SLuaUIController : KEngine.UI.UIController
+    public class LuaUIController : KEngine.UI.UIController
     {
         private LuaTable _luaTable;
+
+        /// <summary>
+        /// 一般编辑器模式下用于reload时用，记录上一次OnOpen的参数
+        /// </summary>
+        public object[] LastOnOpenArgs { get; private set; }
+
         public override void OnInit()
         {
             base.OnInit();
@@ -22,8 +28,16 @@ namespace KSFramework
             CheckInitScript();
         }
 
+        /// <summary>
+        /// 调用Lua:OnOpen函数
+        /// </summary>
+        /// <param name="args"></param>
         public override void OnOpen(params object[] args)
         {
+            // 编辑器模式下，记录
+            if (KLogger.IsUnityEditor)
+                LastOnOpenArgs = args;
+
             base.OnOpen(args);
             CheckInitScript();
 
@@ -48,6 +62,8 @@ namespace KSFramework
         /// Try to load script and init.
         /// Script will be cached,
         /// But in development, script cache can be clear, which will be load and init in the next time
+        /// 
+        /// 开发阶段经常要使用Lua热重载，热重载过后，要确保OnInit重新执行
         /// </summary>
         void CheckInitScript()
         {
@@ -55,7 +71,7 @@ namespace KSFramework
             if (_luaTable != null)
                 return;
 
-            var scriptResult = Game.Instance.SLuaModule.CallScript(string.Format("UI/UI{0}", UITemplateName));
+            var scriptResult = Game.Instance.LuaModule.CallScript(string.Format("UI/UI{0}", UITemplateName));
             Debuger.Assert(scriptResult  is LuaTable, "{0} Script Must Return Lua Table with functions!", UITemplateName);
 
             _luaTable = scriptResult  as LuaTable;
@@ -102,5 +118,13 @@ namespace KSFramework
             return trans.GetComponent(typeName);
         }
 
+        /// <summary>
+        /// 清理Lua脚本缓存，下次执行时将重新加载Lua
+        /// </summary>
+        public void ReloadLua()
+        {
+            _luaTable.Dispose();
+            _luaTable = null;
+        }
     }
 }

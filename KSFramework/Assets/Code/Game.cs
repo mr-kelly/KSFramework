@@ -17,18 +17,18 @@ namespace KSFramework
         /// <summary>
         /// Module/Manager of Slua
         /// </summary>
-        public SLuaModule SLuaModule { get; private set; }
+        public LuaModule LuaModule { get; private set; }
 
         /// <summary>
         /// Unity `Awake`
         /// </summary>
         void Awake()
         {
-            SLuaModule = new SLuaModule();
+            LuaModule = new LuaModule();
             AppEngine.New(gameObject, this, new IModule[]
             {
                 UIModule.Instance,
-                SLuaModule,
+                LuaModule,
             });
 
             Instance = this;

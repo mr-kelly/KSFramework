@@ -240,3 +240,5 @@ _Pvt_Extensions
 /KSFramework/Temp
 /KSFramework/*.csproj
 /KSFramework/*.sln
+/KSFramework/Assets/SLua/LuaObject
+/KSFramework/Assets/UnityTestTools

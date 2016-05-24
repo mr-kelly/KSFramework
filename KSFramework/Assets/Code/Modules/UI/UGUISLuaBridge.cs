@@ -19,7 +19,7 @@ namespace KSFramework
 
         public UIController CreateUIController(GameObject uiObj, string uiTemplateName)
         {
-            UIController uiBase = uiObj.AddComponent<SLuaUIController>();
+            UIController uiBase = uiObj.AddComponent<LuaUIController>();
             
             KEngine.Debuger.Assert(uiBase);
             return uiBase;

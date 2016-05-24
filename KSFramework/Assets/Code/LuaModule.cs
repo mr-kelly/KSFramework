@@ -8,11 +8,11 @@ using SLua;
 
 namespace KSFramework
 {
-    public class SLuaModule : IModule
+    public class LuaModule : IModule
     {
         private LuaSvr _luaSvr;
 
-        public SLuaModule()
+        public LuaModule()
         {
             _luaSvr = new LuaSvr();
         }
@@ -68,6 +68,8 @@ namespace KSFramework
 
         /// <summary>
         /// This will override SLua default `import`
+        /// 
+        /// TODO: cache the result!
         /// </summary>
         /// <param name="l"></param>
         /// <returns></returns>
@@ -75,7 +77,7 @@ namespace KSFramework
         internal static int import(IntPtr L)
         {
             string fileName = LuaDLL.lua_tostring(L, 1);
-            var obj = Game.Instance.SLuaModule.CallScript(fileName);
+            var obj = Game.Instance.LuaModule.CallScript(fileName);
 
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);
