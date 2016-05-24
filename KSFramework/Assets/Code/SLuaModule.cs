@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using System.IO;
 using KEngine;
+using LuaInterface;
 using SLua;
 
 namespace KSFramework
@@ -19,9 +22,26 @@ namespace KSFramework
         /// </summary>
         /// <param name="scriptCode"></param>
         /// <returns></returns>
-        public object CallScript(string scriptCode)
+        object _DoScript(string scriptCode)
         {
             return _luaSvr.luaState.doString(scriptCode);
+        }
+
+        /// <summary>
+        /// Call script of script path (relative) specify
+        /// </summary>
+        /// <param name="scriptRelativePath"></param>
+        /// <returns></returns>
+        public object CallScript(string scriptRelativePath)
+        {
+            var relativePath = string.Format("Lua/{0}.lua", scriptRelativePath);
+
+            var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,
+                relativePath);
+            Debuger.Assert(File.Exists(editorLuaScriptPath), "Not exist Lua: " + editorLuaScriptPath);
+            var script = File.ReadAllText(editorLuaScriptPath);
+            var ret = _DoScript(script);
+            return ret;
         }
 
         public IEnumerator Init()
@@ -39,7 +59,29 @@ namespace KSFramework
                 }
                 yield return null;
             }
+
+            var L = _luaSvr.luaState.L;
+            LuaDLL.lua_pushcfunction(L, import);
+            LuaDLL.lua_setglobal(L, "import");
+            CallScript("Init");
         }
+
+        /// <summary>
+        /// This will override SLua default `import`
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns></returns>
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        internal static int import(IntPtr L)
+        {
+            string fileName = LuaDLL.lua_tostring(L, 1);
+            var obj = Game.Instance.SLuaModule.CallScript(fileName);
+
+            LuaObject.pushValue(L, obj);
+            LuaObject.pushValue(L, true);
+            return 2;
+        }
+
     }
 
 }

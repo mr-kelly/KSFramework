@@ -50,7 +50,7 @@ namespace KSFramework
         /// <returns></returns>
         public IEnumerator OnFinishInitModules()
         {
-            UIModule.Instance.OpenWindow("Login");
+            UIModule.Instance.OpenWindow("Login", 888);
             yield break;
         }
     }
