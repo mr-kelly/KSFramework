@@ -9,6 +9,32 @@ namespace KSFramework.Editor
 
     public class KSFrameworkEditor
     {
+        private const string LastScenePrefKey = "KSFramework.LastSceneOpen";
+
+        [MenuItem("KEngine/KSFramework/Open Last Scene(before main) %&o")]
+        public static void OpenLastScene()
+        {
+            var lastScene = EditorPrefs.GetString(LastScenePrefKey);
+            KLogger.Log("Open Last Game Scene!");
+            if (!string.IsNullOrEmpty(lastScene))
+                EditorApplication.OpenScene(lastScene);
+            else
+            {
+                KLogger.LogWarning("Not found last scene!");
+            }
+        }
+
+        [MenuItem("KEngine/KSFramework/Open Main Scene %&i")]
+        public static void OpenMainScene()
+        {
+            var mainScene = "Assets/Game.unity";
+            if (mainScene != EditorApplication.currentScene)
+                EditorPrefs.SetString(LastScenePrefKey, EditorApplication.currentScene);
+
+            KLogger.Log("Open Main Game Scene!");
+            EditorApplication.OpenScene(mainScene);
+        }
+
         /// <summary>
         /// 找到所有的LuaUIController被进行Reload
         /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
@@ -18,7 +44,7 @@ namespace KSFramework.Editor
         {
             if (!EditorApplication.isPlaying)
             {
-                KLogger.Log("Reload UI only when your editor is playing!");
+                KLogger.LogError("Reload UI only when your editor is playing!");
                 return;
             }
             foreach (var kv in UIModule.Instance.UIWindows)
@@ -36,9 +62,7 @@ namespace KSFramework.Editor
 
                         if (inOpenState)
                             UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);
-
                     }
-
                 }
             }
         }
