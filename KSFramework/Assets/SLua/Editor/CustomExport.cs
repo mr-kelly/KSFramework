@@ -46,7 +46,7 @@ namespace SLua
             add(typeof(string), "String");
 
             add(typeof (UIController), "UIController");
-            add(typeof (SLuaUIController), "SLuaUIController");
+            add(typeof (LuaUIController), "LuaUIController");
             // add your custom class here
             // add( type, typename)
             // type is what you want to export
