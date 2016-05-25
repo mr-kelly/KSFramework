@@ -36,7 +36,10 @@ mklink /J %DST_EDITOR_PATH%\KEngine.UI.Editor %SRC_ASSETS_PATH%\KEngine.UI.Edito
 :: SLua
 mkdir KSFramework\Assets\SLua
 mkdir KSFramework\Assets\SLua\Resources
-mklink /J KSFramework\Assets\SLua\Editor slua\Assets\SLua\Editor
+mkdir KSFramework\Assets\SLua\Editor
+xcopy slua\Assets\SLua\Editor\CustomEditor.cs KSFramework\Assets\SLua\Editor /S/Y/R
+xcopy slua\Assets\SLua\Editor\LuaCodeGen.cs KSFramework\Assets\SLua\Editor /S/Y/R
+
 mklink /J KSFramework\Assets\Plugins\Slua_Managed slua\Assets\Plugins\Slua_Managed
 
 xcopy slua\Assets\Plugins\Android KSFramework\Assets\Plugins\Android /S/Y/R
