@@ -1,0 +1,8 @@
+Id	Value	CommentA	#B
+string	string		
+ID Column/编号/主键	Name/名字	CommentA注释列	CommentB井号注释列
+TestKey2	测试数据		
+TestKey3	中文测试		
+Comment	注释行		
+#	井号开头的，注释行		
+TestKey4	中文测试		

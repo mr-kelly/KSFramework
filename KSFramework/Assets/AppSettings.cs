@@ -53,35 +53,34 @@ namespace AppSettings
                 return _settingsList;
             }
         }
+
 #if UNITY_EDITOR
-        static bool HasAllReload = false;
         [UnityEditor.MenuItem("KEngine/Settings/Try Reload All Settings Code")]
+#endif
 	    public static void AllSettingsReload()
 	    {
 	        for (var i = 0; i < SettingsList.Length; i++)
 	        {
 	            var settings = SettingsList[i];
-                if (HasAllReload) settings.ReloadAll();
-                HasAllReload = true;
+                settings.ReloadAll();
 
 	            KLogger.Log("Reload settings: {0}, Row Count: {1}", settings.GetType(), settings.Count);
 
 	        }
 	    }
 
-#endif
     }
 
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig+Base.bytes"
+	/// Auto Generate for Tab File: "GameConfig+Base.bytes", "GameConfig+TSV.bytes"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class GameConfigSettings : IReloadableSettings
     {
 		public static readonly string[] TabFilePaths = 
         {
-            "GameConfig+Base.bytes"
+            "GameConfig+Base.bytes", "GameConfig+TSV.bytes"
         };
         static GameConfigSettings _instance;
         Dictionary<string, GameConfigSetting> _dict = new Dictionary<string, GameConfigSetting>();
@@ -217,7 +216,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig+Base.bytes"
+	/// Auto Generate for Tab File: "GameConfig+Base.bytes", "GameConfig+TSV.bytes"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class GameConfigSetting : TableRowParser
