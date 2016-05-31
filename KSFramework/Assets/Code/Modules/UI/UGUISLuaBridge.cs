@@ -33,7 +33,7 @@ namespace KSFramework
 
         public IEnumerator LoadUIAsset(CUILoadState loadState, UILoadRequest request)
         {
-            string path = string.Format("UI/{0}_UI{1}", loadState.TemplateName, KEngine.AppEngine.GetConfig("AssetBundleExt"));
+            string path = string.Format("ui/{0}.prefab{1}", loadState.TemplateName, KEngine.AppEngine.GetConfig("AssetBundleExt"));
             var assetLoader = KStaticAssetLoader.Load(path);
             loadState.UIResourceLoader = assetLoader; // 基本不用手工释放的
             while (!assetLoader.IsCompleted)
