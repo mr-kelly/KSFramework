@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AppSettings;
 using KEngine;
 using KEngine.UI;
 using SLua;
@@ -51,7 +52,13 @@ namespace KSFramework
         public IEnumerator OnFinishInitModules()
         {
             UIModule.Instance.OpenWindow("Login", 888);
-            yield break;
+            yield return null;
+
+            // Print AppConfigs
+            foreach (GameConfigSetting config in GameConfigSettings.GetAll())
+            {
+                Debug.Log(string.Format("C# Read Config, Key: {0}, Value: {1}", config.Id, config.Value));
+            }
         }
     }
 }

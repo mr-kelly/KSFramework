@@ -36,7 +36,7 @@ namespace AppSettings
 	/// <summary>
     /// All settings list here, so you can reload all settings manully from the list.
 	/// </summary>
-    public partial class SettingsDefine
+    public partial class SettingsManager
     {
         private static IReloadableSettings[] _settingsList;
         public static IReloadableSettings[] SettingsList

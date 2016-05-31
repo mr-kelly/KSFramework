@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 2112218885
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ui/login.unity.bytes
+      Dependencies: {}

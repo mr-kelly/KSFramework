@@ -33,9 +33,12 @@ function UILogin:OnInit(controller)
     end
 end
 
-
 function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
+
+    for config in foreach(AppSettings.GameConfigSettings.GetAll()) do
+        print(string.format("Lua Read Config, Id: %s, Value: %s", config.Id, config.Value))
+    end
 end
 
 return UILogin

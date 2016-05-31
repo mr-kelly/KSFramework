@@ -3,6 +3,9 @@ using System.Collections;
 using KEngine;
 using KEngine.UI;
 using UnityEditor;
+#if UNITY_5
+using UnityEditor.SceneManagement;
+#endif
 
 namespace KSFramework.Editor
 {
@@ -17,7 +20,15 @@ namespace KSFramework.Editor
             var lastScene = EditorPrefs.GetString(LastScenePrefKey);
             KLogger.Log("Open Last Game Scene!");
             if (!string.IsNullOrEmpty(lastScene))
+            {
+
+#if UNITY_5
+                EditorSceneManager.OpenScene(lastScene);
+#else
                 EditorApplication.OpenScene(lastScene);
+#endif
+
+            }
             else
             {
                 KLogger.LogWarning("Not found last scene!");
@@ -27,12 +38,21 @@ namespace KSFramework.Editor
         [MenuItem("KEngine/KSFramework/Open Main Scene %&i")]
         public static void OpenMainScene()
         {
+#if UNITY_5
+            var currentScene = EditorSceneManager.GetActiveScene().path;
+#else
+            var currentScene = EditorApplication.currentScene;
+#endif
             var mainScene = "Assets/Game.unity";
-            if (mainScene != EditorApplication.currentScene)
-                EditorPrefs.SetString(LastScenePrefKey, EditorApplication.currentScene);
+            if (mainScene != currentScene)
+                EditorPrefs.SetString(LastScenePrefKey, currentScene);
 
             KLogger.Log("Open Main Game Scene!");
+#if UNITY_5
+            EditorSceneManager.OpenScene(mainScene);
+#else
             EditorApplication.OpenScene(mainScene);
+#endif
         }
 
         [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]

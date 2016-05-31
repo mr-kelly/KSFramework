@@ -14,7 +14,9 @@ namespace KSFramework
         {
             EventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
             EventSystem.gameObject.AddComponent<StandaloneInputModule>();
+#if !UNITY_5
             EventSystem.gameObject.AddComponent<TouchInputModule>();
+#endif
         }
 
         public UIController CreateUIController(GameObject uiObj, string uiTemplateName)

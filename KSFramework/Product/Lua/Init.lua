@@ -9,6 +9,11 @@ function extends(class, base)
     setmetatable(class, base)
 end
 
+-- foreach C# ienumerable
+function foreach(csharp_ienumerable)
+    return Slua.iter(csharp_ienumerable)
+end
+
 -- simple new table to a object
 function new(table, ctorFunc)
     if not table then
