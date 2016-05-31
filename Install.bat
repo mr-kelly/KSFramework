@@ -33,6 +33,9 @@ mklink /J %DST_EDITOR_PATH%\KEngine.Editor %SRC_ASSETS_PATH%\KEngine.Editor\Edit
 mklink /J %DST_EDITOR_PATH%\KEngine.EditorTools %SRC_ASSETS_PATH%\KEngine.EditorTools\Editor
 mklink /J %DST_EDITOR_PATH%\KEngine.UI.Editor %SRC_ASSETS_PATH%\KEngine.UI.Editor\Editor
 
+mkdir KSFramework\Assets\Plugins\libs\
+xcopy %SRC_ASSETS_PATH%\Plugins\Android\libs\KEngine.Android.jar KSFramework\Assets\Plugins\Android\libs\KEngine.Android.jar /S/Y/R
+
 :: SLua
 mkdir KSFramework\Assets\SLua
 mkdir KSFramework\Assets\SLua\Resources
