@@ -28,10 +28,25 @@ TODO
 - Ctrl+Alt+I: 在编辑器，打开Game.unity主运行场景
 - Ctrl+Alt+O: 在编辑器，打开Ctrl+Alt+I前的一个场景
 
+# Unity编辑器强化工具
+
+- 编辑代码后，返回正在运行的游戏，强制停到正在运行的游戏，避免崩溃的出现
+
+# 多语言
+
+## 增加收集器
+
+
 ## KEngine和KSFramework
 
-随着KEngine复杂程度、项目适配的程度增加，变得越来越臃肿了。
+### 定位不一样
 
-完全不符合最初的简单、解耦的设计方式，越来越多的特定模块被加入进去, 如KResourceDep、KAssetDep两个模块，两种不同的思路来对Unity 4.x的AssetBundle依赖打包进行处理。然而Unity 5的新AssetBundle打包系统的存在，让它们已经没有实际意义了。
+KEngine:为了减低Unity 4.x中AssetBundle的加载、打包复杂度；
 
-KSFramework希望能简化这些事情，做到简单、易用。 并且KSFramework的最大不同是，适当的增加部分耦合组件，来做到一站式的开发框架，可以开箱即用，因此把SLua也引入其中。只支持Unity 5。
+KSFramework:一站式的开发框架，可以开箱即用，包含SLua。只支持Unity 5。
+
+### 提供的模块不同
+
+KEngine: 提供基础的资源加载（ResourceModule）功能，并以之为基础，增加配置表（SettingModule）、UI模块（UIModule）这两个核心模块；另外还有针对Unity 4.x的资源依赖打包模块。
+
+KSFramework：基于KEngine的资源、UI、配置表模块，实现更直接的、面向具体项目的常用功能模块，并搭配SLua。

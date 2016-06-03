@@ -15,6 +15,10 @@ namespace KSFramework.Editor
 {
     public class I18NEditor
     {
+        // default collector
+        public static I18NCollector[] Collectors = {
+            new StringsTableI18NCollector(), 
+        };
         /// <summary>
         /// 设置有多少种语言
         /// </summary>
@@ -58,7 +62,10 @@ namespace KSFramework.Editor
             }
 
             var refList = new I18NItems(); // key, 和 来源
-            CollectStringsTable(ref refList);
+            foreach (var collector in Collectors)
+            {
+                collector.Collect(ref refList);
+            }
 
             WriteExcel(refList);
         }
@@ -191,31 +198,5 @@ namespace KSFramework.Editor
             return true;
         }
 
-        /// <summary>
-        /// 收集StringsTalbe.bytes的字符串
-        /// </summary>
-        /// <param name="refItems"></param>
-        static void CollectStringsTable(ref I18NItems refItems)
-        {
-            var compilePath = AppEngine.GetConfig("SettingCompiledPath");
-            var ext = AppEngine.GetConfig("AssetBundleExt");
-            var stringsTablePath = string.Format("{0}/StringsTable{1}", compilePath, ext);
-            string stringsTableContent;
-            using (var stream = new FileStream(stringsTablePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    stringsTableContent = reader.ReadToEnd();
-                }
-            }
-
-            var tableFile = new TableFile(stringsTableContent);
-            foreach (var row in tableFile)
-            {
-                var srcStr = row["Id"];
-                refItems.Add(srcStr, stringsTablePath);
-            }
-        }
     }
-
 }

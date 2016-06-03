@@ -10,9 +10,37 @@ using UnityEditor.SceneManagement;
 namespace KSFramework.Editor
 {
 
-    public class KSFrameworkEditor
+    public class KSFrameworkEditor : EditorWindow
     {
         private const string LastScenePrefKey = "KSFramework.LastSceneOpen";
+
+        private static KSFrameworkEditor Instance;
+
+
+        [MenuItem("KSFramework/Options")]
+        private static void Open()
+        {
+            // Get existing open window or if none, make a new one:
+
+            if (Instance == null)
+            {
+                Instance = GetWindow<KSFrameworkEditor>(true, "KSFramework Options");
+            }
+            Instance.Show();
+        }
+
+        void OnGUI()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Reload KEngineConfig.txt");
+            if (GUILayout.Button("Reload"))
+            {
+                AppEngine.EnsureConfigTab(true);
+                Debug.Log("Reload KEngineConfig.txt!");
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
 
         [MenuItem("KSFramework/Open Last Scene(before main) %&o")]
         public static void OpenLastScene()
