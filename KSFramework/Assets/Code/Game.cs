@@ -26,7 +26,7 @@ namespace KSFramework
         void Awake()
         {
             LuaModule = new LuaModule();
-            AppEngine.New(gameObject, this, new IModule[]
+            AppEngine.New(gameObject, this, new IModuleInitable[]
             {
                 UIModule.Instance,
                 LuaModule,

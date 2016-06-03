@@ -9,3 +9,6 @@ UIModuleBridge	KSFramework.UGUISLuaBridge
 SettingSourcePath	Product/SettingSource	
 SettingCompiledPath	Assets/StreamingAssets/Setting	settings where compile to?	
 SettingResourcesPath	Setting	Folder in Resources	
+SettingCodeIgnorePattern	(I18N/.*)|(StringsTable.*)	Ignore genereate code for these excel.
+I18NLanguages	zh_CN,en_US	first as default
+I18N	en_US	current language

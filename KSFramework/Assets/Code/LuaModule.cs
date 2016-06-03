@@ -8,7 +8,7 @@ using SLua;
 
 namespace KSFramework
 {
-    public class LuaModule : IModule
+    public class LuaModule : IModuleInitable
     {
         private LuaSvr _luaSvr;
 

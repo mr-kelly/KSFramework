@@ -16,9 +16,12 @@ end
 function UILogin:OnInit(controller)
 
     local text = self:GetUIText("Login")
-    text.text = 'Login Interface !!!'
+    text.text = I18NModule.Str("UILogin.LoginDescText")
 
     local btn = self:GetUIButton("Button")
+    local btnText = self:GetUIText('Button/Text')
+    btnText.text = I18NModule.Str('UILogin.LoginButtonText')
+
     print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), btn:GetType().FullName))
 
     if UnityEngine and  UnityEngine.Vector3 then -- static code binded!

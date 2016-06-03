@@ -14,7 +14,7 @@ namespace KSFramework.Editor
     {
         private const string LastScenePrefKey = "KSFramework.LastSceneOpen";
 
-        [MenuItem("KEngine/KSFramework/Open Last Scene(before main) %&o")]
+        [MenuItem("KSFramework/Open Last Scene(before main) %&o")]
         public static void OpenLastScene()
         {
             var lastScene = EditorPrefs.GetString(LastScenePrefKey);
@@ -35,7 +35,7 @@ namespace KSFramework.Editor
             }
         }
 
-        [MenuItem("KEngine/KSFramework/Open Main Scene %&i")]
+        [MenuItem("KSFramework/Open Main Scene %&i")]
         public static void OpenMainScene()
         {
 #if UNITY_5
