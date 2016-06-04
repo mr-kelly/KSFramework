@@ -47,7 +47,7 @@ namespace SLua
 
             add(typeof (UIController), "UIController");
             add(typeof (LuaUIController), "LuaUIController");
-            add(typeof (I18NModule), "I18NModule");
+            add(typeof (I18NModule), "I18N");
             // add your custom class here
             // add( type, typename)
             // type is what you want to export

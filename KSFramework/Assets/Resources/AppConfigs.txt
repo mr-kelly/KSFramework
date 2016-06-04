@@ -1,0 +1,12 @@
+
+; Override default "UGUIBridge"
+[KEngine.UI]
+UIModuleBridge = KSFramework.UGUISLuaBridge
+
+[KSFramework.I18N]
+
+;first as default
+I18NLanguages = zh_CN,en_US
+
+; current language
+I18N = en_US

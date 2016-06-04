@@ -16,11 +16,11 @@ end
 function UILogin:OnInit(controller)
 
     local text = self:GetUIText("Login")
-    text.text = I18NModule.Str("UILogin.LoginDescText")
+    text.text = I18N.Str("UILogin.LoginDescText")
 
     local btn = self:GetUIButton("Button")
     local btnText = self:GetUIText('Button/Text')
-    btnText.text = I18NModule.Str('UILogin.LoginButtonText')
+    btnText.text = I18N.Str('UILogin.LoginButtonText')
 
     print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), btn:GetType().FullName))
 

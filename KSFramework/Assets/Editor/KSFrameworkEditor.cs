@@ -32,11 +32,11 @@ namespace KSFramework.Editor
         void OnGUI()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Reload KEngineConfig.txt");
+            EditorGUILayout.LabelField("Reload AppConfigs.txt");
             if (GUILayout.Button("Reload"))
             {
-                AppEngine.EnsureConfigTab(true);
-                Debug.Log("Reload KEngineConfig.txt!");
+                AppEngine.PreloadConfigs(true);
+                Debug.Log("Reload AppConfigs.txt!");
             }
             EditorGUILayout.EndHorizontal();
         }

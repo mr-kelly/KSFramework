@@ -7,6 +7,12 @@ using KEngine.Modules;
 
 namespace KSFramework
 {
+
+    /// <summary>
+    /// I18NModule的Alias别名
+    /// </summary>
+    public class I18N : I18NModule { }
+
     /// <summary>
     /// 多语言模块
     /// </summary>
@@ -14,7 +20,7 @@ namespace KSFramework
     {
         //class _InstanceClass { public static KI18N _Instance = new KI18N();}
         //public static KI18N Instance { get { return _InstanceClass._Instance; } }
-        private I18NModule() { }
+        protected I18NModule() { }
 
         public string CurLang { get; private set; }
         private static readonly Dictionary<string, string> Strs = new Dictionary<string, string>(); // 翻译字符串集合
@@ -30,11 +36,11 @@ namespace KSFramework
             {
                 if (_lang == null)
                 {
-                    var readLang = AppEngine.GetConfig("I18N", false);
+                    var readLang = AppEngine.GetConfig("KSFramework.I18N", "I18N", false);
                     if (!string.IsNullOrEmpty(readLang))
                         _lang = readLang;
                     else
-                        return AppEngine.GetConfig("I18NLanguages").Split(',')[0];
+                        return AppEngine.GetConfig("KSFramework.I18N", "I18NLanguages").Split(',')[0];
                 }
                 return _lang;
             }

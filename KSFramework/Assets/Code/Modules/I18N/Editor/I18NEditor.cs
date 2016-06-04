@@ -26,7 +26,7 @@ namespace KSFramework.Editor
         {
             get
             {
-                var langs = AppEngine.GetConfig("I18NLanguages");
+                var langs = AppEngine.GetConfig("KSFramework.I18N", "I18NLanguages");
                 return langs.Split(',');
             }
         }
@@ -38,7 +38,7 @@ namespace KSFramework.Editor
         {
             get
             {
-                var settingSource = AppEngine.GetConfig("SettingSourcePath");
+                var settingSource = AppEngine.GetConfig("KEngine", "SettingSourcePath");
                 return settingSource;
             }
         }
