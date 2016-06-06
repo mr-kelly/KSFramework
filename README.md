@@ -5,6 +5,10 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 
 目前正在开发中...
 
+# 教程
+
+- [KEngine策划指南：配置表的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
+
 
 ## Session会话模块
 
