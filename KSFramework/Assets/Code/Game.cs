@@ -53,7 +53,7 @@ namespace KSFramework
         {
 
             // Print AppConfigs
-            KLogger.Log("======================================= Read Settings from C# =================================");
+            Log.Info("======================================= Read Settings from C# =================================");
             foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
             {
                 Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
@@ -61,7 +61,7 @@ namespace KSFramework
 
             yield return null;
 
-            KLogger.Log("======================================= Open Window 'Login' =================================");
+            Log.Info("======================================= Open Window 'Login' =================================");
             UIModule.Instance.OpenWindow("Login", 888);
 
             // 开始加载我们的公告界面！

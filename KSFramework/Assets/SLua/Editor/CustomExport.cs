@@ -46,7 +46,7 @@ namespace SLua
             add(typeof(Dictionary<int, string>), "DictIntStr");
             add(typeof(string), "String");
 
-            add(typeof (KLogger), "KLogger");
+            add(typeof (Log), "Log");
             add(typeof (UIController), "UIController");
             add(typeof (LuaUIController), "LuaUIController");
             add(typeof (I18NModule), "I18N");

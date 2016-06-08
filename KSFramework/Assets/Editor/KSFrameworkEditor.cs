@@ -46,7 +46,7 @@ namespace KSFramework.Editor
         public static void OpenLastScene()
         {
             var lastScene = EditorPrefs.GetString(LastScenePrefKey);
-            KLogger.Log("Open Last Game Scene!");
+            Log.Info("Open Last Game Scene!");
             if (!string.IsNullOrEmpty(lastScene))
             {
 
@@ -59,7 +59,7 @@ namespace KSFramework.Editor
             }
             else
             {
-                KLogger.LogWarning("Not found last scene!");
+                Log.LogWarning("Not found last scene!");
             }
         }
 
@@ -75,7 +75,7 @@ namespace KSFramework.Editor
             if (mainScene != currentScene)
                 EditorPrefs.SetString(LastScenePrefKey, currentScene);
 
-            KLogger.Log("Open Main Game Scene!");
+            Log.Info("Open Main Game Scene!");
 #if UNITY_5
             EditorSceneManager.OpenScene(mainScene);
 #else
@@ -88,7 +88,7 @@ namespace KSFramework.Editor
         {
             if (!EditorApplication.isPlaying)
             {
-                KLogger.LogError("Reload UI only when your editor is playing!");
+                Log.LogError("Reload UI only when your editor is playing!");
                 return;
             }
             foreach (var kv in UIModule.Instance.UIWindows)
@@ -97,7 +97,7 @@ namespace KSFramework.Editor
                 if (luaController) // 只处理LuaUIController
                 {
                     luaController.ReloadLua();
-                    KLogger.LogWarning("Reload Lua - {0}", kv.Key);
+                    Log.LogWarning("Reload Lua - {0}", kv.Key);
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace KSFramework.Editor
         {
             if (!EditorApplication.isPlaying)
             {
-                KLogger.LogError("Reload UI only when your editor is playing!");
+                Log.LogError("Reload UI only when your editor is playing!");
                 return;
             }
             foreach (var kv in UIModule.Instance.UIWindows)
@@ -123,7 +123,7 @@ namespace KSFramework.Editor
                         UIModule.Instance.CloseWindow(kv.Key);
 
                     luaController.ReloadLua();
-                    KLogger.LogWarning("Reload Lua - {0}", kv.Key);
+                    Log.LogWarning("Reload Lua - {0}", kv.Key);
 
                     if (inOpenState)
                         UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);

@@ -43,7 +43,7 @@ namespace KSFramework
             var onOpenFuncObj = _luaTable["OnOpen"];
             if (onOpenFuncObj == null)
             {
-                KLogger.LogError("Not Exists `OnOpen` in lua: {0}", UITemplateName);
+                Log.LogError("Not Exists `OnOpen` in lua: {0}", UITemplateName);
                 return;
             }
 
@@ -74,7 +74,7 @@ namespace KSFramework
             if (!Game.Instance.LuaModule.HasScript(relPath))
             {
                 if (showWarn)
-                    KLogger.LogWarning("Not found UI Lua Script: {0}", relPath);
+                    Log.LogWarning("Not found UI Lua Script: {0}", relPath);
                 return false;
             }
 
@@ -116,7 +116,7 @@ namespace KSFramework
             if (trans == null)
             {
                 if (isLog)
-                    KLogger.LogError("Get UI<{0}> Control Error: " + uri, this);
+                    Log.LogError("Get UI<{0}> Control Error: " + uri, this);
                 return null;
             }
 

@@ -4,9 +4,9 @@ if not I18N then
     I18N = Slua.GetClass('KSFramework.I18N') -- use slua reflection mode
 end
 
-if not KLogger then
-    KLogger = {}
-    KLogger.Log = print
+if not Log then
+    Log = {}
+    Log.Info = print
 end
 
 local UILogin = {}
@@ -24,7 +24,7 @@ end
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)
 
-    KLogger.Log("================================ UILogin:OnInit ============================")
+    Log.Info("================================ UILogin:OnInit ============================")
 
     local text = self:GetUIText("Login")
     text.text = I18N.Str("UILogin.LoginDescText")
@@ -50,7 +50,7 @@ function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
 
     if AppSettings then
-        KLogger.Log("================================ Read settings throught Lua ============================")
+        Log.Info("================================ Read settings throught Lua ============================")
         for config in foreach(AppSettings.GameConfigSettings.GetAll()) do
             print(string.format("Lua Read Setting, Id: %s, Value: %s", config.Id, config.Value))
         end

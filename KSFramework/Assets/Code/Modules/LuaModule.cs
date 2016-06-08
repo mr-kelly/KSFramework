@@ -79,7 +79,7 @@ namespace KSFramework
                 if ((Time.time - startTime) > 10)
                 {
                     if (Time.frameCount % 10 == 0)
-                        KLogger.LogError("SLua Init too long time!!!!");
+                        Log.LogError("SLua Init too long time!!!!");
                 }
                 yield return null;
             }

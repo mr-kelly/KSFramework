@@ -184,7 +184,7 @@ namespace KSFramework.Editor
                     foreach (var exceptStr in exceptList)
                     {
                         var exceptRow = id2RowMap[exceptStr];
-                        KLogger.Log("多出来的: {0}, 旧的，所在行 {1}, 删除！", exceptStr, exceptRow);
+                        Log.Info("多出来的: {0}, 旧的，所在行 {1}, 删除！", exceptStr, exceptRow);
                         //excelFile.SetRowGrey(exceptRow);
                         excelFile.ClearRow(exceptRow);
                         changedFile = true;
@@ -193,7 +193,7 @@ namespace KSFramework.Editor
                 }
                 if (changedFile) // 有修改的才保存
                     excelFile.Save();
-                KLogger.Log("Write Excel: {0}", excelPath);
+                Log.Info("Write Excel: {0}", excelPath);
             }
             return true;
         }

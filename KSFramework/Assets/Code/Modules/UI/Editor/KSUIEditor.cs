@@ -45,7 +45,7 @@ namespace KSFramework.Editor
 
             if (!Directory.Exists(spriteDir))
             {
-                KLogger.LogError("Not found dir : {0}", spriteDir);
+                Log.LogError("Not found dir : {0}", spriteDir);
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace KSFramework.Editor
                     }
 
                 }
-                KLogger.Log("Set Atlas `{0}` success!", dirName);
+                Log.Info("Set Atlas `{0}` success!", dirName);
             }
 
             AssetDatabase.Refresh();

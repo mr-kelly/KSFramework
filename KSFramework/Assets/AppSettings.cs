@@ -64,7 +64,7 @@ namespace AppSettings
 	            var settings = SettingsList[i];
                 settings.ReloadAll();
 
-	            KLogger.Log("Reload settings: {0}, Row Count: {1}", settings.GetType(), settings.Count);
+	            Log.Info("Reload settings: {0}, Row Count: {1}", settings.GetType(), settings.Count);
 
 	        }
 	    }
@@ -120,7 +120,7 @@ namespace AppSettings
                             if (path.Replace("\\", "/").EndsWith(path))
                             {
                                 _instance.ReloadAll();
-                                KLogger.LogConsole_MultiThread("Reload success! -> " + path);
+                                Log.LogConsole_MultiThread("Reload success! -> " + path);
                             }
                         });
                     }
