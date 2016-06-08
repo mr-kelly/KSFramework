@@ -1,5 +1,5 @@
 # KSFramework
-**K**Engine + **S**Lua + **Framework** = KSFramework
+[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/KEngine)+ **Framework** = KSFramework
 
 KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，适合有一定规模的团队使用。
 
@@ -7,8 +7,10 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 
 # 教程
 
-- [KEngine策划指南：配置表的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
-
+- [KSFramework: Unity3D框架快速入门](http://www.jianshu.com/p/ccb491ed4260)
+- KSFramework: UI编辑与Lua脚本热重载
+- [KEngine策划指南: 配置表格的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
+- [KEngine: 资源的打包、加载、调试监控](http://www.jianshu.com/p/ce3b5d0bdf8c)
 
 ## Session会话模块
 

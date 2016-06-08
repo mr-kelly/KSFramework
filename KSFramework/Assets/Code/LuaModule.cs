@@ -34,14 +34,38 @@ namespace KSFramework
         /// <returns></returns>
         public object CallScript(string scriptRelativePath)
         {
+            var scriptPath = GetScriptPath(scriptRelativePath);
+            Debuger.Assert(HasScript(scriptRelativePath), "Not exist Lua: " + scriptRelativePath);
+            var script = File.ReadAllText(scriptPath);
+            var ret = _DoScript(script);
+            return ret;
+        }
+
+        /// <summary>
+        /// Get script full path
+        /// </summary>
+        /// <param name="scriptRelativePath"></param>
+        /// <returns></returns>
+        string GetScriptPath(string scriptRelativePath)
+        {
             var relativePath = string.Format("Lua/{0}.lua", scriptRelativePath);
 
             var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,
                 relativePath);
-            Debuger.Assert(File.Exists(editorLuaScriptPath), "Not exist Lua: " + editorLuaScriptPath);
-            var script = File.ReadAllText(editorLuaScriptPath);
-            var ret = _DoScript(script);
-            return ret;
+
+            return editorLuaScriptPath;
+
+        }
+
+        /// <summary>
+        /// whether the script file exists?
+        /// </summary>
+        /// <param name="scriptRelativePath"></param>
+        /// <returns></returns>
+        public bool HasScript(string scriptRelativePath)
+        {
+            var scriptPath = GetScriptPath(scriptRelativePath);
+            return File.Exists(scriptPath);
         }
 
         public IEnumerator Init()

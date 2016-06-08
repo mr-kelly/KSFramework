@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using KEngine;
 using KEngine.UI;
 using KSFramework;
 
@@ -45,6 +46,7 @@ namespace SLua
             add(typeof(Dictionary<int, string>), "DictIntStr");
             add(typeof(string), "String");
 
+            add(typeof (KLogger), "KLogger");
             add(typeof (UIController), "UIController");
             add(typeof (LuaUIController), "LuaUIController");
             add(typeof (I18NModule), "I18N");

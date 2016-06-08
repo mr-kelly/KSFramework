@@ -25,7 +25,7 @@ namespace KSFramework
         {
             base.OnInit();
 
-            CheckInitScript();
+            if (!CheckInitScript(true)) return;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace KSFramework
             LastOnOpenArgs = args;
 
             base.OnOpen(args);
-            CheckInitScript();
+            if (!CheckInitScript()) return;
 
             var onOpenFuncObj = _luaTable["OnOpen"];
             if (onOpenFuncObj == null)
@@ -64,16 +64,24 @@ namespace KSFramework
         /// 
         /// 开发阶段经常要使用Lua热重载，热重载过后，要确保OnInit重新执行
         /// </summary>
-        void CheckInitScript()
+        bool CheckInitScript(bool showWarn = false)
         {
             // if cacheing? ignore!
             if (_luaTable != null)
-                return;
+                return true;
+            var relPath = string.Format("UI/UI{0}", UITemplateName);
 
-            var scriptResult = Game.Instance.LuaModule.CallScript(string.Format("UI/UI{0}", UITemplateName));
-            Debuger.Assert(scriptResult  is LuaTable, "{0} Script Must Return Lua Table with functions!", UITemplateName);
+            if (!Game.Instance.LuaModule.HasScript(relPath))
+            {
+                if (showWarn)
+                    KLogger.LogWarning("Not found UI Lua Script: {0}", relPath);
+                return false;
+            }
 
-            _luaTable = scriptResult  as LuaTable;
+            var scriptResult = Game.Instance.LuaModule.CallScript(relPath);
+            Debuger.Assert(scriptResult is LuaTable, "{0} Script Must Return Lua Table with functions!", UITemplateName);
+
+            _luaTable = scriptResult as LuaTable;
 
             var newFuncObj = _luaTable["New"]; // if a New function exist, new a table!
             if (newFuncObj != null)
@@ -86,13 +94,14 @@ namespace KSFramework
             Debuger.Assert(luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
 
             (luaInitObj as LuaFunction).call(_luaTable, this);
-            
+
+            return true;
         }
 
         public UnityEngine.Object GetControl(string typeName, string uri, Transform findTrans)
         {
             return GetControl(typeName, uri, findTrans);
-        } 
+        }
 
         public UnityEngine.Object GetControl(string typeName, string uri)
         {

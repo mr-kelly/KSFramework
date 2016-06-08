@@ -51,14 +51,21 @@ namespace KSFramework
         /// <returns></returns>
         public IEnumerator OnFinishInitModules()
         {
-            UIModule.Instance.OpenWindow("Login", 888);
-            yield return null;
 
             // Print AppConfigs
-            foreach (GameConfigSetting config in GameConfigSettings.GetAll())
+            KLogger.Log("======================================= Read Settings from C# =================================");
+            foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
             {
-                Debug.Log(string.Format("C# Read Config, Key: {0}, Value: {1}", config.Id, config.Value));
+                Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
             }
+
+            yield return null;
+
+            KLogger.Log("======================================= Open Window 'Login' =================================");
+            UIModule.Instance.OpenWindow("Login", 888);
+
+            // 开始加载我们的公告界面！
+            //UIModule.Instance.OpenWindow("Billboard");
         }
     }
 }

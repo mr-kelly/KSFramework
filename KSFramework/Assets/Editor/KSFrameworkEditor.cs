@@ -83,7 +83,7 @@ namespace KSFramework.Editor
 #endif
         }
 
-        [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]
+        [MenuItem("KSFramework/UI/Reload UI Lua %&r")]
         public static void ReloadLuaCache()
         {
             if (!EditorApplication.isPlaying)
@@ -105,7 +105,7 @@ namespace KSFramework.Editor
         /// 找到所有的LuaUIController被进行Reload
         /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
         /// </summary>
-        [MenuItem("KEngine/UI(UGUI)/Reload Lua + ReOpen UI #%&r")]
+        [MenuItem("KSFramework/UI/Reload Lua + ReOpen UI #%&r")]
         public static void ReloadUI()
         {
             if (!EditorApplication.isPlaying)

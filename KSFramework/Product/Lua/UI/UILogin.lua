@@ -1,5 +1,14 @@
 local UIBase = import("KSFramework/UIBase")
 
+if not I18N then
+    I18N = Slua.GetClass('KSFramework.I18N') -- use slua reflection mode
+end
+
+if not KLogger then
+    KLogger = {}
+    KLogger.Log = print
+end
+
 local UILogin = {}
 extends(UILogin, UIBase)
 
@@ -14,6 +23,8 @@ end
 
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)
+
+    KLogger.Log("================================ UILogin:OnInit ============================")
 
     local text = self:GetUIText("Login")
     text.text = I18N.Str("UILogin.LoginDescText")
@@ -32,7 +43,6 @@ function UILogin:OnInit(controller)
         print('Success bind button OnClick!')
     else
         print("Not found UnityEngine static code! No AddListener to the button")
-
     end
 end
 
@@ -40,8 +50,9 @@ function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
 
     if AppSettings then
+        KLogger.Log("================================ Read settings throught Lua ============================")
         for config in foreach(AppSettings.GameConfigSettings.GetAll()) do
-            print(string.format("Lua Read Config, Id: %s, Value: %s", config.Id, config.Value))
+            print(string.format("Lua Read Setting, Id: %s, Value: %s", config.Id, config.Value))
         end
     else
         print("Not found AppSettings, maybe no static code generate yet")
