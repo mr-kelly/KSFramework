@@ -101,7 +101,7 @@ namespace KSFramework
         internal static int import(IntPtr L)
         {
             string fileName = LuaDLL.lua_tostring(L, 1);
-            var obj = Game.Instance.LuaModule.CallScript(fileName);
+            var obj = KSGame.Instance.LuaModule.CallScript(fileName);
 
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);

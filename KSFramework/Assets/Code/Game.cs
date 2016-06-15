@@ -1,71 +1,58 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using AppSettings;
 using KEngine;
 using KEngine.UI;
-using SLua;
+using KSFramework;
 
-namespace KSFramework
+public class Game : KSGame
 {
     /// <summary>
-    /// Game Main Entry
+    /// Add Your Custom Initable(Coroutine) Modules Here...
     /// </summary>
-    public class Game : MonoBehaviour, IAppEntry
+    /// <returns></returns>
+    protected override IList<IModuleInitable> CreateModules()
     {
-        public static Game Instance { get; private set; }
-        //private AppEngine _engine;
+        var modules = base.CreateModules();
 
-        /// <summary>
-        /// Module/Manager of Slua
-        /// </summary>
-        public LuaModule LuaModule { get; private set; }
+        // TIP: Add Your Custom Module here
+        //modules.Add(new Module());
 
-        /// <summary>
-        /// Unity `Awake`
-        /// </summary>
-        void Awake()
+        return modules;
+    }
+
+    /// <summary>
+    /// Before Init Modules, coroutine
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator OnBeforeInitModules()
+    {
+        // Do Nothing
+        yield break;
+    }
+
+    /// <summary>
+    /// After Init Modules, coroutine
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator OnFinishInitModules()
+    {
+        // Print AppConfigs
+        Log.Info("======================================= Read Settings from C# =================================");
+        foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
         {
-            LuaModule = new LuaModule();
-            AppEngine.New(gameObject, this, new IModuleInitable[]
-            {
-                UIModule.Instance,
-                LuaModule,
-            });
-
-            Instance = this;
+            Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
         }
 
+        yield return null;
 
-        /// <summary>
-        /// Before KEngine init modules
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator OnBeforeInitModules()
-        {
-            yield break;
-        }
+        Log.Info("======================================= Open Window 'Login' =================================");
+        UIModule.Instance.OpenWindow("Login", 888);
 
-        /// <summary>
-        /// After KEngine inited all module, make the game start!
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator OnFinishInitModules()
-        {
-
-            // Print AppConfigs
-            Log.Info("======================================= Read Settings from C# =================================");
-            foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
-            {
-                Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
-            }
-
-            yield return null;
-
-            Log.Info("======================================= Open Window 'Login' =================================");
-            UIModule.Instance.OpenWindow("Login", 888);
-
-            // 开始加载我们的公告界面！
-            //UIModule.Instance.OpenWindow("Billboard");
-        }
+        // 开始加载我们的公告界面！
+        //UIModule.Instance.OpenWindow("Billboard");
     }
 }

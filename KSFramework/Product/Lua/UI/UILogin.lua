@@ -1,5 +1,9 @@
 local UIBase = import("KSFramework/UIBase")
 
+if not Cookie then
+    Cookie = Slua.GetClass('KSFramework.Cookie')
+end
+
 if not I18N then
     I18N = Slua.GetClass('KSFramework.I18N') -- use slua reflection mode
 end
@@ -57,6 +61,13 @@ function UILogin:OnOpen(num1)
     else
         print("Not found AppSettings, maybe no static code generate yet")
     end
+
+    local openCount
+    openCount= Cookie.Get('UILogin.OpenCount', function() return 0 end)
+    openCount = openCount + 1
+    Cookie.Set('UILogin.OpenCount', openCount)
+
+    print('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
 end
 
 return UILogin

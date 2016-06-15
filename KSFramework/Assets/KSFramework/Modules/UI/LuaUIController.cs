@@ -71,14 +71,14 @@ namespace KSFramework
                 return true;
             var relPath = string.Format("UI/UI{0}", UITemplateName);
 
-            if (!Game.Instance.LuaModule.HasScript(relPath))
+            if (!KSGame.Instance.LuaModule.HasScript(relPath))
             {
                 if (showWarn)
                     Log.LogWarning("Not found UI Lua Script: {0}", relPath);
                 return false;
             }
 
-            var scriptResult = Game.Instance.LuaModule.CallScript(relPath);
+            var scriptResult = KSGame.Instance.LuaModule.CallScript(relPath);
             Debuger.Assert(scriptResult is LuaTable, "{0} Script Must Return Lua Table with functions!", UITemplateName);
 
             _luaTable = scriptResult as LuaTable;
