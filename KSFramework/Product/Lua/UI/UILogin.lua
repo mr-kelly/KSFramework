@@ -63,7 +63,10 @@ function UILogin:OnOpen(num1)
     end
 
     local openCount
-    openCount= Cookie.Get('UILogin.OpenCount', function() return 0 end)
+    openCount= Cookie.Get('UILogin.OpenCount')
+    if not openCount then
+        openCount = 0
+    end
     openCount = openCount + 1
     Cookie.Set('UILogin.OpenCount', openCount)
 

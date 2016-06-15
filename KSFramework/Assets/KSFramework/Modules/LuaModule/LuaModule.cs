@@ -1,7 +1,32 @@
-﻿using System;
+﻿#region Copyright (c) 2015 KEngine / Kelly <http://github.com/mr-kelly>, All rights reserved.
+
+// KEngine - Toolset and framework for Unity3D
+// ===================================
+// 
+// Date:     2015/12/03
+// Author:  Kelly
+// Email: 23110388@qq.com
+// Github: https://github.com/mr-kelly/KEngine
+// 
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 3.0 of the License, or (at your option) any later version.
+// 
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library.
+
+#endregion
+using System;
 using UnityEngine;
 using System.Collections;
 using System.IO;
+using System.Text;
 using KEngine;
 using LuaInterface;
 using SLua;
@@ -15,6 +40,7 @@ namespace KSFramework
         public LuaModule()
         {
             _luaSvr = new LuaSvr();
+            _luaSvr.init(progress => { }, () => { });
         }
 
         /// <summary>
@@ -22,9 +48,10 @@ namespace KSFramework
         /// </summary>
         /// <param name="scriptCode"></param>
         /// <returns></returns>
-        object _DoScript(string scriptCode)
+        object _DoScript(byte[] scriptCode)
         {
-            return _luaSvr.luaState.doString(scriptCode);
+            string script = Encoding.UTF8.GetString(scriptCode);
+            return _luaSvr.luaState.doString(script);
         }
 
         /// <summary>
@@ -34,9 +61,14 @@ namespace KSFramework
         /// <returns></returns>
         public object CallScript(string scriptRelativePath)
         {
-            var scriptPath = GetScriptPath(scriptRelativePath);
             Debuger.Assert(HasScript(scriptRelativePath), "Not exist Lua: " + scriptRelativePath);
-            var script = File.ReadAllText(scriptPath);
+
+            var scriptPath = GetScriptPath(scriptRelativePath);
+            byte[] script;
+            if (Log.IsUnityEditor)
+                script = File.ReadAllBytes(scriptPath);
+            else
+                script = KResourceModule.LoadSyncFromStreamingAssets(scriptPath);
             var ret = _DoScript(script);
             return ret;
         }
@@ -48,13 +80,21 @@ namespace KSFramework
         /// <returns></returns>
         string GetScriptPath(string scriptRelativePath)
         {
-            var relativePath = string.Format("Lua/{0}.lua", scriptRelativePath);
+            var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
+            var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
 
-            var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,
-                relativePath);
+            var relativePath = string.Format("{0}/{1}.lua", luaPath, scriptRelativePath);
 
-            return editorLuaScriptPath;
+            if (Log.IsUnityEditor)
+            {
+                var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,
+                    relativePath);
 
+                return editorLuaScriptPath;
+            }
+
+            relativePath += ext;
+            return relativePath;
         }
 
         /// <summary>
@@ -65,12 +105,14 @@ namespace KSFramework
         public bool HasScript(string scriptRelativePath)
         {
             var scriptPath = GetScriptPath(scriptRelativePath);
-            return File.Exists(scriptPath);
+            if (Log.IsUnityEditor)
+                return File.Exists(scriptPath);
+            else
+                return KResourceModule.IsStreamingAssetsExists(scriptPath);
         }
 
         public IEnumerator Init()
         {
-            _luaSvr.init(progress => { }, () => { });
 
 
             var startTime = Time.time;

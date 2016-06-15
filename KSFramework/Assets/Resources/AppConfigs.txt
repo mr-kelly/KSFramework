@@ -10,3 +10,8 @@ I18NLanguages = zh_CN,en_US
 
 ; current language
 I18N = en_US
+
+
+[KSFramework.Lua]
+; a path relative to product path
+LuaPath = Lua
