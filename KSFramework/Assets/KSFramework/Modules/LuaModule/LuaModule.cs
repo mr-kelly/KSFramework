@@ -113,8 +113,6 @@ namespace KSFramework
 
         public IEnumerator Init()
         {
-
-
             var startTime = Time.time;
             while (!_luaSvr.inited)
             {
