@@ -4,7 +4,7 @@
 
 KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，适合有一定规模的团队使用。
 
-热重载是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度。
+热重载是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，并且在运营阶段方便的进行产品热更新。
 
 # 教程
 
@@ -17,9 +17,11 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 # 功能特性
 
 ## 资源模块
+
 - Unity 5中一键打包Asset Bundle
 - AssetBundle加载器，加载时自动处理依赖关系
 - 资源路径约定，含热更新资源机制
+- 手动的、引用计数的资源释放策略
 
 ## UI模块
 
@@ -53,7 +55,7 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 
 # 工程建议
 
-- 建议创建两个工程：code和product，一个用于代码编辑，一个用于美术编辑导出AssetBundle。
+- 建议创建两个Unity工程：code和product，一个用于代码编辑，一个用于美术编辑并导出AssetBundle。
 
 # 键盘快捷键
 
