@@ -16,6 +16,8 @@ namespace KSFramework
             EventSystem.gameObject.AddComponent<StandaloneInputModule>();
 #if !UNITY_5
             EventSystem.gameObject.AddComponent<TouchInputModule>();
+#else
+            EventSystem.gameObject.GetComponent<StandaloneInputModule>().forceModuleActive = true;
 #endif
         }
 
