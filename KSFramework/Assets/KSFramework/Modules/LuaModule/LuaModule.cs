@@ -113,15 +113,13 @@ namespace KSFramework
 
         public IEnumerator Init()
         {
-            var startTime = Time.time;
+            int frameCount = 0;
             while (!_luaSvr.inited)
             {
-                if ((Time.time - startTime) > 10)
-                {
-                    if (Time.frameCount % 10 == 0)
-                        Log.LogError("SLua Init too long time!!!!");
-                }
+                if (frameCount % 30 == 0)
+                    Log.LogWarning("SLua Initing...");
                 yield return null;
+                frameCount++;
             }
 
             var L = _luaSvr.luaState.L;

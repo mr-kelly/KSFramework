@@ -56,6 +56,7 @@ namespace KSFramework.Editor
                 var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
                 var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
 
+                var luaCount = 0;
                 var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath, luaPath);
                 editorLuaScriptPath = editorLuaScriptPath.Replace("\\", "/");
                 var toDir = "Assets/StreamingAssets/" + luaPath;
@@ -72,9 +73,10 @@ namespace KSFramework.Editor
                         Directory.CreateDirectory(Path.GetDirectoryName(toPath));
 
                     File.Copy(cleanPath, toPath, true);
-
+                    luaCount++;
                 }
                 AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+                Debug.Log(string.Format("[LuaModuleEditor]compile lua script count: {0}", luaCount));
             }
         }
 
