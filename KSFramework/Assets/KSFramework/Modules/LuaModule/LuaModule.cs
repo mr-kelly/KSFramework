@@ -135,6 +135,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="luastate"></param>
         /// <returns></returns>
+        [MonoPInvokeCallback(typeof(LuaCSFunction))]
         private int LuaUsing(IntPtr l)
         {
             try
@@ -188,7 +189,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="l"></param>
         /// <returns></returns>
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int import(IntPtr L)
         {
             string fileName = LuaDLL.lua_tostring(L, 1);
