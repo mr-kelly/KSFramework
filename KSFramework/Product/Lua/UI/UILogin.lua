@@ -9,8 +9,7 @@ if not I18N then
 end
 
 if not Log then
-    Log = {}
-    Log.Info = print
+    Log = Slua.GetClass('KEngine.Log')
 end
 
 local UILogin = {}
@@ -71,7 +70,7 @@ function UILogin:OnOpen(num1)
     openCount = openCount + 1
     Cookie.Set('UILogin.OpenCount', openCount)
 
-    print('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
+    Log.Info('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
 end
 
 return UILogin
