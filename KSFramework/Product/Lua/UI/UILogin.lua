@@ -54,8 +54,9 @@ function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
 
     if AppSettings then
+        using("AppSettings") -- namespace all
         Log.Info("================================ Read settings throught Lua ============================")
-        for config in foreach(AppSettings.GameConfigSettings.GetAll()) do
+        for config in foreach(GameConfigSettings.GetAll()) do
             print(string.format("Lua Read Setting, Id: %s, Value: %s", config.Id, config.Value))
         end
     else
