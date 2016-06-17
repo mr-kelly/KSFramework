@@ -14,6 +14,9 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 - [KSFramework常见问题：Lua脚本热重载，内存状态数据会不会丢失？](http://www.jianshu.com/p/eebd5cfce87f)
 - [KSFramework常见问题：Excel如何进行SVN协作、差异比较？](http://www.jianshu.com/p/2ea5468e9d5b)
 
+# 结构组成
+![KSFramework由KEngine和SLua结合组成][Docs/Structure.png]
+
 # 功能特性
 
 ## 资源模块
