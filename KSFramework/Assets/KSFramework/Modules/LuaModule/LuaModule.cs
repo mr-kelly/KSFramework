@@ -48,7 +48,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="scriptCode"></param>
         /// <returns></returns>
-        object _DoScript(byte[] scriptCode)
+        public object ExecuteScript(byte[] scriptCode)
         {
             string script = Encoding.UTF8.GetString(scriptCode);
             return _luaSvr.luaState.doString(script);
@@ -69,7 +69,7 @@ namespace KSFramework
                 script = File.ReadAllBytes(scriptPath);
             else
                 script = KResourceModule.LoadSyncFromStreamingAssets(scriptPath);
-            var ret = _DoScript(script);
+            var ret = ExecuteScript(script);
             return ret;
         }
 
@@ -123,7 +123,7 @@ namespace KSFramework
             }
 
             var L = _luaSvr.luaState.L;
-            LuaDLL.lua_pushcfunction(L, import);
+            LuaDLL.lua_pushcfunction(L, LuaImport);
             LuaDLL.lua_setglobal(L, "import");
             LuaDLL.lua_pushcfunction(L, LuaUsing);
             LuaDLL.lua_setglobal(L, "using"); // same as SLua's import, using namespace
@@ -190,10 +190,20 @@ namespace KSFramework
         /// <param name="l"></param>
         /// <returns></returns>
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal static int import(IntPtr L)
+        internal
+#if !UNITY_EDITOR
+            static
+#endif
+            int LuaImport(IntPtr L)
         {
+#if !UNITY_EDITOR
+            LuaModule luaModule = KSGame.Instance.LuaModule;
+#else
+            // Editor模式，为了配合单元测试，把这个函数做成实例方法
+            LuaModule luaModule = this;
+#endif
             string fileName = LuaDLL.lua_tostring(L, 1);
-            var obj = KSGame.Instance.LuaModule.CallScript(fileName);
+            var obj = luaModule.CallScript(fileName);
 
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);

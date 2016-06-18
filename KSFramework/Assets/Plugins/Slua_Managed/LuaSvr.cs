@@ -55,11 +55,8 @@ namespace SLua
 
 		public LuaSvr()
 		{
-#if !SLUA_STANDALONE
-			GameObject go = new GameObject("LuaSvrProxy");
-			lgo = go.AddComponent<LuaSvrGameObject>();
-			GameObject.DontDestroyOnLoad(go);
-#endif
+			LuaState luaState = new LuaState();
+            this.luaState = luaState;
 		}
 
 		private volatile int bindProgress = 0;
@@ -169,7 +166,10 @@ namespace SLua
 		{
 #if !SLUA_STANDALONE
 			LuaTimer.reg(L);
-			LuaCoroutine.reg(L, lgo);
+#if UNITY_EDITOR
+            if (UnityEditor.EditorApplication.isPlaying)
+#endif
+            LuaCoroutine.reg(L, lgo);
 #endif
 			Helper.reg(L);
 			LuaValueType.reg(L);
@@ -180,12 +180,20 @@ namespace SLua
 				Lua3rdDLL.open(L);
 
 #if !SLUA_STANDALONE
-			lgo.state = luaState;
-			lgo.onUpdate = this.tick;
-			lgo.init();
+#if UNITY_EDITOR
+		    if (UnityEditor.EditorApplication.isPlaying)
+		    {
 #endif
-			
-			inited = true;
+            lgo.state = luaState;
+            lgo.onUpdate = this.tick;
+            lgo.init();
+#if UNITY_EDITOR
+		    }
+
+#endif
+#endif
+
+                inited = true;
 		}
 
 		void checkTop(IntPtr L)
@@ -199,10 +207,20 @@ namespace SLua
 
 		public void init(Action<int> tick,Action complete,LuaSvrFlag flag=LuaSvrFlag.LSF_BASIC)
         {
-			LuaState luaState = new LuaState();
-            this.luaState = luaState;
-
-			IntPtr L = luaState.L;
+#if !SLUA_STANDALONE
+		    if (lgo == null
+#if UNITY_EDITOR
+                && UnityEditor.EditorApplication.isPlaying
+#endif
+                )
+		    {
+                GameObject go = new GameObject("LuaSvrProxy");
+                lgo = go.AddComponent<LuaSvrGameObject>();
+                GameObject.DontDestroyOnLoad(go);
+		        
+		    }
+#endif
+            IntPtr L = luaState.L;
 			LuaObject.init(L);
 
 #if SLUA_STANDALONE
@@ -218,16 +236,29 @@ namespace SLua
 			// any code access unity interface will cause deadlock.
 			// if you want to debug bind code using unity interface, need call doBind directly, like:
 			// doBind(L);
-			ThreadPool.QueueUserWorkItem(doBind, L);
-
-			lgo.StartCoroutine(waitForBind(tick, () =>
-			{
-				doinit(L,flag);
-				complete();
-				checkTop(L);
-			}));
+#if UNITY_EDITOR
+		    if (!UnityEditor.EditorApplication.isPlaying)
+		    {
+		        doBind(L);
+		        doinit(L, flag);
+		        complete();
+		        checkTop(L);
+		    }
+		    else
+		    {
 #endif
-        }
+		        ThreadPool.QueueUserWorkItem(doBind, L);
+		        lgo.StartCoroutine(waitForBind(tick, () =>
+		        {
+		            doinit(L, flag);
+		            complete();
+		            checkTop(L);
+		        }));
+#if UNITY_EDITOR
+		    }
+#endif
+#endif
+            }
 
 		public object start(string main)
 		{
