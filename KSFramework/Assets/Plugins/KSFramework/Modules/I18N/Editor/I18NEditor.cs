@@ -106,7 +106,7 @@ namespace KSFramework.Editor
             var refList = new I18NItems(); // key, 和 来源
             var collectors = FindCollectors();
             if (collectors.Count == 0)
-                throw new Exception("No I18N Collectors found");
+                throw new Exception("No I18N Collectors found, write your custom `I18NInterface` class");
             foreach (var collector in collectors)
             {
                 collector.Collect(ref refList);
