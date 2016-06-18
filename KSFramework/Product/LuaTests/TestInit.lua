@@ -1,6 +1,6 @@
 
-
 print("LuaTests begin...")
+
 assert(type(extends), 'function')
 assert(type(foreach), 'function')
 assert(type(new), 'function')

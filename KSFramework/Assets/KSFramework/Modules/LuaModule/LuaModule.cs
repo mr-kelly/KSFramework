@@ -47,11 +47,22 @@ namespace KSFramework
         /// Execute lua script directly!
         /// </summary>
         /// <param name="scriptCode"></param>
+        /// <param name="ret">return result</param>
+        /// <returns></returns>
+        public bool ExecuteScript(byte[] scriptCode, out object ret)
+        {
+            return _luaSvr.luaState.doBuffer(scriptCode, Encoding.UTF8.GetString(scriptCode), out ret);
+        }
+
+        /// <summary>
+        /// Execute lua script directly!
+        /// </summary>
+        /// <param name="scriptCode"></param>
         /// <returns></returns>
         public object ExecuteScript(byte[] scriptCode)
         {
-            string script = Encoding.UTF8.GetString(scriptCode);
-            return _luaSvr.luaState.doString(script);
+            object ret;
+            return ExecuteScript(scriptCode, out ret);
         }
 
         /// <summary>

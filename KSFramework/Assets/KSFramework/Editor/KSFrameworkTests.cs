@@ -30,7 +30,10 @@ public class KSFrameworkTests
         {
             Log.Warning("Test lua: {0}", filepath);
             var script = File.ReadAllBytes(filepath);
-            GetLuaModule().ExecuteScript(script);
+
+            object ret;
+            var result = GetLuaModule().ExecuteScript(script, out ret);
+            Assert.IsTrue(result, "Lua Tests Failed: {0}", filepath);
         }
 
 	}
