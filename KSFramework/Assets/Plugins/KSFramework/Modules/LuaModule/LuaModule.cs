@@ -62,7 +62,8 @@ namespace KSFramework
         public object ExecuteScript(byte[] scriptCode)
         {
             object ret;
-            return ExecuteScript(scriptCode, out ret);
+            ExecuteScript(scriptCode, out ret);
+            return ret;
         }
 
         /// <summary>
@@ -219,6 +220,7 @@ namespace KSFramework
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);
             return 2;
+
         }
 
     }
