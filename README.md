@@ -2,9 +2,18 @@
 
 [**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/KEngine)+ **Framework** = KSFramework
 
-KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，适合有一定规模的团队使用。
+KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，并为程序、美术、策划、运营提供开发工具。
 
-热重载是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，并且在运营阶段方便的进行产品热更新。
+**热重载**是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，方便运营阶段热更新。
+
+# 安装
+
+获取到源码后，需要通过git submodule命令获取KEngine和SLua
+```shell
+git submodule init
+git submodule update
+```
+拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录
 
 # 教程
 
@@ -17,7 +26,6 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 # 结构组成
 
 ![KSFramework由KEngine和SLua结合组成](Docs/Structure.png)
-
 [View on ProcessOn](https://www.processon.com/view/link/57634e3ce4b07fa2f3bb0ee8)
 
 # 功能特性
@@ -42,12 +50,13 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 - Excel表头，可设置数据类型（如int, array的声明）
 - 自动生成配置表读取代码
 - 支持惰式加载，无初始化的时间消耗
-- 支持热重载，运行时修改配置表立刻生效
+- 支持热重载，运行时修改配置表无需重启
 
 ## 脚本模块
 
 - 路径约定，通过import函数进行加载
 - 缓存机制配合import函数，可实现所有脚本的热重载
+- Lua新增using函数类似于C#中的using，暴露使用table中的属性为全局使用
 
 ## 多语言模块
 
