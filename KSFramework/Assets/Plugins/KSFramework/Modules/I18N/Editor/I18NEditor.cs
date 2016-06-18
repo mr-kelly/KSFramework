@@ -28,9 +28,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using CosmosTable;
 using KEngine;
 using KEngine.Editor;
+using KUnityEditorTools;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using UnityEditor;
@@ -40,9 +42,25 @@ namespace KSFramework.Editor
     public class I18NEditor
     {
         // default collector
-        public static I18NCollector[] Collectors = {
-            new StringsTableI18NCollector(), 
-        };
+        /// <summary>
+        /// 搜索所有Collector，在所有程序集了
+        /// </summary>
+        /// <returns></returns>
+        public static IList<I18NCollector> FindCollectors()
+        {
+            var list = new List<I18NCollector>();
+            foreach (var type in KEditorUtils.FindAllPublicTypes(typeof(I18NCollector)))
+            {
+                if (type != typeof(I18NCollector))
+                {
+                    Debug.Log("Find I18NCollector : " + type.FullName);
+                    list.Add((I18NCollector)Activator.CreateInstance(type));
+
+                }
+            }
+            return list;
+        }
+
         /// <summary>
         /// 设置有多少种语言
         /// </summary>
@@ -62,7 +80,7 @@ namespace KSFramework.Editor
         {
             get
             {
-                var settingSource = AppEngine.GetConfig("KEngine", "SettingSourcePath");
+                var settingSource = AppEngine.GetConfig("KEngine.Setting", "SettingSourcePath");
                 return settingSource;
             }
         }
@@ -86,7 +104,10 @@ namespace KSFramework.Editor
             }
 
             var refList = new I18NItems(); // key, 和 来源
-            foreach (var collector in Collectors)
+            var collectors = FindCollectors();
+            if (collectors.Count == 0)
+                throw new Exception("No I18N Collectors found");
+            foreach (var collector in collectors)
             {
                 collector.Collect(ref refList);
             }
