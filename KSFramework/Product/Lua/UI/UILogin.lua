@@ -45,7 +45,7 @@ function UILogin:OnInit(controller)
         end)
         print('Success bind button OnClick!')
     else
-        print("Not found UnityEngine static code! No AddListener to the button")
+        Log.Warning("Not found UnityEngine static code! No AddListener to the button")
     end
 end
 
