@@ -16,8 +16,17 @@ namespace KSFramework.Editor
 
         private static KSFrameworkEditor Instance;
 
+        private static string HelpText = string.Format(@"
+KSFramework {0} <https://github.com/mr-kelly/KSFramework>
 
-        [MenuItem("KSFramework/Options")]
+Shorcuts:
+    Ctrl+Alt+B - Quick Build All Assets to AssetBundles in BundleResources folder
+    Ctrl+Alt+R - Reload current cached lua scripts
+
+
+",KSGame.Version);
+
+        [MenuItem("KSFramework/Options and Help")]
         private static void Open()
         {
             // Get existing open window or if none, make a new one:
@@ -31,6 +40,7 @@ namespace KSFramework.Editor
 
         void OnGUI()
         {
+            GUILayout.Label(HelpText);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Reload AppConfigs.txt");
             if (GUILayout.Button("Reload"))
