@@ -122,15 +122,27 @@ namespace KSFramework
         /// <returns></returns>
         public static string Str(string str)
         {
+            bool result;
+            return Str(str, out result);
+        }
+
+        /// <summary>
+        /// 翻译字符串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string Str(string str, out bool result)
+        {
+            result = false;
             if (str == null) return null;
 
             if (!_isInited) Init();
 
-            if (str != null)
+            string value;
+            if (Strs.TryGetValue(str, out value) && !string.IsNullOrEmpty(value))
             {
-                string value;
-                if (Strs.TryGetValue(str, out value) && !string.IsNullOrEmpty(value))
-                    return value;
+                result = true;
+                return value;
             }
 
             return str;

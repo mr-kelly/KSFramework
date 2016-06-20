@@ -38,10 +38,12 @@ namespace KSFramework
     /// </summary>
     public abstract class KSGame : MonoBehaviour, IAppEntry
     {
+        
+        
         /// <summary>
         /// KSFramework版本号
         /// </summary>
-        public string Version = "0.7.0";
+        [System.NonSerialized] public string Version = "0.7.0";
 
         public static KSGame Instance { get; private set; }
 
