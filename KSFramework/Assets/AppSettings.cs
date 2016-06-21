@@ -28,7 +28,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using CosmosTable;
+using KEngine.Table;
 using KEngine;
 using KEngine.Modules;
 namespace AppSettings
@@ -48,6 +48,7 @@ namespace AppSettings
                     _settingsList = new IReloadableSettings[]
                     { 
                         GameConfigSettings.GetInstance(),
+                        TestSettings.GetInstance(),
                     };
                 }
                 return _settingsList;
@@ -242,6 +243,190 @@ namespace AppSettings
         { 
             Id = row.Get_string(row.Values[0], ""); 
             Value = row.Get_string(row.Values[1], ""); 
+        }
+
+        /// <summary>
+        /// Get PrimaryKey from a table row
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static string ParsePrimaryKey(TableRow row)
+        {
+            var primaryKey = row.Get_string(row.Values[0], "");
+            return primaryKey;
+        }
+	}
+
+	/// <summary>
+	/// Auto Generate for Tab File: "Test.bytes"
+    /// No use of generic and reflection, for better performance,  less IL code generating
+	/// </summary>>
+    public partial class TestSettings : IReloadableSettings
+    {
+		public static readonly string[] TabFilePaths = 
+        {
+            "Test.bytes"
+        };
+        static TestSettings _instance;
+        Dictionary<string, TestSetting> _dict = new Dictionary<string, TestSetting>();
+
+        /// <summary>
+        /// Trigger delegate when reload the Settings
+        /// </summary>>
+	    public static System.Action OnReload;
+
+        /// <summary>
+        /// Constructor, just reload(init)
+        /// When Unity Editor mode, will watch the file modification and auto reload
+        /// </summary>
+	    private TestSettings()
+	    {
+        }
+
+        /// <summary>
+        /// Get the singleton
+        /// </summary>
+        /// <returns></returns>
+	    public static TestSettings GetInstance()
+	    {
+            if (_instance == null) 
+            {
+                _instance = new TestSettings();
+
+                _instance._ReloadAll(true);
+    #if UNITY_EDITOR
+                if (SettingModule.IsFileSystemMode)
+                {
+                    for (var j = 0; j < TabFilePaths.Length; j++)
+                    {
+                        var tabFilePath = TabFilePaths[j];
+                        SettingModule.WatchSetting(tabFilePath, (path) =>
+                        {
+                            if (path.Replace("\\", "/").EndsWith(path))
+                            {
+                                _instance.ReloadAll();
+                                Log.LogConsole_MultiThread("Reload success! -> " + path);
+                            }
+                        });
+                    }
+
+                }
+    #endif
+            }
+	        return _instance;
+	    }
+        
+        public int Count
+        {
+            get
+            {
+                return _dict.Count;
+            }
+        }
+
+        /// <summary>
+        /// Do reload the setting file: Test, no exception when duplicate primary key
+        /// </summary>
+        public void ReloadAll()
+        {
+            _ReloadAll(false);
+        }
+
+        /// <summary>
+        /// Do reload the setting file: Test
+        /// </summary>
+	    void _ReloadAll(bool throwWhenDuplicatePrimaryKey)
+        {
+            for (var j = 0; j < TabFilePaths.Length; j++)
+            {
+                var tabFilePath = TabFilePaths[j];
+                using (var tableFile = SettingModule.Get(tabFilePath, false))
+                {
+                    foreach (var row in tableFile)
+                    {
+                        var pk = TestSetting.ParsePrimaryKey(row);
+                        TestSetting setting;
+                        if (!_dict.TryGetValue(pk, out setting))
+                        {
+                            setting = new TestSetting(row);
+                            _dict[setting.Id] = setting;
+                        }
+                        else 
+                        {
+                            if (throwWhenDuplicatePrimaryKey) throw new System.Exception(string.Format("DuplicateKey, Class: {0}, File: {1}, Key: {2}", this.GetType().Name, tabFilePath, pk));
+                            else setting.Reload(row);
+                        }
+                    }
+                }
+            }
+
+	        if (OnReload != null)
+	        {
+	            OnReload();
+	        }
+        }
+
+	    /// <summary>
+        /// foreachable enumerable: Test
+        /// </summary>
+        public static IEnumerable GetAll()
+        {
+            foreach (var row in GetInstance()._dict.Values)
+            {
+                yield return row;
+            }
+        }
+
+        /// <summary>
+        /// GetEnumerator for `MoveNext`: Test
+        /// </summary> 
+	    public static IEnumerator GetEnumerator()
+	    {
+	        return GetInstance()._dict.Values.GetEnumerator();
+	    }
+         
+	    /// <summary>
+        /// Get class by primary key: Test
+        /// </summary>
+        public static TestSetting Get(string primaryKey)
+        {
+            TestSetting setting;
+            if (GetInstance()._dict.TryGetValue(primaryKey, out setting)) return setting;
+            return null;
+        }
+
+        // ========= CustomExtraString begin ===========
+        
+        // ========= CustomExtraString end ===========
+    }
+
+	/// <summary>
+	/// Auto Generate for Tab File: "Test.bytes"
+    /// Singleton class for less memory use
+	/// </summary>
+	public partial class TestSetting : TableRowParser
+	{
+		
+        /// <summary>
+        /// ID Column/编号/主键
+        /// </summary>
+        public string Id { get; private set;}
+        
+        /// <summary>
+        /// Name/名字
+        /// </summary>
+        public I18N Value { get; private set;}
+        
+
+        internal TestSetting(TableRow row)
+        {
+            Reload(row);
+        }
+
+        internal void Reload(TableRow row)
+        { 
+            Id = row.Get_string(row.Values[0], ""); 
+            Value = row.Get_I18N(row.Values[1], ""); 
         }
 
         /// <summary>

@@ -17,11 +17,12 @@ git submodule update
 
 # 教程
 
-- [KSFramework: Unity3D框架快速入门](http://www.jianshu.com/p/ccb491ed4260)
+- [**KSFramework: Unity3D开发辅助框架快速入门**](http://www.jianshu.com/p/ccb491ed4260)
 - [KEngine策划指南: 配置表格的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
 - [KEngine: 资源的打包、加载、调试监控](http://www.jianshu.com/p/ce3b5d0bdf8c)
 - [KSFramework常见问题：Lua脚本热重载，内存状态数据会不会丢失？](http://www.jianshu.com/p/eebd5cfce87f)
 - [KSFramework常见问题：Excel如何进行SVN协作、差异比较？](http://www.jianshu.com/p/2ea5468e9d5b)
+- [KEngine配置表：扩展表格解析类型](http://www.jianshu.com/p/722c5856166f)
 
 # 结构组成
 

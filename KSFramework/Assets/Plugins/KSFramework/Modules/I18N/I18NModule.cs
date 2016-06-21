@@ -26,17 +26,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using CosmosTable;
 using KEngine;
 using KEngine.Modules;
 
 namespace KSFramework
 {
-
-    /// <summary>
-    /// I18NModule的Alias别名
-    /// </summary>
-    public class I18N : I18NModule { }
 
     /// <summary>
     /// 多语言模块
@@ -120,7 +114,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string Str(string str)
+        public static I18N Str(string str)
         {
             bool result;
             return Str(str, out result);
@@ -131,7 +125,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string Str(string str, out bool result)
+        public static I18N Str(string str, out bool result)
         {
             result = false;
             if (str == null) return null;
@@ -142,10 +136,10 @@ namespace KSFramework
             if (Strs.TryGetValue(str, out value) && !string.IsNullOrEmpty(value))
             {
                 result = true;
-                return value;
+                return new I18N(value, str);
             }
 
-            return str;
+            return new I18N(str);
         }
 
 
