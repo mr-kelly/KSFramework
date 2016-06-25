@@ -912,22 +912,26 @@ end
 			return null;
 		}
 
+	    /// <summary>
+	    /// Ensure remove BOM from bytes
+	    /// </summary>
+	    /// <param name="bytes"></param>
+	    /// <returns></returns>
+	    public static byte[] CleanUTF8Bom(byte[] bytes)
+	    {
+            if (bytes.Length > 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF)
+            {
+                var oldBytes = bytes;
+                bytes = new byte[bytes.Length - 3];
+                Array.Copy(oldBytes, 3, bytes, 0, bytes.Length);
+            }
+            return bytes;
+	    }
+
 		public bool doBuffer(byte[] bytes, string fn, out object ret)
         {        
             // ensure no utf-8 bom, LuaJIT can read BOM, but Lua cannot!
-            if (bytes.Length > 3)
-            {
-                if (bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF)
-                {
-                    var oldBytes = bytes;
-                    bytes = new byte[bytes.Length - 3];
-                    for (var i = 0; i < bytes.Length; i++)
-                    {
-                        bytes[i] = oldBytes[i + 3];
-                    }
-                }
-            }
-
+		    bytes = CleanUTF8Bom(bytes);
             ret = null;
 			int errfunc = LuaObject.pushTry(L);
 			if (LuaDLL.luaL_loadbuffer(L, bytes, bytes.Length, fn) == 0)

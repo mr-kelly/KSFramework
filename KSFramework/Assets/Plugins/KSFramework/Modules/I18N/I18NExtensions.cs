@@ -27,7 +27,7 @@ public static class I18NExtensions
     /// </summary>
     /// <param name="str"></param>
     /// <returns></returns>
-    public static KSFramework.I18N ToI18N(this string str)
+    public static string ToI18N(this string str)
     {
         return I18NModule.Str(str);
     }

@@ -225,7 +225,6 @@ namespace SLua
 
 #if SLUA_STANDALONE
             doBind(L);
-		    this.luaState = luaState;
             doinit(L, flag);
 		    complete();
             checkTop(L);

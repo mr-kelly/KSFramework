@@ -23,7 +23,6 @@
 
 #endregion
 using System;
-using UnityEngine;
 using System.Collections;
 using System.IO;
 using System.Text;
@@ -37,8 +36,15 @@ namespace KSFramework
     {
         private LuaSvr _luaSvr;
 
-        public LuaModule()
+        public static LuaModule Instance = new LuaModule();
+
+        public bool IsInited { get; private set; }
+
+        private LuaModule()
         {
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log("Consturct LuaModule...");
+#endif
             _luaSvr = new LuaSvr();
             _luaSvr.init(progress => { }, () => { });
         }
@@ -140,6 +146,8 @@ namespace KSFramework
             LuaDLL.lua_pushcfunction(L, LuaUsing);
             LuaDLL.lua_setglobal(L, "using"); // same as SLua's import, using namespace
             CallScript("Init");
+
+            IsInited = true;
         }
 
         /// <summary>
@@ -202,18 +210,10 @@ namespace KSFramework
         /// <param name="l"></param>
         /// <returns></returns>
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal
-#if !UNITY_EDITOR
-            static
-#endif
-            int LuaImport(IntPtr L)
+        internal static int LuaImport(IntPtr L)
         {
-#if !UNITY_EDITOR
-            LuaModule luaModule = KSGame.Instance.LuaModule;
-#else
-            // Editor模式，为了配合单元测试，把这个函数做成实例方法
-            LuaModule luaModule = this;
-#endif
+            LuaModule luaModule = Instance;
+
             string fileName = LuaDLL.lua_tostring(L, 1);
             var obj = luaModule.CallScript(fileName);
 

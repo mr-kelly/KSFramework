@@ -69,7 +69,7 @@ namespace KSFramework
         protected virtual void Awake()
         {
             Instance = this;
-            LuaModule = new LuaModule();
+            LuaModule = LuaModule.Instance;
             AppEngine.New(gameObject, this, CreateModules());
         }
 

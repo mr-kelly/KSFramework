@@ -13,7 +13,7 @@ public class KSFrameworkTests
     {
         if (_testLuaModule != null) return _testLuaModule;
 
-	    var luaModule = new LuaModule();
+	    var luaModule = LuaModule.Instance;
 	    var em = luaModule.Init();
 	    while (em.MoveNext())
 	    {

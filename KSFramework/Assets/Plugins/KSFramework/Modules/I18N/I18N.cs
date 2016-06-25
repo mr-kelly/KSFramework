@@ -22,6 +22,11 @@ namespace KSFramework
             Origin = origin;
         }
 
+        public override string ToString()
+        {
+            return Translated;
+        }
+
         /// <summary>
         /// return translated string
         /// </summary>
@@ -36,7 +41,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static I18N Str(string str)
+        public static string Str(string str)
         {
             return I18NModule.Str(str);
         }
