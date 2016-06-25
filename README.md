@@ -8,10 +8,12 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 
 # 安装
 
+## 源码安装
+
 获取到源码后，需要通过git submodule命令获取KEngine和SLua
 ```shell
 git submodule init
-git submodule update
+git submodule updateW
 ```
 拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录
 

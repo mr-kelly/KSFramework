@@ -6,6 +6,7 @@ artifacts:
 build_script:
 - cmd: git submodule init
 - cmd: git submodule update
+- cmd: Install.bat
 after_build:
   - cmd: 7z a KSFramework.zip KSFramework/
 test: off
@@ -14,6 +15,6 @@ deploy:
   release: KSFramework-v$(appveyor_build_version)
   name: Github
   prerelease: true
-  on:
-    branch: master                # release from master branch only
-    appveyor_repo_tag: true       # deploy on tag push only
+  #on:
+  #  branch: master                # release from master branch only
+  #  appveyor_repo_tag: true       # deploy on tag push only
