@@ -1,6 +1,6 @@
 # KSFramework
 
-[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/KEngine)+ **Framework** = KSFramework
+[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)+ **Framework** = KSFramework
 
 KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，并为程序、美术、策划、运营提供开发工具。
 
@@ -8,14 +8,19 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 
 # 安装
 
-## 源码安装
+## 从产品包安装
+
+你可以从[KSFramework Release](https://github.com/mr-kelly/KSFramework/releases)页面下载最新版本的产品包。
+解压后直接用Unity打开KSFramework目录。
+
+## 从源码安装
 
 获取到源码后，需要通过git submodule命令获取KEngine和SLua
 ```shell
 git submodule init
 git submodule updateW
 ```
-拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录
+拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录，然后用Unity打开
 
 # 教程
 
