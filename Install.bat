@@ -57,5 +57,6 @@ xcopy slua\Assets\Plugins\slua.bundle KSFramework\Assets\Plugins\slua.bundle /S/
 xcopy slua\Assets\Plugins\x64 KSFramework\Assets\Plugins\x64 /S/Y/R/I
 xcopy slua\Assets\Plugins\x86 KSFramework\Assets\Plugins\x86 /S/Y/R/I
 
+echo Finish!
+ping -n 5 127.0.0.1>nul 
 
-pause
