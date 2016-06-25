@@ -28,9 +28,9 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using KEngine.Table;
 using KEngine;
 using KEngine.Modules;
+using KEngine.Table;
 namespace AppSettings
 {
 	/// <summary>
