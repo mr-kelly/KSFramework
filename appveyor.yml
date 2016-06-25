@@ -2,13 +2,12 @@ version: 0.7.{build}
 os: Windows Server 2012 R2
 artifacts:
   - path: KSFramework-$(appveyor_build_version).zip
-    name: KSFramework-$(appveyor_build_version)
 build_script:
 - cmd: git submodule init
 - cmd: git submodule update
 - cmd: Install.bat
 after_build:
-  - cmd: 7z a KSFramework-$(appveyor_build_version).zip KSFramework/
+  - cmd: 7z a KSFramework-%appveyor_build_version%.zip KSFramework/
 test: off
 #deploy:
 #- provider: Environment
