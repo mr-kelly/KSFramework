@@ -4,7 +4,7 @@
 
 [**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)+ **Framework** = KSFramework
 
-KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，并为程序、美术、策划、运营提供开发工具。
+KSFramework是一个整合KEngine、SLua的Unity 5开发框架，并为程序、美术、策划、运营提供辅助工具集。
 
 **热重载**是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，方便运营阶段热更新。
 
@@ -20,7 +20,7 @@ KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能U
 获取到源码后，需要通过git submodule命令获取KEngine和SLua
 ```shell
 git submodule init
-git submodule updateW
+git submodule update
 ```
 拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录，然后用Unity打开
 
@@ -48,12 +48,6 @@ git submodule updateW
 - 手动的、引用计数的资源释放策略
 - ~~资源运行时重载（减引用计数）~~
 
-## UI模块
-
-- 约定优于配置式的UI框架
-- 快速导出当前编辑的UI
-- 支持热重载，运行时修改UI脚本无需重启
-
 ## 配置表模块
 
 - 自动编译Excel，支持在表中添加注释
@@ -61,6 +55,12 @@ git submodule updateW
 - 自动生成配置表读取代码
 - 支持惰式加载，无初始化的时间消耗
 - 支持热重载，运行时修改配置表无需重启
+
+## UI模块
+
+- 约定优于配置式的UI框架
+- 快速导出当前编辑的UI
+- 支持热重载，运行时修改UI脚本无需重启
 
 ## 脚本模块
 
@@ -81,7 +81,8 @@ git submodule updateW
 
 # 工程建议
 
-- 建议创建两个Unity工程：code和product，一个用于代码编辑，一个用于美术编辑并导出AssetBundle。
+建议创建两个Unity工程：code和art，一个用于代码编辑，一个用于美术编辑并导出AssetBundle。
+这样code的Unity工程，只带了代码和AssetBundle，没有资源加载的缓慢过程，让Unity开发更畅快；同时也对代码部分做了保密，防止其他人员外泄。
 
 # 键盘快捷键
 
