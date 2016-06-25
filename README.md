@@ -1,5 +1,7 @@
 # KSFramework
 
+[![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
+
 [**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)+ **Framework** = KSFramework
 
 KSFramework是一个整合KEngine、SLua和一些开发组件组成的全功能Unity 5开发框架，并为程序、美术、策划、运营提供开发工具。
