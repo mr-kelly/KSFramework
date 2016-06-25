@@ -1,0 +1,17 @@
+version: 0.7.{build}
+os: Windows Server 2012 R2
+artifacts:
+  - path: KSFramework.zip
+    name: KSFramework $(appveyor_build_version)
+build_script:
+- cmd: git submodule init
+- cmd: git submodule update
+after_build:
+  - cmd: 7z a KSFramework.zip KSFramework/
+test: off
+deploy:
+- provider: Environment
+  name: Github
+  on:
+    branch: master                # release from master branch only
+    appveyor_repo_tag: true       # deploy on tag push only
