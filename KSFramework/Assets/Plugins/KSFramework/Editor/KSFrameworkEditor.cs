@@ -24,7 +24,7 @@ Shorcuts:
     Ctrl+Alt+R - Reload current cached lua scripts
 
 
-",KSGame.Version);
+",KSFrameworkInfo.Version);
 
         [MenuItem("KSFramework/Options and Help")]
         private static void Open()

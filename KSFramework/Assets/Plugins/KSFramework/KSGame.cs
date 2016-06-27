@@ -23,25 +23,21 @@
 // License along with this library.
 
 #endregion
-using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using KEngine;
 using KEngine.UI;
-using SLua;
-
 namespace KSFramework
 {
     /// <summary>
     /// KSFramework base game entry,  create your class extends from this
     /// </summary>
-    public abstract class KSGame : MonoBehaviour, IAppEntry
+    public abstract partial class KSGame : MonoBehaviour, IAppEntry
     {
         /// <summary>
         /// KSFramework版本号
         /// </summary>
-        public static readonly string Version = "0.7.1";
 
         public static KSGame Instance { get; private set; }
 
