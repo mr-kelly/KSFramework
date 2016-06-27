@@ -45,7 +45,6 @@ artifacts/
 *_p.c
 *_i.h
 *.ilk
-*.meta
 *.obj
 *.pch
 *.pdb
@@ -242,3 +241,8 @@ _Pvt_Extensions
 /KSFramework/Assets/UnityTestTools
 /KSFramework/Assets/StreamingAssets/Bundles
 /KSFramework/Assets/StreamingAssets/Lua
+/KSFramework/Assets/StreamingAssets/**/*.meta
+/KSFramework/Product/**/*.meta
+*UnityVS*
+
+
