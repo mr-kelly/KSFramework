@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 using KEngine;
 using KEngine.UI;
 using UnityEditor;
@@ -93,6 +94,67 @@ Shorcuts:
 #endif
         }
 
+        [MenuItem("KSFramework/UI/Make UI Lua Scripts(Current Scene)")]
+        public static void GenerateLuaTemplates()
+        {
+            var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
+            Debug.Log("Find UI from current scenes, LuaScriptPath: " + luaPath);
+
+            var windowAssets = GameObject.FindObjectsOfType<KUIWindowAsset>();
+            if (windowAssets.Length > 0)
+            {
+                foreach (var windowAsset in windowAssets)
+                {
+                    var uiName = windowAsset.name;
+                    var scriptPath = string.Format("{0}/{1}/UI/UI{2}.lua", KResourceModule.EditorProductFullPath,
+                        luaPath, uiName);
+                    if (!File.Exists(scriptPath))
+                    {
+                        File.WriteAllText(scriptPath, LuaUITempalteCode.Replace("$UI_NAME", "UI" + uiName));
+                        Debug.LogWarning("New Lua Script: " + scriptPath);
+                    }
+                    else
+                    {
+                        Debug.Log("Exists Lua Script, ignore: " + scriptPath);
+                    }
+                }
+                
+            }
+            else
+            {
+                Debug.LogError("Not found any `UIWindowAsset` Component");
+            }
+        }
+
+        /// <summary>
+        /// UI Lua Scripts Tempalte Code
+        /// </summary>
+        private static string LuaUITempalteCode = @"
+local UIBase = import('KSFramework/UIBase')
+
+if not Cookie then local Cookie = Slua.GetClass('KSFramework.Cookie') end
+if not Log then Log = Slua.GetClass('KEngine.Log') end
+
+local $UI_NAME = {}
+extends($UI_NAME, UIBase)
+
+-- create a ui instance
+function $UI_NAME.New(controller)
+    local newUI = new($UI_NAME)
+    newUI.Controller = controller
+    return newUI
+end
+
+function $UI_NAME:OnInit(controller)
+    Log.Info('$UI_NAME OnInit, do controls binding')
+end
+
+function $UI_NAME:OnOpen()
+    Log.Info('$UI_NAME OnOpen, do your logic')
+end
+
+return $UI_NAME
+";
         [MenuItem("KSFramework/UI/Reload UI Lua %&r")]
         public static void ReloadLuaCache()
         {
