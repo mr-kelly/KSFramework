@@ -94,8 +94,8 @@ Shorcuts:
 #endif
         }
 
-        [MenuItem("KSFramework/UI/Make UI Lua Scripts(Current Scene)")]
-        public static void GenerateLuaTemplates()
+        [MenuItem("KSFramework/UI/Auto Make UI Lua Scripts(Current Scene)")]
+        public static void AutoMakeUILuaScripts()
         {
             var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
             Debug.Log("Find UI from current scenes, LuaScriptPath: " + luaPath);
