@@ -166,8 +166,8 @@ namespace KSFramework
 				}
 
 				LuaClassObject co = new LuaClassObject(t);
-				Helper.pushValue(l, true);
 				LuaObject.pushObject(l,co);
+				Helper.pushValue(l, true);
 				return 2;
 			}
 			catch (Exception e)
