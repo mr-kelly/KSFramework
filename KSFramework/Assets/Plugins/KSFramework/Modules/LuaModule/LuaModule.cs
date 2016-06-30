@@ -145,11 +145,36 @@ namespace KSFramework
             LuaDLL.lua_setglobal(L, "import");
             LuaDLL.lua_pushcfunction(L, LuaUsing);
             LuaDLL.lua_setglobal(L, "using"); // same as SLua's import, using namespace
+            LuaDLL.lua_pushcfunction(L, ImportCSharpType);
+            LuaDLL.lua_setglobal(L, "import_type"); // same as SLua's SLua.GetClass(), import C# type
             CallScript("Init");
 
             IsInited = true;
         }
 
+		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+		static public int ImportCSharpType(IntPtr l)
+		{
+			try
+			{
+				string cls;
+				Helper.checkType(l, 1, out cls);
+				Type t = LuaObject.FindType(cls);
+				if (t == null)
+				{
+					return Helper.error(l, "Can't find {0} to create", cls);
+				}
+
+				LuaClassObject co = new LuaClassObject(t);
+				Helper.pushValue(l, true);
+				LuaObject.pushObject(l,co);
+				return 2;
+			}
+			catch (Exception e)
+			{
+				return Helper.error(l, e);
+			}
+		}
         /// <summary>
         /// same as SLua default import
         /// </summary>

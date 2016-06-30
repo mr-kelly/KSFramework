@@ -20,7 +20,6 @@ extends(UILogin, UIBase)
 function UILogin.New(controller)
     local newUILogin = new(UILogin)
     newUILogin.Controller = controller
-    print(newUILogin)
     return newUILogin
 end
 
@@ -47,6 +46,11 @@ function UILogin:OnInit(controller)
     else
         Log.Warning("Not found UnityEngine static code! No AddListener to the button")
     end
+
+
+    -- test LuaBehaivour
+    if not LuaBehaviour then LuaBehaviour = Slua.GetClass('KSFramework.LuaBehaviour') end
+    LuaBehaviour.Create(controller.CachedGameObject, 'Behaviour/TestLuaBehaviour')
 end
 
 function UILogin:OnOpen(num1)
