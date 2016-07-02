@@ -54,7 +54,7 @@ namespace KSFramework.Editor
         [PostProcessScene]
         private static void OnPostProcessScene()
         {
-            if (!_hasBeforeBuildApp)
+            if (!_hasBeforeBuildApp && !EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 _hasBeforeBuildApp = true;
                 // 这里是编译前, 对Lua进行编译处理
