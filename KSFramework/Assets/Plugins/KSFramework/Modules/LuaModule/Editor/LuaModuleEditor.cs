@@ -22,6 +22,8 @@
 // License along with this library.
 
 #endregion
+
+using System;
 using UnityEngine;
 using System.Collections;
 using System.IO;
@@ -42,6 +44,10 @@ namespace KSFramework.Editor
         /// </summary>
         private static bool _hasBeforeBuildApp = false;
 
+        /// <summary>
+        /// 复制文件事件, 可以进行加密行为
+        /// </summary>
+        public static Action<string> OnCopyFile;
         /// <summary>
         /// 这里可以进行DLL篡改, 这里PostProcessScene时，DLL已经被生成了
         /// </summary>
@@ -73,6 +79,8 @@ namespace KSFramework.Editor
                         Directory.CreateDirectory(Path.GetDirectoryName(toPath));
 
                     File.Copy(cleanPath, toPath, true);
+                    if (OnCopyFile != null)
+                        OnCopyFile(toPath);
                     luaCount++;
                 }
                 AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
