@@ -68,6 +68,7 @@ git submodule update
 - 路径约定，通过import函数进行加载
 - 缓存机制配合import函数，可实现所有脚本的热重载
 - Lua新增using函数类似于C#中的using，暴露使用table中的属性为全局使用
+- 可以在编辑器非运行模式下执行Lua脚本，支持简单Lua单元测试
 
 ## 多语言模块
 
