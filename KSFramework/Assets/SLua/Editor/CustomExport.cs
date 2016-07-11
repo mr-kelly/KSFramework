@@ -47,6 +47,7 @@ namespace SLua
             add(typeof(string), "String");
 
             add(typeof (Log), "Log");
+            add(typeof (KBehaviour), "KBehaviour");
             add(typeof (UIController), "UIController");
             add(typeof (LuaUIController), "LuaUIController");
             add(typeof (I18NModule), "I18N");
