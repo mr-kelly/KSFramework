@@ -36,9 +36,8 @@ namespace KSFramework
     public abstract partial class KSGame : MonoBehaviour, IAppEntry
     {
         /// <summary>
-        /// KSFramework版本号
+        /// KSGame 单例引用对象
         /// </summary>
-
         public static KSGame Instance { get; private set; }
 
         /// <summary>

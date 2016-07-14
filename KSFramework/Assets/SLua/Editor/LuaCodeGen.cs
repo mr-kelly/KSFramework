@@ -741,7 +741,6 @@ namespace SLua
 using System;
 using System.Collections.Generic;
 using LuaInterface;
-using UnityEngine;
 
 namespace SLua
 {
@@ -873,8 +872,6 @@ namespace SLua
 using System;
 using System.Collections.Generic;
 using LuaInterface;
-using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace SLua
 {
@@ -1076,7 +1073,6 @@ namespace SLua
 		
 		private void WriteHead(Type t, StreamWriter file)
 		{
-			Write(file, "using UnityEngine;");
 			Write(file, "using System;");
 			Write(file, "using LuaInterface;");
 			Write(file, "using SLua;");
