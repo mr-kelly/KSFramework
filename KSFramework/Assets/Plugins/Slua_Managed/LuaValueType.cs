@@ -28,7 +28,7 @@ namespace SLua
     {
 #if !UNITY_IPHONE && !LUA_5_3 && !SLUA_STANDALONE
         static string script = @"
-if not UntiyEngine or not UnityEngine.Vector2 then
+if not UnityEngine or not UnityEngine.Vector2 then
     print('No static code gen yet, ignore `LuaValueType:reg` !!! ')
     return
 end

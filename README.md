@@ -1,4 +1,6 @@
+
 # KSFramework
+![KSFramework-logo](Docs/KSFramework-logo.png)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
