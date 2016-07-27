@@ -8,4 +8,4 @@
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("0.8.*")]
-namespace KSFramework { public class KSFrameworkInfo { public static readonly string Version = "0.8.*"; } }
+namespace KSFramework { public class KSFrameworkInfo { public static readonly string Version = "0.9.*"; } }

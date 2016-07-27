@@ -34,6 +34,7 @@ git submodule update
 - [KSFramework常见问题：Lua脚本热重载，内存状态数据会不会丢失？](http://www.jianshu.com/p/eebd5cfce87f)
 - [KSFramework常见问题：Excel如何进行SVN协作、差异比较？](http://www.jianshu.com/p/2ea5468e9d5b)
 - [KEngine配置表：扩展表格解析类型](http://www.jianshu.com/p/722c5856166f)
+- [KEngine:配置表的条件编译](http://www.jianshu.com/p/cb7ddfab23ba)
 
 # 结构组成
 
