@@ -15,6 +15,11 @@ namespace KSFramework
         public delegate object IfNullGetter();
 
         /// <summary>
+        /// 委托，用于hook入设置时的行为
+        /// </summary>
+        public delegate void CookieSetListener();
+
+        /// <summary>
         /// Store values
         /// </summary>
         protected static Dictionary<string, object> _hashtable = new Dictionary<string, object>();
@@ -27,6 +32,7 @@ namespace KSFramework
         /// Store setters
         /// </summary>
         protected static Dictionary<string, CookieSetter> _setters = new Dictionary<string, CookieSetter>();
+        protected static Dictionary<string, List<CookieSetListener>> _setListeners = new Dictionary<string, List<CookieSetListener>>();
 
 
         /// <summary>
@@ -79,6 +85,16 @@ namespace KSFramework
                 setter = DefaultSetter;
             }
             setter(key, value);
+
+            List<CookieSetListener> listeners;
+            if (_setListeners.TryGetValue(key, out listeners))
+            {
+                for (var i = 0; i < listeners.Count; i++)
+                {
+                    var l = listeners[i];
+                    l(); // impossible null
+                }
+            }
         }
 
         /// <summary>
@@ -115,5 +131,39 @@ namespace KSFramework
             return getter(value);
         }
 
+        /// <summary>
+        /// 绑定设置时触发的事件
+        /// </summary>
+        /// <param name="setter"></param>
+        public static void AddSetListener(string key, CookieSetListener listener)
+        {
+            if (listener == null) throw new NullReferenceException("CookieSetListener cannot be null!");
+
+            List<CookieSetListener> listeners;
+            if (!_setListeners.TryGetValue(key, out listeners))
+            {
+                listeners = _setListeners[key] = new List<CookieSetListener>();
+            }
+            if (!listeners.Contains(listener))
+                listeners.Add(listener);
+            else throw new Exception("Duplicated set listner");
+
+        }
+
+        /// <summary>
+        /// 解绑设置时触发的事件
+        /// </summary>
+        /// <param name="listener"></param>
+        public static void RemoveSetListner(string key, CookieSetListener listener)
+        {
+            List<CookieSetListener> listeners;
+            if (!_setListeners.TryGetValue(key, out listeners))
+            {
+                listeners = _setListeners[key] = new List<CookieSetListener>();
+            }
+            if (listeners.Contains(listener))
+                listeners.Remove(listener);
+            else throw new Exception("Not exist listener");
+        }
     }
 }

@@ -7,5 +7,5 @@
 [assembly: AssemblyCopyright("Copyright @ Kelly<23110388@qq.com> 2015-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.8.*")]
+[assembly: AssemblyVersion("0.9.*")]
 namespace KSFramework { public class KSFrameworkInfo { public static readonly string Version = "0.9.*"; } }

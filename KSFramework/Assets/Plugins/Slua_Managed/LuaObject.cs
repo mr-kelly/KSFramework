@@ -1446,6 +1446,28 @@ return index
 		static public void assert(bool cond,string err) {
 			if(!cond) throw new Exception(err);
 		}
+
+        /// <summary>
+        /// Change Type, alternative for Convert.ChangeType, but has exception handling
+        /// change fail, return origin value directly, useful for some LuaVarObject value assign
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
+	    static public object changeType(object obj, Type t)
+        {
+            if (t == typeof (object)) return obj;
+            if (obj.GetType() == t) return obj;
+
+            try
+            {
+                return Convert.ChangeType(obj, t);
+            }
+            catch
+            {
+                return obj;
+            }
+	    }
 	}
 
 }

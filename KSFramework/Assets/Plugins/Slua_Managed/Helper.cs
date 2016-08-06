@@ -173,7 +173,7 @@ return Class
 					ParameterInfo[] pis = target.GetParameters();
 					object[] args = new object[pis.Length];
 					for (int n = 0; n < pis.Length; n++)
-						args[n] = Convert.ChangeType(checkVar(l, n + 2), pis[n].ParameterType);
+						args[n] = changeType(checkVar(l, n + 2), pis[n].ParameterType);
 
 					object ret = target.Invoke(args);
 					pushValue(l, true);
@@ -275,7 +275,8 @@ return Class
 				for (int k = 0; k < n; k++)
 				{
 					LuaDLL.lua_rawgeti(l, 2, k + 1);
-					array.SetValue(Convert.ChangeType(checkVar(l, -1),t),k);
+				    var obj = checkVar(l, -1);
+					array.SetValue(changeType(obj, t), k);
 					LuaDLL.lua_pop(l, 1);
 				}
 				pushValue(l, true);
