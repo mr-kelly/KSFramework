@@ -13,9 +13,14 @@ KSFramework是一个整合KEngine、SLua的Unity 5开发框架，并为程序、
 
 ## 从产品包安装
 
-你可以从[KSFramework Release](https://github.com/mr-kelly/KSFramework/releases)页面下载最新版本的产品包。
+您可以从[KSFramework Release](https://github.com/mr-kelly/KSFramework/releases)页面下载最新版本的产品包。
 
 解压后直接用Unity打开KSFramework目录，或直接双击场景KSFramework/Assets/Game.unity。
+
+> 如遇到无法下载的网络问题, 备选下载站:
+> - [KSFramework Appveyor Artifacts](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts): 包含每次提交的构建结果
+> - [KSFramework OSChina镜像](http://git.oschina.net/mrkelly/KSFramework)): 国内的镜像Git
+
 
 ## 从源码安装
 
