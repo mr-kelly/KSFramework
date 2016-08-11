@@ -1,0 +1,15 @@
+baseurl = "./"
+languageCode = "zh-cn"
+title = "KSFramework"
+SectionPagesMenu = "main"
+
+[params]
+    author = "Mr Kelly"
+
+    provider = "GitHub"
+    repo_url = "https://github.com/mr-kelly/KSFramework"
+
+
+[params.palette]
+  primary = "deep purple"
+  accent  = "light green"
