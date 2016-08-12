@@ -73,6 +73,7 @@ KEngine配置表编译的本质，其实就是——**把Excel文件转换成纯
 ![菜单KEngine->Setting中的配置表功能](http://upload-images.jianshu.io/upload_images/1835687-5c00562fcc0c2a33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 执行菜单KEngine->Setting中的两个编译配置表功能项：
+
 - **Force Compile Settings + Code**：强制重新编译所有的表，并且自动生成配置表代码（会触发Unity重新编译）
 - **Quick Compile Settings**：差异化编译配置表，不重新自动生成配置表代码
 

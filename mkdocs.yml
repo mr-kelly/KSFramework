@@ -1,0 +1,21 @@
+site_name: KSFramework Documentation
+theme: readthedocs
+
+pages:
+    - [index.md, "简介", "KSFramework介绍"]
+    - [overview/why.md, "简介", "项目的由来"]
+    - [overview/structure.md, "简介", "模块结构组织"]
+    - [quickstart.md, "快速入门指南！"]
+
+    - [setting/guide.md, "配置表模块", "策划指南：配置表的使用"]
+    - [setting/custom-table-reader.md, "配置表模块", "自定义与扩展配置表的解析"]
+    - [setting/condition-compile.md, "配置表模块", "配置表的条件编译"]
+    - [setting/lazy-load.md, "配置表模块", "惰式加载"]
+
+    - [resource/guide.md, "资源模块", "使用资源模块打包、加载"]
+    - [resource/debug.md, "资源模块", "资源可视化调试"]
+
+    - [advanced/seperate-unity-projects.md, "开发经验", "使用两个Unity工程"]
+    - [advanced/versioning.md, "开发经验", "版本号与版本管理"]
+    - [advanced/excel-diff.md, "开发经验", "Excel如何进行SVN协作、差异比较？"]
+    - [advanced/cookie.md, "开发经验", "Lua脚本热重载，内存状态数据丢失？"]
