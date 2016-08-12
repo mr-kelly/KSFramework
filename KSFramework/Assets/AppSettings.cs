@@ -47,8 +47,8 @@ namespace AppSettings
                 {
                     _settingsList = new IReloadableSettings[]
                     { 
-                        TestSettings.GetInstance(),
-                        GameConfigSettings.GetInstance(),
+                        TestSettings._instance,
+                        GameConfigSettings._instance,
                     };
                 }
                 return _settingsList;
@@ -63,9 +63,14 @@ namespace AppSettings
 	        for (var i = 0; i < SettingsList.Length; i++)
 	        {
 	            var settings = SettingsList[i];
-                settings.ReloadAll();
-
-	            Log.Info("Reload settings: {0}, Row Count: {1}", settings.GetType(), settings.Count);
+                if (settings.Count > 0 // if never reload, ignore
+#if UNITY_EDITOR
+                    || !UnityEditor.EditorApplication.isPlaying // in editor and not playing, force load!
+#endif
+                    )
+                {
+                    settings.ReloadAll();
+                }
 
 	        }
 	    }
@@ -79,11 +84,16 @@ namespace AppSettings
 	/// </summary>>
     public partial class TestSettings : IReloadableSettings
     {
+        /// <summary>
+        /// How many reload function load?
+        /// </summary>>
+        public static int ReloadCount { get; private set; }
+
 		public static readonly string[] TabFilePaths = 
         {
             "Test.bytes"
         };
-        static TestSettings _instance;
+        internal static TestSettings _instance = new TestSettings();
         Dictionary<string, TestSetting> _dict = new Dictionary<string, TestSetting>();
 
         /// <summary>
@@ -105,10 +115,8 @@ namespace AppSettings
         /// <returns></returns>
 	    public static TestSettings GetInstance()
 	    {
-            if (_instance == null) 
+            if (ReloadCount == 0)
             {
-                _instance = new TestSettings();
-
                 _instance._ReloadAll(true);
     #if UNITY_EDITOR
                 if (SettingModule.IsFileSystemMode)
@@ -121,7 +129,7 @@ namespace AppSettings
                             if (path.Replace("\\", "/").EndsWith(path))
                             {
                                 _instance.ReloadAll();
-                                Log.LogConsole_MultiThread("Reload success! -> " + path);
+                                Log.LogConsole_MultiThread("File Watcher! Reload success! -> " + path);
                             }
                         });
                     }
@@ -129,6 +137,7 @@ namespace AppSettings
                 }
     #endif
             }
+
 	        return _instance;
 	    }
         
@@ -180,6 +189,9 @@ namespace AppSettings
 	        {
 	            OnReload();
 	        }
+
+            ReloadCount++;
+            Log.Info("Reload settings: {0}, Row Count: {1}, Reload Count: {2}", GetType(), Count, ReloadCount);
         }
 
 	    /// <summary>
@@ -263,11 +275,16 @@ namespace AppSettings
 	/// </summary>>
     public partial class GameConfigSettings : IReloadableSettings
     {
+        /// <summary>
+        /// How many reload function load?
+        /// </summary>>
+        public static int ReloadCount { get; private set; }
+
 		public static readonly string[] TabFilePaths = 
         {
             "GameConfig/+Base.bytes", "GameConfig/+TSV.bytes"
         };
-        static GameConfigSettings _instance;
+        internal static GameConfigSettings _instance = new GameConfigSettings();
         Dictionary<string, GameConfigSetting> _dict = new Dictionary<string, GameConfigSetting>();
 
         /// <summary>
@@ -289,10 +306,8 @@ namespace AppSettings
         /// <returns></returns>
 	    public static GameConfigSettings GetInstance()
 	    {
-            if (_instance == null) 
+            if (ReloadCount == 0)
             {
-                _instance = new GameConfigSettings();
-
                 _instance._ReloadAll(true);
     #if UNITY_EDITOR
                 if (SettingModule.IsFileSystemMode)
@@ -305,7 +320,7 @@ namespace AppSettings
                             if (path.Replace("\\", "/").EndsWith(path))
                             {
                                 _instance.ReloadAll();
-                                Log.LogConsole_MultiThread("Reload success! -> " + path);
+                                Log.LogConsole_MultiThread("File Watcher! Reload success! -> " + path);
                             }
                         });
                     }
@@ -313,6 +328,7 @@ namespace AppSettings
                 }
     #endif
             }
+
 	        return _instance;
 	    }
         
@@ -364,6 +380,9 @@ namespace AppSettings
 	        {
 	            OnReload();
 	        }
+
+            ReloadCount++;
+            Log.Info("Reload settings: {0}, Row Count: {1}, Reload Count: {2}", GetType(), Count, ReloadCount);
         }
 
 	    /// <summary>
