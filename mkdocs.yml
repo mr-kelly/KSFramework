@@ -1,6 +1,8 @@
 site_name: KSFramework Documentation
 theme: readthedocs
 
+extra:
+    version: 0.9
 pages:
     - [index.md, "简介", "KSFramework介绍"]
     - [overview/why.md, "简介", "项目的由来"]
@@ -18,6 +20,8 @@ pages:
     - [resource/gc.md, "资源模块", "垃圾回收机制"]
 
     - [scripting/functions.md, "脚本指南", "内置函数列表"]
+    - [hotreload/setting.md, "热重载", "配置表热重载"]
+    - [hotreload/assetbundle.md, "热重载", "Asset Bundle热重载"]
 
     - [advanced/seperate-unity-projects.md, "开发经验", "使用两个Unity工程"]
     - [advanced/versioning.md, "开发经验", "版本号与版本管理"]
