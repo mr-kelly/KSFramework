@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <title>自定义与扩展配置表的解析 - KSFramework Documentation</title>
+  
+
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "自定义与扩展配置表的解析";
+    var mkdocs_page_input_path = "setting\custom-table-reader.md";
+    var mkdocs_page_url = "/setting/custom-table-reader/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KSFramework Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <ul class="subnav">
+    <li><span>简介</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../..">KSFramework介绍</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/why/">项目的由来</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/structure/">模块结构组织</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../quickstart/">【快速入门指南！】</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>配置表模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../guide/">策划指南：配置表的使用</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../condition-compile/">配置表的条件编译</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../lazy-load/">惰式加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">自定义与扩展配置表的解析</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">自定义解析</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#_2">扩展列的类型</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>资源模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/guide/">使用资源模块打包、加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/debug/">资源可视化调试</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/gc/">垃圾回收机制</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>脚本指南</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../scripting/functions/">内置函数列表</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>开发经验</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>其它</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../license/">版权说明</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../roadmap/">开发计划</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KSFramework Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>配置表模块 &raquo;</li>
+        
+      
+    
+    <li>自定义与扩展配置表的解析</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="_1">自定义解析</h2>
+<p>分析配置表模块自动生成的代码，会发现，所有的XXXSettings类都使用partial修饰的。因此你可以扩展partial类来实现自己的字符串解析。</p>
+<pre><code class="csharp">
+    public partial class GameConfigSetting
+    {
+        public int IntValue {
+            get
+            {
+                int intValue;
+                if (!int.TryParse(Value, out intValue))
+                    return -1;
+                return intValue;
+            }
+        }
+    }
+</code></pre>
+
+<p>如上示例，为GameConfigSetting配置项增加一个IntValue的Getter，自动将读取到的Value字符串，强制解析成数字整形。</p>
+<h2 id="_2">扩展列的类型</h2>
+<p>配置表模块在编译时，把Excel转化成TSV，并根据Excel的头部信息，生成对应的代码； 比如源码库中的Test.xlsx Excel文件，两个列头，Id和Value，其下的列头信息标注其分别是string和I18N。 这是对这两个列的类型声明。</p>
+<p><img alt="列Id注明是string类型，列Value注明是I18N类型" src="../../images/setting/custom-1.png" /></p>
+<p>在生成代码的时候，会把其类型作为代码的一部分，写入到代码中：</p>
+<pre><code class="csharp">
+    /// &lt;summary&gt;
+    /// Auto Generate for Tab File: &quot;Test.bytes&quot;
+    /// Singleton class for less memory use
+    /// &lt;/summary&gt;
+    public partial class TestSetting : TableRowParser
+    {
+
+        /// &lt;summary&gt;
+        /// ID Column/编号/主键
+        /// &lt;/summary&gt;
+        public string Id { get; private set;}
+
+        /// &lt;summary&gt;
+        /// Name/名字
+        /// &lt;/summary&gt;
+        public I18N Value { get; private set;}
+
+
+        internal TestSetting(TableRow row)
+        {
+            Reload(row);
+        }
+
+        internal void Reload(TableRow row)
+        {
+            Id = row.Get_string(row.Values[0], &quot;&quot;);
+            Value = row.Get_I18N(row.Values[1], &quot;&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// Get PrimaryKey from a table row
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;row&quot;&gt;&lt;/param&gt;
+        /// &lt;returns&gt;&lt;/returns&gt;
+        public static string ParsePrimaryKey(TableRow row)
+        {
+            var primaryKey = row.Get_string(row.Values[0], &quot;&quot;);
+            return primaryKey;
+        }
+
+</code></pre>
+
+<p>其中，生成的代码，总结生成的核心是：</p>
+<pre><code class="csharp">// string                   // string
+string Id = row.Get_string(row.Values[0], &quot;&quot;);
+// I18N                      // I18N
+I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
+</code></pre>
+
+<p>代码中，会引用I18N类、Get_I18N方法。
+默认情况，KEngine的TableRowParser提供了string、int、bool等常见类型的解析方法，而像I18N这样的一个类，则是通过C#的扩展功能，扩展KEngine中的TableRow类型，来自定义解析配置表读取的方法。</p>
+<pre><code class="csharp">// 定义类
+public class I18N
+{
+    public I18N(str) {}
+}
+// 定义扩展方法
+public static class I18NExtensions
+{
+    public static I18N Get_I18N(this TableRow tableRow, string value, string defaultValue)
+    {
+        var str = tableRow.Get_string(value, defaultValue);
+        return new I18N(str);
+
+    }
+}
+</code></pre>
+
+<p>这样做之后，配置表自动生成的代码就能正确的按照你自定义的方法进行解析了：</p>
+<pre><code class="csharp">I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../resource/guide/" class="btn btn-neutral float-right" title="使用资源模块打包、加载">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../tsv-instead-excel/" class="btn btn-neutral" title="使用TSV，不用Excel作为源表"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../tsv-instead-excel/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../resource/guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

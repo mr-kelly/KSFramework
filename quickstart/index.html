@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <title>【快速入门指南！】 - KSFramework Documentation</title>
+  
+
+  <link rel="shortcut icon" href="../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "【快速入门指南！】";
+    var mkdocs_page_input_path = "quickstart.md";
+    var mkdocs_page_url = "/quickstart/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script>
+  <script src="../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> KSFramework Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <ul class="subnav">
+    <li><span>简介</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="..">KSFramework介绍</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../overview/why/">项目的由来</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../overview/structure/">模块结构组织</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">【快速入门指南！】</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#demo">看看Demo！</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#billboard">尝试做一个公告界面Billboard</a></li>
+                
+                    <li><a class="toctree-l4" href="#ui">创建UI资源</a></li>
+                
+                    <li><a class="toctree-l4" href="#ui_1">加载UI界面</a></li>
+                
+                    <li><a class="toctree-l4" href="#lua">创建Lua脚本</a></li>
+                
+                    <li><a class="toctree-l4" href="#_1">创建配置表</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#_2">玩玩热重载</a></li>
+                
+                    <li><a class="toctree-l4" href="#lua_1">热重载Lua</a></li>
+                
+                    <li><a class="toctree-l4" href="#excel">热重载Excel表格</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>配置表模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../setting/guide/">策划指南：配置表的使用</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../setting/condition-compile/">配置表的条件编译</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../setting/lazy-load/">惰式加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>资源模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../resource/guide/">使用资源模块打包、加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../resource/debug/">资源可视化调试</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../resource/gc/">垃圾回收机制</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>脚本指南</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../scripting/functions/">内置函数列表</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>开发经验</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/seperate-unity-projects/">使用两个Unity工程</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/versioning/">版本号与版本管理</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/app-compile/">编译客户端时的内部细节</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>其它</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../license/">版权说明</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../roadmap/">开发计划</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">KSFramework Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>【快速入门指南！】</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="demo">看看Demo！</h2>
+<p>双击打开Assets/Game.unity场景，点击播放。</p>
+<p><img alt="开始Game.unity后的日志输出" src="../images/quickstart/quick-start-1.png" /></p>
+<blockquote>
+<p>开始Game.unity后的日志输出</p>
+</blockquote>
+<p>这时候KSFramework的默认Demo开始，做了这些事情：</p>
+<ul>
+<li>基础模块的启动</li>
+<li>Lua模块的启动</li>
+<li>尝试读取并打印Excel表格GameConfig.xlsx内容</li>
+<li>加载UI界面Login</li>
+<li>执行UI界面Login的Lua脚本</li>
+<li>Lua脚本绑定UI控件、设置UI控件</li>
+<li>Lua脚本读取并打印Excel表格GameConfig.xlsx内容</li>
+</ul>
+<p>总而言之，这个Demo囊括了KSFramework中的几个核心模块的使用：</p>
+<ul>
+<li>KEngine中的Setting模块的使用</li>
+<li>KEngine中的UI的资源加载</li>
+<li>SLua脚本引擎与UI的联合</li>
+</ul>
+<p>接下来，将模仿这个Demo，创建/加载一个新的UI界面、创建/读取一个新的配置表格。</p>
+<h2 id="billboard">尝试做一个公告界面Billboard</h2>
+<p>接下来，我们将创建一个UI公告牌（Billboard），使用Lua脚本，并从配置表读取公告内容。</p>
+<h3 id="ui">创建UI资源</h3>
+<p><img alt="创建New Scene" src="../images/quickstart/quick-start-3.png" /></p>
+<blockquote>
+<p>创建New Scene</p>
+</blockquote>
+<p><img alt="KEngine-UI-Create UI创建UI布局" src="../images/quickstart/quick-start-5.png" /></p>
+<blockquote>
+<p>KEngine-UI-Create UI创建UI布局</p>
+</blockquote>
+<p><img alt="点击Create UI后，默认随机名字，把UI名字修改为Billboard" src="../images/quickstart/quick-start-7.png" /></p>
+<blockquote>
+<p>点击Create UI后，默认随机名字，把UI名字修改为Billboard</p>
+</blockquote>
+<p><img alt="修改UI名字为Billboard，UI界面右边带有黄色UI标识" src="../images/quickstart/quick-start-9.png" /></p>
+<blockquote>
+<p>修改UI名字为Billboard，UI界面右边带有黄色UI标识</p>
+</blockquote>
+<p><img alt="编辑一下UI场景，一个背景Image，两个Label" src="../images/quickstart/quick-start-11.png" /></p>
+<blockquote>
+<p>编辑一下UI场景，一个背景Image，两个Label</p>
+</blockquote>
+<p><img alt="保存一下场景，保存到Assets/BundleEditing/UI/Billboard.unity" src="../images/quickstart/quick-start-13.png" /></p>
+<blockquote>
+<p>保存一下场景，保存到Assets/BundleEditing/UI/Billboard.unity</p>
+</blockquote>
+<p><img alt="导出——打包AssetBundle，快捷键Ctrl+Alt+E" src="../images/quickstart/quick-start-15.png" /></p>
+<blockquote>
+<p>导出——打包AssetBundle，快捷键Ctrl+Alt+E</p>
+</blockquote>
+<h3 id="ui_1">加载UI界面</h3>
+<p>好了，Billboard界面创建好了，也导出成了AssetBundle。
+接下来，我们通过代码打开界面。</p>
+<p><img alt="编辑Assets/Code/Game.cs" src="../images/quickstart/quick-start-17.png" /></p>
+<blockquote>
+<p>编辑Assets/Code/Game.cs</p>
+</blockquote>
+<p>在OnFinishInitModules函数的末端，加上这样的一句：</p>
+<pre><code class="csharp">// 开始加载我们的公告界面！
+UIModule.Instance.OpenWindow(&quot;Billboard&quot;);
+</code></pre>
+
+<p>完成。 打开场景Assets/Game.unity，点击播放按钮：</p>
+<p><img alt="我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧" src="../images/quickstart/quick-start-19.png" /></p>
+<blockquote>
+<p>我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧。</p>
+</blockquote>
+<h3 id="lua">创建Lua脚本</h3>
+<p><img alt="在目录Product/Lua/UI中新建一个lua文件" src="../images/quickstart/quick-start-21.png" /></p>
+<blockquote>
+<p>在目录Product/Lua/UI中新建一个lua文件</p>
+</blockquote>
+<p><img alt="写一段Lua代码：UIBillboard的执行逻辑" src="../images/quickstart/quick-start-23.png" /></p>
+<blockquote>
+<p>写一段Lua代码：UIBillboard的执行逻辑</p>
+</blockquote>
+<pre><code class="lua">local UIBase = import(&quot;KSFramework/UIBase&quot;)
+
+local UIBillboard = {}
+extends(UIBillboard, UIBase)
+
+function UIBillboard:OnInit(controller)
+    self.Controller = controller
+    self.TitleLabel = self:GetUIText('Title')
+    self.ContentLabel = self:GetUIText('Content')
+end
+
+function UIBillboard:OnOpen()
+    self.TitleLabel.text = &quot;This is a title&quot;
+    self.ContentLabel.text = &quot;Here is content!&quot;
+end
+
+return UIBillboard
+</code></pre>
+
+<p>这段lua中，创建了一个Table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。</p>
+<p>好了，接下来，我们要为策划准备配置表了。</p>
+<h3 id="_1">创建配置表</h3>
+<p>打开Product/SettingSource目录，复制一份StringsTable.xlsx，并改名叫Billboard.xlsx吧</p>
+<p><img alt="复制一份StringsTable.xlsx" src="../images/quickstart/quick-start-25.png" /></p>
+<blockquote>
+<p>复制一份StringsTable.xlsx</p>
+</blockquote>
+<p>用Excel打开我们新的Billboard.xlsx，编辑我们的公告。我们大概定一下需求，我们假设写入3条公告，每次打开公告随机显示其中一条。每个公告，我们给它一个英文ID，一列中文标题，一列中文内容。</p>
+<p>Excel表修改如下：</p>
+<p><img alt="增加公告内容" src="../images/quickstart/quick-start-27.png" /></p>
+<blockquote>
+<p>增加公告内容</p>
+</blockquote>
+<p><img alt="回到Unity，监测到Excel变动。点击OK。" src="../images/quickstart/quick-start-29.png" /></p>
+<blockquote>
+<p>回到Unity，监测到Excel变动。点击OK。</p>
+</blockquote>
+<p><img alt="上一步监测到变动，只编译Excel表，手动执行一些重新编译，并生成配置表代码" src="../images/quickstart/quick-start-31.png" /></p>
+<blockquote>
+<p>上一步监测到变动，只编译Excel表，手动执行一些重新编译，并生成配置表代码</p>
+</blockquote>
+<p><img alt="这时候，打开AppSettings.cs代码文件，我们可以发现，已经生成名叫BillboardSettings的类了" src="../images/quickstart/quick-start-33.png" /></p>
+<blockquote>
+<p>这时候，打开AppSettings.cs代码文件，我们可以发现，已经生成名叫BillboardSettings的类了</p>
+</blockquote>
+<p><img alt="因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码" src="../images/quickstart/quick-start-35.png" /></p>
+<blockquote>
+<p>因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码</p>
+</blockquote>
+<p><img alt="接下来修改Lua代码，随机读取一条公告，并设置Content、Title" src="../images/quickstart/quick-start-37.png" /></p>
+<blockquote>
+<p>接下来修改Lua代码，随机读取一条公告，并设置Content、Title</p>
+</blockquote>
+<p><img alt="运行播放Game.unity，我们的公告界面完成了" src="../images/quickstart/quick-start-39.png" /></p>
+<blockquote>
+<p>运行播放Game.unity，我们的公告界面完成了</p>
+</blockquote>
+<p>公告界面完成了。我们创建了一个UI、写了C#和Lua代码加载它、然后创建了一张配置表，再从Lua读取配置表，设置UI的显示。</p>
+<h2 id="_2">玩玩热重载</h2>
+<h3 id="lua_1">热重载Lua</h3>
+<p>接着我们刚才运行的Game.unity。 我们尝试一下对Lua热重载：在不重启游戏的情况，快速重载Lua代码，方便程序调试。</p>
+<p><img alt="菜单KSFramework-&gt;UI-&gt;Reload+ReOpen：热重载Lua脚本，并重新打开目前处在打开状态的UI界面" src="../images/quickstart/quick-start-41.png" /></p>
+<blockquote>
+<p>菜单KSFramework-&gt;UI-&gt;Reload+ReOpen：热重载Lua脚本，并重新打开目前处在打开状态的UI界面</p>
+</blockquote>
+<p>我们可以从菜单执行热重载并重新打开UI界面，或者使用快捷键Ctrl+Alt+Shift+R。
+由于我们的Lua脚本中，每次执行随机获取一条公告。因此可以看到公告内容在不停的变动着。</p>
+<p>热重载的实现，主要依赖于每个lua脚本的最后一行——return Table；C#层在执行完Lua脚本后，会把这个返回的Table缓存起来，每次需要使用table时，直接从缓存拿；而热重载，实际就是把这个缓存table删掉，这样当需要用到这个table时，就会重新执行Lua文件，来获取Table，这样就达到了热重载得目的。</p>
+<h3 id="excel">热重载Excel表格</h3>
+<p>我们保持运行刚刚的Game.unity，不要停止掉。这时候我们去修改Excel表格。</p>
+<p><img alt="修改Excel表格" src="../images/quickstart/quick-start-43.png" /></p>
+<blockquote>
+<p>修改Excel表格，保存后，回到Unity，提示表格有改动。</p>
+</blockquote>
+<p><img alt="发现表格有变动，点击OK编译表" src="../images/quickstart/quick-start-45.png" /></p>
+<blockquote>
+<p>发现表格有变动，点击OK编译表</p>
+</blockquote>
+<p><img alt="从菜单中心一下重载配置表格吧" src="../images/quickstart/quick-start-47.png" /></p>
+<blockquote>
+<p>从菜单中心一下重载配置表格吧</p>
+</blockquote>
+<p><img alt="Ctrl+Alt+Shift+R刷新Lua" src="../images/quickstart/quick-start-49.png" /></p>
+<blockquote>
+<p>Ctrl+Alt+Shift+R刷新Lua</p>
+</blockquote>
+<p>重载Lua，我们的新修改的配置表内容生效了。</p>
+<p>至此，我们的Lua和配置表的改动，都可以在不重启、不重新转菊花的情况下快速修改。</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../setting/guide/" class="btn btn-neutral float-right" title="策划指南：配置表的使用">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../overview/structure/" class="btn btn-neutral" title="模块结构组织"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../overview/structure/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../setting/guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>
