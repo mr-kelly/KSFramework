@@ -100,6 +100,22 @@
     
         
     <url>
+     <loc>None/hotreload/setting/</loc>
+     <lastmod>2016-08-13</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/hotreload/assetbundle/</loc>
+     <lastmod>2016-08-13</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
      <loc>None/advanced/seperate-unity-projects/</loc>
      <lastmod>2016-08-13</lastmod>
      <changefreq>daily</changefreq>
