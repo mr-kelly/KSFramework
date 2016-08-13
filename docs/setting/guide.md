@@ -61,11 +61,11 @@ KEngine配置表编译的本质，其实就是——**把Excel文件转换成纯
 
 上图中的Excel，经过编译后变成的TSV文件内容：
 
-![**Excel文件经过编译后变成TSV格式的表格，并且去掉了注释行。**](http://upload-images.jianshu.io/upload_images/1835687-77dad136de19b812.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![**Excel文件经过编译后变成TSV格式的表格，并且去掉了注释行。**](../images/setting/guide-4.png)
 
 ### 如何在Unity中触发KEngine对Excel表格编译？
 
-![菜单KEngine->Setting中的配置表功能](http://upload-images.jianshu.io/upload_images/1835687-5c00562fcc0c2a33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![菜单KEngine->Setting中的配置表功能](../images/setting/guide-5.png)
 
 执行菜单KEngine->Setting中的两个编译配置表功能项：
 
@@ -76,7 +76,7 @@ KEngine配置表编译的本质，其实就是——**把Excel文件转换成纯
 
 为了方便开发，在打开Unity编辑器后KEngine会对所有的配置表源文件进行监测，当发现Excel文件有改动，Unity编辑器就会弹框请求进行配置表重新编译（执行**Quick Compile Settings**差异化编译）
 
-![对Excel文件改动后，Unity会监测到变更，点击OK，就会重新编译](http://upload-images.jianshu.io/upload_images/1835687-21005c7adf1189ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![对Excel文件改动后，Unity会监测到变更，点击OK，就会重新编译](../images/setting/guide-6.png)
 
 不过，当修改配置表时并没有打开带有KEngine的Unity工程，就无法监测到配置表的变更，这时就需要手工执行菜单的配置表格编译了。
 
@@ -100,7 +100,7 @@ var testConfig = GameConfigSettings.Get("Test"); // Get by key
 // 热重载
 GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 ```
-![生成代码的GameConfig.xlsx](http://upload-images.jianshu.io/upload_images/1835687-794f4ae971e3c4da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![生成代码的GameConfig.xlsx](../images/setting/guide-7.png)
 
 Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSettings.cs代码文件中。
 
@@ -114,7 +114,7 @@ KEngine配置表提供一种方法，可以在不重启游戏的前提下，重�
 
 如果文件监测失灵，你也可以通过菜单项来主动重载：
 
-![通过菜单热重载配置表](http://upload-images.jianshu.io/upload_images/1835687-102786910d178ced.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![通过菜单热重载配置表](../images/setting/guide-8.png)
 
 
 ## 其他

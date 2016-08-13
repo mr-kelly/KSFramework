@@ -31,7 +31,7 @@ Unity跨平台开发中，针对不同的平台——如编辑器、安卓、IOS
 ```csharp
         public IEnumerator LoadUIAsset(CUILoadState loadState, UILoadRequest request)
         {
-            string path = string.Format("ui/login.prefab.bytes"));
+            string path = "ui/login.prefab.bytes";
             var assetLoader = KStaticAssetLoader.Load(path);
             while (!assetLoader.IsCompleted)
                 yield return null;
@@ -125,6 +125,8 @@ KEngine中的资源释放，跟Unity的资源释放明显区别是：Unity中提
 ```
 
 手工释放的资源存在引用计数，只有当引用计数为0，Loader才会触发回收，并且连同加载过的AssetBundle彻底消灭，节省内存。
+
+引用计数为0的资源，并不会立刻进行回收，它会进入垃圾回收队列。详细可参详[KEngine资源垃圾回收一节](gc)
 
 ###  其它Loader
 

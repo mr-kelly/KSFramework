@@ -8,3 +8,7 @@ KSFramework 0.9版本中，为KEngine的配置表的编译机制加入预编译�
 
 ![为配置表编译工具灌入预编译变量](../images/setting/condition-compile-2.png)
 为预编译指令加入变量，只需修改静态数组SettingModuleEditor.CompileSettingConditionVars就可以了。可以自定义KSFrameworkCustom.cs来实现。
+
+
+
+条件编译机制可以配合[“拆分表格机制”](guide#_4)，为同一种配置，不同的配置环境，对应不同的配置文件

@@ -25,7 +25,7 @@
 
 配置表模块在编译时，把Excel转化成TSV，并根据Excel的头部信息，生成对应的代码； 比如源码库中的Test.xlsx Excel文件，两个列头，Id和Value，其下的列头信息标注其分别是string和I18N。 这是对这两个列的类型声明。
 
-![列Id注明是string类型，列Value注明是I18N类型](http://upload-images.jianshu.io/upload_images/1835687-a64537c0b9dfc920.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![列Id注明是string类型，列Value注明是I18N类型](../images/setting/custom-1.png)
 
 在生成代码的时候，会把其类型作为代码的一部分，写入到代码中：
 
