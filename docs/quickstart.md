@@ -3,7 +3,8 @@
 
 双击打开Assets/Game.unity场景，点击播放。
 
-![开始Game.unity后的日志输出](http://upload-images.jianshu.io/upload_images/1835687-b5116d08675b5b0d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![开始Game.unity后的日志输出](images/quickstart/quick-start-1.png)
+> 开始Game.unity后的日志输出
 
 这时候KSFramework的默认Demo开始，做了这些事情：
 
@@ -28,31 +29,38 @@
 接下来，我们将创建一个UI公告牌（Billboard），使用Lua脚本，并从配置表读取公告内容。
 
 ### 创建UI资源
-![创建New Scene](http://upload-images.jianshu.io/upload_images/1835687-78c33d2dbb2d34fb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![创建New Scene](images/quickstart/quick-start-3.png)
+> 创建New Scene
 
 
-![KEngine-UI-Create UI创建UI布局](http://upload-images.jianshu.io/upload_images/1835687-25dffd06037757b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![KEngine-UI-Create UI创建UI布局](images/quickstart/quick-start-5.png)
+> KEngine-UI-Create UI创建UI布局
+
+![点击Create UI后，默认随机名字，把UI名字修改为Billboard](images/quickstart/quick-start-7.png)
+> 点击Create UI后，默认随机名字，把UI名字修改为Billboard
 
 
-![点击Create UI后，默认随机名字，把UI名字修改为Billboard](http://upload-images.jianshu.io/upload_images/1835687-07a7a61c381e89b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![修改UI名字为Billboard，UI界面右边带有黄色UI标识](images/quickstart/quick-start-9.png)
+> 修改UI名字为Billboard，UI界面右边带有黄色UI标识
 
 
-![修改UI名字为Billboard，UI界面右边带有黄色UI标识](http://upload-images.jianshu.io/upload_images/1835687-b3737213af89a494.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![编辑一下UI场景，一个背景Image，两个Label](images/quickstart/quick-start-11.png)
+> 编辑一下UI场景，一个背景Image，两个Label
+
+![保存一下场景，保存到Assets/BundleEditing/UI/Billboard.unity](images/quickstart/quick-start-13.png)
+> 保存一下场景，保存到Assets/BundleEditing/UI/Billboard.unity
 
 
-![编辑一下UI场景，一个背景Image，两个Label](http://upload-images.jianshu.io/upload_images/1835687-25819cee7bfd0b98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![保存一下场景，保存到Assets/BundleEditing/UI/Billboard.unity](http://upload-images.jianshu.io/upload_images/1835687-6d4dae99358884d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![导出——打包AssetBundle，快捷键Ctrl+Alt+E](http://upload-images.jianshu.io/upload_images/1835687-ae25ea2b174732cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![导出——打包AssetBundle，快捷键Ctrl+Alt+E](images/quickstart/quick-start-15.png)
+> 导出——打包AssetBundle，快捷键Ctrl+Alt+E
 
 ### 加载UI界面
 
 好了，Billboard界面创建好了，也导出成了AssetBundle。
 接下来，我们通过代码打开界面。
 
-![编辑Assets/Code/Game.cs](http://upload-images.jianshu.io/upload_images/1835687-f6ff1f85b4c72c0e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![编辑Assets/Code/Game.cs](images/quickstart/quick-start-17.png)
+> 编辑Assets/Code/Game.cs
 
 在OnFinishInitModules函数的末端，加上这样的一句：
 ```csharp
@@ -62,17 +70,18 @@ UIModule.Instance.OpenWindow("Billboard");
 
 完成。 打开场景Assets/Game.unity，点击播放按钮：
 
-![我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧](http://upload-images.jianshu.io/upload_images/1835687-e7f38d6b85378bc3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧](images/quickstart/quick-start-19.png)
 
-[我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧。
+> 我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧。
 
 ### 创建Lua脚本
 
+![在目录Product/Lua/UI中新建一个lua文件](images/quickstart/quick-start-21.png)
+> 在目录Product/Lua/UI中新建一个lua文件
 
-![在目录Product/Lua/UI中新建一个lua文件](http://upload-images.jianshu.io/upload_images/1835687-e2a07506af3ba947.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-
-![写一段Lua代码：UIBillboard的执行逻辑](http://upload-images.jianshu.io/upload_images/1835687-fb72415afd39a73a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![写一段Lua代码：UIBillboard的执行逻辑](images/quickstart/quick-start-23.png)
+> 写一段Lua代码：UIBillboard的执行逻辑
 
 ```lua
 local UIBase = import("KSFramework/UIBase")
@@ -101,30 +110,35 @@ return UIBillboard
 
 打开Product/SettingSource目录，复制一份StringsTable.xlsx，并改名叫Billboard.xlsx吧
 
-![复制一份StringsTable.xlsx](http://upload-images.jianshu.io/upload_images/1835687-b854b326a8046966.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![复制一份StringsTable.xlsx](images/quickstart/quick-start-25.png)
+> 复制一份StringsTable.xlsx
 
 用Excel打开我们新的Billboard.xlsx，编辑我们的公告。我们大概定一下需求，我们假设写入3条公告，每次打开公告随机显示其中一条。每个公告，我们给它一个英文ID，一列中文标题，一列中文内容。
 
 Excel表修改如下：
 
-![增加公告内容](http://upload-images.jianshu.io/upload_images/1835687-78cbcf4e26f0da94.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![增加公告内容](images/quickstart/quick-start-27.png)
+> 增加公告内容
+
+![回到Unity，监测到Excel变动。点击OK。](images/quickstart/quick-start-29.png)
+> 回到Unity，监测到Excel变动。点击OK。
+
+![上一步监测到变动，只编译Excel表，手动执行一些重新编译，并生成配置表代码](images/quickstart/quick-start-31.png)
+> 上一步监测到变动，只编译Excel表，手动执行一些重新编译，并生成配置表代码
+
+![这时候，打开AppSettings.cs代码文件，我们可以发现，已经生成名叫BillboardSettings的类了](images/quickstart/quick-start-33.png)
+> 这时候，打开AppSettings.cs代码文件，我们可以发现，已经生成名叫BillboardSettings的类了
+
+![因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码](images/quickstart/quick-start-35.png)
+> 因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码
 
 
-![回到Unity，监测到Excel变动。点击OK。](http://upload-images.jianshu.io/upload_images/1835687-037c1801a8f40556.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![接下来修改Lua代码，随机读取一条公告，并设置Content、Title](images/quickstart/quick-start-37.png)
+> 接下来修改Lua代码，随机读取一条公告，并设置Content、Title
 
 
-![上一步监测到变动，只编译Excel表，手动执行一些重新编译，并生成配置表代码](http://upload-images.jianshu.io/upload_images/1835687-d83b8167e76faddd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![这时候，打开AppSettings.cs代码文件，我们可以发现，已经生成名叫BillboardSettings的类了](http://upload-images.jianshu.io/upload_images/1835687-b254b8c1f1b64224.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码](http://upload-images.jianshu.io/upload_images/1835687-a9bdf5d0c5c410db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![接下来修改Lua代码，随机读取一条公告，并设置Content、Title](http://upload-images.jianshu.io/upload_images/1835687-1bb462980f923226.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![运行播放Game.unity，我们的公告界面完成了](http://upload-images.jianshu.io/upload_images/1835687-9603f6d7c2f1b679.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![运行播放Game.unity，我们的公告界面完成了](images/quickstart/quick-start-39.png)
+> 运行播放Game.unity，我们的公告界面完成了
 
 公告界面完成了。我们创建了一个UI、写了C#和Lua代码加载它、然后创建了一张配置表，再从Lua读取配置表，设置UI的显示。
 
@@ -134,7 +148,8 @@ Excel表修改如下：
 接着我们刚才运行的Game.unity。 我们尝试一下对Lua热重载：在不重启游戏的情况，快速重载Lua代码，方便程序调试。
 
 
-![菜单KSFramework->UI->Reload+ReOpen：热重载Lua脚本，并重新打开目前处在打开状态的UI界面](http://upload-images.jianshu.io/upload_images/1835687-efd4bb9bf9496776.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![菜单KSFramework->UI->Reload+ReOpen：热重载Lua脚本，并重新打开目前处在打开状态的UI界面](images/quickstart/quick-start-41.png)
+> 菜单KSFramework->UI->Reload+ReOpen：热重载Lua脚本，并重新打开目前处在打开状态的UI界面
 
 我们可以从菜单执行热重载并重新打开UI界面，或者使用快捷键Ctrl+Alt+Shift+R。
 由于我们的Lua脚本中，每次执行随机获取一条公告。因此可以看到公告内容在不停的变动着。
@@ -145,17 +160,18 @@ Excel表修改如下：
 
 我们保持运行刚刚的Game.unity，不要停止掉。这时候我们去修改Excel表格。
 
-![修改Excel表格](http://upload-images.jianshu.io/upload_images/1835687-a5aa9b523ad7c4b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![修改Excel表格](images/quickstart/quick-start-43.png)
+> 修改Excel表格，保存后，回到Unity，提示表格有改动。
 
-保存后，回到Unity，提示表格有改动。
-
-![发现表格有变动，点击OK编译表](http://upload-images.jianshu.io/upload_images/1835687-790e24f195b85f44.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![从菜单中心一下重载配置表格吧](http://upload-images.jianshu.io/upload_images/1835687-3e3bf9af96089576.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![发现表格有变动，点击OK编译表](images/quickstart/quick-start-45.png)
+> 发现表格有变动，点击OK编译表
 
 
-![Ctrl+Alt+Shift+R刷新Lua](http://upload-images.jianshu.io/upload_images/1835687-2622e03d3d1c7ea9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![从菜单中心一下重载配置表格吧](images/quickstart/quick-start-47.png)
+> 从菜单中心一下重载配置表格吧
+
+![Ctrl+Alt+Shift+R刷新Lua](images/quickstart/quick-start-49.png)
+> Ctrl+Alt+Shift+R刷新Lua
 
 重载Lua，我们的新修改的配置表内容生效了。
 

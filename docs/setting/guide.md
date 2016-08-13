@@ -1,8 +1,3 @@
-+++
-date = "2016-08-11T19:47:25+08:00"
-draft = false
-title = "策划指南：配置表的编辑与编译"
-+++
 
 ## 配置表——策划与程序的桥梁
 
@@ -35,7 +30,7 @@ title = "策划指南：配置表的编辑与编译"
 
 最终效果如图：
 
-![** 使用编译模式的最大好处，策划人员可以在Excel上进行注释、图表、批注等附加工作，甚至可以把一些文字描述文档，放到Sheet2。让配置表与文档结合在一起。 **](http://upload-images.jianshu.io/upload_images/1835687-c99d18e781afa919.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![** 使用编译模式的最大好处，策划人员可以在Excel上进行注释、图表、批注等附加工作，甚至可以把一些文字描述文档，放到Sheet2。让配置表与文档结合在一起。 **](../images/setting/guide-1.png)
 
 ### 注释的行或列
 
@@ -48,7 +43,7 @@ title = "策划指南：配置表的编辑与编译"
 
 日常的开发中，我们有时候会嫌一个Excel文件内容过多，希望将其进行拆分；同时也方便多人协作。
 
-![文件名中使用“+”进行拆表](http://upload-images.jianshu.io/upload_images/1835687-d6b69c4fed82c1c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![文件名中使用“+”进行拆表](../images/setting/guide-2.png)
 
 [KEngine](https://github.com/mr-kelly/KEngine)在编译时，对文件名处理施展了一点点魔法：**当文件名中存在+号时，会裁掉+号后边的内容**。
 
@@ -58,7 +53,7 @@ title = "策划指南：配置表的编辑与编译"
 
 ### 配置表格的编译
 
-![Excel另存为中的“制表符分隔”文本文件就是所谓的TSV](http://upload-images.jianshu.io/upload_images/1835687-d3055b71083e93cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Excel另存为中的“制表符分隔”文本文件就是所谓的TSV](../images/setting/guide-3.png)
 
 TSV，类似CSV，即Tab-sepertated Values，类似CSV表格，仅仅是分隔符从逗号变成了Tab。 就我公司所经历的所有游戏项目，策划均直接用Excel撸TSV格式配置表。
 

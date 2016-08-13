@@ -3,8 +3,8 @@
 
 KSFramework 0.9版本中，为KEngine的配置表的编译机制加入预编译指令功能，可以采用类似C#中#if预编译指令，来告诉配置表编译工具，哪些行是无需编译的：
 
-![配置表的预编译指令](http://upload-images.jianshu.io/upload_images/1835687-659e73210229394c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![配置表的预编译指令](../images/setting/condition-compile-1.png)
 如上图，Excel的配置过程中，可以像C#的预编译指令一样，通过#if...#endif，条件式编译来控制哪些行会被编译出去生成csv。
 
-![为配置表编译工具灌入预编译变量](http://upload-images.jianshu.io/upload_images/1835687-893b78d76b561782.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![为配置表编译工具灌入预编译变量](../images/setting/condition-compile-2.png)
 为预编译指令加入变量，只需修改静态数组SettingModuleEditor.CompileSettingConditionVars就可以了。可以自定义KSFrameworkCustom.cs来实现。

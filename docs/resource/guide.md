@@ -8,11 +8,11 @@
 
 Unity 5中，Asset Bundle系统做了很大的变化。你只需将需要打包的资源配置AssetBundle Name，然后执行接口BuildPipeline.BuildAssetBundles(outputPath)就完成了所有AssetBundle的打包，比Unity 4.x方便多了。
 
-![把需要打包的资源放到BundleResources目录中](http://upload-images.jianshu.io/upload_images/1835687-f321afec78c28857.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![把需要打包的资源放到BundleResources目录中](../images/resource/guide-1.png)
 
-![AssetBundle最终默认生成到Product/Bundles/(Platform)/中](http://upload-images.jianshu.io/upload_images/1835687-3dc5b149ffbe865a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![AssetBundle最终默认生成到Product/Bundles/(Platform)/中](../images/resource/guide-2.png)
 
-![KEngine->AssetBundle->Build All，自动设置BundleResources目录下所有的资源的Asset Bundle Name并执行打包](http://upload-images.jianshu.io/upload_images/1835687-017b666adb7a1b54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![KEngine->AssetBundle->Build All，自动设置BundleResources目录下所有的资源的Asset Bundle Name并执行打包](../images/resource/guide-3.png)
 
 在KEngine+Unity 5.x中，把配置AssetBundle Name的这一步也省掉了。你只需把需要打包的资源，放在Assets/BundleResources目录中，所有的AssetBundle将会完整导出。
 
