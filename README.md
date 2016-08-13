@@ -9,6 +9,10 @@ KSFramework是一个整合KEngine、SLua的Unity 5开发框架，并为程序、
 
 **热重载**是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，方便运营阶段热更新。
 
+
+[【查看文档】](http://mr-kelly.github.io/KSFramework/)
+
+
 # 安装
 
 ## 从产品包安装
