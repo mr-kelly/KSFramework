@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <title>版本号与版本管理 - KSFramework Documentation</title>
+  
+
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "版本号与版本管理";
+    var mkdocs_page_input_path = "advanced\versioning.md";
+    var mkdocs_page_url = "/advanced/versioning/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KSFramework Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <ul class="subnav">
+    <li><span>简介</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../..">KSFramework介绍</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/why/">项目的由来</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/structure/">模块结构组织</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../quickstart/">【快速入门指南！】</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>配置表模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/guide/">策划指南：配置表的使用</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/condition-compile/">配置表的条件编译</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/lazy-load/">惰式加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>资源模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/guide/">使用资源模块打包、加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/debug/">资源可视化调试</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/gc/">垃圾回收机制</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>脚本指南</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../scripting/functions/">内置函数列表</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>开发经验</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">版本号与版本管理</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">版本号</a></li>
+                
+                    <li><a class="toctree-l4" href="#ios">iOS版本号要求</a></li>
+                
+                    <li><a class="toctree-l4" href="#android">Android版本号要求</a></li>
+                
+                    <li><a class="toctree-l4" href="#kenginebuild">KEngine中的Build号</a></li>
+                
+                    <li><a class="toctree-l4" href="#type">版本号中的Type</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>其它</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../license/">版权说明</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../roadmap/">开发计划</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KSFramework Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>开发经验 &raquo;</li>
+        
+      
+    
+    <li>版本号与版本管理</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">版本号</h1>
+<p>KSFramework中的版本号，在Gihub推荐的<a href="http://semver.org/">语义化版本规范</a>三位版本号基础上，后边增加了3项描述信息：</p>
+<blockquote>
+<p><strong>MAJOR . MINOR . PATCH</strong> . <em>BUILD</em> . <em>TYPE</em> . <em>DESC</em></p>
+</blockquote>
+<ul>
+<li>MAJOR 主版本号：当你做了不兼容的 API 修改，</li>
+<li>MINOR 次版本号：当你做了向下兼容的功能性新增，</li>
+<li>PATCH 修订号：当你做了向下兼容的问题修正。</li>
+<li>BUILD 编译号：使用全局唯一的标识，如持续集成系统（比如Jenkins/QuickBuild）任务中自动递进的Build号码，或SVN号。</li>
+<li>TYPE 版本类型：一个字符串，可以放入注入beta, alpha, release等标识。</li>
+<li>DESC 其它描述：字符串，放置一些额外的编译信息，如日期、语言等等杂项，自由发挥。</li>
+</ul>
+<p>在KEngine中，内置的版本号解析类AppVersion，基于以上的准则进行解析。
+为什么要有如上的设计？这要分别从Android、iOS的版本号规范说起。</p>
+<h2 id="ios">iOS版本号要求</h2>
+<p>iOS开发时，在Xcode中，有两个版本号的填写，分别是Version和Build;其中Version强制要求必须是三位数的版本号，如1.0.0，否则无法提交App Store；
+而Build号则没有要求，你可以写上一个唯一数字如1234，也可以写上更长的版本号如1.0.0.1234（建议）。</p>
+<p>iOS系统判断一个App的版本号，使用的是Version，即3位数版本号。在App Store中显示的时候，只显示三位数的版本号。</p>
+<h2 id="android">Android版本号要求</h2>
+<p>Android开发时，有两个版本号需要填写，分别是Version和VersionCode，其中Version类似于iOS开发中的Build，可以写上比较长的版本号，没有限制。
+而VersionCode则强制要求，必须是一个数字，并且在提交Store时，每一次都要比上一次大。</p>
+<p>在显示的时候，Android应用一般显示为1.0.0.1234 (Build 1234)，即Version和VersionCode组合显示。</p>
+<h2 id="kenginebuild">KEngine中的Build号</h2>
+<p>KEngine中的Build号设计初衷，是为了让持续集成系统（如Jenkins）每一次编译出的包都是唯一的，绝不重复，是一个身份证。当你拿到一个版本后，只要看到Build号，你就可以追溯到这个版本的来源、编译时间、编译原因等等。</p>
+<p>Build号的关键，是需要配合自动化构建系统，因为这个数字是自动生成、自动递增的。 另一个可选项是使用Svn号，但是Svn号随着提交次数，数字经常变得非常大，变得非常难看。</p>
+<p>KEngine中的Build号，直接应该被用做Android的VersionCode号、也可以用作iOS的中的Build号。</p>
+<h2 id="type">版本号中的Type</h2>
+<p>KSFramework中AppVersion的版本号，Type被单独的列了出来。因为Type在实际项目开发中有着重要的作用。实际开发中，我们经常希望制作出不同类型的版本，如开发版，面向内部人员，带有调试信息；测试版，提供测试指令，面向测试人员；正式版，面向终端用户，去掉一切调试、测试信息。</p>
+<p>有了Type字段后，在项目开发中，只需要判断一下Type字段，作出功能的区分，如：</p>
+<pre><code class="csharp">if (version.VersionType == &quot;Alpha&quot;)
+{
+    // Do some development job
+}
+else if (version.VersionType == &quot;Beta&quot;)
+{
+    // Do some beta job
+}
+else
+{
+    // Do nothing on Release !
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../excel-diff/" class="btn btn-neutral float-right" title="Excel如何进行SVN协作、差异比较？">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../seperate-unity-projects/" class="btn btn-neutral" title="使用两个Unity工程"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../seperate-unity-projects/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../excel-diff/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <title>Excel如何进行SVN协作、差异比较？ - KSFramework Documentation</title>
+  
+
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Excel如何进行SVN协作、差异比较？";
+    var mkdocs_page_input_path = "advanced\excel-diff.md";
+    var mkdocs_page_url = "/advanced/excel-diff/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KSFramework Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <ul class="subnav">
+    <li><span>简介</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../..">KSFramework介绍</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/why/">项目的由来</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/structure/">模块结构组织</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../quickstart/">【快速入门指南！】</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>配置表模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/guide/">策划指南：配置表的使用</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/condition-compile/">配置表的条件编译</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/lazy-load/">惰式加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>资源模块</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/guide/">使用资源模块打包、加载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/debug/">资源可视化调试</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../resource/gc/">垃圾回收机制</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>脚本指南</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../scripting/functions/">内置函数列表</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>开发经验</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../versioning/">版本号与版本管理</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Excel如何进行SVN协作、差异比较？</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#excelsvn">Excel如何进行SVN协作、差异比较？</a></li>
+                
+                    <li><a class="toctree-l4" href="#beyond-compareexcel">使用Beyond Compare比较Excel</a></li>
+                
+                    <li><a class="toctree-l4" href="#tsvexcel">使用TSV表格代替Excel</a></li>
+                
+                    <li><a class="toctree-l4" href="#tortoisesvnexcel">TortoiseSVN的Excel表格比较</a></li>
+                
+                    <li><a class="toctree-l4" href="#excel">Excel共享工作簿</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>其它</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../license/">版权说明</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../roadmap/">开发计划</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KSFramework Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>开发经验 &raquo;</li>
+        
+      
+    
+    <li>Excel如何进行SVN协作、差异比较？</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="excelsvn">Excel如何进行SVN协作、差异比较？</h1>
+<p>嗯，这是一个令人困惑的问题。
+游戏开发、程序开发时，使用Excel可以添加文档、注释、图标、批注等等各种辅助信息；</p>
+<p>但是Excel是非纯文本格式，在使用SVN、Git等版本管理软件时，多人进行编辑就会非常容易造成冲突，无法自动合并。 而且在冲突以后，我们很难得知究竟别人改动了哪里。</p>
+<p>因此，总结一下以下方法，可以对Excel表格进行差异比较：</p>
+<ul>
+<li>使用Beyond Compare比较Excel</li>
+<li>使用TSV表格代替Excel</li>
+<li>TortoiseSVN的Excel表格比较</li>
+<li>Excel共享工作簿</li>
+</ul>
+<h2 id="beyond-compareexcel">使用Beyond Compare比较Excel</h2>
+<p><img alt="Paste_Image.png" src="http://upload-images.jianshu.io/upload_images/1835687-0becccf484f6f3cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" /></p>
+<p>商业软件Beyond Compare具有Excel比较功能， 它类似首先把Excel当前打开Sheet转化成TSV，再进行比较。详情可查看<a href="http://www.scootersoftware.com/support.php?zz=kb_multisheetexcel">Beyond Compare的官方说明</a></p>
+<h2 id="tsvexcel">使用TSV表格代替Excel</h2>
+<p><a href="https://github.com/mr-kelly/KEngine">KEngine</a>中，策划编辑的配置表经过编译，正是会变成TSV格式的文本文件。</p>
+<p>原则上，策划编辑的配置表建议使用Excel的方式，可以方便的添加各种辅助信息；但也为了照顾部分人的习惯，也同时支持了直接编辑TSV文件方式：</p>
+<p><img alt="策划编辑TSV源文件" src="http://upload-images.jianshu.io/upload_images/1835687-bba2bb4e7f82e49a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" /></p>
+<p>TSV源编辑文件，以.tsv格式为后缀放置到配置表源文件目录，变会进行编译。规范要求跟Excel一样，头部三行分别是列名、类型、注释。</p>
+<p>TSV是一种纯文本格式，在Excel中对TSV表格做的润饰，如设置背景色、列宽等，能看到效果，但都不能被保存。</p>
+<p>参照<a href="https://github.com/mr-kelly/KEngine">KEngine</a>源码中的KEngine.UnityProject/Product/SettingSource/AppConfig+TSV.tsv文件。</p>
+<h2 id="tortoisesvnexcel">TortoiseSVN的Excel表格比较</h2>
+<p>TortoiseSVN客户端时具有Excel比较功能，发生文件冲突后，双击冲突的文件，它就直接调用Excel了，打开多个窗口了。冲突的部分，会用背景色红色标红，但是它的体验非常不好，经常让人摸不着头脑，搞不清楚哪里是改过的，哪里是删掉的；更何况，本身我的Excel文件里就有各种不同的背景色，十分混乱。不推荐。</p>
+<h2 id="excel">Excel共享工作簿</h2>
+<p>貌似微软提供了Excel文件的多人协作功能，这个没有用过，不论述了；</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cookie/" class="btn btn-neutral float-right" title="Lua脚本热重载，内存状态数据丢失？">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../versioning/" class="btn btn-neutral" title="版本号与版本管理"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../versioning/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../cookie/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>
