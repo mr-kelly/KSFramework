@@ -8,7 +8,7 @@
   
   
   
-  <title>资源可视化调试 - KSFramework Documentation</title>
+  <title>资源实时调试监控 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,7 +23,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "资源可视化调试";
+    var mkdocs_page_name = "资源实时调试监控";
     var mkdocs_page_input_path = "resource\debug.md";
     var mkdocs_page_url = "/resource/debug/";
   </script>
@@ -76,6 +76,13 @@
             
     <li class="toctree-l1 ">
         <a class="" href="../../overview/structure/">模块结构组织</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/features/">功能特性</a>
         
     </li>
 
@@ -147,7 +154,7 @@
         
             
     <li class="toctree-l1 current">
-        <a class="current" href="./">资源可视化调试</a>
+        <a class="current" href="./">资源实时调试监控</a>
         
             <ul>
             
@@ -246,6 +253,13 @@
     </li>
 
         
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
+        
+    </li>
+
+        
     </ul>
 <li>
           
@@ -297,7 +311,7 @@
         
       
     
-    <li>资源可视化调试</li>
+    <li>资源实时调试监控</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -314,7 +328,9 @@
 <p>资源加载调试信息：Loader、加载的对象</p>
 </blockquote>
 <p><img alt="每一个Loader的引用计数信息，都可以通过面板来进行实时查看" src="../../images/resource/debug-2.png" /></p>
-<p>如上图所示，通过KEngine的资源调试器，可以方便的找到加载的AssetBundle的资源对象、监控内存占用的大小、Loader加载消耗的时间、Loader当前引用计数等信息。对比Unity原生的Profiler，这些信息是即时的。 开发人员可以非常方便的寻找资源泄露问题，优化内存占用。</p>
+<p>如上图所示，通过KEngine的资源调试器，可以方便的找到加载的AssetBundle的资源对象、监控内存占用的大小、Loader加载消耗的时间、Loader当前引用计数等信息。</p>
+<p>对比Unity原生的Profiler，这些信息是即时的。 开发人员可以非常方便的寻找资源泄露问题，优化内存占用。</p>
+<p>开发团队可以利用这是调试信息，来精确的判断加载Asset Bundle的过程中，哪些Loader没有被手动释放，哪些Loader、资源被滥用，这些数据都是即时生成的。当然了，这些有一个前提，就是开发人员务必要使用KEngine的Asset Bundle加载接口。</p>
               
             </div>
           </div>

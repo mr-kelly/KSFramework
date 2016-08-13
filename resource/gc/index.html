@@ -80,6 +80,13 @@
     </li>
 
         
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../overview/features/">功能特性</a>
+        
+    </li>
+
+        
     </ul>
 <li>
           
@@ -147,7 +154,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../debug/">资源可视化调试</a>
+        <a class="" href="../debug/">资源实时调试监控</a>
         
     </li>
 
@@ -162,6 +169,9 @@
                 
             
                 <li class="toctree-l3"><a href="#_1">间隔时间</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#_2">这不是真正的垃圾回收机制</a></li>
                 
             
             </ul>
@@ -245,6 +255,13 @@
             
     <li class="toctree-l1 ">
         <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
         
     </li>
 
@@ -336,6 +353,9 @@ public static float GcIntervalTime
     }
 }
 </code></pre>
+
+<h2 id="_2">这不是真正的垃圾回收机制</h2>
+<p>严格意义来说，以上说不上是真正的类似其它计算机语言的“垃圾回收机制”。因为具体资源的引用计数，还是需要手动进行管理的。所谓的垃圾回收，只是指清理环节，被做成单独步骤。</p>
               
             </div>
           </div>
@@ -346,7 +366,7 @@ public static float GcIntervalTime
         <a href="../../scripting/functions/" class="btn btn-neutral float-right" title="内置函数列表">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../debug/" class="btn btn-neutral" title="资源可视化调试"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../debug/" class="btn btn-neutral" title="资源实时调试监控"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   

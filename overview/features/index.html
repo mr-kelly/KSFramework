@@ -8,7 +8,7 @@
   
   
   
-  <title>Asset Bundle热重载 - KSFramework Documentation</title>
+  <title>功能特性 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Asset Bundle热重载";
-    var mkdocs_page_input_path = "hotreload\assetbundle.md";
-    var mkdocs_page_url = "/hotreload/assetbundle/";
+    var mkdocs_page_name = "功能特性";
+    var mkdocs_page_input_path = "overview\features.md";
+    var mkdocs_page_url = "/overview/features/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -68,21 +68,40 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../overview/why/">项目的由来</a>
+        <a class="" href="../why/">项目的由来</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../overview/structure/">模块结构组织</a>
+        <a class="" href="../structure/">模块结构组织</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../overview/features/">功能特性</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">功能特性</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">功能特性</a></li>
+                
+                    <li><a class="toctree-l4" href="#_2">资源模块</a></li>
+                
+                    <li><a class="toctree-l4" href="#_3">配置表模块</a></li>
+                
+                    <li><a class="toctree-l4" href="#ui">UI模块</a></li>
+                
+                    <li><a class="toctree-l4" href="#_4">脚本模块</a></li>
+                
+                    <li><a class="toctree-l4" href="#_5">多语言模块</a></li>
+                
+                    <li><a class="toctree-l4" href="#unity">Unity编辑器强化</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -191,24 +210,14 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../setting/">配置表热重载</a>
+        <a class="" href="../../hotreload/setting/">配置表热重载</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Asset Bundle热重载</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#uiasset-bundle">参考UI的Asset Bundle重载</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#ui-asset-bundle">UI Asset Bundle重载的隐患</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../hotreload/assetbundle/">Asset Bundle热重载</a>
         
     </li>
 
@@ -310,11 +319,11 @@
     
       
         
-          <li>热重载 &raquo;</li>
+          <li>简介 &raquo;</li>
         
       
     
-    <li>Asset Bundle热重载</li>
+    <li>功能特性</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -324,36 +333,48 @@
           <div role="main">
             <div class="section">
               
-                <p>在KEngine中，每一次的资源加载都伴随各种ResourceLoader的出现。 因此要对一个资源进行卸载，简单的做法就是对让Loader的引用计数变成0并回收。</p>
-<p>在KSFramework中，默认的UI框架提供了UI的AssetBundle重载功能；而其它游戏资源，如特效、模型等在运行时可能进行拷贝的游戏对象，则要细心考虑重载的时机了。</p>
-<p>下面将解析UI的AssetBundle重载是怎么做的。</p>
-<h2 id="uiasset-bundle">参考UI的Asset Bundle重载</h2>
-<p><img alt="" src="../../images/hotreload/assetbundle-1.png" /></p>
-<p>您可以通过菜单来控制正在打开的UI进行重载Asset Bundle。</p>
-<p>这主要是通过以下代码实现的：</p>
-<pre><code class="csharp">// UIModule.cs
-private IEnumerator LoadUIAssetBundle(string name, CUILoadState openState, KCallback callback = null)
-{
-    if (openState.UIResourceLoader != null)
-    {
-        openState.UIResourceLoader.Release(true);// now!
-        Log.Info(&quot;Release UI ResourceLoader: {0}&quot;, openState.UIResourceLoader.Url);
-        openState.UIResourceLoader = null;
-    }
-
-    // ..............................
-    // ..............................
-    // ..............................
-}
-</code></pre>
-
-<p>如前面<a href="../../resource/gc">资源垃圾回收机制</a>所说，资源是不会立刻被释放的，有间隔时间；但你依然可以调用ResourceLoader.Release(true)函数来强制立即进行垃圾回收、释放资源。这有点像Unity的GameObject.DestroyImmediate()函数。</p>
-<p>在UI的加载中使用了StaticAssetLoader，它引用变0后，链式反应，让其依赖的AssetFileLoader-&gt;HotBytesLoader-&gt;WWWLoader的引用计数分别减1。</p>
-<p>当WWWLoader的引用计数为0，它将会把加载的AssetBundle从内存中释放。</p>
-<p>这时候，重新加载资源，由于内存中已经不存在这份Asset Bundle了，所以将从</p>
-<h2 id="ui-asset-bundle">UI Asset Bundle重载的隐患</h2>
-<p>由上可知，只有在一个资源引用为0计数时进行重载，它才生效。
-像一些被多处依赖的的资源，如图集，它是由于被各处都存在引用，所以要把它进行重载是不容易的。 AssetBundle的重载也将在今后的开发中进一步改善。</p>
+                <h1 id="_1">功能特性</h1>
+<p>KSFramework中包含（不限于）以下开箱即用的功能特性。</p>
+<h2 id="_2">资源模块</h2>
+<ul>
+<li>Unity 5中一键打包Asset Bundle</li>
+<li>AssetBundle加载器，加载时自动处理依赖关系</li>
+<li>资源路径约定，含热更新资源机制</li>
+<li>手动的、引用计数的资源释放策略</li>
+<li>~~资源运行时重载（减引用计数）~~</li>
+</ul>
+<h2 id="_3">配置表模块</h2>
+<ul>
+<li>自动编译Excel，支持在表中添加注释</li>
+<li>Excel表头，可设置数据类型（如int, array的声明）</li>
+<li>自动生成配置表读取代码</li>
+<li>支持惰式加载，无初始化的时间消耗</li>
+<li>支持热重载，运行时修改配置表无需重启</li>
+</ul>
+<h2 id="ui">UI模块</h2>
+<ul>
+<li>约定优于配置式的UI框架</li>
+<li>快速导出当前编辑的UI</li>
+<li>支持热重载，运行时修改UI脚本无需重启</li>
+</ul>
+<h2 id="_4">脚本模块</h2>
+<ul>
+<li>路径约定，通过import函数进行加载</li>
+<li>缓存机制配合import函数，可实现所有脚本的热重载</li>
+<li>Lua新增using函数类似于C#中的using，暴露使用table中的属性为全局使用</li>
+<li>可以在编辑器非运行模式下执行Lua脚本，支持简单Lua单元测试</li>
+</ul>
+<h2 id="_5">多语言模块</h2>
+<ul>
+<li>基于配置表模块</li>
+<li>约定好多语言字符串的机制</li>
+<li>~~多语言字符串收集器~~</li>
+</ul>
+<h2 id="unity">Unity编辑器强化</h2>
+<ul>
+<li>编辑代码后，返回正在运行的游戏，强制停到正在运行的游戏，避免崩溃的出现</li>
+<li>封装Unity编辑器的各种事件，如编译前、播放前、暂停时等</li>
+</ul>
               
             </div>
           </div>
@@ -361,10 +382,10 @@ private IEnumerator LoadUIAssetBundle(string name, CUILoadState openState, KCall
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../advanced/seperate-unity-projects/" class="btn btn-neutral float-right" title="使用两个Unity工程">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../quickstart/" class="btn btn-neutral float-right" title="【快速入门指南！】">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../setting/" class="btn btn-neutral" title="配置表热重载"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../structure/" class="btn btn-neutral" title="模块结构组织"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -390,10 +411,10 @@ private IEnumerator LoadUIAssetBundle(string name, CUILoadState openState, KCall
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../setting/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../structure/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../advanced/seperate-unity-projects/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../quickstart/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
