@@ -5,9 +5,11 @@ extra:
     version: 0.9
 pages:
     - [index.md, "简介", "KSFramework介绍"]
+    - [overview/install.md, "简介", "安装"]
     - [overview/why.md, "简介", "项目的由来"]
     - [overview/structure.md, "简介", "模块结构组织"]
     - [overview/features.md, "简介", "功能特性"]
+
     - [quickstart.md, "【快速入门指南！】"]
 
     - [setting/guide.md, "配置表模块", "策划指南：配置表的使用"]
@@ -21,6 +23,7 @@ pages:
     - [resource/gc.md, "资源模块", "垃圾回收机制"]
 
     - [scripting/functions.md, "脚本指南", "内置函数列表"]
+    - [scripting/uimodule.md, "脚本指南", "UI模块使用指南"]
 
     - [hotreload/setting.md, "热重载", "配置表热重载"]
     - [hotreload/assetbundle.md, "热重载", "Asset Bundle热重载"]
