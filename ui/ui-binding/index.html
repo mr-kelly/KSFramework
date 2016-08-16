@@ -8,7 +8,7 @@
   
   
   
-  <title>资源包更新 - KSFramework Documentation</title>
+  <title>控件与变量绑定 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "资源包更新";
-    var mkdocs_page_input_path = "advanced\autoupdate.md";
-    var mkdocs_page_url = "/advanced/autoupdate/";
+    var mkdocs_page_name = "控件与变量绑定";
+    var mkdocs_page_input_path = "ui\ui-binding.md";
+    var mkdocs_page_url = "/ui/ui-binding/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -183,21 +183,34 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ui/guide/">UI模块使用指南</a>
+        <a class="" href="../guide/">UI模块使用指南</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">控件与变量绑定</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">为什么不用拖拽的方式绑定？</a></li>
+                
+                    <li><a class="toctree-l4" href="#_2">控件的拖拉，更多是程序操作</a></li>
+                
+                    <li><a class="toctree-l4" href="#_3">控件太多，分不清具体</a></li>
+                
+                    <li><a class="toctree-l4" href="#_4">引用丢失的情况</a></li>
+                
+            
+            </ul>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ui/ui-binding/">控件与变量绑定</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../../ui/data-binding/">单向数据绑定</a>
+        <a class="" href="../data-binding/">单向数据绑定</a>
         
     </li>
 
@@ -256,46 +269,42 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
+        <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../versioning/">版本号与版本管理</a>
+        <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        <a class="" href="../../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
+        <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">资源包更新</a>
-        
-            <ul>
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
         
     </li>
 
@@ -347,11 +356,11 @@
     
       
         
-          <li>开发经验 &raquo;</li>
+          <li>UI模块 &raquo;</li>
         
       
     
-    <li>资源包更新</li>
+    <li>控件与变量绑定</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -361,10 +370,21 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，目前并没有提供资源包更新的具体功能。</p>
-<p>因资源包更新同时还涉及到资源文件服务器的整合、资源包的制作这些耦合的功能。</p>
-<p>您可以参考作者的另一个项目，<a href="https://github.com/mr-kelly/resources_packer">resources_packer</a>提供资源差异包的制作功能。</p>
-<p>要实现更新的机制非常之多，最常见的更新莫过于启动时进行更新。但是基于KSFramework热重载的特性，建议可以更多的考虑运行时静默的下载更新，静默重载。</p>
+                <p>在KSFramework中，控件的绑定是通过代码手工实现的。</p>
+<pre><code class="Lua">-- Type and Path
+local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
+</code></pre>
+
+<p>通过指定控件的类型和相对路径，即可获取到指定的控件。</p>
+<h1 id="_1">为什么不用拖拽的方式绑定？</h1>
+<p><img alt="" src="../../images/ui/ui-editor-binding.png" /></p>
+<p>另一种方法，控件的绑定，是可以像通过编辑器的拖拉来实现。即在Unity编辑器中，拖拽控件到右边的Inspector，可视化的向脚本赋值。之所以采用代码手工实现，是出于几点考虑：</p>
+<h2 id="_2">控件的拖拉，更多是程序操作</h2>
+<p>用拖拽的方式，最初的设计估计是可视化编辑。但是到了最后，由于使用哪一些控件，只有程序自己是最清楚的，更多的是程序同学自己做拖拽，起不到可视化的作用。</p>
+<h2 id="_3">控件太多，分不清具体</h2>
+<p>当一个UI中拖拽的控件很多（比如100个），编辑器边栏密密麻麻的布满控件。而且这些控件都是以变量名称存在的，正常人根本无法区分，具体的变量对应什么控件。 反而直接码到代码里，添加注释，更加的清晰。</p>
+<h2 id="_4">引用丢失的情况</h2>
+<p>当UI中拖拽绑定控件，如果这个控件后来因UI的结构修改而被删除了，这个变量就变成了Null。 程序对变量的访问就会引发NullReferenceException。 这种问题出现的时候，非常的不好查。</p>
               
             </div>
           </div>
@@ -372,10 +392,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../license/" class="btn btn-neutral float-right" title="版权说明">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../data-binding/" class="btn btn-neutral float-right" title="单向数据绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../app-compile/" class="btn btn-neutral" title="编译客户端时的内部细节"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../guide/" class="btn btn-neutral" title="UI模块使用指南"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -401,10 +421,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../app-compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../license/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../data-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -8,7 +8,7 @@
   
   
   
-  <title>资源包更新 - KSFramework Documentation</title>
+  <title>异步代码风格 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "资源包更新";
-    var mkdocs_page_input_path = "advanced\autoupdate.md";
-    var mkdocs_page_url = "/advanced/autoupdate/";
+    var mkdocs_page_name = "异步代码风格";
+    var mkdocs_page_input_path = "scripting\async.md";
+    var mkdocs_page_url = "/scripting/async/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -212,14 +212,18 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../scripting/functions/">Lua内置函数列表</a>
+        <a class="" href="../functions/">Lua内置函数列表</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../scripting/async/">异步代码风格</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">异步代码风格</a>
+        
+            <ul>
+            
+            </ul>
         
     </li>
 
@@ -256,46 +260,42 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
+        <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../versioning/">版本号与版本管理</a>
+        <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        <a class="" href="../../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
+        <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">资源包更新</a>
-        
-            <ul>
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
         
     </li>
 
@@ -347,11 +347,11 @@
     
       
         
-          <li>开发经验 &raquo;</li>
+          <li>脚本指南 &raquo;</li>
         
       
     
-    <li>资源包更新</li>
+    <li>异步代码风格</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -361,10 +361,7 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，目前并没有提供资源包更新的具体功能。</p>
-<p>因资源包更新同时还涉及到资源文件服务器的整合、资源包的制作这些耦合的功能。</p>
-<p>您可以参考作者的另一个项目，<a href="https://github.com/mr-kelly/resources_packer">resources_packer</a>提供资源差异包的制作功能。</p>
-<p>要实现更新的机制非常之多，最常见的更新莫过于启动时进行更新。但是基于KSFramework热重载的特性，建议可以更多的考虑运行时静默的下载更新，静默重载。</p>
+                <p>TODO</p>
               
             </div>
           </div>
@@ -372,10 +369,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../license/" class="btn btn-neutral float-right" title="版权说明">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../hotreload/setting/" class="btn btn-neutral float-right" title="配置表热重载">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../app-compile/" class="btn btn-neutral" title="编译客户端时的内部细节"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../functions/" class="btn btn-neutral" title="Lua内置函数列表"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -401,10 +398,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../app-compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../functions/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../license/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../hotreload/setting/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

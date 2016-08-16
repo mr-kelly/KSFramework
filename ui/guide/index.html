@@ -8,7 +8,7 @@
   
   
   
-  <title>资源包更新 - KSFramework Documentation</title>
+  <title>UI模块使用指南 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "资源包更新";
-    var mkdocs_page_input_path = "advanced\autoupdate.md";
-    var mkdocs_page_url = "/advanced/autoupdate/";
+    var mkdocs_page_name = "UI模块使用指南";
+    var mkdocs_page_input_path = "ui\guide.md";
+    var mkdocs_page_url = "/ui/guide/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -182,22 +182,31 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../ui/guide/">UI模块使用指南</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">UI模块使用指南</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#ui">UI的打开、关闭、调用都是异步的</a></li>
+                
+                    <li><a class="toctree-l4" href="#ui_1">获取并调用UI控制器内部方法</a></li>
+                
+            
+            </ul>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ui/ui-binding/">控件与变量绑定</a>
+        <a class="" href="../ui-binding/">控件与变量绑定</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ui/data-binding/">单向数据绑定</a>
+        <a class="" href="../data-binding/">单向数据绑定</a>
         
     </li>
 
@@ -256,46 +265,42 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
+        <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../versioning/">版本号与版本管理</a>
+        <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        <a class="" href="../../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
+        <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">资源包更新</a>
-        
-            <ul>
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
         
     </li>
 
@@ -347,11 +352,11 @@
     
       
         
-          <li>开发经验 &raquo;</li>
+          <li>UI模块 &raquo;</li>
         
       
     
-    <li>资源包更新</li>
+    <li>UI模块使用指南</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -361,10 +366,29 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，目前并没有提供资源包更新的具体功能。</p>
-<p>因资源包更新同时还涉及到资源文件服务器的整合、资源包的制作这些耦合的功能。</p>
-<p>您可以参考作者的另一个项目，<a href="https://github.com/mr-kelly/resources_packer">resources_packer</a>提供资源差异包的制作功能。</p>
-<p>要实现更新的机制非常之多，最常见的更新莫过于启动时进行更新。但是基于KSFramework热重载的特性，建议可以更多的考虑运行时静默的下载更新，静默重载。</p>
+                <h1 id="ui">UI的打开、关闭、调用都是异步的</h1>
+<p>类似资源模块，UI模块是接口，大部分异步的， 主要采用CPS异步回调的风格。常用接口：</p>
+<pre><code class="csharp">
+// 异步打开UI，向UI控制器的OnOpen函数传入3个参数, 分别是1,2,3
+UIModule.Instance.OpenWindow(&quot;ExampleUI&quot;, 1, 2, 3)
+
+// 异步打开UI，与普通OpenWindow不一样的是，这是拷贝一个UI进行打开。对一些重复性的UI，比如角色血条，有重要作用。
+UIModule.Instance.OpenDynamicWindow(&quot;ExampleUI&quot;, &quot;ExampleUI-Clone&quot;, 1, 2, 3)
+
+// 同步关闭UI,
+UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
+</code></pre>
+
+<p>UIModule暴露的外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。</p>
+<h2 id="ui_1">获取并调用UI控制器内部方法</h2>
+<p>要获取一个UI并执行其内部方法，也是通过异步的方法来获取：</p>
+<pre><code class="csharp">UIModule.Instance.CallUI(&quot;ExampleUI&quot;, (uiController) =&gt;{
+    // 异步获取到UI控制器，带有异步加载的过程，完成后，回调方法。
+    uiController.DoSomething();
+});
+</code></pre>
+
+<p>当一个UI已经加载过，CallUI方法将会同步进入回调。</p>
               
             </div>
           </div>
@@ -372,10 +396,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../license/" class="btn btn-neutral float-right" title="版权说明">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../ui-binding/" class="btn btn-neutral float-right" title="控件与变量绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../app-compile/" class="btn btn-neutral" title="编译客户端时的内部细节"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../resource/gc/" class="btn btn-neutral" title="垃圾回收机制"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -401,10 +425,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../app-compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../resource/gc/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../license/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../ui-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

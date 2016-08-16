@@ -8,7 +8,7 @@
   
   
   
-  <title>资源包更新 - KSFramework Documentation</title>
+  <title>单向数据绑定 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "资源包更新";
-    var mkdocs_page_input_path = "advanced\autoupdate.md";
-    var mkdocs_page_url = "/advanced/autoupdate/";
+    var mkdocs_page_name = "单向数据绑定";
+    var mkdocs_page_input_path = "ui\data-binding.md";
+    var mkdocs_page_url = "/ui/data-binding/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -183,21 +183,28 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ui/guide/">UI模块使用指南</a>
+        <a class="" href="../guide/">UI模块使用指南</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ui/ui-binding/">控件与变量绑定</a>
+        <a class="" href="../ui-binding/">控件与变量绑定</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../ui/data-binding/">单向数据绑定</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">单向数据绑定</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">数据绑定的实现代码</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -256,46 +263,42 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
+        <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../versioning/">版本号与版本管理</a>
+        <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../cookie/">Lua脚本热重载，内存状态数据丢失？</a>
+        <a class="" href="../../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
+        <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">资源包更新</a>
-        
-            <ul>
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
         
     </li>
 
@@ -347,11 +350,11 @@
     
       
         
-          <li>开发经验 &raquo;</li>
+          <li>UI模块 &raquo;</li>
         
       
     
-    <li>资源包更新</li>
+    <li>单向数据绑定</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -361,10 +364,17 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，目前并没有提供资源包更新的具体功能。</p>
-<p>因资源包更新同时还涉及到资源文件服务器的整合、资源包的制作这些耦合的功能。</p>
-<p>您可以参考作者的另一个项目，<a href="https://github.com/mr-kelly/resources_packer">resources_packer</a>提供资源差异包的制作功能。</p>
-<p>要实现更新的机制非常之多，最常见的更新莫过于启动时进行更新。但是基于KSFramework热重载的特性，建议可以更多的考虑运行时静默的下载更新，静默重载。</p>
+                <p>UI模块提供一种简单的、利用Cookie进行单向数据绑定的技巧 —— 当一个脚本变量的变化，会直接改变UI控件的属性。  </p>
+<p>比如常用的UI中，角色生命值对应一个数值变量，当数值变量改变后，传统做法是额外一个刷新函数（如Refresh）来对整个界面的所有相关控件进行刷新。但如果使用了数据绑定，将变量和UI控件绑定一起后，当变量的数据改变，无需任何额外操作、且会针对单独的控件进行刷新，节省额外的不必要开销。</p>
+<p>数据绑定技术在ASP.net、Angular JS、Cocoa Touch等等Web、UI开发中非常的普遍存在。</p>
+<h2 id="_1">数据绑定的实现代码</h2>
+<p>因为Unity UGUI的存在，实现数据绑定，主要从我们的代码脚本着手。其本质，是设置Setter——当变量被改变时，触发连带的函数。</p>
+<pre><code class="Lua">-- 绑定变量TestNumber, 当数值改变时，设置UI的文字
+Cookie.AddSetListener('TestNumber', function(setValue)
+    uiText.text = setValue
+end)
+Cookie.Set('TestNumber', 567) -- 同一时间，UI改变
+</code></pre>
               
             </div>
           </div>
@@ -372,10 +382,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../license/" class="btn btn-neutral float-right" title="版权说明">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../scripting/functions/" class="btn btn-neutral float-right" title="Lua内置函数列表">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../app-compile/" class="btn btn-neutral" title="编译客户端时的内部细节"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ui-binding/" class="btn btn-neutral" title="控件与变量绑定"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -401,10 +411,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../app-compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../ui-binding/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../license/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../scripting/functions/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
