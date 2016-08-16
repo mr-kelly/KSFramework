@@ -131,6 +131,28 @@
           
             <li>
     <ul class="subnav">
+    <li><span>基础约定</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../basic/config/">Ini配置文件</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../basic/file-structure/">文件目录结构</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
     <li><span>配置表模块</span></li>
 
         
@@ -244,7 +266,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../scripting/async/">异步代码风格</a>
+        <a class="" href="../scripting/cookie/">Cookie状态缓存</a>
         
     </li>
 
@@ -267,6 +289,20 @@
             
     <li class="toctree-l1 ">
         <a class="" href="../hotreload/assetbundle/">Asset Bundle热重载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../hotreload/ui/">UI热重载</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../hotreload/code/">其它代码热重载</a>
         
     </li>
 
@@ -302,13 +338,6 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../advanced/cookie/">Lua脚本热重载，内存状态数据丢失？</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
         <a class="" href="../advanced/app-compile/">编译客户端时的内部细节</a>
         
     </li>
@@ -317,6 +346,20 @@
             
     <li class="toctree-l1 ">
         <a class="" href="../advanced/autoupdate/">资源包更新</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../advanced/editor/">编辑器强化</a>
         
     </li>
 
@@ -505,7 +548,7 @@ return UIBillboard
 </blockquote>
 <p><img alt="因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码" src="../images/quickstart/quick-start-35.png" /></p>
 <blockquote>
-<p>因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码</p>
+<p>因为我们要在Lua使用BillboardSettings读取配置表，这里需要<strong>重新生成一下SLua的静态代码</strong></p>
 </blockquote>
 <p><img alt="接下来修改Lua代码，随机读取一条公告，并设置Content、Title" src="../images/quickstart/quick-start-37.png" /></p>
 <blockquote>
@@ -530,7 +573,8 @@ return UIBillboard
 <p>我们保持运行刚刚的Game.unity，不要停止掉。这时候我们去修改Excel表格。</p>
 <p><img alt="修改Excel表格" src="../images/quickstart/quick-start-43.png" /></p>
 <blockquote>
-<p>修改Excel表格，保存后，回到Unity，提示表格有改动。</p>
+<p>修改Excel表格，保存后，回到Unity，提示表格有改动。
+注意表格的内容，根据Lua代码，三个Id分别是Billboard1，Billboard2，Billboard3</p>
 </blockquote>
 <p><img alt="发现表格有变动，点击OK编译表" src="../images/quickstart/quick-start-45.png" /></p>
 <blockquote>
@@ -553,7 +597,7 @@ return UIBillboard
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../setting/guide/" class="btn btn-neutral float-right" title="策划指南：配置表的使用">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../basic/config/" class="btn btn-neutral float-right" title="Ini配置文件">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../overview/features/" class="btn btn-neutral" title="功能特性"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -585,7 +629,7 @@ return UIBillboard
         <span><a href="../overview/features/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../setting/guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../basic/config/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

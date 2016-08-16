@@ -46,6 +46,22 @@
     
         
     <url>
+     <loc>None/basic/config/</loc>
+     <lastmod>2016-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/basic/file-structure/</loc>
+     <lastmod>2016-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
      <loc>None/setting/guide/</loc>
      <lastmod>2016-08-16</lastmod>
      <changefreq>daily</changefreq>
@@ -130,7 +146,7 @@
     </url>
         
     <url>
-     <loc>None/scripting/async/</loc>
+     <loc>None/scripting/cookie/</loc>
      <lastmod>2016-08-16</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -147,6 +163,18 @@
         
     <url>
      <loc>None/hotreload/assetbundle/</loc>
+     <lastmod>2016-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/hotreload/ui/</loc>
+     <lastmod>2016-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/hotreload/code/</loc>
      <lastmod>2016-08-16</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -174,12 +202,6 @@
     </url>
         
     <url>
-     <loc>None/advanced/cookie/</loc>
-     <lastmod>2016-08-16</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
      <loc>None/advanced/app-compile/</loc>
      <lastmod>2016-08-16</lastmod>
      <changefreq>daily</changefreq>
@@ -187,6 +209,18 @@
         
     <url>
      <loc>None/advanced/autoupdate/</loc>
+     <lastmod>2016-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/advanced/script-reload/</loc>
+     <lastmod>2016-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/advanced/editor/</loc>
      <lastmod>2016-08-16</lastmod>
      <changefreq>daily</changefreq>
     </url>

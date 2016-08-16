@@ -8,7 +8,7 @@
   
   
   
-  <title>Lua内置函数列表 - KSFramework Documentation</title>
+  <title>编辑器强化 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Lua内置函数列表";
-    var mkdocs_page_input_path = "scripting\functions.md";
-    var mkdocs_page_url = "/scripting/functions/";
+    var mkdocs_page_name = "编辑器强化";
+    var mkdocs_page_input_path = "advanced\editor.md";
+    var mkdocs_page_url = "/advanced/editor/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -233,34 +233,15 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Lua内置函数列表</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#using-namespace">using (namespace)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#import-path">import (path)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#new-table-ctor">new (table, ctor)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#extends-class-base">extends (class, base)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#foreach-csharp_ienumerable">foreach (csharp_ienumerable)</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../scripting/functions/">Lua内置函数列表</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../cookie/">Cookie状态缓存</a>
+        <a class="" href="../../scripting/cookie/">Cookie状态缓存</a>
         
     </li>
 
@@ -311,49 +292,59 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
+        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
+        <a class="" href="../versioning/">版本号与版本管理</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+        <a class="" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
+        <a class="" href="../app-compile/">编译客户端时的内部细节</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../advanced/autoupdate/">资源包更新</a>
+        <a class="" href="../autoupdate/">资源包更新</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../advanced/script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
+        <a class="" href="../script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../advanced/editor/">编辑器强化</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">编辑器强化</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#unity">Unity编辑器强化</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#_1">键盘快捷键</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -405,11 +396,11 @@
     
       
         
-          <li>脚本指南 &raquo;</li>
+          <li>开发经验 &raquo;</li>
         
       
     
-    <li>Lua内置函数列表</li>
+    <li>编辑器强化</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -419,17 +410,19 @@
           <div role="main">
             <div class="section">
               
-                <p>KSFramework使用SLua作为脚本引擎，并扩充一些基础函数，用于UI的开发。</p>
-<h1 id="using-namespace">using (namespace)</h1>
-<p>类似于C#中的using，取代了SLua默认的import。using一个命名空间，将这个命名空间内的所有class提升到当前作用域。</p>
-<h1 id="import-path">import (path)</h1>
-<p>进行脚本的导入，路径基于KSFramework中配置的Product/Lua路径。</p>
-<h1 id="new-table-ctor">new (table, ctor)</h1>
-<p>类似于Java中的new，对一个Lua table进行new，将会创建一个新的table，旧的table作为__index传入。模拟面向对象编程。</p>
-<h1 id="extends-class-base">extends (class, base)</h1>
-<p>类似于Java中的extends，声明两个的table的继承关系。</p>
-<h1 id="foreach-csharp_ienumerable">foreach (csharp_ienumerable)</h1>
-<p>对C#中的IEnumerable类进行迭代。</p>
+                <h2 id="unity">Unity编辑器强化</h2>
+<ul>
+<li>编辑代码后，返回正在运行的游戏，强制停到正在运行的游戏，避免崩溃的出现</li>
+<li>封装Unity编辑器的各种事件，如编译前、播放前、暂停时等</li>
+</ul>
+<h2 id="_1">键盘快捷键</h2>
+<ul>
+<li>Ctrl+Alt+E: 在编辑UI场景时，导出UI成AssetBundle</li>
+<li>Ctrl+Alt+R: 在运行时，热重载所有LuaUIController</li>
+<li>Ctrl+Alt+Shift+R: 在运行时，热重载所有LuaUIController，并且把所有打开状态UI关闭后重新开启</li>
+<li>Ctrl+Alt+I: 在编辑器，打开Game.unity主运行场景</li>
+<li>Ctrl+Alt+O: 在编辑器，打开Ctrl+Alt+I前的一个场景</li>
+</ul>
               
             </div>
           </div>
@@ -437,10 +430,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cookie/" class="btn btn-neutral float-right" title="Cookie状态缓存">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../license/" class="btn btn-neutral float-right" title="版权说明">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../ui/data-binding/" class="btn btn-neutral" title="单向数据绑定"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../script-reload/" class="btn btn-neutral" title="Lua脚本热重载，内存状态数据丢失？"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -466,10 +459,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../../ui/data-binding/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../script-reload/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../cookie/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../license/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

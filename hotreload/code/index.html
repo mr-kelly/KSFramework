@@ -8,7 +8,7 @@
   
   
   
-  <title>Lua内置函数列表 - KSFramework Documentation</title>
+  <title>其它代码热重载 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Lua内置函数列表";
-    var mkdocs_page_input_path = "scripting\functions.md";
-    var mkdocs_page_url = "/scripting/functions/";
+    var mkdocs_page_name = "其它代码热重载";
+    var mkdocs_page_input_path = "hotreload\code.md";
+    var mkdocs_page_url = "/hotreload/code/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -233,34 +233,15 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Lua内置函数列表</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#using-namespace">using (namespace)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#import-path">import (path)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#new-table-ctor">new (table, ctor)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#extends-class-base">extends (class, base)</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#foreach-csharp_ienumerable">foreach (csharp_ienumerable)</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../scripting/functions/">Lua内置函数列表</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../cookie/">Cookie状态缓存</a>
+        <a class="" href="../../scripting/cookie/">Cookie状态缓存</a>
         
     </li>
 
@@ -275,28 +256,32 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../hotreload/setting/">配置表热重载</a>
+        <a class="" href="../setting/">配置表热重载</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../hotreload/assetbundle/">Asset Bundle热重载</a>
+        <a class="" href="../assetbundle/">Asset Bundle热重载</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../hotreload/ui/">UI热重载</a>
+        <a class="" href="../ui/">UI热重载</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../hotreload/code/">其它代码热重载</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">其它代码热重载</a>
+        
+            <ul>
+            
+            </ul>
         
     </li>
 
@@ -405,11 +390,11 @@
     
       
         
-          <li>脚本指南 &raquo;</li>
+          <li>热重载 &raquo;</li>
         
       
     
-    <li>Lua内置函数列表</li>
+    <li>其它代码热重载</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -419,17 +404,7 @@
           <div role="main">
             <div class="section">
               
-                <p>KSFramework使用SLua作为脚本引擎，并扩充一些基础函数，用于UI的开发。</p>
-<h1 id="using-namespace">using (namespace)</h1>
-<p>类似于C#中的using，取代了SLua默认的import。using一个命名空间，将这个命名空间内的所有class提升到当前作用域。</p>
-<h1 id="import-path">import (path)</h1>
-<p>进行脚本的导入，路径基于KSFramework中配置的Product/Lua路径。</p>
-<h1 id="new-table-ctor">new (table, ctor)</h1>
-<p>类似于Java中的new，对一个Lua table进行new，将会创建一个新的table，旧的table作为__index传入。模拟面向对象编程。</p>
-<h1 id="extends-class-base">extends (class, base)</h1>
-<p>类似于Java中的extends，声明两个的table的继承关系。</p>
-<h1 id="foreach-csharp_ienumerable">foreach (csharp_ienumerable)</h1>
-<p>对C#中的IEnumerable类进行迭代。</p>
+                
               
             </div>
           </div>
@@ -437,10 +412,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cookie/" class="btn btn-neutral float-right" title="Cookie状态缓存">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../advanced/seperate-unity-projects/" class="btn btn-neutral float-right" title="使用两个Unity工程">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../ui/data-binding/" class="btn btn-neutral" title="单向数据绑定"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ui/" class="btn btn-neutral" title="UI热重载"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -466,10 +441,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../../ui/data-binding/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../ui/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../cookie/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../advanced/seperate-unity-projects/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
