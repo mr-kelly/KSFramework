@@ -130,7 +130,7 @@ Excel表修改如下：
 > 这时候，打开AppSettings.cs代码文件，我们可以发现，已经生成名叫BillboardSettings的类了
 
 ![因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码](images/quickstart/quick-start-35.png)
-> 因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码
+> 因为我们要在Lua使用BillboardSettings读取配置表，这里需要**重新生成一下SLua的静态代码**
 
 
 ![接下来修改Lua代码，随机读取一条公告，并设置Content、Title](images/quickstart/quick-start-37.png)
@@ -162,10 +162,10 @@ Excel表修改如下：
 
 ![修改Excel表格](images/quickstart/quick-start-43.png)
 > 修改Excel表格，保存后，回到Unity，提示表格有改动。
+> 注意表格的内容，根据Lua代码，三个Id分别是Billboard1，Billboard2，Billboard3
 
 ![发现表格有变动，点击OK编译表](images/quickstart/quick-start-45.png)
 > 发现表格有变动，点击OK编译表
-
 
 ![从菜单中心一下重载配置表格吧](images/quickstart/quick-start-47.png)
 > 从菜单中心一下重载配置表格吧

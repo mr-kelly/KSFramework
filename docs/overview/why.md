@@ -8,7 +8,7 @@
 
 能否在游戏开发领域，有一套可以复用的开发框架？
 
-KEngine由此而萌生，最初它是由已有的项目中抽离、解耦出来的一套Asset Bundle辅助工具，尝试对资源、UI、配置表三个方面制定稳定的开发机制，并针对Unity 3/Unity 4中坑大了的Asset Bundle系统做了一套Asset Bundle打包系统（非常类似今天Unity 5中的新Asset Bundle系统）。
+KEngine由此而萌生，最初它是由已有的项目中抽离、解耦出来的一套Asset Bundle辅助工具，尝试对**资源、UI、配置表**三个方面制定稳定的开发机制，并针对Unity 3/Unity 4中坑大了的Asset Bundle系统做了一套Asset Bundle打包系统（非常类似今天Unity 5中的新Asset Bundle系统）。
 
 进入Unity 5，新Asset Bundle系统让Unity的资源管理提升了一大个层次，同时运营热更新的需求在今天也越来越受重视；同时，对于大Unity项目，后期的维护是一个噩梦，大量的C#代码导致轻微的修改却引发大量的转菊花时间、频繁的易崩溃等因素，都会对开发效率大受影响，这时候开发期的热重载也能大大的提升效率。
 
