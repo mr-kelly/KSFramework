@@ -21,12 +21,12 @@ pages:
     - [resource/debug.md, "资源模块", "资源实时调试监控"]
     - [resource/gc.md, "资源模块", "垃圾回收机制"]
 
-    - [ui/ui-call.md, "UI模块", "UI的打开、关闭、调用"]
+    - [ui/guide.md, "UI模块", "UI模块使用指南"]
     - [ui/ui-binding.md, "UI模块", "控件与变量绑定"]
+    - [ui/data-binding.md, "UI模块", "单向数据绑定"]
 
-    - [scripting/uimodule.md, "脚本指南", "UI模块使用指南"]
-    - [scripting/async.md, "脚本指南", "异步代码风格"]
     - [scripting/functions.md, "脚本指南", "Lua内置函数列表"]
+    - [scripting/async.md, "脚本指南", "异步代码风格"]
 
     - [hotreload/setting.md, "热重载", "配置表热重载"]
     - [hotreload/assetbundle.md, "热重载", "Asset Bundle热重载"]
