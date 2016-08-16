@@ -56,7 +56,7 @@ namespace AppSettings
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("KEngine/Settings/Try Reload All Settings Code")]
+        [UnityEditor.MenuItem("KEngine/Settings/Reload All Settings")]
 #endif
 	    public static void AllSettingsReload()
 	    {

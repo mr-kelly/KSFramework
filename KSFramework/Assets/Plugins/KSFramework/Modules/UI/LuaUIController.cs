@@ -14,12 +14,6 @@ namespace KSFramework
     /// </summary>
     public class LuaUIController : KEngine.UI.UIController
     {
-        /// <summary>
-        /// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，也可以通过编辑器的Reload来进行强制刷新缓存
-        /// 对实时性重载要求高的，可以把开关设置成false，长期都进行Lua脚本重载，理论上会消耗额外的性能用于语法解析
-        /// 该值调用频繁，就不放ini了
-        /// </summary>
-        public static bool CacheMode = true;
 
         /// <summary>
         /// 缓存的LuaTable
@@ -77,7 +71,7 @@ namespace KSFramework
         bool CheckInitScript(bool showWarn = false)
         {
             // 有缓存的lua，根据开关判定是否重新加载
-            if (_luaTable != null && CacheMode)
+            if (_luaTable != null && LuaBehaviour.CacheMode)
                 return true;
 
             var relPath = string.Format("UI/UI{0}", UITemplateName);

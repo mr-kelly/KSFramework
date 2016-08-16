@@ -5,13 +5,20 @@
 
 [**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)+ **Framework** = KSFramework
 
-KSFramework是一个整合KEngine、SLua的Unity 5开发框架，并为程序、美术、策划、运营提供辅助工具集。
+
+**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
+
+---------------------
+
+对于程序人员，可以使用AssetBundle加载与打包、脚本化的UI、配置表代码自动生成、下载更新等基础功能模块，大大减少游戏周边基础功能的工作量；
+
+对于策划人员，使用Excel进行编辑，可以在编辑过程中添加注释、图标、预编译指令，KSFramework会根据配置内容自动生成代码供程序使用。
+
+对于美术人员，只需将项目需要用到资源放到指定目录，将会自动的生成Asset Bundle；程序加载Asset Bundle跟Resources.Load一样方便。
 
 **热重载**是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，方便运营阶段热更新。
 
-
-[【查看文档】](http://mr-kelly.github.io/KSFramework/)
-
+对于运营人员，利用KSFramework的热重载特性，可以针对运营需求，在项目运行过程中配置表、脚本代码在用户无知觉的情况下进行热更新。
 
 # 安装
 
@@ -33,6 +40,7 @@ KSFramework是一个整合KEngine、SLua的Unity 5开发框架，并为程序、
 git submodule init
 git submodule update
 ```
+
 拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录，然后用Unity打开
 
 # 教程
@@ -45,77 +53,15 @@ git submodule update
 - [KEngine配置表：扩展表格解析类型](http://www.jianshu.com/p/722c5856166f)
 - [KEngine:配置表的条件编译](http://www.jianshu.com/p/cb7ddfab23ba)
 
+# 文档
+
+- [【查看完整文档】](http://mr-kelly.github.io/KSFramework/)
+- [功能特性](http://mr-kelly.github.io/KSFramework/overview/features/)
+- [策划指南：配置表的使用](http://mr-kelly.github.io/KSFramework/setting/guide/)
+
+...
+
 # 结构组成
 
 ![KSFramework由KEngine和SLua结合组成](Docs/Structure.png)
 [View on ProcessOn](https://www.processon.com/view/link/57634e3ce4b07fa2f3bb0ee8)
-
-# 功能特性
-
-## 资源模块
-
-- Unity 5中一键打包Asset Bundle
-- AssetBundle加载器，加载时自动处理依赖关系
-- 资源路径约定，含热更新资源机制
-- 手动的、引用计数的资源释放策略
-- ~~资源运行时重载（减引用计数）~~
-
-## 配置表模块
-
-- 自动编译Excel，支持在表中添加注释
-- Excel表头，可设置数据类型（如int, array的声明）
-- 自动生成配置表读取代码
-- 支持惰式加载，无初始化的时间消耗
-- 支持热重载，运行时修改配置表无需重启
-
-## UI模块
-
-- 约定优于配置式的UI框架
-- 快速导出当前编辑的UI
-- 支持热重载，运行时修改UI脚本无需重启
-
-## 脚本模块
-
-- 路径约定，通过import函数进行加载
-- 缓存机制配合import函数，可实现所有脚本的热重载
-- Lua新增using函数类似于C#中的using，暴露使用table中的属性为全局使用
-- 可以在编辑器非运行模式下执行Lua脚本，支持简单Lua单元测试
-
-## 多语言模块
-
-- 基于配置表模块
-- 约定好多语言字符串的机制
-- ~~多语言字符串收集器~~
-
-## Unity编辑器强化
-
-- 编辑代码后，返回正在运行的游戏，强制停到正在运行的游戏，避免崩溃的出现
-- 封装Unity编辑器的各种事件，如编译前、播放前、暂停时等
-
-# 工程建议
-
-建议创建两个Unity工程：code和art，一个用于代码编辑，一个用于美术编辑并导出AssetBundle。
-这样code的Unity工程，只带了代码和AssetBundle，没有资源加载的缓慢过程，让Unity开发更畅快；同时也对代码部分做了保密，防止其他人员外泄。
-
-# 键盘快捷键
-
-- Ctrl+Alt+E: 在编辑UI场景时，导出UI成AssetBundle
-- Ctrl+Alt+R: 在运行时，热重载所有LuaUIController
-- Ctrl+Alt+Shift+R: 在运行时，热重载所有LuaUIController，并且把所有打开状态UI关闭后重新开启
-- Ctrl+Alt+I: 在编辑器，打开Game.unity主运行场景
-- Ctrl+Alt+O: 在编辑器，打开Ctrl+Alt+I前的一个场景
-
-
-## KEngine和KSFramework
-
-### 定位不一样
-
-KEngine:为了减低Unity 4.x中AssetBundle的加载、打包复杂度；
-
-KSFramework:一站式的开发框架，可以开箱即用，整合KEngine和SLua。只支持Unity 5。
-
-### 提供的模块不同
-
-KEngine: 提供基础的资源加载（ResourceModule）功能，并以之为基础，增加配置表（SettingModule）、UI模块（UIModule）这两个核心模块；另外还有针对Unity 4.x的资源依赖打包模块。
-
-KSFramework：基于KEngine的资源、UI、配置表模块，实现更直接的、面向具体项目的常用功能模块，并搭配SLua。
