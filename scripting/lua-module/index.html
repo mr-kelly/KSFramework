@@ -8,7 +8,7 @@
   
   
   
-  <title>惰式加载 - KSFramework Documentation</title>
+  <title>将Lua脚本模块化 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "惰式加载";
-    var mkdocs_page_input_path = "setting\lazy-load.md";
-    var mkdocs_page_url = "/setting/lazy-load/";
+    var mkdocs_page_name = "将Lua脚本模块化";
+    var mkdocs_page_input_path = "scripting\lua-module.md";
+    var mkdocs_page_url = "/scripting/lua-module/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -133,48 +133,35 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../guide/">策划指南：配置表的使用</a>
+        <a class="" href="../../setting/guide/">策划指南：配置表的使用</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../condition-compile/">配置表的条件编译</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 current">
-        <a class="current" href="./">惰式加载</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#_1">配置表的加载方式影响游戏启动速度</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#ksframework">KSFramework配置表采用惰式加载</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#_2">强制其显示初始化</a></li>
-                
-            
-            </ul>
+        <a class="" href="../../setting/condition-compile/">配置表的条件编译</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+        <a class="" href="../../setting/lazy-load/">惰式加载</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../custom-table-reader/">自定义与扩展配置表的解析</a>
+        <a class="" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
         
     </li>
 
@@ -247,21 +234,28 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../scripting/functions/">Lua内置函数列表</a>
+        <a class="" href="../functions/">Lua内置函数列表</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../scripting/cookie/">Cookie状态缓存</a>
+        <a class="" href="../cookie/">Cookie状态缓存</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../scripting/lua-module/">将Lua脚本模块化</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">将Lua脚本模块化</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">模块化与热重载</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -406,11 +400,11 @@
     
       
         
-          <li>配置表模块 &raquo;</li>
+          <li>脚本指南 &raquo;</li>
         
       
     
-    <li>惰式加载</li>
+    <li>将Lua脚本模块化</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -420,27 +414,51 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="_1">配置表的加载方式影响游戏启动速度</h2>
-<p>常见的游戏开发中，都一个初始化环节。在初始化中，会对游戏所使用的配置表进行加载。随着项目进度的推移，越来越多的配置表出现了，游戏的初始化也逐渐变得越来越慢。</p>
-<p>因此，配置表的加载方式，对于一款游戏的启动速度，至关重要，启动阶段全部进行载入加载，明显不是明智的设计机制。</p>
-<h2 id="ksframework">KSFramework配置表采用惰式加载</h2>
-<p>惰式加载，又叫延迟加载，即在第一次用户使用在才进行加载。</p>
-<p>生成的代码中，采用了<strong>惰式初始化</strong>方式进行配置表的加载： 即<strong>第一次使用时进行初始化</strong>。从而避免游戏启动时的集中式初始化，降低启动时间，优化执行性能。</p>
-<p>类似的设计思路也是挺常见的，比如C#的JIT，就是第一次使用时进行编译。</p>
-<p>KEngine中的配置表模块采用惰式加载，即在第一次使用，才会进行真正的加载。这也意味着，一个程序启动的速度，与配置表的加载完整的脱离关系。</p>
-<p>当然了，如果在启动阶段，依然因为各种原因，大量的使用了配置表，重复了大量的加载，依然是会占据启动速度的。</p>
-<h2 id="_2">强制其显示初始化</h2>
-<pre><code class="csharp">
-// 预热GameConfig表
-GameConfigSettings.GetInstance(),
+                <p>Lua是一种自由的脚本语言，可以给开发人员很大的自由度。</p>
+<p>但是无规矩往往不成方圆，用得好的人如神仙，用不好的人却只能吐槽语言本身。KSFramework中强烈建议，使用文件模块化来组织脚本。</p>
+<p>所谓模块化的Lua脚本，是指，尽可能将每一个Lua脚本文件视为一个模块。这将是实现热重载的一个重点</p>
+<p>你可能在你的项目中见过如下代码：</p>
+<pre><code class="lua">// init.lua文件。一个典型的非模块化脚本示例
 
-// 预热所有的表
-SettingsManager.AllSettingsReload();
+require('game')
+require('skillmanager')
+require('soundmanager')
+require('something1')
+require('something2')
+require('something3')
+require('something4')
+
+
+start_game();
+
 
 </code></pre>
 
-<p>实际开发过程中，我就是想针对某些表，先初始化，再进游戏？
-根据<strong>第一次使用时进行初始化</strong>的原则，强制在初始化阶段进行一次调用，就可以触发初始化加载。</p>
+<p>以上是一个典型的非模块Lua代码示例，问题来了：start_game()函数究竟在哪个文件里？我们无从可知。
+而且，这样的非模块化脚本require的过程，是一个初始化的过程，会导入了大量的全局作用域的变量，这种写法往往在文件的require过程中就大量的执行了各种行为。</p>
+<p>模块化的脚本，类似如下：</p>
+<pre><code class="lua">// init.lua文件
+local game = require('game')
+game.start_game();
+
+
+// game.lua文件
+local game = {}
+
+game.skillmanager = require('skillmanager')
+
+function game:start_game
+    self.skillmanager:init()
+end
+
+return game
+
+</code></pre>
+
+<p>每一Lua文件，都尽可能不执行具体的行为，而是返回一个函数、返回值、或返回Table，由外部来决定它的行为。</p>
+<p>其实这跟面向对象编程是一样的，比如C#、Java中需要定义class。在定义class的时候进行静态构造器执行功能是不常用的。</p>
+<h2 id="_1">模块化与热重载</h2>
+<p>在KSFramework中的UI模块设计中，所有的UI脚本都必须在结尾处返回一个Table。C#端可以决定这个Table是否进行缓存：如果不缓存，每次都重新读取Lua脚本，返回新的Table，达到热重载目的；如果进行缓存，节省Lua语法词法分析的时间，提升性能。</p>
               
             </div>
           </div>
@@ -448,10 +466,10 @@ SettingsManager.AllSettingsReload();
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../tsv-instead-excel/" class="btn btn-neutral float-right" title="使用TSV，不用Excel作为源表">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../hotreload/setting/" class="btn btn-neutral float-right" title="配置表热重载">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../condition-compile/" class="btn btn-neutral" title="配置表的条件编译"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cookie/" class="btn btn-neutral" title="Cookie状态缓存"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -477,10 +495,10 @@ SettingsManager.AllSettingsReload();
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../condition-compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../cookie/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../tsv-instead-excel/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../hotreload/setting/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
