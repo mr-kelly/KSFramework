@@ -34,7 +34,7 @@ namespace KSFramework
 {
     public class LuaModule : IModuleInitable
     {
-        private LuaSvr _luaSvr;
+        private readonly LuaSvr _luaSvr;
 
         public static LuaModule Instance = new LuaModule();
 
@@ -96,7 +96,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="scriptRelativePath"></param>
         /// <returns></returns>
-        string GetScriptPath(string scriptRelativePath)
+        static string GetScriptPath(string scriptRelativePath)
         {
             var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
             var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
