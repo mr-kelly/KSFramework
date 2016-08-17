@@ -61,7 +61,8 @@ namespace KSFramework
         {
             if (!CacheMode)
                 Reload();
-
+            if (CacheTable == null)
+				return null;
             var retFunc = CacheTable[function];
             if (retFunc != null)
             {
