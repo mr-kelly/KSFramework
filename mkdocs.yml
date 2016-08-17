@@ -31,6 +31,7 @@ pages:
 
     - [scripting/functions.md, "脚本指南", "Lua内置函数列表"]
     - [scripting/cookie.md, "脚本指南", "Cookie状态缓存"]
+    - [scripting/lua-module.md, "脚本指南", "将Lua脚本模块化"]
 
     - [hotreload/setting.md, "热重载", "配置表热重载"]
     - [hotreload/assetbundle.md, "热重载", "Asset Bundle热重载"]
