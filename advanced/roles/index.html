@@ -8,7 +8,7 @@
   
   
   
-  <title>使用两个Unity工程 - KSFramework Documentation</title>
+  <title>假定角色需求 - KSFramework Documentation</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "使用两个Unity工程";
-    var mkdocs_page_input_path = "advanced\seperate-unity-projects.md";
-    var mkdocs_page_url = "/advanced/seperate-unity-projects/";
+    var mkdocs_page_name = "假定角色需求";
+    var mkdocs_page_input_path = "advanced\roles.md";
+    var mkdocs_page_url = "/advanced/roles/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -298,15 +298,8 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">使用两个Unity工程</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#_1">分离美术编辑和代码开发</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../seperate-unity-projects/">使用两个Unity工程</a>
         
     </li>
 
@@ -354,8 +347,23 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../roles/">假定角色需求</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">假定角色需求</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">假定角色需求</a></li>
+                
+                    <li><a class="toctree-l4" href="#_2">策划</a></li>
+                
+                    <li><a class="toctree-l4" href="#_3">美术</a></li>
+                
+                    <li><a class="toctree-l4" href="#_4">运营</a></li>
+                
+                    <li><a class="toctree-l4" href="#_5">程序</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -411,7 +419,7 @@
         
       
     
-    <li>使用两个Unity工程</li>
+    <li>假定角色需求</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -421,10 +429,24 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="_1">分离美术编辑和代码开发</h1>
-<p>在实际的开发中，我们建议使用两个Unity工程，一个美术工程和一个代码工程。</p>
-<p>美术工程负责输出美术的制作、输出Asset Bundle；代码工程则负责具体的游戏逻辑，读取Asset Bundle。</p>
-<p>这样做，可以分离美术人员和程序人员的工作，起到一定的保密性；同时，由于代码工程中，不存在资源素材，<strong>Unity编辑器这时候会变得飞快</strong>，因为它的启动不再需要检查和加载大量的资源文件了，这对提供开发效率非常的有效。</p>
+                <p>游戏开发的过程中，有各个不同岗位角色，常见的包括程序、策划、美术、运营。每个角色对产品的思考角度都是不同的。</p>
+<p>而程序作为一款软件产品的基础设计起到至关重要的作用，开发的各个环节都应该尽可能的考虑到其它角色的工作便利性。</p>
+<p>KSFramework适合中大型团队、多角色共同协作。对于小型团队，KSFramework中很多功能设计可能十分多余。因此，了解KSFramework设计过程中的假定角色需求，才能更好的理解框架部分功能设计的初衷。</p>
+<h1 id="_1">假定角色需求</h1>
+<h2 id="_2">策划</h2>
+<p>策划人员在游戏开发中最多的事务操作，是操纵Excel表。他们希望游戏配置表是可注释、可理解的、甚至可视化，而不是让人看上去布满看不懂的英文和数字。同时，Excel表格是二进制格式的，不方便进行版本差异比较，他们希望可以使用版本管理管理自己的工作。</p>
+<p>在KSFramework中，使用Excel表格编译成TSV(Tab Sperated Values，类似CSV)，在Excel表中，可以加入注释列、注释行、图表、多个工作表、条件式编译，基于这些，可以把文档和游戏具体配置表整合在一起。</p>
+<p>在编译成TSV格式后，纯文本格式，上传SVN或Git版本管理，可以方便的进行差异化比较。</p>
+<h2 id="_3">美术</h2>
+<p>美术人员的工作最好与程序人员的工作脱离关系。在美术设计的过程中，他们喜欢用自己习惯的方式舒服的创作，譬如就算它们使用Unity进行特效、UI的编辑，都会自己另外开辟一个个人目录来做。</p>
+<p>在KSFramework中，推荐美术Unity工程和代码Unity工程分离。在美术Unity工程中，美术人员按照自己喜欢的思路，摆放自己的美术资源。唯一的一点要求就是：制作完成后的最终产出，放到要求的目录。</p>
+<h2 id="_4">运营</h2>
+<p>运营的过程中，节奏是很快的，运营人员总是希望软件产品能针对运营行为迅速的作出的反应。软件产品的静默更新，是运营人员最想看到的——用户无知觉地使用到最新的产品。其中，代码方面的热重载是程序设计方面的重点，并且尽可能多的功能控制，交给外部如http服务器处理。</p>
+<h2 id="_5">程序</h2>
+<p>做程序的最怕就是出BUG。为什么？因为要改。改吧，改起来麻烦。改完了，还要来回地测。热重载可以尽可能的缩短改-测得这个过程。</p>
+<p>当然，更稳健的解决方案是单元测试。因此在KSFramework中，SLua是可以编辑器模式运行的，方便做Lua方面的单元测试。</p>
+<hr />
+<p>KSFramework的假定的角色需求，并非普遍的需求。如果您认为有不对或需要补充的，欢迎提出，虚心求教。</p>
               
             </div>
           </div>
@@ -432,10 +454,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../versioning/" class="btn btn-neutral float-right" title="版本号与版本管理">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../license/" class="btn btn-neutral float-right" title="版权说明">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../hotreload/code/" class="btn btn-neutral" title="其它代码热重载"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../editor/" class="btn btn-neutral" title="编辑器强化"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -461,10 +483,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../../hotreload/code/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../editor/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../versioning/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../license/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
