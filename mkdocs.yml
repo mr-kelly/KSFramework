@@ -45,7 +45,7 @@ pages:
     - [advanced/autoupdate.md, "开发经验", "资源包更新"]
     - [advanced/script-reload.md, "开发经验", "Lua脚本热重载，内存状态数据丢失？"]
     - [advanced/editor.md, "开发经验", "编辑器强化"]
-    - [advanced/roles, "开发经验", "假定角色需求"]
+    - [advanced/roles.md, "开发经验", "假定角色需求"]
 
     - [license.md, "其它", "版权说明"]
     - [roadmap.md, "其它", "开发计划"]
