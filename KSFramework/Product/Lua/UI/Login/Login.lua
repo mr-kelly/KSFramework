@@ -1,4 +1,4 @@
-local UIBase = import("KSFramework/UIBase")
+local UIBase = import("UI/UIBase")
 
 if not Cookie then
     Cookie = Slua.GetClass('KSFramework.Cookie')
