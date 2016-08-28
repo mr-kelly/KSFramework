@@ -8,9 +8,14 @@ using KSFramework;
 [CustomEditor (typeof(UILuaOutlet))]
 public class UILuaOutletEditor : Editor
 {
+	/// <summary>
+	/// mark all Game objects that has Outlet, for GUIhierarchyWindow mark
+	/// </summary>
+	static Dictionary<GameObject,string> _outletObjects = new Dictionary<GameObject,string> ();
+
 	static UILuaOutletEditor ()
 	{
-
+		EditorApplication.hierarchyWindowItemOnGUI += HierarchyItemCB;
 		UIWindowAssetEditor.CustomInspectorGUIAfter += (KEngine.UI.UIWindowAsset target) => {
 			if (target.gameObject.GetComponent<UILuaOutlet> () == null) {
 				if (GUILayout.Button ("Add UILuaOutlet")) {
@@ -18,8 +23,23 @@ public class UILuaOutletEditor : Editor
 
 				}
 			}
-
 		};
+	}
+
+	private static void HierarchyItemCB (int instanceid, Rect selectionrect)
+	{
+		var obj = EditorUtility.InstanceIDToObject (instanceid) as GameObject;
+		if (obj != null) {
+			if (_outletObjects.ContainsKey (obj)) {
+				Rect r = new Rect (selectionrect);
+				r.x = r.width - 80;
+				r.width = 80;
+				var style = new GUIStyle ();
+				style.normal.textColor = Color.green;
+				style.hover.textColor = Color.cyan;
+				GUI.Label (r, string.Format ("=>'{0}'", _outletObjects [obj]), style);
+			}
+		}
 	}
 
 	GUIStyle GreenFont;
@@ -56,6 +76,9 @@ public class UILuaOutletEditor : Editor
 
 		} else {
 
+
+			// outlet ui edit
+
 			for (var j = outlet.OutletInfos.Count - 1; j >= 0; j--) {
 				var currentTypeIndex = -1;
 				var outletInfo = outlet.OutletInfos [j];
@@ -67,9 +90,15 @@ public class UILuaOutletEditor : Editor
 
 				if (outletInfo.Object != null) {
 					if (outletInfo.Object is GameObject) {
+
+
 						currentTypeIndex = 0;// give it default
 						var gameObj = outletInfo.Object as GameObject;
 						var components = gameObj.GetComponents<Component> ();
+
+
+
+						_outletObjects [gameObj] = outletInfo.Name;
 
 						typesOptions = new string[components.Length];
 						for (var i = 0; i < components.Length; i++) {
@@ -108,12 +137,10 @@ public class UILuaOutletEditor : Editor
 					outletInfo.ComponentType = typesOptions [typeIndex].ToString ();
 
 				}
-
-
-
 			}
 		}
 		//base.OnInspectorGUI ();
 	}
+
 
 }
