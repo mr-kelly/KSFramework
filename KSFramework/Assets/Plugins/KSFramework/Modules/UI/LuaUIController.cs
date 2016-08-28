@@ -80,7 +80,7 @@ namespace KSFramework
 			if (_luaTable != null && CacheMode)
 				return true;
 
-			var relPath = string.Format ("UI/UI{0}", UITemplateName);
+			var relPath = string.Format ("UI/{0}/{0}", UITemplateName);
 
 			if (!KSGame.Instance.LuaModule.HasScript (relPath)) {
 				if (showWarn)
