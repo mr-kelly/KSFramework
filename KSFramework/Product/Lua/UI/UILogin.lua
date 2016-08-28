@@ -28,12 +28,13 @@ function UILogin:OnInit(controller)
 
     Log.Info("================================ UILogin:OnInit ============================")
 
-    local text = self:GetUIText("Login")
-    text.text = I18N.Str("UILogin.LoginDescText")
+    --local text = self:GetUIText("Login")
+    --text.text = I18N.Str("UILogin.LoginDescText")
+    -- read LoginText from Outlet
+    self.LoginText.text = I18N.Str("UILogin.LoginDescText")
 
-    local btn = self:GetUIButton("Button")
-    local btnText = self:GetUIText('Button/Text')
-    btnText.text = I18N.Str('UILogin.LoginButtonText')
+    self.LoginButtonText.text = I18N.Str('UILogin.LoginButtonText')
+    local btn = self.LoginButton
 
     print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), btn:GetType().FullName))
 
