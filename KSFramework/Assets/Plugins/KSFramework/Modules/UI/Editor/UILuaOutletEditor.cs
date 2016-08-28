@@ -63,6 +63,8 @@ public class UILuaOutletEditor : Editor
 	{
 		_cachedPropertyNames.Clear ();
 
+		EditorGUI.BeginChangeCheck ();
+
 		var outlet = target as UILuaOutlet;
 
 		if (outlet.OutletInfos == null || outlet.OutletInfos.Count == 0) {
@@ -140,6 +142,9 @@ public class UILuaOutletEditor : Editor
 			}
 		}
 		//base.OnInspectorGUI ();
+		if (EditorGUI.EndChangeCheck ()) {
+			Undo.RecordObject (target, "GUI Change Check");
+		}
 	}
 
 
