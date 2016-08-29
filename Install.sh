@@ -45,11 +45,11 @@ cp -rf slua/Assets/SLua/Editor/LuaCodeGen.cs KSFramework/Assets/SLua/Editor
 rm -rf KSFramework/Assets/Plugins/Slua_Managed 
 ln -s $PWD/slua/Assets/Plugins/Slua_Managed KSFramework/Assets/Plugins/Slua_Managed 
 
-cp -rf slua/Assets/Plugins/Android KSFramework/Assets/Plugins/Android
-cp -rf slua/Assets/Plugins/iOS KSFramework/Assets/Plugins/iOS
-cp -rf slua/Assets/Plugins/slua.bundle KSFramework/Assets/Plugins/slua.bundle
-cp -rf slua/Assets/Plugins/x64 KSFramework/Assets/Plugins/x64
-cp -rf slua/Assets/Plugins/x86 KSFramework/Assets/Plugins/x86
+cp -rf slua/Assets/Plugins/Android/* KSFramework/Assets/Plugins/Android
+cp -rf slua/Assets/Plugins/iOS/* KSFramework/Assets/Plugins/iOS
+cp -rf slua/Assets/Plugins/slua.bundle/* KSFramework/Assets/Plugins/slua.bundle
+cp -rf slua/Assets/Plugins/x64/* KSFramework/Assets/Plugins/x64
+cp -rf slua/Assets/Plugins/x86/* KSFramework/Assets/Plugins/x86
 
 echo Finish!
 
