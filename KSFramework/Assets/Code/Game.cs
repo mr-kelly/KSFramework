@@ -53,7 +53,7 @@ public class Game : KSGame
     /// Before Init Modules, coroutine
     /// </summary>
     /// <returns></returns>
-    public override IEnumerator OnBeforeInitModules()
+    public override IEnumerator OnBeforeInit()
     {
         // Do Nothing
         yield break;
@@ -63,7 +63,7 @@ public class Game : KSGame
     /// After Init Modules, coroutine
     /// </summary>
     /// <returns></returns>
-    public override IEnumerator OnFinishInitModules()
+    public override IEnumerator OnGameStart()
     {
         // Print AppConfigs
         Log.Info("======================================= Read Settings from C# =================================");
