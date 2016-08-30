@@ -1045,9 +1045,9 @@ namespace SLua
 			Write(file, "static public void reg(IntPtr l) {");
 			Write(file, "getEnumTable(l,\"{0}\");", string.IsNullOrEmpty(givenNamespace) ? FullName(t) : givenNamespace);
 
-			foreach (object value in Enum.GetValues (t))
+			foreach (string name in Enum.GetNames (t))
 			{
-				Write(file, "addMember(l,{0},\"{1}\");", Convert.ToInt32(value), value.ToString());
+				Write(file, "addMember(l,{0},\"{1}\");", Convert.ToInt32(Enum.Parse(t, name)), name);
 			}
 			
 			Write(file, "LuaDLL.lua_pop(l, 1);");

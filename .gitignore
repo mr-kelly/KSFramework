@@ -233,6 +233,7 @@ _Pvt_Extensions
 .fake/
 /KSFramework/Assets/Plugins/Editor/KEngineEditor
 /KSFramework/Assets/Plugins/KEngine
+/KSFramework/Assets/Plugins/Slua_Managed
 /KSFramework/Library
 /KSFramework/Temp
 /KSFramework/*.csproj

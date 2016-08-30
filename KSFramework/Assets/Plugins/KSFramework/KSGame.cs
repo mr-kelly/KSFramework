@@ -74,12 +74,12 @@ namespace KSFramework
         /// Before KEngine init modules
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator OnBeforeInitModules();
+        public abstract IEnumerator OnBeforeInit();
 
         /// <summary>
         /// After KEngine inited all module, make the game start!
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator OnFinishInitModules();
+        public abstract IEnumerator OnGameStart();
     }
 }

@@ -16,9 +16,7 @@ end
 
 -- simple new table to a object
 function new(table, ctorFunc)
-    if not table then
-        assert(table ~= nil)
-    end
+    assert(table ~= nil)
 
     table.__index = table
 

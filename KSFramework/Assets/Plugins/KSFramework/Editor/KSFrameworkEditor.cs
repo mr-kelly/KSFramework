@@ -100,7 +100,7 @@ Shorcuts:
             var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
             Debug.Log("Find UI from current scenes, LuaScriptPath: " + luaPath);
 
-            var windowAssets = GameObject.FindObjectsOfType<KUIWindowAsset>();
+            var windowAssets = GameObject.FindObjectsOfType<UIWindowAsset>();
             if (windowAssets.Length > 0)
             {
                 foreach (var windowAsset in windowAssets)
