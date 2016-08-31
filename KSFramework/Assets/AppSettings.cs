@@ -56,7 +56,7 @@ namespace AppSettings
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("KEngine/Settings/Reload All Settings")]
+        [UnityEditor.MenuItem("KEngine/Settings/Try Reload All Settings Code")]
 #endif
 	    public static void AllSettingsReload()
 	    {
@@ -158,14 +158,28 @@ namespace AppSettings
         }
 
         /// <summary>
+        /// Do reload the setting class : Test, no exception when duplicate primary key, use custom string content
+        /// </summary>
+        public void ReloadAllWithString(string context)
+        {
+            _ReloadAll(false, context);
+        }
+
+        /// <summary>
         /// Do reload the setting file: Test
         /// </summary>
-	    void _ReloadAll(bool throwWhenDuplicatePrimaryKey)
+	    void _ReloadAll(bool throwWhenDuplicatePrimaryKey, string customContent = null)
         {
             for (var j = 0; j < TabFilePaths.Length; j++)
             {
                 var tabFilePath = TabFilePaths[j];
-                using (var tableFile = SettingModule.Get(tabFilePath, false))
+                TableFile tableFile;
+                if (customContent == null)
+                    tableFile = SettingModule.Get(tabFilePath, false);
+                else
+                    tableFile = TableFile.LoadFromString(customContent);
+
+                using (tableFile)
                 {
                     foreach (var row in tableFile)
                     {
@@ -270,7 +284,7 @@ namespace AppSettings
 	}
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig/+Base.bytes", "GameConfig/+TSV.bytes"
+	/// Auto Generate for Tab File: "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class GameConfigSettings : IReloadableSettings
@@ -282,7 +296,7 @@ namespace AppSettings
 
 		public static readonly string[] TabFilePaths = 
         {
-            "GameConfig/+Base.bytes", "GameConfig/+TSV.bytes"
+            "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
         };
         internal static GameConfigSettings _instance = new GameConfigSettings();
         Dictionary<string, GameConfigSetting> _dict = new Dictionary<string, GameConfigSetting>();
@@ -349,14 +363,28 @@ namespace AppSettings
         }
 
         /// <summary>
+        /// Do reload the setting class : GameConfig, no exception when duplicate primary key, use custom string content
+        /// </summary>
+        public void ReloadAllWithString(string context)
+        {
+            _ReloadAll(false, context);
+        }
+
+        /// <summary>
         /// Do reload the setting file: GameConfig
         /// </summary>
-	    void _ReloadAll(bool throwWhenDuplicatePrimaryKey)
+	    void _ReloadAll(bool throwWhenDuplicatePrimaryKey, string customContent = null)
         {
             for (var j = 0; j < TabFilePaths.Length; j++)
             {
                 var tabFilePath = TabFilePaths[j];
-                using (var tableFile = SettingModule.Get(tabFilePath, false))
+                TableFile tableFile;
+                if (customContent == null)
+                    tableFile = SettingModule.Get(tabFilePath, false);
+                else
+                    tableFile = TableFile.LoadFromString(customContent);
+
+                using (tableFile)
                 {
                     foreach (var row in tableFile)
                     {
@@ -420,7 +448,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig/+Base.bytes", "GameConfig/+TSV.bytes"
+	/// Auto Generate for Tab File: "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class GameConfigSetting : TableRowParser

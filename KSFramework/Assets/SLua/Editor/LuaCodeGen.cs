@@ -1977,6 +1977,8 @@ namespace SLua
 					Write(file, "{0}a1/a2;", ret);
 				else if (m.Name == "op_UnaryNegation")
 					Write(file, "{0}-a1;", ret);
+				else if (m.Name == "op_UnaryPlus")
+					Write(file, "{0}+a1;", ret);
 				else if (m.Name == "op_Equality")
 					Write(file, "{0}(a1==a2);", ret);
 				else if (m.Name == "op_Inequality")
