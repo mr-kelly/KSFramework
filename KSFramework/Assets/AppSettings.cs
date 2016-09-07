@@ -79,7 +79,7 @@ namespace AppSettings
 
 
 	/// <summary>
-	/// Auto Generate for Tab File: "Test.bytes"
+	/// Auto Generate for Tab File: "Test.k"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class TestSettings : IReloadableSettings
@@ -91,7 +91,7 @@ namespace AppSettings
 
 		public static readonly string[] TabFilePaths = 
         {
-            "Test.bytes"
+            "Test.k"
         };
         internal static TestSettings _instance = new TestSettings();
         Dictionary<string, TestSetting> _dict = new Dictionary<string, TestSetting>();
@@ -243,7 +243,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "Test.bytes"
+	/// Auto Generate for Tab File: "Test.k"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class TestSetting : TableRowParser
@@ -284,7 +284,7 @@ namespace AppSettings
 	}
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
+	/// Auto Generate for Tab File: "GameConfig/#Base.k", "GameConfig/#TSV.k"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class GameConfigSettings : IReloadableSettings
@@ -296,7 +296,7 @@ namespace AppSettings
 
 		public static readonly string[] TabFilePaths = 
         {
-            "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
+            "GameConfig/#Base.k", "GameConfig/#TSV.k"
         };
         internal static GameConfigSettings _instance = new GameConfigSettings();
         Dictionary<string, GameConfigSetting> _dict = new Dictionary<string, GameConfigSetting>();
@@ -448,7 +448,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
+	/// Auto Generate for Tab File: "GameConfig/#Base.k", "GameConfig/#TSV.k"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class GameConfigSetting : TableRowParser

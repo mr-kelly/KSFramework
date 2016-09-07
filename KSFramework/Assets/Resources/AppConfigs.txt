@@ -1,4 +1,7 @@
 
+[KEngine]
+AssetBundleExt = .k	
+
 ; Override default "UGUIBridge"
 [KEngine.UI]
 UIModuleBridge = KSFramework.UGUISLuaBridge

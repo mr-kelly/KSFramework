@@ -1,7 +1,7 @@
 ManifestFileVersion: 0
-CRC: 3753706042
+CRC: 1188401745
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: ui/login.prefab.bytes
+      Name: ui/login.prefab.k
       Dependencies: {}
