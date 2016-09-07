@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 3313509848
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ui/login.prefab.bytes
+      Dependencies: {}
