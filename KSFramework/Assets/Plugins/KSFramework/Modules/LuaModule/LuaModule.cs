@@ -24,6 +24,7 @@
 #endregion
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using KEngine;
@@ -39,6 +40,20 @@ namespace KSFramework
         public static LuaModule Instance = new LuaModule();
 
         public bool IsInited { get; private set; }
+
+		/// <summary>
+		/// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，也可以通过编辑器的Reload来进行强制刷新缓存
+		/// 对实时性重载要求高的，可以把开关设置成false，长期都进行Lua脚本重载，理论上会消耗额外的性能用于语法解析
+		/// 
+		/// 一般的脚本语言，如Python, NodeJS中，其import, require关键字都会对加载过的模块进行缓存(包括Lua原生的require)；如果不缓存，要注意状态的保存问题
+		/// 该值调用频繁，就不放ini了
+		/// </summary>
+        public static bool CacheMode = false;
+
+        /// <summary>
+        /// Import result object caching
+        /// </summary>
+        Dictionary<string, object> _importCache = new Dictionary<string, object>();
 
         private LuaModule()
         {
@@ -74,6 +89,8 @@ namespace KSFramework
 
         /// <summary>
         /// Call script of script path (relative) specify
+        /// 
+        /// We don't recommend use this method, please use ImportScript which has Caching!
         /// </summary>
         /// <param name="scriptRelativePath"></param>
         /// <returns></returns>
@@ -127,6 +144,68 @@ namespace KSFramework
                 return File.Exists(scriptPath);
             else
                 return KResourceModule.IsStreamingAssetsExists(scriptPath);
+        }
+
+        /// <summary>
+        /// Import script, with caching
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public object Import(string fileName)
+        {
+			if (!HasScript (fileName))
+                throw new FileNotFoundException(string.Format("Not found UI Lua Script: {0}", fileName));
+
+            return DoImportScript(fileName);
+        }
+
+        /// <summary>
+        /// Try import script, if 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool TryImport(string fileName, out object result)
+        {
+            result = null;
+
+            if (!HasScript(fileName))
+                return false;
+
+            result = DoImportScript(fileName);
+            return true;
+        }
+
+        object DoImportScript(string fileName)
+        {
+            object obj;
+            if (!_importCache.TryGetValue(fileName, out obj))
+            {
+                obj = this.CallScript(fileName);
+                if (CacheMode)
+                    _importCache[fileName] = obj;
+            }
+
+            return obj;
+        }
+
+
+        /// <summary>
+        /// Clear all imported cache
+        /// </summary>
+        public void ClearAllCache()
+        {
+            _importCache.Clear();
+        }
+
+        /// <summary>
+        /// Clear dest lua script cache
+        /// </summary>
+        /// <param name="uiLuaPath"></param>
+        /// <returns></returns>
+        public bool ClearCache(string uiLuaPath)
+        {
+            return _importCache.Remove(uiLuaPath);
         }
 
         public IEnumerator Init()
@@ -240,7 +319,7 @@ namespace KSFramework
             LuaModule luaModule = Instance;
 
             string fileName = LuaDLL.lua_tostring(L, 1);
-            var obj = luaModule.CallScript(fileName);
+            var obj = luaModule.Import(fileName);
 
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);

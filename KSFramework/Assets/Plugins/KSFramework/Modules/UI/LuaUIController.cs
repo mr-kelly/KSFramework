@@ -15,18 +15,6 @@ namespace KSFramework
 	public class LuaUIController : KEngine.UI.UIController
 	{
 		/// <summary>
-		/// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，也可以通过编辑器的Reload来进行强制刷新缓存
-		/// 对实时性重载要求高的，可以把开关设置成false，长期都进行Lua脚本重载，理论上会消耗额外的性能用于语法解析
-		/// 该值调用频繁，就不放ini了
-		/// </summary>
-		public static bool CacheMode = true;
-
-		/// <summary>
-		/// 缓存的LuaTable
-		/// </summary>
-		private LuaTable _luaTable;
-
-		/// <summary>
 		/// 一般编辑器模式下用于reload时用，记录上一次OnOpen的参数
 		/// </summary>
 		public object[] LastOnOpenArgs { get; private set; }
@@ -35,7 +23,8 @@ namespace KSFramework
 		{
 			base.OnInit ();
 
-			if (!CheckInitScript (true))
+		    LuaTable luaTable;
+			if (!CheckInitScript (out luaTable, true))
 				return;
 		}
 
@@ -49,7 +38,8 @@ namespace KSFramework
 			LastOnOpenArgs = args;
 
 			base.OnOpen (args);
-			if (!CheckInitScript ())
+		    LuaTable _luaTable;
+			if (!CheckInitScript (out _luaTable))
 				return;
 
 			var onOpenFuncObj = _luaTable ["OnOpen"];
@@ -67,6 +57,18 @@ namespace KSFramework
 			(onOpenFuncObj as LuaFunction).call (newArgs);
 		}
 
+        /// <summary>
+        /// Lua Script for this UI 's path
+        /// </summary>
+	    public string UILuaPath
+	    {
+	        get
+	        {
+                var relPath = string.Format ("UI/{0}/{0}", UITemplateName);
+	            return relPath;
+	        }
+	    }
+
 		/// <summary>
 		/// Try to load script and init.
 		/// Script will be cached,
@@ -74,29 +76,30 @@ namespace KSFramework
 		/// 
 		/// 开发阶段经常要使用Lua热重载，热重载过后，要确保OnInit重新执行
 		/// </summary>
-		bool CheckInitScript (bool showWarn = false)
+		bool CheckInitScript (out LuaTable luaTable, bool showWarn = false)
 		{
-			// 有缓存的lua，根据开关判定是否重新加载
-			if (_luaTable != null && CacheMode)
-				return true;
+            luaTable = null;
 
-			var relPath = string.Format ("UI/{0}/{0}", UITemplateName);
+		    var relPath = UILuaPath;
 
-			if (!KSGame.Instance.LuaModule.HasScript (relPath)) {
+		    var luaModule = KSGame.Instance.LuaModule;
+		    object scriptResult;
+		    if (!luaModule.TryImport(relPath, out scriptResult))
+		    {
 				if (showWarn)
-					Log.LogWarning ("Not found UI Lua Script: {0}", relPath);
-				return false;
-			}
+					Log.LogWarning ("Import UI Lua Script failed: {0}", relPath);
+                return false;
+		    }
 
-			var scriptResult = KSGame.Instance.LuaModule.CallScript (relPath);
+			scriptResult = KSGame.Instance.LuaModule.CallScript (relPath);
 			Debuger.Assert (scriptResult is LuaTable, "{0} Script Must Return Lua Table with functions!", UITemplateName);
 
-			_luaTable = scriptResult as LuaTable;
+			luaTable = scriptResult as LuaTable;
 
-			var newFuncObj = _luaTable ["New"]; // if a New function exist, new a table!
+			var newFuncObj = luaTable ["New"]; // if a New function exist, new a table!
 			if (newFuncObj != null) {
 				var newTableObj = (newFuncObj as LuaFunction).call (this);
-				_luaTable = newTableObj as LuaTable;
+				luaTable = newTableObj as LuaTable;
 			}
 
 			var outlet = this.GetComponent<UILuaOutlet> ();
@@ -107,18 +110,18 @@ namespace KSFramework
 					var gameObj = outletInfo.Object as GameObject;
 
 					if (gameObj != null)
-						_luaTable [outletInfo.Name] = gameObj.GetComponent (outletInfo.ComponentType);
+						luaTable [outletInfo.Name] = gameObj.GetComponent (outletInfo.ComponentType);
 					else
-						_luaTable [outletInfo.Name] = outletInfo.Object;
+						luaTable [outletInfo.Name] = outletInfo.Object;
 				}
 
 			}
 
 
-			var luaInitObj = _luaTable ["OnInit"];
+			var luaInitObj = luaTable ["OnInit"];
 			Debuger.Assert (luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
 
-			(luaInitObj as LuaFunction).call (_luaTable, this);
+			(luaInitObj as LuaFunction).call (luaTable, this);
 
 			return true;
 		}
@@ -156,10 +159,10 @@ namespace KSFramework
 		/// </summary>
 		public void ReloadLua ()
 		{
-			if (_luaTable != null) {
-				_luaTable.Dispose ();
-				_luaTable = null;
-			}
+		    var luaModule = KSGame.Instance.LuaModule;
+		    luaModule.ClearCache(UILuaPath);
+		    Log.Warning("Reload Lua: {0}", UILuaPath);
 		}
+
 	}
 }
