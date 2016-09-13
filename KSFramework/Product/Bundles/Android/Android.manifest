@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 1188401745
+CRC: 566724458
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: ui/login.prefab.k
+      Dependencies: {}
+    Info_1:
+      Name: scene/testscene/testscene.unity.k
       Dependencies: {}

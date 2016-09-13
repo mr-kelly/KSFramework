@@ -65,6 +65,7 @@ public class Game : KSGame
     /// <returns></returns>
     public override IEnumerator OnGameStart()
     {
+
         // Print AppConfigs
         Log.Info("======================================= Read Settings from C# =================================");
         foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
@@ -77,7 +78,11 @@ public class Game : KSGame
         Log.Info("======================================= Open Window 'Login' =================================");
         UIModule.Instance.OpenWindow("Login", 888);
 
+        // Test Load a scene in asset bundle
+        SceneLoader.Load("Scene/TestScene/TestScene.unity");
+
         // 开始加载我们的公告界面！
         //UIModule.Instance.OpenWindow("Billboard");
     }
+
 }
