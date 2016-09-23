@@ -120,7 +120,10 @@ namespace KSFramework
 
 			var luaInitObj = luaTable ["OnInit"];
 			Debuger.Assert (luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
-
+            
+			// set table variable `Controller` to this
+			luaTable["Controller"] = this;
+			
 			(luaInitObj as LuaFunction).call (luaTable, this);
 
 			return true;

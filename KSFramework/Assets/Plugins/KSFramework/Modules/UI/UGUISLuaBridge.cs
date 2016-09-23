@@ -33,7 +33,7 @@ namespace KSFramework
         {
         }
 
-        public IEnumerator LoadUIAsset(CUILoadState loadState, UILoadRequest request)
+        public IEnumerator LoadUIAsset(UILoadState loadState, UILoadRequest request)
         {
             string path = string.Format("ui/{0}.prefab", loadState.TemplateName);
             var assetLoader = StaticAssetLoader.Load(path);
