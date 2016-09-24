@@ -10,7 +10,7 @@ namespace KSFramework
     {
         public EventSystem EventSystem;
 
-        public void InitBridge()
+        public virtual void InitBridge()
         {
             EventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
             EventSystem.gameObject.AddComponent<StandaloneInputModule>();
@@ -21,7 +21,7 @@ namespace KSFramework
 #endif
         }
 
-        public UIController CreateUIController(GameObject uiObj, string uiTemplateName)
+        public virtual UIController CreateUIController(GameObject uiObj, string uiTemplateName)
         {
             UIController uiBase = uiObj.AddComponent<LuaUIController>();
             
@@ -29,11 +29,11 @@ namespace KSFramework
             return uiBase;
         }
 
-        public void UIObjectFilter(UIController controller, GameObject uiObject)
+        public virtual void UIObjectFilter(UIController controller, GameObject uiObject)
         {
         }
 
-        public IEnumerator LoadUIAsset(UILoadState loadState, UILoadRequest request)
+        public virtual IEnumerator LoadUIAsset(UILoadState loadState, UILoadRequest request)
         {
             string path = string.Format("ui/{0}.prefab", loadState.TemplateName);
             var assetLoader = StaticAssetLoader.Load(path);
