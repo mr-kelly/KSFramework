@@ -25,6 +25,12 @@ namespace KSFramework
 
         public static LuaBehaviour Create(GameObject attach, string luaPath)
         {
+			// only one same lua behaviour can attach
+			foreach (var b in attach.GetComponents<LuaBehaviour>())
+			{
+				if (b.LuaPath == luaPath)
+					return b;
+			}
             var behaviour = attach.AddComponent<LuaBehaviour>();
             behaviour.LuaPath = luaPath;
             behaviour.Awake();
