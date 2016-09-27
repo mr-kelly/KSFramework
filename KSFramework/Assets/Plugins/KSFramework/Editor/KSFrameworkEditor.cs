@@ -168,7 +168,7 @@ return $UI_NAME
                 var luaController = kv.Value.UIWindow as LuaUIController;
                 if (luaController) // 只处理LuaUIController
                 {
-                    luaController.ReloadLua();
+                    luaController.ClearLuaTableCache();
                     Log.LogWarning("Reload Lua - {0}", kv.Key);
                 }
             }
@@ -191,7 +191,7 @@ return $UI_NAME
                     if (inOpenState)
                         UIModule.Instance.CloseWindow(kv.Key);
 
-                    luaController.ReloadLua();
+                    luaController.ClearLuaTableCache();
                     Log.LogWarning("Reload Lua - {0}", kv.Key);
 
                     UIModule.Instance.ReloadWindow(kv.Key, (args, err) =>
@@ -225,7 +225,7 @@ return $UI_NAME
                     if (inOpenState)
                         UIModule.Instance.CloseWindow(kv.Key);
 
-                    luaController.ReloadLua();
+                    luaController.ClearLuaTableCache();
                     Log.LogWarning("Reload Lua - {0}", kv.Key);
 
                     if (inOpenState)
