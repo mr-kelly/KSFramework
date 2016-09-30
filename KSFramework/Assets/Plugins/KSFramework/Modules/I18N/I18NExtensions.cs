@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using KEngine.Table;
-using KSFramework;
+﻿using KSFramework;
+using TableML;
 
 
 /// <summary>
@@ -16,7 +14,7 @@ public static class I18NExtensions
     /// <param name="value"></param>
     /// <param name="defaultValue"></param>
     /// <returns></returns>
-    public static I18N Get_I18N(this TableRow tableRow, string value, string defaultValue)
+    public static I18N Get_I18N(this TableFileRow tableRow, string value, string defaultValue)
     {
         var str = tableRow.Get_string(value, defaultValue);
         return new I18N(str);

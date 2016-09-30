@@ -45,6 +45,11 @@ namespace KSFramework
 
         public double InitProgress { get { return _initProgress; }}
 
+        public LuaState State
+        {
+            get { return _luaSvr.luaState; }
+        }
+
 		/// <summary>
 		/// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，也可以通过编辑器的Reload来进行强制刷新缓存
 		/// 对实时性重载要求高的，可以把开关设置成false，长期都进行Lua脚本重载，理论上会消耗额外的性能用于语法解析
