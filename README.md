@@ -65,3 +65,16 @@ git submodule update
 # 结构组成
 
 ![KSFramework由KEngine和SLua结合组成](Docs/Structure.png)
+
+# 涉及第三方库
+
+- [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua)
+- [KEngine:AssetBundle打包加载框架](https://github.com/mr-kelly/KEngine)
+  - [ini-parser:Ini配置文件解析器，支持多文件合并](https://github.com/rickyah/ini-parser)
+  - [Premake:VS工程生成](https://github.com/premake/premake-core)
+- [TableML:表格标记语言，运行时与编译器](https://github.com/mr-kelly/TableML)
+  - [NPOI:强大的Excel读写库](http://npoi.codeplex.com/)
+    - [ISharpZipLib:Zip格式读写库](https://github.com/icsharpcode/SharpZipLib)
+  - [DotLiquid:模板语言引擎](https://github.com/dotliquid/dotliquid)
+
+
