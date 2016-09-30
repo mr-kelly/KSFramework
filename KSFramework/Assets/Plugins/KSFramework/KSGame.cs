@@ -53,7 +53,6 @@ namespace KSFramework
         {
             return new List<IModuleInitable>
             {
-                UIModule.Instance,
                 LuaModule,
             };
         }

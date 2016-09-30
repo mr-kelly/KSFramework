@@ -78,7 +78,7 @@ namespace KSFramework
             if (!string.IsNullOrEmpty(LuaPath))
             {
                 Init();
-                CallLuaFunction("Awake");
+				CallLuaFunction("Awake", _cacheTable, this);
             } // else Null Lua Path, pass Awake!
         }
 
@@ -96,6 +96,11 @@ namespace KSFramework
         {
             CallLuaFunction("LateUpdate");
         }
+
+		protected void OnDestroy()
+		{
+			CallLuaFunction ("OnDestroy", _cacheTable, this);
+		}
     }
 
 }
