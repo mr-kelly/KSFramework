@@ -84,7 +84,7 @@ namespace KSFramework.Editor
             }
         }
 
-        [MenuItem("KSFramework/I18N/Collect All")]
+        [MenuItem("KEngine/I18N/Collect All")]
         public static void CollectAll()
         {
             // 如果没有，先确保创建新的

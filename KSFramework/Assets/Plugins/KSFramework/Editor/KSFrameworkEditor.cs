@@ -27,7 +27,7 @@ Shorcuts:
 
 ",KSFrameworkInfo.Version);
 
-        [MenuItem("KSFramework/Options and Help")]
+        [MenuItem("KEngine/KSFramework Options and Help")]
         private static void Open()
         {
             // Get existing open window or if none, make a new one:
@@ -53,7 +53,7 @@ Shorcuts:
         }
 
 
-        [MenuItem("KSFramework/Open Last Scene(before main) %&o")]
+        [MenuItem("KEngine/Open Last Scene(before main) %&o")]
         public static void OpenLastScene()
         {
             var lastScene = EditorPrefs.GetString(LastScenePrefKey);
@@ -74,7 +74,7 @@ Shorcuts:
             }
         }
 
-        [MenuItem("KSFramework/Open Main Scene %&i")]
+        [MenuItem("KEngine/Open Main Scene %&i")]
         public static void OpenMainScene()
         {
 #if UNITY_5
@@ -94,7 +94,7 @@ Shorcuts:
 #endif
         }
 
-        [MenuItem("KSFramework/UI/Auto Make UI Lua Scripts(Current Scene)")]
+        [MenuItem("KEngine/UI(UGUI)/Auto Make UI Lua Scripts(Current Scene)")]
         public static void AutoMakeUILuaScripts()
         {
             var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
@@ -155,7 +155,7 @@ end
 
 return $UI_NAME
 ";
-        [MenuItem("KSFramework/UI/Reload UI Lua %&r")]
+        [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]
         public static void ReloadLuaCache()
         {
             if (!EditorApplication.isPlaying)
@@ -174,7 +174,7 @@ return $UI_NAME
             }
         }
 
-        [MenuItem("KSFramework/UI/Reload Lua + Reload UI AssetBundle")]
+        [MenuItem("KEngine/UI(UGUI)/Reload Lua + Reload UI AssetBundle")]
         public static void ReloadUI()
         {
             if (!EditorApplication.isPlaying)
@@ -208,7 +208,7 @@ return $UI_NAME
         /// 找到所有的LuaUIController被进行Reload
         /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
         /// </summary>
-        [MenuItem("KSFramework/UI/Reload Lua + ReOpen UI #%&r")]
+        [MenuItem("KEngine/UI(UGUI)/Reload Lua + ReOpen UI #%&r")]
         public static void ReloadUILua()
         {
             if (!EditorApplication.isPlaying)
