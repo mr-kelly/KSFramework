@@ -38,7 +38,7 @@ namespace KSFramework.Editor
         /// 自动设置所有UI图集，使用Unity的图集机制 SpritePacker
         /// 所有UIAtlas目录下的图片，都会根据其所在目录被设置成图集
         /// </summary>
-        [MenuItem("KSFramework/UI/Make All Atlas (SpritePacker)")]
+        [MenuItem("KEngine/UI(UGUI)/Make All Atlas (SpritePacker)")]
         public static void MakeAllAtlasSpritePacker()
         {
             var spriteDir = "Assets/" + KEngineDef.ResourcesEditDir + "/UIAtlas";
