@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1313301600
+CRC: 2962117910
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 46ea86249ecf3a56cda0f188f2d8861d
+    Hash: 1f55c197494579c5ffb1824fd6b6f180
   TypeTreeHash:
     serializedVersion: 2
     Hash: e8f198d5b890ae6244c451d26ce1d3ba
@@ -44,5 +44,5 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/BundleResources/UI/Login.prefab
+- Assets/BundleResources/UI/Billboard.prefab
 Dependencies: []
