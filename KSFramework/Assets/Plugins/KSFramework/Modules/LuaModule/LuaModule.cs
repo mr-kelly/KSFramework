@@ -243,7 +243,25 @@ namespace KSFramework
 		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 		static public int ImportCSharpType(IntPtr l)
 		{
-		    return Helper.GetClass(l);
+			try
+			{
+				string cls;
+				Helper.checkType(l, 1, out cls);
+				Type t = LuaObject.FindType(cls);
+				if (t == null)
+				{
+					return Helper.error(l, "Can't find {0} to create", cls);
+				}
+
+				LuaClassObject co = new LuaClassObject(t);
+				LuaObject.pushObject(l,co);
+				Helper.pushValue(l, true);
+				return 2;
+			}
+			catch (Exception e)
+			{
+				return Helper.error(l, e);
+			}
 		}
         /// <summary>
         /// same as SLua default import
