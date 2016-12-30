@@ -1,6 +1,7 @@
 
 [KEngine]
 AssetBundleExt = .k	
+IsEditorLoadAsset = 0
 
 ; Override default "UGUIBridge"
 [KEngine.UI]
