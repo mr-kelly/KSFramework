@@ -8,6 +8,10 @@ if not I18N then
     I18N = Slua.GetClass('KSFramework.I18N') -- use slua reflection mode
 end
 
+if not UIModule then
+    UIModule = Slua.GetClass('KEngine.UI.UIModule')
+end
+
 if not Log then
     Log = Slua.GetClass('KEngine.Log')
 end
@@ -47,7 +51,19 @@ function UILogin:OnInit(controller)
     else
         Log.Warning("Not found UnityEngine static code! No AddListener to the button")
     end
-
+	
+    -- this button click to load new UI
+    local btnMain = self.BtnMain
+    if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
+        btnMain.onClick:RemoveAllListeners()
+        btnMain.onClick:AddListener(function()
+			UIModule.Instance:CloseWindow("Login")
+			UIModule.Instance:OpenWindow("Main","user1")
+        end)
+        print('Success bind button OnClick!')
+    else
+        Long.Warning('MainButton need Slua static code.')
+    end
 
     -- test LuaBehaivour
     if not LuaBehaviour then LuaBehaviour = Slua.GetClass('KSFramework.LuaBehaviour') end
