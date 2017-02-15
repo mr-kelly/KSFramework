@@ -62,7 +62,7 @@ function UILogin:OnInit(controller)
         end)
         print('Success bind button OnClick!')
     else
-        Long.Warning('MainButton need Slua static code.')
+        Log.Warning('MainButton need Slua static code.')
     end
 
     -- test LuaBehaivour

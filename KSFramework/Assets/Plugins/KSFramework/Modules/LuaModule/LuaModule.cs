@@ -101,18 +101,28 @@ namespace KSFramework
         /// 
         /// We don't recommend use this method, please use ImportScript which has Caching!
         /// </summary>
-        /// <param name="scriptRelativePath"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public object CallScript(string scriptRelativePath)
+        public object CallScript(string path)
         {
-            Debuger.Assert(HasScript(scriptRelativePath), "Not exist Lua: " + scriptRelativePath);
-
-            var scriptPath = GetScriptPath(scriptRelativePath);
+            var scriptPath = GetScriptPath(path);
             byte[] script;
-            if (Log.IsUnityEditor)
-                script = File.ReadAllBytes(scriptPath);
-            else
-                script = KResourceModule.LoadSyncFromStreamingAssets(scriptPath);
+            HotBytesLoader loader = null;
+            try
+            {
+                loader = HotBytesLoader.Load(scriptPath, LoaderMode.Sync);
+                Debuger.Assert(!loader.IsError, "Something wrong or Not exist Lua: " + scriptPath);
+                script = loader.Bytes;
+            }
+            finally
+            {
+                if (loader != null)
+                    loader.Release();
+            }
+//            if (Log.IsUnityEditor)
+//                script = File.ReadAllBytes(scriptPath);
+//            else
+//                script = KResourceModule.LoadSyncFromStreamingAssets(scriptPath);
             var ret = ExecuteScript(script);
             return ret;
         }
@@ -129,15 +139,16 @@ namespace KSFramework
 
             var relativePath = string.Format("{0}/{1}.lua", luaPath, scriptRelativePath);
 
-            if (Log.IsUnityEditor)
-            {
-                var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,
-                    relativePath);
+//            if (Log.IsUnityEditor)
+//            {
+//                var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,
+//                    relativePath);
+//
+//                return editorLuaScriptPath;
+//            }
 
-                return editorLuaScriptPath;
-            }
-
-            relativePath += ext;
+            if (!Log.IsUnityEditor)
+                relativePath += ext;
             return relativePath;
         }
 
@@ -162,8 +173,8 @@ namespace KSFramework
         /// <returns></returns>
         public object Import(string fileName)
         {
-			if (!HasScript (fileName))
-                throw new FileNotFoundException(string.Format("Not found UI Lua Script: {0}", fileName));
+//			if (!HasScript (fileName))
+//                throw new FileNotFoundException(string.Format("Not found UI Lua Script: {0}", fileName));
 
             return DoImportScript(fileName);
         }
@@ -176,10 +187,10 @@ namespace KSFramework
         /// <returns></returns>
         public bool TryImport(string fileName, out object result)
         {
-            result = null;
+//            result = null;
 
-            if (!HasScript(fileName))
-                return false;
+//            if (!HasScript(fileName))
+//                return false;
 
             result = DoImportScript(fileName);
             return true;
