@@ -41,7 +41,7 @@ namespace KSFramework
         public static KSGame Instance { get; private set; }
 
         /// <summary>
-        /// Module/Manager of Slua
+        /// Module/Manager of Lua 
         /// </summary>
         public LuaModule LuaModule { get; private set; }
 

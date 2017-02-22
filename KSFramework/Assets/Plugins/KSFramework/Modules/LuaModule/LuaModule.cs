@@ -22,20 +22,35 @@
 // License along with this library.
 
 #endregion
+//#define SLUA
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using KEngine;
-using LuaInterface;
+
+#if SLUA
 using SLua;
+using LuaInterface;
+#else
+using XLua;
+using LuaTypes = LuaInterface.LuaTypes;
+
+#endif
 
 namespace KSFramework
 {
+#if !SLUA
+    [LuaCallCSharp]
+#endif
     public class LuaModule : IModuleInitable
     {
+#if SLUA
         private readonly LuaSvr _luaSvr;
+#else
+        private readonly LuaEnv _luaEnv;
+#endif
 
         public static LuaModule Instance = new LuaModule();
 
@@ -45,10 +60,12 @@ namespace KSFramework
 
         public double InitProgress { get { return _initProgress; }}
 
+#if SLUA
         public LuaState State
         {
             get { return _luaSvr.luaState; }
         }
+#endif
 
 		/// <summary>
 		/// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，也可以通过编辑器的Reload来进行强制刷新缓存
@@ -69,8 +86,13 @@ namespace KSFramework
 #if UNITY_EDITOR
             UnityEngine.Debug.Log("Consturct LuaModule...");
 #endif
+
+#if SLUA
             _luaSvr = new LuaSvr();
             _luaSvr.init(progress => { _initProgress = progress; }, () => { });
+#else
+            _luaEnv = new LuaEnv();
+#endif
         }
 
         /// <summary>
@@ -81,7 +103,21 @@ namespace KSFramework
         /// <returns></returns>
         public bool ExecuteScript(byte[] scriptCode, out object ret)
         {
+#if SLUA
             return _luaSvr.luaState.doBuffer(scriptCode, Encoding.UTF8.GetString(scriptCode), out ret);
+#else
+            var results = _luaEnv.DoString(Encoding.UTF8.GetString(scriptCode), "code");
+
+            if (results != null && results.Length == 1)
+            {
+                ret = results[0];
+            }
+            else
+            {
+                ret = results;
+            }
+            return true;
+#endif
         }
 
         /// <summary>
@@ -230,6 +266,7 @@ namespace KSFramework
 
         public IEnumerator Init()
         {
+#if SLUA
             int frameCount = 0;
             while (!_luaSvr.inited)
             {
@@ -238,7 +275,6 @@ namespace KSFramework
                 yield return null;
                 frameCount++;
             }
-
             var L = _luaSvr.luaState.L;
             LuaDLL.lua_pushcfunction(L, LuaImport);
             LuaDLL.lua_setglobal(L, "import");
@@ -246,12 +282,18 @@ namespace KSFramework
             LuaDLL.lua_setglobal(L, "using"); // same as SLua's import, using namespace
             LuaDLL.lua_pushcfunction(L, ImportCSharpType);
             LuaDLL.lua_setglobal(L, "import_type"); // same as SLua's SLua.GetClass(), import C# type
+#else
+            yield return null;
+#endif
+
             CallScript("Init");
 
             IsInited = true;
         }
 
-		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+
+#if SLUA
+		[LuaInterface.MonoPInvokeCallback(typeof(LuaCSFunction))]
 		static public int ImportCSharpType(IntPtr l)
 		{
 			try
@@ -279,7 +321,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="luastate"></param>
         /// <returns></returns>
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
+        [LuaInterface.MonoPInvokeCallback(typeof(LuaCSFunction))]
         private int LuaUsing(IntPtr l)
         {
             try
@@ -325,7 +367,7 @@ namespace KSFramework
                 return LuaObject.error(l, e);
             }
         }
-
+        
         /// <summary>
         /// This will override SLua default `import`
         /// 
@@ -333,7 +375,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="l"></param>
         /// <returns></returns>
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
+        [LuaInterface.MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LuaImport(IntPtr L)
         {
             LuaModule luaModule = Instance;
@@ -341,11 +383,13 @@ namespace KSFramework
             string fileName = LuaDLL.lua_tostring(L, 1);
             var obj = luaModule.Import(fileName);
 
+
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);
             return 2;
 
         }
+#endif
 
     }
 

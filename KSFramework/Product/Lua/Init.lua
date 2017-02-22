@@ -1,6 +1,11 @@
 
 -- global variables / functions
 
+function import(filename)
+    return CS.KSFramework.LuaModule.Instance:Import(filename)
+
+end
+
 
 
 -- simple class extends

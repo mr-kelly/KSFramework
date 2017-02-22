@@ -4,7 +4,8 @@ using System.Collections;
 using System.IO;
 using KEngine;
 using KEngine.UI;
-using SLua;
+//using SLua;
+using XLua;
 using UnityEngine.UI;
 
 namespace KSFramework
@@ -18,6 +19,7 @@ namespace KSFramework
         /// 一般编辑器模式下用于reload时用，记录上一次OnOpen的参数
         /// </summary>
         public object[] LastOnOpenArgs { get; private set; }
+
         LuaTable _luaTable;
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace KSFramework
                 newArgs[i + 1] = args[i];
             }
 
-            (onOpenFuncObj as LuaFunction).call(newArgs);
+            (onOpenFuncObj as LuaFunction).Call(newArgs);
         }
 
         public override void OnClose()
@@ -89,7 +91,7 @@ namespace KSFramework
             var closeFunc = _luaTable["OnClose"];
             if (closeFunc != null)
             {
-                (closeFunc as LuaFunction).call(_luaTable);
+                (closeFunc as LuaFunction).Call(_luaTable);
             }
         }
 
@@ -126,8 +128,8 @@ namespace KSFramework
             var newFuncObj = _luaTable["New"]; // if a New function exist, new a table!
             if (newFuncObj != null)
             {
-                var newTableObj = (newFuncObj as LuaFunction).call(this);
-                _luaTable = newTableObj as LuaTable;
+                var newTableObj = (newFuncObj as LuaFunction).Call(this);
+                _luaTable = newTableObj[0] as LuaTable;
             }
 
             var outlet = this.GetComponent<UILuaOutlet>();
@@ -154,7 +156,7 @@ namespace KSFramework
             // set table variable `Controller` to this
             _luaTable["Controller"] = this;
 
-            (luaInitObj as LuaFunction).call(_luaTable, this);
+            (luaInitObj as LuaFunction).Call(_luaTable, this);
 
             return true;
         }

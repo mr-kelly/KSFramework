@@ -2,7 +2,8 @@
 using UnityEngine;
 using System.Collections;
 using KEngine;
-using SLua;
+//using SLua;
+using XLua;
 
 public static class LuaBehaivourExtensions
 {
@@ -67,7 +68,7 @@ namespace KSFramework
 
                 var func = retFunc as LuaFunction;
 
-                return func.call(args);
+                return func.Call(args);
             }
 
             return null;

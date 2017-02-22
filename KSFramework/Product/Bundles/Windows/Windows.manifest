@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3659610653
+CRC: 1623149485
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -9,11 +9,11 @@ AssetBundleManifest:
       Name: ui/login.prefab.k
       Dependencies: {}
     Info_2:
-      Name: ui/billboard.prefab.k
-      Dependencies: {}
-    Info_3:
       Name: ui/main.prefab.k
       Dependencies: {}
+    Info_3:
+      Name: ui/billboard.prefab.k
+      Dependencies: {}
     Info_4:
-      Name: ui/main (1).prefab.k
+      Name: ui/main2334.prefab.k
       Dependencies: {}
