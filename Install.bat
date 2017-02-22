@@ -61,11 +61,11 @@ xcopy slua\Assets\Plugins\x86\* KSFramework\Assets\Plugins\x86 /S/Y/R/I
 :: xLua
 mklink /J KSFramework\Assets\Plugins\xLua xLua\Assets\XLua
 
-xcopy xlua\Assets\Plugins\Android\* KSFramework\Assets\Plugins\Android /S/Y/R/I
-xcopy xlua\Assets\Plugins\iOS\* KSFramework\Assets\Plugins\iOS /S/Y/R/I
-xcopy xlua\Assets\Plugins\slua.bundle\* KSFramework\Assets\Plugins\slua.bundle /S/Y/R/I
-xcopy xlua\Assets\Plugins\x64\* KSFramework\Assets\Plugins\x64 /S/Y/R/I
-xcopy xlua\Assets\Plugins\x86_64\* KSFramework\Assets\Plugins\x86_64 /S/Y/R/I
+xcopy xLua\Assets\Plugins\Android\* KSFramework\Assets\Plugins\Android /S/Y/R/I
+xcopy xLua\Assets\Plugins\iOS\* KSFramework\Assets\Plugins\iOS /S/Y/R/I
+xcopy xLua\Assets\Plugins\slua.bundle\* KSFramework\Assets\Plugins\slua.bundle /S/Y/R/I
+xcopy xLua\Assets\Plugins\x64\* KSFramework\Assets\Plugins\x64 /S/Y/R/I
+xcopy xLua\Assets\Plugins\x86_64\* KSFramework\Assets\Plugins\x86_64 /S/Y/R/I
 
 echo Finish!
 
