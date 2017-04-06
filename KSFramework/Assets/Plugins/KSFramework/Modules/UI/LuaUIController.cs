@@ -66,7 +66,7 @@ namespace KSFramework
             if (!CheckInitScript())
                 return;
 
-            var onOpenFuncObj = _luaTable["OnOpen"];
+            var onOpenFuncObj = _luaTable.Get<LuaFunction>("OnOpen");
             if (onOpenFuncObj == null)
             {
                 Log.LogError("Not Exists `OnOpen` in lua: {0}", UITemplateName);
