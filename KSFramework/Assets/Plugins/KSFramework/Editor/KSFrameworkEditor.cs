@@ -106,10 +106,16 @@ Shorcuts:
                 foreach (var windowAsset in windowAssets)
                 {
                     var uiName = windowAsset.name;
-                    var scriptPath = string.Format("{0}/{1}/UI/UI{2}.lua", KResourceModule.EditorProductFullPath,
-                        luaPath, uiName);
+                    var scriptPath = string.Format("{0}/{1}/UI/{2}/{3}.lua", KResourceModule.EditorProductFullPath,
+                        luaPath, uiName,uiName);
                     if (!File.Exists(scriptPath))
                     {
+                        var scriptDir = Path.GetDirectoryName(scriptPath);
+                        if (!string.IsNullOrEmpty(scriptDir) && Directory.Exists(scriptDir) == false)
+                        {
+                            Directory.CreateDirectory(scriptDir);
+                        }
+
                         File.WriteAllText(scriptPath, LuaUITempalteCode.Replace("$UI_NAME", "UI" + uiName));
                         Debug.LogWarning("New Lua Script: " + scriptPath);
                     }
