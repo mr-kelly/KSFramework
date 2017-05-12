@@ -65,6 +65,10 @@ namespace KSFramework.Editor
                 var luaCount = 0;
                 var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath, luaPath);
                 editorLuaScriptPath = editorLuaScriptPath.Replace("\\", "/");
+                if (!Directory.Exists(editorLuaScriptPath))
+                {
+                    return;
+                }
                 var toDir = "Assets/StreamingAssets/" + luaPath;
 
                 // 所有的Lua脚本拷贝到StreamingAssets
