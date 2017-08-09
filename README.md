@@ -3,10 +3,10 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
-[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)+ **Framework** = KSFramework
+[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)|[XLua](https://github.com/Tencent/xLua)|[ILRuntime](https://github.com/Ourpalm/ILRuntime)+ **Framework** = KSFramework
 
 
-**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
+**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua(或XLua、ILRuntime)的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
 
 ---------------------
 
@@ -71,6 +71,8 @@ git submodule update
 # 涉及第三方库
 
 - [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua)
+- [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua),从XLua分支获取
+- [ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新](https://github.com/Ourpalm/ILRuntime) ,从ILRuntime分支获取
 - [KEngine:AssetBundle打包加载框架](https://github.com/mr-kelly/KEngine)
   - [ini-parser:Ini配置文件解析器，支持多文件合并](https://github.com/rickyah/ini-parser)
   - [Premake:VS工程生成](https://github.com/premake/premake-core)
