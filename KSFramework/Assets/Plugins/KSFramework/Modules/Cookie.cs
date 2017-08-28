@@ -91,8 +91,8 @@ namespace KSFramework
             {
                 for (var i = 0; i < listeners.Count; i++)
                 {
-                    var l = listeners[i];
-                    l(); // impossible null
+                    var func = listeners[i];
+                    func(); // impossible null
                 }
             }
         }
@@ -124,11 +124,13 @@ namespace KSFramework
             {
                 getter = DefaultGetter;
             }
-            object value;
             if (_hashtable.ContainsKey(key))
-                value =_hashtable[key];
-            value = null;
-            return getter(value);
+            {    
+                var value =_hashtable[key];
+                return getter(value);
+            }else{
+                return null;
+            }
         }
 
         /// <summary>
