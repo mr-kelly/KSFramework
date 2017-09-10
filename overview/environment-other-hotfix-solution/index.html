@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>控件与变量绑定 - KSFramework Documentation</title>
+  <title>运行环境和其它热更新方案 - KSFramework Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u63a7\u4ef6\u4e0e\u53d8\u91cf\u7ed1\u5b9a";
-    var mkdocs_page_input_path = "ui\\ui-binding.md";
-    var mkdocs_page_url = "/ui/ui-binding/";
+    var mkdocs_page_name = "\u8fd0\u884c\u73af\u5883\u548c\u5176\u5b83\u70ed\u66f4\u65b0\u65b9\u6848";
+    var mkdocs_page_input_path = "overview\\environment-other-hotfix-solution.md";
+    var mkdocs_page_url = "/overview/environment-other-hotfix-solution/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -57,19 +57,19 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../../overview/install/">安装</a>
+    <a class="" href="../install/">安装</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../overview/why/">项目的由来</a>
+    <a class="" href="../why/">项目的由来</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../overview/structure/">模块结构组织</a>
+    <a class="" href="../structure/">模块结构组织</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../overview/features/">功能特性</a>
+    <a class="" href="../features/">功能特性</a>
                 </li>
     </ul>
 	    </li>
@@ -146,31 +146,15 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../guide/">UI模块使用指南</a>
-                </li>
-                <li class=" current">
-                    
-    <a class="current" href="./">控件与变量绑定</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#_1">为什么不用拖拽的方式绑定？</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#_2">控件的拖拉，更多是程序操作</a></li>
-        
-            <li><a class="toctree-l4" href="#_3">控件太多，分不清具体</a></li>
-        
-            <li><a class="toctree-l4" href="#_4">引用丢失的情况</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../../ui/guide/">UI模块使用指南</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../data-binding/">单向数据绑定</a>
+    <a class="" href="../../ui/ui-binding/">控件与变量绑定</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../ui/data-binding/">单向数据绑定</a>
                 </li>
     </ul>
 	    </li>
@@ -268,9 +252,30 @@
                     
     <a class="" href="../../roadmap/">开发计划</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
+    <a class="current" href="./">运行环境和其它热更新方案</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#_1">运行环境及其它热更新方案</a></li>
+    
+
+    <li class="toctree-l3"><a href="#unity3d">Unity3D版本</a></li>
+    
+
+    <li class="toctree-l3"><a href="#slua">SLua方案</a></li>
+    
+
+    <li class="toctree-l3"><a href="#xlua">XLua方案</a></li>
+    
+
+    <li class="toctree-l3"><a href="#ilruntime">ILRuntime方案</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_2">其它热更新方案</a></li>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -297,11 +302,11 @@
     
       
         
-          <li>UI模块 &raquo;</li>
+          <li>其它 &raquo;</li>
         
       
     
-    <li>控件与变量绑定</li>
+    <li>运行环境和其它热更新方案</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -311,21 +316,70 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，控件的绑定是通过代码手工实现的。</p>
-<pre><code class="Lua">-- Type and Path
-local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
-</code></pre>
-
-<p>通过指定控件的类型和相对路径，即可获取到指定的控件。</p>
-<h1 id="_1">为什么不用拖拽的方式绑定？</h1>
-<p><img alt="" src="../../images/ui/ui-editor-binding.png" /></p>
-<p>另一种方法，控件的绑定，是可以像通过编辑器的拖拉来实现。即在Unity编辑器中，拖拽控件到右边的Inspector，可视化的向脚本赋值。之所以采用代码手工实现，是出于几点考虑：</p>
-<h2 id="_2">控件的拖拉，更多是程序操作</h2>
-<p>用拖拽的方式，最初的设计估计是可视化编辑。但是到了最后，由于使用哪一些控件，只有程序自己是最清楚的，更多的是程序同学自己做拖拽，起不到可视化的作用。</p>
-<h2 id="_3">控件太多，分不清具体</h2>
-<p>当一个UI中拖拽的控件很多（比如100个），编辑器边栏密密麻麻的布满控件。而且这些控件都是以变量名称存在的，正常人根本无法区分，具体的变量对应什么控件。 反而直接码到代码里，添加注释，更加的清晰。</p>
-<h2 id="_4">引用丢失的情况</h2>
-<p>当UI中拖拽绑定控件，如果这个控件后来因UI的结构修改而被删除了，这个变量就变成了Null。 程序对变量的访问就会引发NullReferenceException。 这种问题出现的时候，非常的不好查。</p>
+                <h2 id="_1">运行环境及其它热更新方案</h2>
+<p>目前经过测试的u部分Unity3D版本、操作系统版本、移动平台信息如下：</p>
+<p><strong>Unity3D版本</strong></p>
+<ul>
+<li>
+<p>Unity5.6.0</p>
+</li>
+<li>
+<p>Unity5.4.0</p>
+</li>
+<li>
+<p>Unity5.3.7</p>
+</li>
+</ul>
+<p>​</p>
+<p>Unity4.x的版本</p>
+<ul>
+<li>Unity4.6.9</li>
+</ul>
+<p><strong>操作系统</strong></p>
+<ul>
+<li>
+<p>Windows 7 x64 sp1</p>
+</li>
+<li>
+<p>Windows 10 x64 专业版/企业版本</p>
+</li>
+<li>
+<p>Mac OS X 10.x</p>
+</li>
+</ul>
+<p><strong>Android 平台</strong></p>
+<ul>
+<li>
+<p>Android 7.0</p>
+</li>
+<li>
+<p>Android 4.3.3</p>
+</li>
+</ul>
+<p><strong>IOS平台</strong></p>
+<ul>
+<li>
+<p>IOS 10.3.3</p>
+</li>
+<li>
+<p>IOS 8.3</p>
+</li>
+</ul>
+<h2 id="unity3d">Unity3D版本</h2>
+<p>目前支持Unity4.X及Unity5.x的所有版本，Unity2017在近期将会进行升级适配。</p>
+<h2 id="slua">SLua方案</h2>
+<p>支持SLua截止目前的最新版本，理论上KSFramework可以支持任意版本的SLua，因为KSFramework封装了一层LuaModule、LuaBehaviour，执行代码逻辑，对于开发者使用那种Lua热更热方案是没有直接影响的，可以兼容适配。</p>
+<p>PS.github上的slua版本较旧，大家可自己更新slua的版本，并执行安装。</p>
+<h2 id="xlua">XLua方案</h2>
+<p>支持XLua截止目前的最新版本，理论上KSFramework可以支持任意版本的XLua，因为KSFramework封装了一层LuaModule、LuaBehaviour，执行代码逻辑，对于开发者使用那种Lua热更热方案是没有直接影响的，可以兼容适配。</p>
+<h2 id="ilruntime">ILRuntime方案</h2>
+<p>目前基于ILRuntime的最新版本，在ILRuntime分支进行测试，正在进行中。</p>
+<h2 id="_2">其它热更新方案</h2>
+<p>理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。</p>
+<ul>
+<li><code>KSFramework/Modules/LuaModule/LuaBehaviour.cs</code>  </li>
+<li><code>KSFramework/Modules/LuaModule/LuaModule.cs</code></li>
+</ul>
               
             </div>
           </div>
@@ -333,10 +387,8 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../data-binding/" class="btn btn-neutral float-right" title="单向数据绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../guide/" class="btn btn-neutral" title="UI模块使用指南"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../roadmap/" class="btn btn-neutral" title="开发计划"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -362,10 +414,8 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../roadmap/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../data-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
