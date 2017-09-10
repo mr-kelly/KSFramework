@@ -9,7 +9,7 @@ pages:
     - [overview/why.md, "简介", "项目的由来"]
     - [overview/structure.md, "简介", "模块结构组织"]
     - [overview/features.md, "简介", "功能特性"]
-
+        
     - [quickstart.md, "【快速入门指南！】"]
 
     - [basic/config.md, "基础约定", "Ini配置文件"]
@@ -49,3 +49,4 @@ pages:
 
     - [license.md, "其它", "版权说明"]
     - [roadmap.md, "其它", "开发计划"]
+    - [overview/environment-other-hotfix-solution.md, "其它", "运行环境和其它热更新方案"]
