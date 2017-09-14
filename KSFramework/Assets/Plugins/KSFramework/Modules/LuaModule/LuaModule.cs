@@ -35,7 +35,7 @@ using SLua;
 using LuaInterface;
 #else
 using XLua;
-using LuaTypes = LuaInterface.LuaTypes;
+//using LuaTypes = LuaInterface.LuaTypes;
 
 #endif
 
