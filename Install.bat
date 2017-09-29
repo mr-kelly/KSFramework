@@ -42,28 +42,11 @@ mklink /J %DST_EDITOR_PATH%\KEngine.UI.Editor %SRC_ASSETS_PATH%\KEngine.UI.Edito
 mkdir KSFramework\Assets\Plugins\libs\ 2>nul
 xcopy %SRC_ASSETS_PATH%\Plugins\Android\libs\KEngine.Android.jar KSFramework\Assets\Plugins\Android\libs\KEngine.Android.jar /S/Y/R/I
 
-:: SLua
-mkdir KSFramework\Assets\SLua
-mkdir KSFramework\Assets\SLua\Resources
-mkdir KSFramework\Assets\SLua\Editor
-xcopy slua\Assets\SLua\Editor\CustomEditor.cs KSFramework\Assets\SLua\Editor /S/Y/R/I
-xcopy slua\Assets\SLua\Editor\LuaCodeGen.cs KSFramework\Assets\SLua\Editor /S/Y/R/I
-
-rmdir KSFramework\Assets\Plugins\Slua_Managed
-mklink /J KSFramework\Assets\Plugins\Slua_Managed slua\Assets\Plugins\Slua_Managed
-
-xcopy slua\Assets\Plugins\Android\* KSFramework\Assets\Plugins\Android /S/Y/R/I
-xcopy slua\Assets\Plugins\iOS\* KSFramework\Assets\Plugins\iOS /S/Y/R/I
-xcopy slua\Assets\Plugins\slua.bundle\* KSFramework\Assets\Plugins\slua.bundle /S/Y/R/I
-xcopy slua\Assets\Plugins\x64\* KSFramework\Assets\Plugins\x64 /S/Y/R/I
-xcopy slua\Assets\Plugins\x86\* KSFramework\Assets\Plugins\x86 /S/Y/R/I
-
 :: xLua
 mklink /J KSFramework\Assets\Plugins\xLua xLua\Assets\XLua
 
 xcopy xLua\Assets\Plugins\Android\* KSFramework\Assets\Plugins\Android /S/Y/R/I
 xcopy xLua\Assets\Plugins\iOS\* KSFramework\Assets\Plugins\iOS /S/Y/R/I
-xcopy xLua\Assets\Plugins\slua.bundle\* KSFramework\Assets\Plugins\slua.bundle /S/Y/R/I
 xcopy xLua\Assets\Plugins\x64\* KSFramework\Assets\Plugins\x64 /S/Y/R/I
 xcopy xLua\Assets\Plugins\x86_64\* KSFramework\Assets\Plugins\x86_64 /S/Y/R/I
 
