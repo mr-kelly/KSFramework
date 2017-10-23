@@ -1,5 +1,5 @@
 
-![KSFramework](Docs/KSFramework-logo.png)
+![KSFramework](https://github.com/mr-kelly/KSFramework/blob/master/Docs/KSFramework-logo.png)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
@@ -8,6 +8,8 @@
 本分支是KSFramework官方文档的分支，用来存储官方文档的Markdown源文件。
 
 如果你觉得文档有欠缺或描述不清晰的，欢迎提出，更加欢迎你pull request到这儿来，让更多开发人员受益。
+
+
 
 ### 关于KSFramework
 
@@ -29,3 +31,10 @@
 
 对于运营人员，利用KSFramework的热重载特性，可以针对运营需求，在项目运行过程中配置表、脚本代码在用户无知觉的情况下进行热更新。
 
+
+
+### 操作说明
+
+**server.bat** 开启本地服务器：在本地预览网站的生成效果
+
+**deploy.bat** 把生成后的网站推送到github，会推送到默认的分支。
