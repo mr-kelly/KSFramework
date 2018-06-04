@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1623149485
+CRC: 3999487941
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -15,5 +15,5 @@ AssetBundleManifest:
       Name: ui/billboard.prefab.k
       Dependencies: {}
     Info_4:
-      Name: ui/main2334.prefab.k
+      Name: images/red.png.k
       Dependencies: {}

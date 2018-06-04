@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 4083822174
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b142cb068b17fe86af21b08720410d86
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c1642440719609290a7e09a50a7286f4
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/BundleResources/Images/Red.png
+Dependencies: []

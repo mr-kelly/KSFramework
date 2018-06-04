@@ -83,6 +83,20 @@ public class Game : KSGame
 
         // 开始加载我们的公告界面！
         //UIModule.Instance.OpenWindow("Billboard");
+
+
+        // 测试Collect函数，立即回收所有资源
+        var path = "ui/billboard.prefab";
+        var assetLoader = InstanceAssetLoader.Load(path); 
+        while (!assetLoader.IsCompleted)             
+            yield return null;         
+        var assetLoader2 = InstanceAssetLoader.Load(path);       
+        while (!assetLoader2.IsCompleted)             
+            yield return null;         
+        assetLoader2.Release();
+		assetLoader.Release();
+
+        KResourceModule.Collect();
     }
 
 }
