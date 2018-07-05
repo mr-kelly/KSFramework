@@ -4,7 +4,7 @@ using System.IO;
 using KEngine;
 using KEngine.UI;
 using UnityEditor;
-#if UNITY_5
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
 using UnityEditor.SceneManagement;
 #endif
 
@@ -61,7 +61,7 @@ Shorcuts:
             if (!string.IsNullOrEmpty(lastScene))
             {
 
-#if UNITY_5
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
                 EditorSceneManager.OpenScene(lastScene);
 #else
                 EditorApplication.OpenScene(lastScene);
@@ -77,7 +77,7 @@ Shorcuts:
         [MenuItem("KEngine/Open Main Scene %&i")]
         public static void OpenMainScene()
         {
-#if UNITY_5
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
             var currentScene = EditorSceneManager.GetActiveScene().path;
 #else
             var currentScene = EditorApplication.currentScene;
@@ -87,7 +87,7 @@ Shorcuts:
                 EditorPrefs.SetString(LastScenePrefKey, currentScene);
 
             Log.Info("Open Main Game Scene!");
-#if UNITY_5
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
             EditorSceneManager.OpenScene(mainScene);
 #else
             EditorApplication.OpenScene(mainScene);

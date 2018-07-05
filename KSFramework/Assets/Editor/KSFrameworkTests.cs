@@ -1,4 +1,4 @@
-﻿#if UNITY_5
+﻿#if UNITY_5 || UNITY_2017_1_OR_NEWER
 using System.IO;
 using KEngine;
 using KSFramework;
