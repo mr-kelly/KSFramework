@@ -1,7 +1,7 @@
 @echo off
 :: Submodule update
 ::git submodule update --recursive
-
+cd /d %~dp0
 set SRC_ASSETS_PATH=KEngine\KEngine.UnityProject\Assets
 set DST_ASSETS_PATH=KSFramework\Assets
 set DST_PLUGIN_PATH=KSFramework\Assets\Plugins\KEngine
