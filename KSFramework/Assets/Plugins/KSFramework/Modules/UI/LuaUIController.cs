@@ -134,16 +134,42 @@ namespace KSFramework
             if (outlet != null)
             {
                 for (var i = 0; i < outlet.OutletInfos.Count; i++)
-                {
-                    var outletInfo = outlet.OutletInfos[i];
+                    {
+                        var outletInfo = outlet.OutletInfos[i];
 
-                    var gameObj = outletInfo.Object as GameObject;
+                        var gameObj = outletInfo.Object as GameObject;
+                        if (gameObj == null || outletInfo.ComponentType == typeof(UnityEngine.GameObject).FullName)
+                        {
+                            _luaTable[outletInfo.Name]=outletInfo.Object;
+                            continue;
+                        }
 
-                    if (gameObj != null)
-                        _luaTable[outletInfo.Name] = gameObj.GetComponent(outletInfo.ComponentType);
-                    else
-                        _luaTable[outletInfo.Name] = outletInfo.Object;
-                }
+                        if (outletInfo.ComponentType == typeof(UnityEngine.Transform).FullName)
+                        {
+                            _luaTable[outletInfo.Name]= gameObj.transform;
+                        }
+                        else if (outletInfo.ComponentType == typeof(UnityEngine.RectTransform).FullName)
+                        {
+                            _luaTable[outletInfo.Name]= gameObj.GetComponent(typeof(UnityEngine.RectTransform));
+                        }
+                        else if (outletInfo.ComponentType == typeof(UnityEngine.Canvas).FullName)
+                        {
+                            _luaTable.[outletInfo.Name] = gameObj.GetComponent(typeof(UnityEngine.Canvas));
+                        }
+                        else
+                        {
+                            var comp = gameObj.GetComponent(outletInfo.ComponentType);
+                            if (comp == null)
+                            {
+                                var fmt = "Missing Component `{0}` at object `{1}` which named `{2}`";
+                                Debug.LogError(string.Format(fmt, outletInfo.ComponentType, gameObj, outletInfo.Name));
+                            }
+                            else
+                            {
+                                _luaTable[outletInfo.Name] = comp;
+                            }
+                        }
+                    }
 
             }
 
