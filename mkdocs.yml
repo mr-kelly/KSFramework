@@ -9,9 +9,10 @@ pages:
     - [overview/why.md, "简介", "项目的由来"]
     - [overview/structure.md, "简介", "模块结构组织"]
     - [overview/features.md, "简介", "功能特性"]
-        
     - [quickstart.md, "【快速入门指南！】"]
-
+    - [faq.md, "常见问题及解答"]   
+        
+    
     - [basic/config.md, "基础约定", "Ini配置文件"]
     - [basic/file-structure.md, "基础约定", "文件目录结构"]
 
