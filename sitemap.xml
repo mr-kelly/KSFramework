@@ -5,31 +5,31 @@
         
     <url>
      <loc>/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/overview/install/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/overview/why/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/overview/structure/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/overview/features/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -38,7 +38,15 @@
     
     <url>
      <loc>/quickstart/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/faq/</loc>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -47,13 +55,13 @@
         
     <url>
      <loc>/basic/config/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/basic/file-structure/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -63,31 +71,31 @@
         
     <url>
      <loc>/setting/guide/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/setting/condition-compile/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/setting/lazy-load/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/setting/tsv-instead-excel/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/setting/custom-table-reader/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -97,19 +105,19 @@
         
     <url>
      <loc>/resource/guide/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/resource/debug/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/resource/gc/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -119,19 +127,19 @@
         
     <url>
      <loc>/ui/guide/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/ui/ui-binding/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/ui/data-binding/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -141,19 +149,19 @@
         
     <url>
      <loc>/scripting/functions/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/scripting/cookie/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/scripting/lua-module/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -163,25 +171,25 @@
         
     <url>
      <loc>/hotreload/setting/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/hotreload/assetbundle/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/hotreload/ui/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/hotreload/code/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -191,49 +199,49 @@
         
     <url>
      <loc>/advanced/seperate-unity-projects/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/versioning/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/excel-diff/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/app-compile/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/autoupdate/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/script-reload/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/editor/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/advanced/roles/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -243,19 +251,19 @@
         
     <url>
      <loc>/license/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/roadmap/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/overview/environment-other-hotfix-solution/</loc>
-     <lastmod>2017-09-10</lastmod>
+     <lastmod>2018-08-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
