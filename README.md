@@ -59,9 +59,9 @@ git submodule update
 
 # 文档
 
-- [【查看完整文档】](http://mr-kelly.github.io/KSFramework/)
-- [功能特性](http://mr-kelly.github.io/KSFramework/overview/features/)
-- [策划指南：配置表的使用](http://mr-kelly.github.io/KSFramework/setting/guide/)
+- [【查看完整文档】](https://mr-kelly.github.io/KSFramework/)
+- [功能特性](https://mr-kelly.github.io/KSFramework/overview/features/)
+- [策划指南：配置表的使用](https://mr-kelly.github.io/KSFramework/setting/guide/)
 
 ...
 
