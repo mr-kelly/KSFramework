@@ -1,9 +1,9 @@
 if not Log then
-    Log = import_type('KEngine.Log')
+    Log = CS.KEngine.Log
 end
 
 if not Time then 
-	Time = import_type('UnityEngine.Time')
+	Time = CS.UnityEngine.Time
 end
 
 TestLuaBehaivour = {}
@@ -14,7 +14,7 @@ end
 function TestLuaBehaivour:Update()
 
     if Time.frameCount % 100 == 0 then
-        Log.Info("Test Lua Behaivour Update!")
+        --Log.Info("Test Lua Behaivour Update!")
     end
 end
 

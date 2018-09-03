@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1069356318
+CRC: 1306891357
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c59e952ba1871a7d5bc224e023f5903f
+    Hash: 1e105e89f5773f1bd35e688ed771f600
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 732ac57d3912e554df6232c4d4427adb
+    Hash: 351774507dfd8f30f9d0c8dcafb5b6d8
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -29,8 +29,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 64
   Script: {instanceID: 0}
-- Class: 89
-  Script: {instanceID: 0}
 - Class: 92
   Script: {instanceID: 0}
 - Class: 104
@@ -48,8 +46,6 @@ ClassTypes:
 - Class: 193
   Script: {instanceID: 0}
 - Class: 218
-  Script: {instanceID: 0}
-- Class: 258
   Script: {instanceID: 0}
 Assets:
 - Assets/BundleResources/Scene/TestScene/TestScene.unity

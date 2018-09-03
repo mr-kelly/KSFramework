@@ -1,19 +1,19 @@
 ManifestFileVersion: 0
-CRC: 3659610653
+CRC: 3182807140
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: scene/testscene/testscene.unity.k
       Dependencies: {}
     Info_1:
-      Name: ui/login.prefab.k
+      Name: images/red.png.k
       Dependencies: {}
     Info_2:
-      Name: ui/billboard.prefab.k
+      Name: ui/login.prefab.k
       Dependencies: {}
     Info_3:
       Name: ui/main.prefab.k
       Dependencies: {}
     Info_4:
-      Name: ui/main (1).prefab.k
+      Name: ui/billboard.prefab.k
       Dependencies: {}

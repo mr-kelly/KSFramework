@@ -1,0 +1,7 @@
+id,map_name,monster_id,posx,posy,posz,dir,action
+int,string,int,float,float,float,float,string
+
+1,scene_1001,1001,183.8288,13.82444,174.6233,0,Ide
+2,scene_1001,1001,182.67,13.82444,199.57,0,Ide
+3,Test,0,9.302969,1.205597E-17,22.28524,0,stand
+4,Test2,30000,1.618284,2.055192E-17,-0.9255762,0,Ide

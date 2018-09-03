@@ -1,0 +1,5 @@
+Id	Title	Content
+string	string	string
+Billboard1	公告1	公告内容11111111111111111111111
+Billboard2	公告2	公告内容22222222222222222222222
+Billboard3	公告3	公告内容33333333333333333333333

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1060130384
+CRC: 86994731
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 676b0b4b86e589d1b7ed325d5a597276
+    Hash: b0378c8ee6a8f40f0e5ef2fbb957f710
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a785172bf85b572870c3082ca647cca9
+    Hash: fbba63d46c7e07328ceb70d08fce7c8f
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,15 +18,17 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 0c01f3f0b88b4448ab1ccfa117a1d57e, type: 3}
+- Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-- Class: 114
-  Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 938311ed4b5a34590af2bad889d53090, type: 3}
 - Class: 115
@@ -42,5 +44,5 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/BundleResources/UI/Billboard.prefab
+- Assets/BundleResources/UI/Main.prefab
 Dependencies: []
