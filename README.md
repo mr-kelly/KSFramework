@@ -5,8 +5,7 @@
 
 [**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)|[XLua](https://github.com/Tencent/xLua)|[ILRuntime](https://github.com/Ourpalm/ILRuntime)+ **Framework** = KSFramework
 
-
-**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua(或XLua、ILRuntime)的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
+**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua/XLua 的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
 
 ---------------------
 
@@ -23,16 +22,16 @@
 
 # 安装和更新
 
-## 下载即用
+## 方式1，下载即用
 
-以下两方法任选其一：
+以下任选其一：
 
-1. 把源码clone到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
+1. 把源码**clone**到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
 2. 点击 **Clone or download**  选择 **Download ZIP** 
 
+目录说明：
 
-
-KEngine仍然是submodule，同时也放在KSFramework的一个子目录，会进行同步更新。
+KEngine仍然是submodule，同时也放在KSFramework/下作为一个子目录，会进行同步更新。
 
 如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。库的路径如下：
 
@@ -55,6 +54,25 @@ KSFramework\Assets\slua
 > - [KSFramework Appveyor Artifacts](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts): 包含每次提交的构建结果
 > - [KSFramework OSChina镜像](http://git.oschina.net/mrkelly/KSFramework)): 国内的镜像Git
 
+## Unity3D版本支持
+
+| Unity3D版本 | 支持情况 | 备注 |
+| ----------- | -------- | ---- |
+| Unity 4.X   | 支持     |      |
+| Unity 5.x   | 支持     |      |
+| Unity 2017  | 支持     |      |
+| Unity 2018  | 近期适配 |      |
+
+
+## 其它热更新方案
+
+理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。
+
+- `KSFramework/Modules/LuaModule/LuaBehaviour.cs`  
+- `KSFramework/Modules/LuaModule/LuaModule.cs`
+
+更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/
+
 # 教程
 
 - [**KSFramework: Unity3D开发辅助框架快速入门**](http://www.jianshu.com/p/ccb491ed4260)
@@ -76,6 +94,8 @@ KSFramework\Assets\slua
 # 结构组成
 
 ![KSFramework由KEngine和SLua结合组成](Docs/Structure.png)
+
+
 
 # 涉及第三方库
 
