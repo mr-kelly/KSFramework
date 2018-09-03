@@ -73,6 +73,14 @@ KSFramework\Assets\slua
 
 更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/
 
+## 错误解决
+
+下载后如果运行出错，或者使用其它版本的Unity打开，尝试以下方法：
+
+1. 重新生成Assetbundle，方法如下：点击菜单项 **KEngine** - **AssetBundle** - **Bulld All**
+2. 删除xlua或slua的生成代码，重新生成，因为和Unity的版本有关
+3. 上传报错信息，提issuse。如果能自己调试解决，那更棒，同时欢迎pull 到仓库中。
+
 # 教程
 
 - [**KSFramework: Unity3D开发辅助框架快速入门**](http://www.jianshu.com/p/ccb491ed4260)
