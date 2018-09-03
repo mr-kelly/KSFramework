@@ -21,24 +21,32 @@
 
 对于运营人员，利用KSFramework的热重载特性，可以针对运营需求，在项目运行过程中配置表、脚本代码在用户无知觉的情况下进行热更新。
 
-# 安装
+# 安装和更新
 
-可以从两种方式中选择其中一种，
+## 下载即用
+
+以下两方法任选其一：
+
+1. 把源码clone到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
+2. 点击 **Clone or download**  选择 **Download ZIP** 
 
 
-## 方式1，从源码安装
 
-获取到源码后，需要通过git submodule命令获取KEngine和SLua
-```shell
-git submodule init
-git submodule update
+KEngine仍然是submodule，同时也放在KSFramework的一个子目录，会进行同步更新。
+
+如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。库的路径如下：
+
+```c#
+KSFramework\Assets\KSFramework\KEngine
+KSFramework\Assets\xLua
+KSFramework\Assets\slua
 ```
 
-拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录，然后用Unity打开
+
 
 ## 方式2，从产品包安装
 
-您可以从[KSFramework Release](https://github.com/mr-kelly/KSFramework/releases)页面下载最新版本的产品包。
+（这种方式获得的版本非最新版本），您可以从[KSFramework Release](https://github.com/mr-kelly/KSFramework/releases)页面下载最新版本的产品包。
 
 解压后直接用Unity打开KSFramework目录，或直接双击场景KSFramework/Assets/Game.unity。
 
@@ -71,9 +79,9 @@ git submodule update
 
 # 涉及第三方库
 
-- [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua)
-- [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua),从XLua分支获取
-- [ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新](https://github.com/Ourpalm/ILRuntime) ,从ILRuntime分支获取
+- [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua), master分支已切换为默认使用xLua
+- [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua) 较少维护
+- [ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新](https://github.com/Ourpalm/ILRuntime) , 待续
 - [KEngine:AssetBundle打包加载框架](https://github.com/mr-kelly/KEngine)
   - [ini-parser:Ini配置文件解析器，支持多文件合并](https://github.com/rickyah/ini-parser)
   - [Premake:VS工程生成](https://github.com/premake/premake-core)
