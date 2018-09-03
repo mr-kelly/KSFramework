@@ -1,6 +1,3 @@
 [submodule "KEngine"]
 	path = KEngine
 	url = https://github.com/mr-kelly/KEngine
-[submodule "slua"]
-	path = slua
-	url = https://github.com/mr-kelly/slua.git
