@@ -155,7 +155,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/WindowsX86D")] // 注意，PC版本放在不一样的目录的！
         public static void PerformWinBuild()
         {
-            PerformBuild("ClientX86D.exe", BuildTarget.StandaloneWindows,
+            PerformBuild("KSFramework.exe", BuildTarget.StandaloneWindows,
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
@@ -168,7 +168,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/iOS")]
         public static void PerformiOSBuild()
         {
-            PerformiOSBuild("App");
+            PerformiOSBuild("KSFramework");
         }
 
         public static string PerformiOSBuild(string ipaName, bool isDevelopment = true)
@@ -186,7 +186,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/Android")]
         public static void PerformAndroidBuild()
         {
-            PerformAndroidBuild("StrikeHero");
+            PerformAndroidBuild("KSFramework");
         }
 
         public static string PerformAndroidBuild(string apkName, bool isDevelopment = true)
