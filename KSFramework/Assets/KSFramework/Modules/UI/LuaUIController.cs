@@ -125,38 +125,64 @@ namespace KSFramework
 
             _luaTable = scriptResult as LuaTable;
 
-            var newFuncObj = _luaTable["New"]; // if a New function exist, new a table!
+            var newFuncObj = _luaTable.Get<LuaFunction>("new"); // if a New function exist, new a table!
             if (newFuncObj != null)
             {
+#if SLUA
+				var newTableObj = (newFuncObj as LuaFunction).call(this);
+				_luaTable = newTableObj as LuaTable;
+#else
                 var newTableObj = (newFuncObj as LuaFunction).Call(this);
                 _luaTable = newTableObj[0] as LuaTable;
+#endif
             }
 
-            var outlet = this.GetComponent<UILuaOutlet>();
-            if (outlet != null)
+            SetOutlet(_luaTable);
+            var luaInitObj = _luaTable.Get<LuaFunction>("OnInit");
+            Debuger.Assert(luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
+
+            // set table variable `Controller` to this
+            _luaTable["Controller"] = this;
+
+#if SLUA
+                (luaInitObj as LuaFunction).call(_luaTable, this);
+#else
+            (luaInitObj as LuaFunction).Call(_luaTable, this);
+#endif
+
+            return true;
+        }
+
+        public void SetOutlet(LuaTable _luaTable)
+        {
+            if (_luaTable != null)
             {
-                                for (var i = 0; i < outlet.OutletInfos.Count; i++)
+                Action<UILuaOutlet> fun = delegate (UILuaOutlet outlet)
+                {
+                    for (var i = 0; i < outlet.OutletInfos.Count; i++)
                     {
                         var outletInfo = outlet.OutletInfos[i];
 
                         var gameObj = outletInfo.Object as GameObject;
                         if (gameObj == null || outletInfo.ComponentType == typeof(UnityEngine.GameObject).FullName)
                         {
-                            _luaTable[outletInfo.Name]=outletInfo.Object;
+                            _luaTable.Set<string, UnityEngine.Object>(outletInfo.Name, outletInfo.Object);
                             continue;
                         }
 
                         if (outletInfo.ComponentType == typeof(UnityEngine.Transform).FullName)
                         {
-                            _luaTable[outletInfo.Name]= gameObj.transform;
+                            _luaTable.Set<string, Component>(outletInfo.Name, gameObj.transform);
                         }
                         else if (outletInfo.ComponentType == typeof(UnityEngine.RectTransform).FullName)
                         {
-                            _luaTable[outletInfo.Name]= gameObj.GetComponent(typeof(UnityEngine.RectTransform));
+                            _luaTable.Set<string, Component>(outletInfo.Name,
+                                gameObj.GetComponent(typeof(UnityEngine.RectTransform)));
                         }
                         else if (outletInfo.ComponentType == typeof(UnityEngine.Canvas).FullName)
                         {
-                            _luaTable.[outletInfo.Name] = gameObj.GetComponent(typeof(UnityEngine.Canvas));
+                            _luaTable.Set<string, Component>(outletInfo.Name,
+                                gameObj.GetComponent(typeof(UnityEngine.Canvas)));
                         }
                         else
                         {
@@ -168,23 +194,84 @@ namespace KSFramework
                             }
                             else
                             {
-                                _luaTable[outletInfo.Name] = comp;
+                                _luaTable.Set<string, Component>(outletInfo.Name, comp);
                             }
                         }
                     }
-                Log.Info("Init Outlet ,count={0}",outlet.OutletInfos.Count);
+                };
+
+
+                UILuaOutletCollection outletCollection = this.GetComponent<UILuaOutletCollection>();
+                if (outletCollection)
+                {
+                    if (outletCollection.UILuaOutlets != null && outletCollection.UILuaOutlets.Length > 0)
+                    {
+                        for (int i = 0; i < outletCollection.UILuaOutlets.Length; i++)
+                        {
+                            UILuaOutlet item = outletCollection.UILuaOutlets[i];
+                            if (item != null)
+                            {
+                                fun(item);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var outlet = this.GetComponent<UILuaOutlet>();
+                    if (outlet != null)
+                    {
+                        fun(outlet);
+                    }
+                }
+
             }
+        }
 
+        //slua版本
+        public void SetOutlet_Slua(LuaTable _luaTable)
+        {
+            var outlet = this.GetComponent<UILuaOutlet>();
+            if (outlet != null)
+            {
+                for (var i = 0; i < outlet.OutletInfos.Count; i++)
+                {
+                    var outletInfo = outlet.OutletInfos[i];
 
-            var luaInitObj = _luaTable["OnInit"];
-            Debuger.Assert(luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
+                    var gameObj = outletInfo.Object as GameObject;
+                    if (gameObj == null || outletInfo.ComponentType == typeof(UnityEngine.GameObject).FullName)
+                    {
+                        _luaTable[outletInfo.Name] = outletInfo.Object;
+                        continue;
+                    }
 
-            // set table variable `Controller` to this
-            _luaTable["Controller"] = this;
-
-            (luaInitObj as LuaFunction).Call(_luaTable, this);
-
-            return true;
+                    if (outletInfo.ComponentType == typeof(UnityEngine.Transform).FullName)
+                    {
+                        _luaTable[outletInfo.Name] = gameObj.transform;
+                    }
+                    else if (outletInfo.ComponentType == typeof(UnityEngine.RectTransform).FullName)
+                    {
+                        _luaTable[outletInfo.Name] = gameObj.GetComponent(typeof(UnityEngine.RectTransform));
+                    }
+                    else if (outletInfo.ComponentType == typeof(UnityEngine.Canvas).FullName)
+                    {
+                        _luaTable[outletInfo.Name] = gameObj.GetComponent(typeof(UnityEngine.Canvas));
+                    }
+                    else
+                    {
+                        var comp = gameObj.GetComponent(outletInfo.ComponentType);
+                        if (comp == null)
+                        {
+                            var fmt = "Missing Component `{0}` at object `{1}` which named `{2}`";
+                            Debug.LogError(string.Format(fmt, outletInfo.ComponentType, gameObj, outletInfo.Name));
+                        }
+                        else
+                        {
+                            _luaTable[outletInfo.Name] = comp;
+                        }
+                    }
+                }
+            }
         }
 
         public UnityEngine.Object GetControl(string typeName, string uri, Transform findTrans)
