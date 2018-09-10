@@ -3,7 +3,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
-[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)|[XLua](https://github.com/Tencent/xLua)|[ILRuntime](https://github.com/Ourpalm/ILRuntime)+ **Framework** = KSFramework
+[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)|[XLua](https://github.com/Tencent/xLua)+ **Framework** = KSFramework
 
 **[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua/XLua 的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
 
@@ -24,16 +24,17 @@
 
 ## 方式1，下载即用
 
-以下任选其一：
+以下方法任选其一：
 
-1. 把源码**clone**到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
-2. 点击 **Clone or download**  选择 **Download ZIP** 
+方法一：把源码**git clone**到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
 
-目录说明：
+方法二：在项目页面点击 **Clone or download**  选择 **Download ZIP** 
 
-KEngine仍然是submodule，同时也放在KSFramework/下作为一个子目录，会进行同步更新。
+**更新说明：**
 
-如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。库的路径如下：
+如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。
+
+原有目录如下：
 
 ```c#
 KSFramework\Assets\KSFramework\KEngine
@@ -56,12 +57,12 @@ KSFramework\Assets\slua
 
 ## Unity3D版本支持
 
-| Unity3D版本 | 支持情况 | 备注 |
-| ----------- | -------- | ---- |
-| Unity 4.X   | 支持     |      |
-| Unity 5.x   | 支持     |      |
-| Unity 2017  | 支持     |      |
-| Unity 2018  | 近期适配 |      |
+| Unity3D版本  | 支持情况 | 备注                        |
+| ---------- | ---- | ------------------------- |
+| Unity 4.X  | 支持   |                           |
+| Unity 5.x  | 支持   | 部分版本API有差异，建议使用5.3.7及以上版本 |
+| Unity 2017 | 支持   |                           |
+| Unity 2018 | 支持   | 2018.2.7f1已测试             |
 
 
 ## 其它热更新方案
@@ -78,7 +79,7 @@ KSFramework\Assets\slua
 下载后如果运行出错，或者使用其它版本的Unity打开，尝试以下方法：
 
 1. 重新生成Assetbundle，方法如下：点击菜单项 **KEngine** - **AssetBundle** - **Bulld All**
-2. 删除xlua或slua的生成代码，重新生成，因为和Unity的版本有关
+2. 删除xlua或slua的生成代码，重新生成，生成的代码不同的Unity版本有差异
 3. 上传报错信息，提issuse。如果能自己调试解决，那更棒，同时欢迎pull 到仓库中。
 
 # 教程

@@ -183,7 +183,11 @@ public static class XLuaCustomExport
         typeof(KSFramework.Cookie),
         typeof(KEngine.UI.UIModule),
         typeof(UnityEngine.Physics),
+#if UNITY_2018_1_OR_NEWER
+        typeof(UnityEngine.Profiling.Profiler),
+#else
         typeof(UnityEngine.Profiler),
+#endif 
     };
 
     [LuaCallCSharp]
@@ -229,9 +233,15 @@ public static class XLuaCustomExport
         typeof(AnimatorCullingMode),
         typeof(RuntimeAnimatorController),
         typeof(Animator),
+#if UNITY_2018_1_OR_NEWER
+        typeof(UnityEngine.AI.NavMeshAgent),
+        typeof(UnityEngine.AI.NavMeshPath),
+        typeof(UnityEngine.AI.NavMesh),
+#else
         typeof(NavMeshAgent),
         typeof(NavMeshPath),
         typeof(NavMesh),
+#endif
         typeof(RaycastHit),
         typeof(Physics),
         typeof(Resources),
@@ -300,9 +310,9 @@ public static class XLuaCustomExport
                 new List<string>(){"UnityEngine.CanvasRenderer", "onRequestRebuild"},
                 new List<string>(){"UnityEngine.Light", "areaSize"},
                 new List<string>(){"UnityEngine.AnimatorOverrideController", "PerformOverrideClipListCleanup"},
-    #if !UNITY_WEBPLAYER
+#if !UNITY_WEBPLAYER
                 new List<string>(){"UnityEngine.Application", "ExternalEval"},
-    #endif
+#endif
                 new List<string>(){"UnityEngine.GameObject", "networkView"}, //4.6.2 not support
                 new List<string>(){"UnityEngine.Component", "networkView"},  //4.6.2 not support
                 new List<string>(){"System.IO.FileInfo", "GetAccessControl", "System.Security.AccessControl.AccessControlSections"},
