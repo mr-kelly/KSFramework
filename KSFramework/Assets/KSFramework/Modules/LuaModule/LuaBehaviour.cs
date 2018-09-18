@@ -11,6 +11,16 @@ public static class LuaBehaivourExtensions
     {
         return KSFramework.LuaBehaviour.Create(gameObj, luaPath);
     }
+
+    public static object CallFunc(this LuaTable luaTable, string funcName, params object[] args)
+    {
+        LuaFunction func = luaTable.Get<LuaFunction>(funcName);
+        if (func == null)
+        {
+            return null;
+        }
+        return func.Call(args);
+    }
 }
 
 namespace KSFramework
@@ -58,20 +68,23 @@ namespace KSFramework
             if (_cacheTable == null)
                 throw new Exception(string.Format("{0}: cannot get table!", LuaPath));
 
-            var retFunc = _cacheTable[function];
-            if (retFunc != null)
-            {
-                if (!(retFunc is LuaFunction))
-                {
-                    throw new Exception(string.Format("{0}: {1} must be function!", LuaPath, function));
-                }
+            //Fix:在Lua的不同方法中调用self为nil
+            return _cacheTable.CallFunc(function, args);
 
-                var func = retFunc as LuaFunction;
-
-                return func.Call(args);
-            }
-
-            return null;
+            //            var retFunc = _cacheTable[function];
+            //            if (retFunc != null)
+            //            {
+            //                if (!(retFunc is LuaFunction))
+            //                {
+            //                    throw new Exception(string.Format("{0}: {1} must be function!", LuaPath, function));
+            //                }
+            //
+            //                var func = retFunc as LuaFunction;
+            //
+            //                return func.Call(args);
+            //            }
+            //
+            //            return null;
         }
 
         protected virtual void Awake()
