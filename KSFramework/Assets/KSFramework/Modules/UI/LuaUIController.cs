@@ -174,19 +174,29 @@ namespace KSFramework
                         {
                             _luaTable.Set<string, Component>(outletInfo.Name, gameObj.transform);
                         }
-                        else if (outletInfo.ComponentType == typeof(UnityEngine.RectTransform).FullName)
-                        {
-                            _luaTable.Set<string, Component>(outletInfo.Name,
-                                gameObj.GetComponent(typeof(UnityEngine.RectTransform)));
-                        }
-                        else if (outletInfo.ComponentType == typeof(UnityEngine.Canvas).FullName)
-                        {
-                            _luaTable.Set<string, Component>(outletInfo.Name,
-                                gameObj.GetComponent(typeof(UnityEngine.Canvas)));
-                        }
                         else
                         {
                             var comp = gameObj.GetComponent(outletInfo.ComponentType);
+                            //UnityEngine.xxx，非UnityEngine.UI.xxx，只能通过typof获取。
+                            if (comp == null && outletInfo.ComponentType.StartsWith("UnityEngine"))
+                            {
+                                //UnityEngine.xxx下的使用typeof获取
+                                var comNames= outletInfo.ComponentType.Split('.');
+                                if (!comNames[1].StartsWith("UI"))
+                                {
+                                    var components = gameObj.GetComponents<Component>();
+                                    for (var c = 0; c < components.Length; c++)
+                                    {
+                                        var typeName = components[c].GetType().FullName;
+                                        if (typeName == outletInfo.ComponentType)
+                                        {
+                                            comp = components[c];
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                     
                             if (comp == null)
                             {
                                 var fmt = "Missing Component `{0}` at object `{1}` which named `{2}`";

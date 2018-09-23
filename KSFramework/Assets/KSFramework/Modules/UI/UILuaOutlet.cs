@@ -29,33 +29,34 @@ using System.Collections.Generic;
 
 namespace KSFramework
 {
-	[RequireComponent(typeof(KEngine.UI.UIWindowAsset))]
-	[DisallowMultipleComponent]
-	public class UILuaOutlet : MonoBehaviour
-	{
-		/// Outlet info, serialize
-		/// </summary>
-		[System.Serializable]
-		public class OutletInfo
-		{
-			/// <summary>
-			/// Lua Property Name
-			/// </summary>
-			public string Name;
+    [RequireComponent(typeof(KEngine.UI.UIWindowAsset))]
+    [DisallowMultipleComponent]
+    public class UILuaOutlet : MonoBehaviour
+    {
+        public bool FillByObjectName = false;
+        /// Outlet info, serialize
+        /// </summary>
+        [System.Serializable]
+        public class OutletInfo
+        {
+            /// <summary>
+            /// Lua Property Name
+            /// </summary>
+            public string Name;
 
-			/// <summary>
-			/// Component type 's full name (with namespace)
-			/// </summary>
-			public string ComponentType;
+            /// <summary>
+            /// Component type 's full name (with namespace)
+            /// </summary>
+            public string ComponentType;
 
-			/// <summary>
-			/// UI Control Object
-			/// </summary>
-			public UnityEngine.Object Object;
-		}
+            /// <summary>
+            /// UI Control Object
+            /// </summary>
+            public UnityEngine.Object Object;
+        }
         /// <summary>
         /// Serialized outlet infos
         /// </summary>
-		public List<OutletInfo> OutletInfos = new List<OutletInfo>();
-	}
+        public List<OutletInfo> OutletInfos = new List<OutletInfo>();
+    }
 }
