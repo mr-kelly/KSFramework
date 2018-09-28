@@ -104,7 +104,7 @@ namespace KEngine
         /// <returns></returns>
         private IEnumerator CoLoad(string url)
         {
-#if UNITY_2017_1_OR_NEWER
+#if !UNITY_2017_1_OR_NEWER
             //在Unity2017.1.1下，路径中包含两种分隔符(/和\:C:\Code\KSFramework\Product/Bundles/Windows/ui/login.prefab.k)会报: UriFormatException: Invalid URI: Invalid port number
             //此处对路径处理成Unity标准路径格式：C:/Code/KSFramework/Product/Bundles/Windows/ui/login.prefab.k
             url = KTool.FormatToAssetUrl(url);
