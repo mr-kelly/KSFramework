@@ -104,9 +104,11 @@ namespace KEngine
         /// <returns></returns>
         private IEnumerator CoLoad(string url)
         {
-#if !UNITY_2017_1_OR_NEWER
+#if UNITY_2017_1_OR_NEWER
             //在Unity2017.1.1下，路径中包含两种分隔符(/和\:C:\Code\KSFramework\Product/Bundles/Windows/ui/login.prefab.k)会报: UriFormatException: Invalid URI: Invalid port number
             //此处对路径处理成Unity标准路径格式：C:/Code/KSFramework/Product/Bundles/Windows/ui/login.prefab.k
+            /*在Unity 2018.2.7f1版本中 安卓打包运行时路径格式转换会把路径 jar:file:/// 转换成 jar:file:// 导致读取AssetBundle文件Not Found
+             * 推荐使用2018.2.7f1的小伙伴手动把下面这个格式转换方法注释即可解决~电脑端运行也没有问题*/
             url = KTool.FormatToAssetUrl(url);
 #endif
             KResourceModule.LogRequest("WWW", url);
