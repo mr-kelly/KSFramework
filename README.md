@@ -55,6 +55,13 @@ KSFramework\Assets\slua
 > - [KSFramework Appveyor Artifacts](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts): 包含每次提交的构建结果
 > - [KSFramework OSChina镜像](http://git.oschina.net/mrkelly/KSFramework)): 国内的镜像Git
 
+## 工程打包方法
+1. 点击菜单栏 **KEngine** - **AutoBuilder** - **Android**/**iOS**/**Windows**
+2. Unity会执行生成安装包，放在**Product/Apps/Android/**KSFramework.apk `[根据平台区分目录]`
+3. 打包期间会自动Link AB资源到**StreamingAssets**目录下
+
+注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。
+
 ## Unity3D版本支持
 
 | Unity3D版本  | 支持情况 | 备注                        |
