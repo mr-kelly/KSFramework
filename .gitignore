@@ -232,26 +232,31 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-#Link Files
-/KSFramework/Assets/Plugins/Editor/KEngineEditor
-/KSFramework/Assets/Plugins/KEngine
-/KSFramework/Assets/Plugins/Slua_Managed
-/KSFramework/Library
-/KSFramework/Temp
-/KSFramework/*.csproj
-/KSFramework/*.sln
-/KSFramework/Assets/SLua/LuaObject
-/KSFramework/Assets/UnityTestTools
-/KSFramework/Assets/StreamingAssets/Bundles
-/KSFramework/Assets/StreamingAssets/Lua
-/KSFramework/Assets/StreamingAssets/**/*.meta
-/KSFramework/Product/**/*.meta
 *UnityVS*
 Library
 Temp
 
+#not contains sln?
+*.sln
+*.csproj
+
+#Link Files
+/KSFramework/Assets/Plugins/Editor/KEngineEditor
+/KSFramework/Assets/Plugins/KEngine
+/KSFramework/Assets/Plugins/Slua_Managed
+/KSFramework/Assets/SLua/LuaObject
+/KSFramework/Assets/UnityTestTools
+/KSFramework/Assets/StreamingAssets/Bundles
+/KSFramework/Assets/StreamingAssets/Lua
 /KSFramework/Assets/StreamingAssets/Setting
-/KSFramework/Assets/Plugins/xLua
+/KSFramework/Assets/StreamingAssets/**/*.meta
+
+/KSFramework/Product/**/*.meta
+/KSFramework/Product/Apps/*
+
+KSFramework/Assets/XLua/Gen/*
 
 #Others
 /AssetBundles-Browser
+
+

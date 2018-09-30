@@ -1279,7 +1279,7 @@ namespace CSObjectWrapEditor
                         }
                         else
                         {
-                            Debug.LogErrorFormat("相同的Key:{0}",type);
+                            Debug.LogWarningFormat("相同的Key:{0}",type);
                         }
                     }
                 }
