@@ -1,21 +1,4 @@
-local UIBase = import("UI/UIBase")
-
-if not Cookie then
-    Cookie = CS.KSFramework.Cookie --Slua.GetClass('KSFramework.Cookie')
-end
-
-if not I18N then
-    I18N = CS.KSFramework.I18N -- use slua reflection mode
-end
-
-if not UIModule then
-    UIModule = CS.KEngine.UI.UIModule
-end
-
-if not Log then
-    Log = CS.KEngine.Log
-end
-
+---@type UILogin
 local UILogin = {}
 extends(UILogin, UIBase)
 
@@ -27,9 +10,12 @@ function UILogin.New(controller)
     return newUILogin
 end
 
+---测试场景数组
+local scenes = {"Scene/Scene1001/Scene1001.unity","Scene/Scene1002/Scene1002.unity"}
+
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)
-
+    self.sceneIndex = 1
     Log.Info("================================ UILogin:OnInit ============================")
 
     --local text = self:GetUIText("Login")
@@ -38,35 +24,30 @@ function UILogin:OnInit(controller)
     self.LoginText.text = I18N.Str("UILogin.LoginDescText")
 
     self.LoginButtonText.text = I18N.Str('UILogin.LoginButtonText')
-    local btn = self.LoginButton
 
-    print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), btn:GetType().FullName))
+    Tools.SetButton(self.btnSwithScene, function()
+        self.sceneIndex = self.sceneIndex == 1 and 2 or 1
+        SceneLoader.Load(scenes[self.sceneIndex], function(isOK)
+            if not isOK then
+                return print("SceneLoader.Load faild")
+            end
+            print("switch scene success")
+        end,LoaderMode.Async)
+    end)
+    Tools.SetButton(self.btnTest, function()
+        print('Click the button!!!')
+    end)
 
-    --if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
-        btn.onClick:RemoveAllListeners()
-        btn.onClick:AddListener(function()
-            print('Click the button!!!')
-        end)
-        print('Success bind button OnClick!')
-    --else
-        --Log.Warning("Not found UnityEngine static code! No AddListener to the button")
-    --end
-	
-    -- this button click to load new UI
-    local btnMain = self.BtnMain
-    --if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
-        btnMain.onClick:RemoveAllListeners()
-        btnMain.onClick:AddListener(function()
-			UIModule.Instance:CloseWindow("Login")
-			UIModule.Instance:OpenWindow("Main","user1")
-        end)
-        print('Success bind button OnClick!')
-    --else
-        --Log.Warning('MainButton need Slua static code.')
-    --end
+    Tools.SetButton(self.btnSwithUI, function()
+        UIModule.Instance:CloseWindow("Login")
+        UIModule.Instance:OpenWindow("Main", "user1")
+    end)
+
 
     -- test LuaBehaivour
-    if not LuaBehaviour then LuaBehaviour = CS.KSFramework.LuaBehaviour end
+    if not LuaBehaviour then
+        LuaBehaviour = CS.KSFramework.LuaBehaviour
+    end
     LuaBehaviour.Create(controller.CachedGameObject, 'Behaviour/TestLuaBehaviour')
 end
 
@@ -84,7 +65,7 @@ function UILogin:OnOpen(num1)
     end
 
     local openCount
-    openCount= Cookie.Get('UILogin.OpenCount')
+    openCount = Cookie.Get('UILogin.OpenCount')
     if not openCount then
         openCount = 0
     end

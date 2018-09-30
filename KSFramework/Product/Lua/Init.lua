@@ -30,4 +30,14 @@ function new(table, ctorFunc)
     return tb
 end
 
+Cookie = CS.KSFramework.Cookie
+Log = CS.KEngine.Log
+I18N = CS.KSFramework.I18N
+UIModule = CS.KEngine.UI.UIModule
+SceneLoader = CS.KEngine.SceneLoader
+LoaderMode = CS.KEngine.LoaderMode
+
+UIBase = import("UI/UIBase")
+Tools 		= import("Tools")
+
 print("Init.lua script finish!")
