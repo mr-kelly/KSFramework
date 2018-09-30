@@ -322,7 +322,10 @@ public static class XLuaCustomExport
                 new List<string>(){"System.IO.DirectoryInfo", "CreateSubdirectory", "System.String", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"System.IO.DirectoryInfo", "Create", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"UnityEngine.MonoBehaviour", "runInEditMode"},
-            };
+#if UNITY_2018_1_OR_NEWER
+                       new List<string>(){ "UnityEngine.QualitySettings", "streamingMipmapsRenderersPerFrame"},
+#endif
+    };
 
     //[MenuItem("XLua/获取所有的LuaCallCSharp")]
     public static List<Type> GetLuaCallCSharpList()

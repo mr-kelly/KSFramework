@@ -132,18 +132,19 @@ namespace KEngine.Editor
             if (!Directory.Exists(fullDir))
                 Directory.CreateDirectory(fullDir);
 
-            Log.Info("Build Client {0} to: {1}", tag, fullPath);
+            Log.Info("Start Build Client {0} to: {1}", tag, Path.GetFullPath(fullPath));
 
             //NOTE xlua打包前生成Lua绑定代码
 #if xLua
             //先clear，再gen，避免同一个class修改后，再gen会报错
-            CSObjectWrapEditor.Generator.ClearAll();
-            CSObjectWrapEditor.Generator.GenAll();
+                        CSObjectWrapEditor.Generator.ClearAll();
+                        CSObjectWrapEditor.Generator.GenAll();
 #endif
-            BuildPipeline.BuildPlayer(GetScenePaths(), fullPath, tag, opt);
+            var buildResult = BuildPipeline.BuildPlayer(GetScenePaths(), fullPath, tag, opt);
 #if xLua
-            CSObjectWrapEditor.Generator.ClearAll();
+                        CSObjectWrapEditor.Generator.ClearAll();
 #endif
+            Debug.LogFormat("build finish, totalTime={0}", buildResult.summary.totalTime);
             return fullPath;
         }
 
