@@ -231,6 +231,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+#Link Files
 /KSFramework/Assets/Plugins/Editor/KEngineEditor
 /KSFramework/Assets/Plugins/KEngine
 /KSFramework/Assets/Plugins/Slua_Managed
@@ -250,3 +252,6 @@ Temp
 
 /KSFramework/Assets/StreamingAssets/Setting
 /KSFramework/Assets/Plugins/xLua
+
+#Others
+/AssetBundles-Browser
