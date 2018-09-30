@@ -124,7 +124,8 @@ namespace KEngine.Editor
 
             ParseArgs(ref opt, ref outputpath);
 
-            string fullPath = System.IO.Path.Combine(KEngine.AppEngine.GetConfig("KEngine", "ProductRelPath"), outputpath);
+            string fullPath = System.IO.Path.Combine(KEngine.AppEngine.GetConfig("KEngine", "ProductRelPath"),
+                outputpath);
 
             string fullDir = System.IO.Path.GetDirectoryName(fullPath);
 
@@ -132,8 +133,17 @@ namespace KEngine.Editor
                 Directory.CreateDirectory(fullDir);
 
             Log.Info("Build Client {0} to: {1}", tag, fullPath);
-            BuildPipeline.BuildPlayer(GetScenePaths(), fullPath, tag, opt);
 
+            //NOTE xlua打包前生成Lua绑定代码
+#if xLua
+            //先clear，再gen，避免同一个class修改后，再gen会报错
+            CSObjectWrapEditor.Generator.ClearAll();
+            CSObjectWrapEditor.Generator.GenAll();
+#endif
+            BuildPipeline.BuildPlayer(GetScenePaths(), fullPath, tag, opt);
+#if xLua
+            CSObjectWrapEditor.Generator.ClearAll();
+#endif
             return fullPath;
         }
 
