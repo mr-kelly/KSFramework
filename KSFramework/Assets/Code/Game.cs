@@ -79,7 +79,7 @@ public class Game : KSGame
         UIModule.Instance.OpenWindow("Login", 888);
 
         // Test Load a scene in asset bundle
-        SceneLoader.Load("Scene/TestScene/TestScene.unity");
+        SceneLoader.Load("Scene/Scene1001/Scene1001.unity");
 
         // 开始加载我们的公告界面！
         //UIModule.Instance.OpenWindow("Billboard");

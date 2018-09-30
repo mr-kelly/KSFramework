@@ -37,6 +37,7 @@ namespace KEngine
         private string _url;
         private string _sceneName;
 
+        private string _loadedSceneName;
         public override float Progress
         {
             get { return _assetFileBridge.Progress; }
@@ -47,15 +48,33 @@ namespace KEngine
             get { return _sceneName; }
         }
 
+        private static SceneLoader preSceneLoader;
+
+        public static void UnloadPreScene()
+        {
+            if (preSceneLoader != null)
+            {
+//                preSceneLoader.FullClear = true;
+//                preSceneLoader._assetFileBridge.FullClear = true;
+//                preSceneLoader.Release();
+                preSceneLoader._loadedSceneName = string.Empty;
+                UnityEngine.SceneManagement.SceneManager.UnloadScene(preSceneLoader.SceneName);
+                preSceneLoader = null;
+            }
+        }
+
         public static SceneLoader Load(string url, System.Action<bool> callback = null,
             LoaderMode mode = LoaderMode.Async)
         {
+            UnloadPreScene();
             LoaderDelgate newCallback = null;
             if (callback != null)
             {
                 newCallback = (isOk, obj) => callback(isOk);
             }
-            return AutoNew<SceneLoader>(url, newCallback, false, mode);
+            var loader = AutoNew<SceneLoader>(url, newCallback, true, mode);
+            preSceneLoader = loader;
+            return preSceneLoader;
         }
 
         protected override void Init(string url, params object[] args)
@@ -87,7 +106,7 @@ namespace KEngine
 
             // load scene
             Debuger.Assert(_assetFileBridge.Asset);
-
+            _loadedSceneName = _sceneName;
             if (_mode == LoaderMode.Sync)
                 UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneName,
                     UnityEngine.SceneManagement.LoadSceneMode.Additive);
@@ -142,8 +161,15 @@ namespace KEngine
         {
             base.DoDispose();
             _assetFileBridge.Release();
-
+            if(_loadedSceneName == _sceneName)
+            {
             UnityEngine.SceneManagement.SceneManager.UnloadScene(_sceneName);
+            }
+        }
+        protected override void OnReadyDisposed()
+        {
+            base.OnReadyDisposed();
+            _assetFileBridge.ForceDispose();
         }
     }
 }
