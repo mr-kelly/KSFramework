@@ -20,7 +20,7 @@
 
 对于运营人员，利用KSFramework的热重载特性，可以针对运营需求，在项目运行过程中配置表、脚本代码在用户无知觉的情况下进行热更新。
 
-# 安装和更新
+# 基础知识
 
 ## 方式1，下载即用
 
@@ -54,6 +54,13 @@ KSFramework\Assets\slua
 >
 > - [KSFramework Appveyor Artifacts](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts): 包含每次提交的构建结果
 > - [KSFramework OSChina镜像](http://git.oschina.net/mrkelly/KSFramework)): 国内的镜像Git
+
+
+## 编辑器下无需打包资源
+
+在Editor下，无需打包AB资源即可运行，没有打包时间，提高工作效率。
+
+如果需要调试AB相关信息，请打包AB。
 
 ## 工程打包方法
 1. 点击菜单栏 **KEngine** - **AutoBuilder** - **Android**/**iOS**/**Windows**
