@@ -144,7 +144,7 @@ namespace KEngine.Editor
 #if xLua
                         CSObjectWrapEditor.Generator.ClearAll();
 #endif
-            Debug.LogFormat("build finish, totalTime={0}", buildResult.summary.totalTime);
+            Log.Info("Build Client Finish.");
             return fullPath;
         }
 
