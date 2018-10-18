@@ -36,8 +36,11 @@ I18N = CS.KSFramework.I18N
 UIModule = CS.KEngine.UI.UIModule
 SceneLoader = CS.KEngine.SceneLoader
 LoaderMode = CS.KEngine.LoaderMode
+BillboardSettings = CS.AppSettings.BillboardSettings
+GameConfigSettings = CS.AppSettings.GameConfigSettings
+TestSettings = CS.AppSettings.TestSettings
 
 UIBase = import("UI/UIBase")
 Tools 		= import("Tools")
-
+import("CSharpBinding")
 print("Init.lua script finish!")
