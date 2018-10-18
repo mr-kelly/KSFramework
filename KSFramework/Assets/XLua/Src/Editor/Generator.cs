@@ -1273,7 +1273,14 @@ namespace CSObjectWrapEditor
                 {
                     foreach(var type in (obj as IEnumerable<Type>))
                     {
-                        OptimizeCfg.Add(type, flag);
+                        if (!OptimizeCfg.ContainsKey(type))
+                        {
+                            OptimizeCfg.Add(type, flag);
+                        }
+                        else
+                        {
+                            Debug.LogWarningFormat("相同的Key:{0}",type);
+                        }
                     }
                 }
             }
