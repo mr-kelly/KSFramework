@@ -142,7 +142,7 @@ namespace KEngine
         private IEnumerator LoadAssetBundle(string relativeUrl)
         {
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
-            // Unity 5下，自动进行依赖加载
+            // Unity 5 Manifest中管理了依赖
             var abPath = relativeUrl.ToLower();
             var deps = _assetBundleManifest.GetAllDependencies(abPath);
             _depLoaders = new AssetBundleLoader[deps.Length];
