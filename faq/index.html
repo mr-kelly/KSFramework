@@ -57,10 +57,6 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../overview/install/">安装</a>
-                </li>
-                <li class="">
-                    
     <a class="" href="../overview/why/">项目的由来</a>
                 </li>
                 <li class="">
@@ -87,7 +83,27 @@
     <li class="toctree-l2"><a href="#oninit">OnInit调用两次</a></li>
     
 
+    <li class="toctree-l2"><a href="#c">配置表生成C#代码，如何热更？</a></li>
+    
+
+    <li class="toctree-l2"><a href="#build">build之后，运行报错</a></li>
+    
+
+    <li class="toctree-l2"><a href="#luabehaviour">LuaBehaviour</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_1">打包后无法加载资源？</a></li>
+    
+
+    <li class="toctree-l2"><a href="#loadfromfile">loadfromfile</a></li>
+    
+
     </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../build-project/">工程打包方法</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -148,6 +164,10 @@
                     
     <a class="" href="../resource/gc/">垃圾回收机制</a>
                 </li>
+                <li class="">
+                    
+    <a class="" href="../resource/edit_mode/">Editor下无需打包</a>
+                </li>
     </ul>
 	    </li>
           
@@ -166,6 +186,10 @@
                 <li class="">
                     
     <a class="" href="../ui/data-binding/">单向数据绑定</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ui/lua-outlet/">Lua控件绑定</a>
                 </li>
     </ul>
 	    </li>
@@ -310,6 +334,41 @@
 <pre><code class="c#">//if (!CheckInitScript())       //去掉热重载，因此只需要在OnInit中加入这步检查
 //    return;
 </code></pre>
+
+<h3 id="c">配置表生成C#代码，如何热更？</h3>
+<h3 id="build">build之后，运行报错</h3>
+<p>打包之前，请先生成xlua代码</p>
+<h3 id="luabehaviour">LuaBehaviour</h3>
+<p>xlua分支，在C#中调用self.ABC为空，已修复，待提交</p>
+<pre><code class="c#">TestLuaBehaivour = {}
+
+function TestLuaBehaivour:Awake()
+print(&quot;Test Lua Behaivour Awake!&quot;)
+self.ABC={}
+self.ABC[&quot;name&quot;]=&quot;test&quot; 
+end
+
+function TestLuaBehaivour:Start()
+    print(&quot;Test Lua Behaivour start!&quot;)
+print(self.ABC)
+print(self.ABC[&quot;name&quot;])
+end
+
+return TestLuaBehaivour
+</code></pre>
+
+<p>webstrom一直没有释放？</p>
+<p>资源是否没有打包成assetbundle</p>
+<h3 id="_1">打包后无法加载资源？</h3>
+<p>如果在Editor下正常，请先尝试更新KEngine。</p>
+<ol>
+<li>
+<p>Android7出现资源加载失败（小米黑鲨游戏手机 ），把Android的SDK Version改到25以下。</p>
+<p>来自群友：pabble(405706175) </p>
+</li>
+</ol>
+<h3 id="loadfromfile">loadfromfile</h3>
+<p>lzma也可以loadfromfile</p>
               
             </div>
           </div>
@@ -317,7 +376,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../basic/config/" class="btn btn-neutral float-right" title="Ini配置文件">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../build-project/" class="btn btn-neutral float-right" title="工程打包方法">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../quickstart/" class="btn btn-neutral" title="【快速入门指南！】"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -349,7 +408,7 @@
         <span><a href="../quickstart/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../basic/config/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../build-project/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

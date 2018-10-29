@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>安装 - KSFramework Documentation</title>
+  <title>Editor下无需打包 - KSFramework Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u5b89\u88c5";
-    var mkdocs_page_input_path = "overview\\install.md";
-    var mkdocs_page_url = "/overview/install/";
+    var mkdocs_page_name = "Editor\u4e0b\u65e0\u9700\u6253\u5305";
+    var mkdocs_page_input_path = "resource\\edit_mode.md";
+    var mkdocs_page_url = "/resource/edit_mode/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -55,30 +55,17 @@
                     
     <a class="" href="../..">KSFramework介绍</a>
                 </li>
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">安装</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#_1">从产品包安装</a></li>
-    
-
-    <li class="toctree-l3"><a href="#_2">从源码安装</a></li>
-    
-
-    </ul>
+    <a class="" href="../../overview/why/">项目的由来</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../why/">项目的由来</a>
+    <a class="" href="../../overview/structure/">模块结构组织</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../structure/">模块结构组织</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../features/">功能特性</a>
+    <a class="" href="../../overview/features/">功能特性</a>
                 </li>
     </ul>
 	    </li>
@@ -91,6 +78,11 @@
             <li class="toctree-l1">
 		
     <a class="" href="../../faq/">常见问题及解答</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../build-project/">工程打包方法</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -141,15 +133,25 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../resource/guide/">使用资源模块打包、加载</a>
+    <a class="" href="../guide/">使用资源模块打包、加载</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../resource/debug/">资源实时调试监控</a>
+    <a class="" href="../debug/">资源实时调试监控</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../resource/gc/">垃圾回收机制</a>
+    <a class="" href="../gc/">垃圾回收机制</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Editor下无需打包</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#editor">Editor加载无需打包</a></li>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -169,6 +171,10 @@
                 <li class="">
                     
     <a class="" href="../../ui/data-binding/">单向数据绑定</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../ui/lua-outlet/">Lua控件绑定</a>
                 </li>
     </ul>
 	    </li>
@@ -268,7 +274,7 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
+    <a class="" href="../../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
                 </li>
     </ul>
 	    </li>
@@ -295,11 +301,11 @@
     
       
         
-          <li>简介 &raquo;</li>
+          <li>资源模块 &raquo;</li>
         
       
     
-    <li>安装</li>
+    <li>Editor下无需打包</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -309,21 +315,9 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="_1">从产品包安装</h2>
-<p>您可以从<a href="https://github.com/mr-kelly/KSFramework/releases">KSFramework Release</a>页面下载最新版本的产品包。</p>
-<p>将压缩包解压后，直接双击场景KSFramework/Assets/Game.unity，或直接用Unity打开KSFramework目录。</p>
-<blockquote>
-<p>如遇到无法下载的网络问题, 备选下载站:
-- <a href="https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts">KSFramework Appveyor Artifacts</a>: 包含每次提交的构建结果
-- <a href="http://git.oschina.net/mrkelly/KSFramework">KSFramework OSChina镜像</a>): 国内的镜像Git</p>
-</blockquote>
-<h2 id="_2">从源码安装</h2>
-<p>获取到源码后，需要通过git submodule命令获取KEngine和SLua</p>
-<pre><code class="shell">git submodule init
-git submodule update
-</code></pre>
-
-<p>拉取submodule后，Windows下双击执行源码Install.bat进行安装，把KEngine和SLua相关代码链接到KSFramework各目录，然后用Unity打开</p>
+                <h4 id="editor">Editor加载无需打包</h4>
+<p>在<strong>Resources\AppConfigs.txt</strong>中配置<strong>IsEditorLoadAsset=1</strong> ，在Editor模式下就会使用AssetDatabase进行加载资源，对于大型项目可以减少打包时间，实现代码可查看 AssetFileLoader.cs。</p>
+<p>注：默认是是使用assetbundle加载资源</p>
               
             </div>
           </div>
@@ -331,10 +325,10 @@ git submodule update
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../why/" class="btn btn-neutral float-right" title="项目的由来">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../ui/guide/" class="btn btn-neutral float-right" title="UI模块使用指南">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="KSFramework介绍"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../gc/" class="btn btn-neutral" title="垃圾回收机制"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -360,10 +354,10 @@ git submodule update
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../gc/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../why/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../ui/guide/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>UI模块使用指南 - KSFramework Documentation</title>
+  <title>Lua控件绑定 - KSFramework Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "UI\u6a21\u5757\u4f7f\u7528\u6307\u5357";
-    var mkdocs_page_input_path = "ui\\guide.md";
-    var mkdocs_page_url = "/ui/guide/";
+    var mkdocs_page_name = "Lua\u63a7\u4ef6\u7ed1\u5b9a";
+    var mkdocs_page_input_path = "ui\\lua-outlet.md";
+    var mkdocs_page_url = "/ui/lua-outlet/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -154,21 +154,9 @@
 		
     <span class="caption-text">UI模块</span>
     <ul class="subnav">
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">UI模块使用指南</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#ui">UI的打开、关闭、调用都是异步的</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#ui_1">获取并调用UI控制器内部方法</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../guide/">UI模块使用指南</a>
                 </li>
                 <li class="">
                     
@@ -178,9 +166,24 @@
                     
     <a class="" href="../data-binding/">单向数据绑定</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../lua-outlet/">Lua控件绑定</a>
+    <a class="current" href="./">Lua控件绑定</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#luaoutlet">luaoutlet 绑定控件</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_1">结构修改导致丢失的情况</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#outlet">多个outlet</a></li>
+        
+        </ul>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -311,7 +314,7 @@
         
       
     
-    <li>UI模块使用指南</li>
+    <li>Lua控件绑定</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -321,29 +324,24 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="ui">UI的打开、关闭、调用都是异步的</h1>
-<p>类似资源模块，UI模块是接口，大部分异步的， 主要采用CPS异步回调的风格。常用接口：</p>
-<pre><code class="csharp">
-// 异步打开UI，向UI控制器的OnOpen函数传入3个参数, 分别是1,2,3
-UIModule.Instance.OpenWindow(&quot;ExampleUI&quot;, 1, 2, 3)
-
-// 异步打开UI，与普通OpenWindow不一样的是，这是拷贝一个UI进行打开。对一些重复性的UI，比如角色血条，有重要作用。
-UIModule.Instance.OpenDynamicWindow(&quot;ExampleUI&quot;, &quot;ExampleUI-Clone&quot;, 1, 2, 3)
-
-// 同步关闭UI,
-UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
+                <p>在KSFramework中，也可以在Editor绑定控件，然后在UI代码可以直接使用self.xxx进行引用。</p>
+<pre><code class="Lua">self.txtTitle = &quot;标题文字&quot;
+self.btnLogin.onClick:RemoveAllListeners()
 </code></pre>
 
-<p>UIModule暴露的外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。</p>
-<h2 id="ui_1">获取并调用UI控制器内部方法</h2>
-<p>要获取一个UI并执行其内部方法，也是通过异步的方法来获取：</p>
-<pre><code class="csharp">UIModule.Instance.CallUI(&quot;ExampleUI&quot;, (uiController) =&gt;{
-    // 异步获取到UI控制器，带有异步加载的过程，完成后，回调方法。
-    uiController.DoSomething();
-});
+<p>txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，压入self作用域中。</p>
+<p>实现代码可查看：LuaUIController.SetOutlet</p>
+<h2 id="luaoutlet">luaoutlet 绑定控件</h2>
+<pre><code class="lua">Name：在Lua代码访问的变量名
+ComponentType：Unity中的type，下拉列表可选择
+Object：变量指向的Unity的Object
 </code></pre>
 
-<p>当一个UI已经加载过，CallUI方法将会同步进入回调。</p>
+<h2 id="_1">结构修改导致丢失的情况</h2>
+<p>在代码中通过路径查找控件，而如果这个控件后来因UI的结构修改而被删除了，这个变量就变成了Null。 程序对变量的访问就会引发NullReferenceException。 这种问题出现的时候，非常的不好查。</p>
+<p>而如果outlet则提供可视化的方法查找，在Inspect面板会以红色标识丢失的引用，或者同名的变量。</p>
+<h3 id="outlet">多个outlet</h3>
+<p>当UI界面比较复杂时，如果全部的控件都绑定在一个outlet，那么后续的维护成本大，不易查找到指定的控件。，我建议是界面的<em>每个块级元素</em>使用一个outlet，或者以某个功能点划分，或者以区域划分(顶部，中部，左侧，右侧)，每个界面由多个outlet组成一个LuaOutletCollection</p>
               
             </div>
           </div>
@@ -351,10 +349,10 @@ UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../ui-binding/" class="btn btn-neutral float-right" title="控件与变量绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../scripting/functions/" class="btn btn-neutral float-right" title="Lua内置函数列表">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../resource/edit_mode/" class="btn btn-neutral" title="Editor下无需打包"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../data-binding/" class="btn btn-neutral" title="单向数据绑定"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -380,10 +378,10 @@ UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../../resource/edit_mode/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../data-binding/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../ui-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../scripting/functions/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
