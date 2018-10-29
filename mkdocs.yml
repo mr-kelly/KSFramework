@@ -5,12 +5,12 @@ extra:
     version: 0.9
 pages:
     - [index.md, "简介", "KSFramework介绍"]
-    - [overview/install.md, "简介", "安装"]
     - [overview/why.md, "简介", "项目的由来"]
     - [overview/structure.md, "简介", "模块结构组织"]
     - [overview/features.md, "简介", "功能特性"]
     - [quickstart.md, "【快速入门指南！】"]
     - [faq.md, "常见问题及解答"]   
+    - [build-project.md, "工程打包方法"]   
         
     
     - [basic/config.md, "基础约定", "Ini配置文件"]
@@ -25,10 +25,12 @@ pages:
     - [resource/guide.md, "资源模块", "使用资源模块打包、加载"]
     - [resource/debug.md, "资源模块", "资源实时调试监控"]
     - [resource/gc.md, "资源模块", "垃圾回收机制"]
+    - [resource/edit_mode.md, "资源模块", "Editor下无需打包"]
 
     - [ui/guide.md, "UI模块", "UI模块使用指南"]
     - [ui/ui-binding.md, "UI模块", "控件与变量绑定"]
     - [ui/data-binding.md, "UI模块", "单向数据绑定"]
+    - [ui/lua-outlet.md, "UI模块", "Lua控件绑定"]
 
     - [scripting/functions.md, "脚本指南", "Lua内置函数列表"]
     - [scripting/cookie.md, "脚本指南", "Cookie状态缓存"]
