@@ -8,19 +8,21 @@ self.btnLogin.onClick:RemoveAllListeners()
 
 txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，压入self作用域中。
 
-实现代码可查看：LuaUIController.SetOutlet
+`实现代码可查看：LuaUIController.SetOutlet`
 
 ## luaoutlet 绑定控件
 
 ```lua
 Name：在Lua代码访问的变量名
-ComponentType：Unity中的type，下拉列表可选择
+
 Object：变量指向的Unity的Object
+
+ComponentType：Unity中的type，下拉列表可选择
 ```
 
 
 
-
+![](../images/ui/luaoutlet.png)
 
 ## 结构修改导致丢失的情况
 
@@ -28,7 +30,10 @@ Object：变量指向的Unity的Object
 
 而如果outlet则提供可视化的方法查找，在Inspect面板会以红色标识丢失的引用，或者同名的变量。
 
+![outlet-error](../images/ui/outlet-error.png)
+
 ### 多个outlet
 
 当UI界面比较复杂时，如果全部的控件都绑定在一个outlet，那么后续的维护成本大，不易查找到指定的控件。，我建议是界面的*每个块级元素*使用一个outlet，或者以某个功能点划分，或者以区域划分(顶部，中部，左侧，右侧)，每个界面由多个outlet组成一个LuaOutletCollection
 
+![luaoutlet-collection](../images/ui/luaoutlet-collection.png)
