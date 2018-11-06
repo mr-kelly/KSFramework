@@ -163,23 +163,23 @@ namespace KEngine.Editor
         //    return programVersionFile;
         //}
 
-        [MenuItem("KEngine/AutoBuilder/WindowsX86D")] // 注意，PC版本放在不一样的目录的！
+        [MenuItem("KEngine/AutoBuilder/WindowsX86 Dev")] // 注意，PC版本放在不一样的目录的！
         public static void PerformWinBuild()
         {
-            PerformBuild("KSFramework.exe", BuildTarget.StandaloneWindows,
+            PerformBuild("KSFramework_Dev.exe", BuildTarget.StandaloneWindows,
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
-        //[MenuItem("File/AutoBuilder/WindowsX86")]
-        //static void PerformWinReleaseBuild()
-        //{
-        //	PerformBuild(GetProjectName() + "X86.exe", BuildTarget.StandaloneWindows, BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
-        //}
+        [MenuItem("File/AutoBuilder/WindowsX86")]
+        static void PerformWinReleaseBuild()
+        {
+        	PerformBuild("KSFramework.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+        }
 
         [MenuItem("KEngine/AutoBuilder/iOS")]
         public static void PerformiOSBuild()
         {
-            PerformiOSBuild("KSFramework");
+            PerformiOSBuild("KSFramework",false);
         }
 
         public static string PerformiOSBuild(string ipaName, bool isDevelopment = true)
@@ -197,7 +197,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/Android")]
         public static void PerformAndroidBuild()
         {
-            PerformAndroidBuild("KSFramework");
+            PerformAndroidBuild("KSFramework",false);
         }
 
         public static string PerformAndroidBuild(string apkName, bool isDevelopment = true)
