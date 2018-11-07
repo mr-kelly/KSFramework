@@ -703,8 +703,8 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   scriptingDefineSymbols:
-    1: 
-    4: 
+    1: xLua
+    4: xLua
     7: xLua
   platformArchitecture:
     iOS: 2
