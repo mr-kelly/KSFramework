@@ -2,7 +2,7 @@
 -- global variables / functions
 
 function import(filename)
-    return CS.KSFramework.LuaModule.Instance:Import(filename)
+    return Slua.GetClass('KSFramework.LuaModule').Instance:Import(filename)
 
 end
 

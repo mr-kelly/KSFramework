@@ -1,6 +1,0 @@
-[submodule "KEngine"]
-	path = KEngine
-	url = https://github.com/mr-kelly/KEngine
-[submodule "xLua"]
-	path = xLua
-	url = https://github.com/mr-kelly/xLua.git

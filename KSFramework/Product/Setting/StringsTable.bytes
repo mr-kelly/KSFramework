@@ -1,0 +1,4 @@
+Id
+string
+UILogin.LoginButtonText
+UILogin.LoginDescText

@@ -15,5 +15,5 @@ namespace KSFramework^
     {^
         public static readonly string Version = "%appveyor_build_version%";^
     }^
-} > KSFramework/Assets/Plugins/KSFramework/KSFrameworkInfo.cs
+} > KSFramework/Assets/KSFrameworkInfo.cs
 

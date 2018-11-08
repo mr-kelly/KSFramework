@@ -1,19 +1,19 @@
 local UIBase = import("UI/UIBase")
 
 if not Cookie then
-    Cookie = CS.KSFramework.Cookie --Slua.GetClass('KSFramework.Cookie')
+    Cookie = Slua.GetClass('KSFramework.Cookie')
 end
 
 if not I18N then
-    I18N = CS.KSFramework.I18N -- use slua reflection mode
+    I18N = Slua.GetClass('KSFramework.I18N') -- use slua reflection mode
 end
 
 if not UIModule then
-    UIModule = CS.KEngine.UI.UIModule
+    UIModule = Slua.GetClass('KEngine.UI.UIModule')
 end
 
 if not Log then
-    Log = CS.KEngine.Log
+    Log = Slua.GetClass('KEngine.Log')
 end
 
 local UILogin = {}
@@ -42,31 +42,31 @@ function UILogin:OnInit(controller)
 
     print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), btn:GetType().FullName))
 
-    --if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
+    if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
         btn.onClick:RemoveAllListeners()
         btn.onClick:AddListener(function()
             print('Click the button!!!')
         end)
         print('Success bind button OnClick!')
-    --else
-        --Log.Warning("Not found UnityEngine static code! No AddListener to the button")
-    --end
-	
+    else
+        Log.Warning("Not found UnityEngine static code! No AddListener to the button")
+    end
+
     -- this button click to load new UI
     local btnMain = self.BtnMain
-    --if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
+    if UnityEngine and  UnityEngine.Vector3 then -- static code binded!
         btnMain.onClick:RemoveAllListeners()
         btnMain.onClick:AddListener(function()
-			UIModule.Instance:CloseWindow("Login")
-			UIModule.Instance:OpenWindow("Main","user1")
+            UIModule.Instance:CloseWindow("Login")
+            UIModule.Instance:OpenWindow("Main","user1")
         end)
         print('Success bind button OnClick!')
-    --else
-        --Log.Warning('MainButton need Slua static code.')
-    --end
+    else
+        Long.Warning('MainButton need Slua static code.')
+    end
 
     -- test LuaBehaivour
-    if not LuaBehaviour then LuaBehaviour = CS.KSFramework.LuaBehaviour end
+    if not LuaBehaviour then LuaBehaviour = Slua.GetClass('KSFramework.LuaBehaviour') end
     LuaBehaviour.Create(controller.CachedGameObject, 'Behaviour/TestLuaBehaviour')
 end
 

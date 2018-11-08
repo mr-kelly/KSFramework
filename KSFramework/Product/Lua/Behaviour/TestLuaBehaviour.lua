@@ -1,9 +1,9 @@
 if not Log then
-    Log = CS.KEngine.Log
+    Log = import_type('KEngine.Log')
 end
 
 if not Time then 
-	Time = CS.UnityEngine.Time
+	Time = import_type('UnityEngine.Time')
 end
 
 TestLuaBehaivour = {}
