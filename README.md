@@ -41,3 +41,7 @@
 2. **mkdocs.yml** 配置新加的md文件到此，配置目录结构
 3. **server.bat** 开启本地服务器：在本地预览网站的生成效果 ，地址：http://127.0.0.1:8000
 4. **deploy.bat** 把生成后的网站推送到github，会推送到默认的分支。
+
+
+
+mkdocs文档： https://markdown-docs-zh.readthedocs.io/zh_CN/latest/

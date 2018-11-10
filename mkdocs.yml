@@ -53,3 +53,4 @@ pages:
     - [license.md, "其它", "版权说明"]
     - [roadmap.md, "其它", "开发计划"]
     - [overview/environment-other-hotfix-solution.md, "其它", "运行环境和其它热更新方案"]
+    - [github wiki-mkdocs.md, "其它", "为什么不使用wiki"]
