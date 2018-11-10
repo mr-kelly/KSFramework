@@ -163,6 +163,10 @@
     
         <ul>
         
+            <li><a class="toctree-l4" href="#openwindow">OpenWindow</a></li>
+        
+            <li><a class="toctree-l4" href="#opendynamicwindow">OpenDynamicWindow</a></li>
+        
             <li><a class="toctree-l4" href="#ui_1">获取并调用UI控制器内部方法</a></li>
         
         </ul>
@@ -339,6 +343,10 @@ UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
 </code></pre>
 
 <p>UIModule暴露的外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。</p>
+<h2 id="openwindow">OpenWindow</h2>
+<p>异步打开UI</p>
+<h2 id="opendynamicwindow">OpenDynamicWindow</h2>
+<p>异步打开UI，与普通OpenWindow不一样的是，这是拷贝一个UI进行打开。对一些重复性的UI，比如角色血条，有重要作用</p>
 <h2 id="ui_1">获取并调用UI控制器内部方法</h2>
 <p>要获取一个UI并执行其内部方法，也是通过异步的方法来获取：</p>
 <pre><code class="csharp">UIModule.Instance.CallUI(&quot;ExampleUI&quot;, (uiController) =&gt;{
