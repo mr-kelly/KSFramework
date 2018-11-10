@@ -279,6 +279,10 @@
                     
     <a class="" href="../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
                 </li>
+                <li class="">
+                    
+    <a class="" href="../github%20wiki-mkdocs/">为什么不使用wiki</a>
+                </li>
     </ul>
 	    </li>
           
@@ -315,11 +319,24 @@
             <div class="section">
               
                 <h3 id="_1">工程打包方法</h3>
-<p>使用菜单栏的<strong>KEngine</strong> - <strong>Autobuilder</strong> - <strong>Build Android</strong>或(其它平台)</p>
-<p>不建议使用<strong>File</strong> - <strong>Build Settings</strong> - <strong>Build</strong>，因为Autobuilder会处理一些操作，</p>
-<p>比如自动生成xlua代码，自动拷贝Product目录下的资源到StreamingAssets目录下，并且生成的安装包会自动放在<strong>Product/Apps/Android</strong>或<strong>Product/Apps/Windows</strong>下，整个过程是自动化的，可和Jenkins等自动化打包平台集成。</p>
+<ol>
+<li>
+<p>打包前，请先 Build Assetbundle</p>
+</li>
+<li>
+<p>点击菜单栏的<strong>KEngine</strong> - <strong>Autobuilder</strong> - <strong>Build Android</strong>或(其它平台)</p>
+</li>
+</ol>
+<p>不建议使用<strong>File</strong> - <strong>Build Settings</strong> - <strong>Build</strong>，因为Autobuilder 内部会处理一些操作，比如</p>
+<ol>
+<li>自动生成xlua代码</li>
+<li>自动拷贝Product目录下的资源到StreamingAssets目录下</li>
+<li>并且生成的安装包会自动放在<strong>Product/Apps/Android</strong>或<strong>Product/Apps/Windows</strong>下，</li>
+<li>整个过程是自动化的，可和Jenkins等自动化打包平台集成。</li>
+</ol>
 <h3 id="link">Link 资源</h3>
-<p>打包一次后在StreamAsset目录会Link product的资源，Link之后两边的资源是同步的</p>
+<p>打包一次后，在StreamAsset目录会Link product的资源，Link之后两边的资源是同步的</p>
+<p>可以通过<strong>KEngine</strong> - <strong>Symbol Link Resources</strong> 来进行重新Link或取消</p>
               
             </div>
           </div>

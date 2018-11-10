@@ -277,6 +277,15 @@
     <li class="toctree-l3"><a href="#unity3d">Unity3D版本</a></li>
     
 
+    <li class="toctree-l3"><a href="#_2">操作系统</a></li>
+    
+
+    <li class="toctree-l3"><a href="#android">Android 平台</a></li>
+    
+
+    <li class="toctree-l3"><a href="#ios">IOS平台</a></li>
+    
+
     <li class="toctree-l3"><a href="#slua">SLua方案</a></li>
     
 
@@ -286,10 +295,14 @@
     <li class="toctree-l3"><a href="#ilruntime">ILRuntime方案</a></li>
     
 
-    <li class="toctree-l3"><a href="#_2">其它热更新方案</a></li>
+    <li class="toctree-l3"><a href="#_3">其它热更新方案</a></li>
     
 
     </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../github%20wiki-mkdocs/">为什么不使用wiki</a>
                 </li>
     </ul>
 	    </li>
@@ -331,25 +344,40 @@
             <div class="section">
               
                 <h2 id="_1">运行环境及其它热更新方案</h2>
-<p>目前经过测试的u部分Unity3D版本、操作系统版本、移动平台信息如下：</p>
-<p><strong>Unity3D版本</strong></p>
-<ul>
-<li>
-<p>Unity5.6.0</p>
-</li>
-<li>
-<p>Unity5.4.0</p>
-</li>
-<li>
-<p>Unity5.3.7</p>
-</li>
-</ul>
-<p>​</p>
-<p>Unity4.x的版本</p>
-<ul>
-<li>Unity4.6.9</li>
-</ul>
-<p><strong>操作系统</strong></p>
+<p>目前经过测试的Unity3D版本、操作系统版本、移动平台信息如下：</p>
+<h2 id="unity3d">Unity3D版本</h2>
+<table>
+<thead>
+<tr>
+<th>Unity3D版本</th>
+<th>支持情况</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unity 4.X</td>
+<td>支持</td>
+<td></td>
+</tr>
+<tr>
+<td>Unity 5.x</td>
+<td>支持</td>
+<td>部分版本API有差异，建议使用5.3.7及以上版本</td>
+</tr>
+<tr>
+<td>Unity 2017</td>
+<td>支持</td>
+<td></td>
+</tr>
+<tr>
+<td>Unity 2018</td>
+<td>支持</td>
+<td>2018.2.7f1已测试</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2">操作系统</h2>
 <ul>
 <li>
 <p>Windows 7 x64 sp1</p>
@@ -361,7 +389,7 @@
 <p>Mac OS X 10.x</p>
 </li>
 </ul>
-<p><strong>Android 平台</strong></p>
+<h2 id="android">Android 平台</h2>
 <ul>
 <li>
 <p>Android 7.0</p>
@@ -370,7 +398,7 @@
 <p>Android 4.3.3</p>
 </li>
 </ul>
-<p><strong>IOS平台</strong></p>
+<h2 id="ios">IOS平台</h2>
 <ul>
 <li>
 <p>IOS 10.3.3</p>
@@ -379,8 +407,6 @@
 <p>IOS 8.3</p>
 </li>
 </ul>
-<h2 id="unity3d">Unity3D版本</h2>
-<p>目前支持Unity4.X及Unity5.x的所有版本，Unity2017在近期将会进行升级适配。</p>
 <h2 id="slua">SLua方案</h2>
 <p>支持SLua截止目前的最新版本，理论上KSFramework可以支持任意版本的SLua，因为KSFramework封装了一层LuaModule、LuaBehaviour，执行代码逻辑，对于开发者使用那种Lua热更热方案是没有直接影响的，可以兼容适配。</p>
 <p>PS.github上的slua版本较旧，大家可自己更新slua的版本，并执行安装。</p>
@@ -388,7 +414,7 @@
 <p>支持XLua截止目前的最新版本，理论上KSFramework可以支持任意版本的XLua，因为KSFramework封装了一层LuaModule、LuaBehaviour，执行代码逻辑，对于开发者使用那种Lua热更热方案是没有直接影响的，可以兼容适配。</p>
 <h2 id="ilruntime">ILRuntime方案</h2>
 <p>目前基于ILRuntime的最新版本，在ILRuntime分支进行测试，正在进行中。</p>
-<h2 id="_2">其它热更新方案</h2>
+<h2 id="_3">其它热更新方案</h2>
 <p>理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。</p>
 <ul>
 <li><code>KSFramework/Modules/LuaModule/LuaBehaviour.cs</code>  </li>
@@ -400,6 +426,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../github%20wiki-mkdocs/" class="btn btn-neutral float-right" title="为什么不使用wiki">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../../roadmap/" class="btn btn-neutral" title="开发计划"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -430,6 +458,8 @@
       
         <span><a href="../../roadmap/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../../github%20wiki-mkdocs/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

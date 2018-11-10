@@ -92,10 +92,13 @@
     <li class="toctree-l2"><a href="#luabehaviour">LuaBehaviour</a></li>
     
 
-    <li class="toctree-l2"><a href="#_1">打包后无法加载资源？</a></li>
+    <li class="toctree-l2"><a href="#_1">资源相关</a></li>
     
 
     <li class="toctree-l2"><a href="#loadfromfile">loadfromfile</a></li>
+    
+
+    <li class="toctree-l2"><a href="#xlua">xlua相关</a></li>
     
 
     </ul>
@@ -291,6 +294,10 @@
                     
     <a class="" href="../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
                 </li>
+                <li class="">
+                    
+    <a class="" href="../github%20wiki-mkdocs/">为什么不使用wiki</a>
+                </li>
     </ul>
 	    </li>
           
@@ -330,16 +337,17 @@
 <h3 id="oninit">OnInit调用两次</h3>
 <p>默认OnInit在Onit会被调用两次，设计用于热重载。</p>
 <p>在OnOpen中也会调用一次OnInit，用于热重载之后，对数据进行初始化。</p>
-<p>如果你不希望被调用两次，在OnOpen中注释掉这两行</p>
+<p>如果你不希望被调用两次，在<strong>LuaUIController.OnOpen</strong>中注释掉这两行</p>
 <pre><code class="c#">//if (!CheckInitScript())       //去掉热重载，因此只需要在OnInit中加入这步检查
 //    return;
 </code></pre>
 
 <h3 id="c">配置表生成C#代码，如何热更？</h3>
+<p>配置部分可以修改生成Lua代码，或读取tsv，而不使用C#代码。</p>
 <h3 id="build">build之后，运行报错</h3>
-<p>打包之前，请先生成xlua代码</p>
+<p>请检查是否有生成xlua/slua代码，根据具体的报错日志进行排查。</p>
 <h3 id="luabehaviour">LuaBehaviour</h3>
-<p>xlua分支，在C#中调用self.ABC为空，已修复，待提交</p>
+<p>xlua分支，在C#中调用self.ABC为空，已修复</p>
 <pre><code class="c#">TestLuaBehaivour = {}
 
 function TestLuaBehaivour:Awake()
@@ -357,18 +365,27 @@ end
 return TestLuaBehaivour
 </code></pre>
 
-<p>webstrom一直没有释放？</p>
-<p>资源是否没有打包成assetbundle</p>
-<h3 id="_1">打包后无法加载资源？</h3>
-<p>如果在Editor下正常，请先尝试更新KEngine。</p>
+<h3 id="_1">资源相关</h3>
+<p>Q：webstrom一直没有释放？</p>
+<p>A：资源是否没有打包成assetbundle</p>
+<p>Q：部分安卓机型报：local reference table overflow (max=512)</p>
+<p>A：在同学反馈用Unity2017打包，在红米部分机型会出现此错误，已添加宏处理Unity版本。</p>
+<p>Q：打包后无法加载资源？</p>
+<p>A：如果在Editor下正常，请先尝试更新KEngine。</p>
 <ol>
 <li>
 <p>Android7出现资源加载失败（小米黑鲨游戏手机 ），把Android的SDK Version改到25以下。</p>
 <p>来自群友：pabble(405706175) </p>
 </li>
 </ol>
+<p>Q：Lua如何打包？</p>
+<p>A：可以打包成zip，游戏启动时，进行解压</p>
 <h3 id="loadfromfile">loadfromfile</h3>
 <p>lzma也可以loadfromfile</p>
+<h3 id="xlua">xlua相关</h3>
+<p>提示：code has not been genrate, may be not work in phone!</p>
+<p>这是因为xlua通过 DelegateBridge.Gen_Flag 来判断是否生成代码，但我们在打包过程中，先生成代码，然后删除生成后的代码，并没有设置此flag，但功能是正常的。</p>
+<p>更多xlua相关的知识，可以查看xlua的官方文档</p>
               
             </div>
           </div>

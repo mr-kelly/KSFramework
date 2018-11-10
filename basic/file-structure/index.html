@@ -104,6 +104,8 @@
         
             <li><a class="toctree-l4" href="#slua">SLua</a></li>
         
+            <li><a class="toctree-l4" href="#xlua">XLua</a></li>
+        
             <li><a class="toctree-l4" href="#kengine">KEngine</a></li>
         
             <li><a class="toctree-l4" href="#ksframework">KSFramework</a></li>
@@ -291,6 +293,10 @@
                     
     <a class="" href="../../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
                 </li>
+                <li class="">
+                    
+    <a class="" href="../../github%20wiki-mkdocs/">为什么不使用wiki</a>
+                </li>
     </ul>
 	    </li>
           
@@ -333,22 +339,25 @@
                 <h1 id="_1">代码放置目录</h1>
 <h2 id="slua">SLua</h2>
 <p>KSFramework中SLua采用其默认的目录结构，即C#运行时代码放置在Assets/Plugins/Slua_Managed中，编辑器相关代码放置在Assets/SLua中。</p>
+<h2 id="xlua">XLua</h2>
+<p>XLua放置在Assets/XLua目录下，结构和官方保持</p>
 <h2 id="kengine">KEngine</h2>
-<p>KEngine的所有运行时代码放置在Assets/Plugins/KEngine中，相关的编辑器代码放置在Assets/Plugins/Editor/KEngineEditor中。</p>
+<p>KEngine的所有运行时代码放置在<strong>Assets/KSFramework/KEngine</strong>中，相关的编辑器代码放置在<strong>Assets/KSFramework/KEngine/Editor</strong>中。</p>
 <h2 id="ksframework">KSFramework</h2>
-<p>KEngine的所有运行时代码放置在Assets/Plugins/KSFramework中，相关的编辑器代码放置在Assets/Plugins/Editor/KSFramework中。</p>
+<p>对比KEngine新加的功能，所有运行时代码放置在<strong>Assets/KSFramework</strong>中，相关的编辑器代码放置在<strong>Assets/KSFramework/Editor</strong>中。</p>
 <h2 id="plugins">为什么都放在Plugins中？</h2>
 <p>脚本的修改，会触发Unity的重新编译。一般的项目逻辑，都在非Plugins目录进行的，随着项目的发展，非Plugins目录的代码越来越多，编译越来越慢。把代码放进Plugins目录，可以节约一定的编译时间，改善开发效率。</p>
+<p>注：新版本的Unity2018，可以对不同的目录设置Assemly。</p>
 <h1 id="_2">资源目录约定</h1>
 <ul>
 <li>
-<p>Assets/BundleEdting: 一些编辑性的、需要配合编译过程的美术资源。比如UI场景，放置在这里，保存是，自动导出Prefab到Assets/BundleResources/UI目录</p>
+<p><strong>Assets/BundleEdting</strong>: 一些编辑性的、需要配合编译过程的美术资源。比如UI场景，放置在这里，保存是，自动导出Prefab到Assets/BundleResources/UI目录</p>
 </li>
 <li>
-<p>Assets/BundleResources: Asset Bundle全自动化导出的关键，KSFramework的AssetBundle打包，按照这个目录的结构，完整导出。</p>
+<p><strong>Assets/BundleResources:</strong> Asset Bundle全自动化导出的关键，KSFramework的AssetBundle打包，按照这个目录的结构，完整导出。</p>
 </li>
 <li>
-<p>Product/: 默认的产品导出目录，包括Asset Bundle、Lua脚本、配置表，统一放置在这个目录。 编译客户端时，这些资源将被拷贝到StreamingAssets目录后才进行编译打包。</p>
+<p><strong>Product/</strong>: 默认的产品导出目录，包括Asset Bundle、Lua脚本、配置表，统一放置在这个目录。 编译客户端时，这些资源将被拷贝到StreamingAssets目录后才进行编译打包。</p>
 </li>
 </ul>
               
