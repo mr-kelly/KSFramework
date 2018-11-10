@@ -266,7 +266,10 @@ namespace KEngine.Editor
         public static string GetLinkPath()
         {
             if (!Directory.Exists(AssetBundlesLinkPath))
+            {
                 Directory.CreateDirectory(AssetBundlesLinkPath);
+                Log.Info("Create StreamingAssets Bundles Director {0}", AssetBundlesLinkPath);
+            }
             return AssetBundlesLinkPath + "/" + KResourceModule.BuildPlatformName + "/";
         }
 
