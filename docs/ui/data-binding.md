@@ -17,3 +17,4 @@ Cookie.AddSetListener('TestNumber', function(setValue)
 end)
 Cookie.Set('TestNumber', 567) -- 同一时间，UI改变
 ```
+

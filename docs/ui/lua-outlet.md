@@ -1,5 +1,6 @@
+## self.txtTitle引用控件
 
-在KSFramework中，也可以在Editor绑定控件，然后在UI代码可以直接使用self.xxx进行引用。
+在KSFramework中，可以在Editor中编辑UI时绑定控件，然后在UI代码可以直接使用self.xxx进行引用，比如：
 
 ```Lua
 self.txtTitle = "标题文字"
@@ -10,7 +11,11 @@ txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，
 
 `实现代码可查看：LuaUIController.SetOutlet`
 
-## luaoutlet 绑定控件
+## LuaOutlet 绑定控件
+
+![](../images/ui/luaoutlet.png)
+
+每组的成员解释如下：
 
 ```lua
 Name：在Lua代码访问的变量名
@@ -20,15 +25,11 @@ Object：变量指向的Unity的Object
 ComponentType：Unity中的type，下拉列表可选择
 ```
 
-
-
-![](../images/ui/luaoutlet.png)
-
-## 结构修改导致丢失的情况
+## 可视化查找引用丢失
 
 在代码中通过路径查找控件，而如果这个控件后来因UI的结构修改而被删除了，这个变量就变成了Null。 程序对变量的访问就会引发NullReferenceException。 这种问题出现的时候，非常的不好查。
 
-而如果outlet则提供可视化的方法查找，在Inspect面板会以红色标识丢失的引用，或者同名的变量。
+而如果outlet则提供可视化的方法查找，在Inspect面板会**以红色标识丢失的引用，或者同名的变量**。
 
 ![outlet-error](../images/ui/outlet-error.png)
 
