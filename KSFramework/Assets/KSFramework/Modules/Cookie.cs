@@ -2,11 +2,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using KEngine;
 
 namespace KSFramework
 {
     /// <summary>
     /// Cookie for game developement,  such as a cache
+    /// 支持单向数据绑定
     /// </summary>
     public class Cookie
     {
@@ -132,6 +134,7 @@ namespace KSFramework
             }
             else
             {
+                Log.Warning("not find key {0}",key);
                 return null;
             }          
         }
@@ -150,8 +153,13 @@ namespace KSFramework
                 listeners = _setListeners[key] = new List<CookieSetListener>();
             }
             if (!listeners.Contains(listener))
+            {
                 listeners.Add(listener);
-            else throw new Exception("Duplicated set listner");
+            }
+            else
+            {
+                throw new Exception("Duplicated set listner");
+            }
 
         }
 
@@ -167,8 +175,13 @@ namespace KSFramework
                 listeners = _setListeners[key] = new List<CookieSetListener>();
             }
             if (listeners.Contains(listener))
+            {
                 listeners.Remove(listener);
-            else throw new Exception("Not exist listener");
+            }
+            else
+            {
+                throw new Exception("Not exist listener");
+            }
         }
     }
 }

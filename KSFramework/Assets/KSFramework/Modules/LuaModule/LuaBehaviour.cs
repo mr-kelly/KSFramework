@@ -27,6 +27,7 @@ namespace KSFramework
 {
     /// <summary>
     /// Lua端的MonoBehaivour
+    /// xlua版本请参考xlua官方的LuaBehaviour
     /// </summary>
     public class LuaBehaviour : MonoBehaviour
     {
@@ -36,12 +37,12 @@ namespace KSFramework
 
         public static LuaBehaviour Create(GameObject attach, string luaPath)
         {
-			// only one same lua behaviour can attach
-			foreach (var b in attach.GetComponents<LuaBehaviour>())
-			{
-				if (b.LuaPath == luaPath)
-					return b;
-			}
+            // only one same lua behaviour can attach
+            foreach (var b in attach.GetComponents<LuaBehaviour>())
+            {
+                if (b.LuaPath == luaPath)
+                    return b;
+            }
             var behaviour = attach.AddComponent<LuaBehaviour>();
             behaviour.LuaPath = luaPath;
             behaviour.Awake();
@@ -68,23 +69,23 @@ namespace KSFramework
             if (_cacheTable == null)
                 throw new Exception(string.Format("{0}: cannot get table!", LuaPath));
 
-            //Fix:在Lua的不同方法中调用self为nil
-            return _cacheTable.CallFunc(function, args);
+            var retFunc = _cacheTable[function];
+            if (retFunc != null)
+            {
+                if (!(retFunc is LuaFunction))
+                {
+                    throw new Exception(string.Format("{0}: {1} must be function!", LuaPath, function));
+                }
 
-            //            var retFunc = _cacheTable[function];
-            //            if (retFunc != null)
-            //            {
-            //                if (!(retFunc is LuaFunction))
-            //                {
-            //                    throw new Exception(string.Format("{0}: {1} must be function!", LuaPath, function));
-            //                }
-            //
-            //                var func = retFunc as LuaFunction;
-            //
-            //                return func.Call(args);
-            //            }
-            //
-            //            return null;
+                var func = retFunc as LuaFunction;
+#if xLua
+                return func.Call(args);
+#else
+                           return func.call(args);
+#endif
+            }
+
+            return null;
         }
 
         protected virtual void Awake()
@@ -92,7 +93,7 @@ namespace KSFramework
             if (!string.IsNullOrEmpty(LuaPath))
             {
                 Init();
-				CallLuaFunction("Awake", _cacheTable, this);
+                CallLuaFunction("Awake", _cacheTable, this);
             } // else Null Lua Path, pass Awake!
         }
 
@@ -111,10 +112,10 @@ namespace KSFramework
             CallLuaFunction("LateUpdate");
         }
 
-		protected void OnDestroy()
-		{
-			CallLuaFunction ("OnDestroy", _cacheTable, this);
-		}
+        protected void OnDestroy()
+        {
+            CallLuaFunction("OnDestroy", _cacheTable, this);
+        }
     }
 
 }

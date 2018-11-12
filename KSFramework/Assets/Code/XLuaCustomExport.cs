@@ -143,15 +143,13 @@ public static class XLuaCustomExport
 
     };
 
-    [CSharpCallLua]
     [ReflectionUse]
     public static List<Type> CSharpCallLuaByReflec = new List<Type>()
     {
         typeof(System.Action<GameObject>),
         typeof(System.Action<string, string, PointerEventData>),
     };
-
-    [LuaCallCSharp]
+    
     [ReflectionUse]
     public static List<Type> LuaCallCSharpByRelfect = new List<Type>()
     {
@@ -191,7 +189,6 @@ public static class XLuaCustomExport
     };
 
     [LuaCallCSharp]
-    [ReflectionUse]
     public static List<Type> LuaCallCSharpListUnity = new List<Type>()
     {
         /*************** Unity Structs&Enums ***************/
