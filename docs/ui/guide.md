@@ -1,6 +1,14 @@
 
 
-# UI的打开、关闭、调用都是异步的
+## UI约定
+
+在KSFramework中，每个UI都是一个场景文件，保存时，会自动把(UIWindowAsset脚本)节点下变成prefab放在BundleResource目录下。
+
+每个UI对应一个同名的Lua文件，可通过 **KEngine** - **UI(UGUI)** - **Auto Make UI Lua Scripts(Current Scene)** 创建模版脚本
+
+UI默认有三个函数，**OnInit** ，**OnOpen**，**OnClose**，并没有使用Unity的Start
+
+## UI的打开、关闭、调用都是异步的
 
 类似资源模块，UI模块是接口，大部分异步的， 主要采用CPS异步回调的风格。常用接口：
 
