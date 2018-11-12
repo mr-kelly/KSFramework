@@ -329,7 +329,12 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，控件的绑定是通过代码手工实现的。</p>
+                <p>在KSFramework中，提供两种方式进行控件绑定：</p>
+<ol>
+<li>通过代码手工实现控件的绑定</li>
+<li>通过拖拽的方式绑定(LuaOutlet)</li>
+</ol>
+<p>本篇讲解通过代码手工实现控件的绑定</p>
 <pre><code class="Lua">-- Type and Path
 local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
 </code></pre>
