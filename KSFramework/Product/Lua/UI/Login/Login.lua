@@ -42,13 +42,6 @@ function UILogin:OnInit(controller)
         UIModule.Instance:CloseWindow("Login")
         UIModule.Instance:OpenWindow("Main", "user1")
     end)
-
-
-    -- test LuaBehaivour
-    if not LuaBehaviour then
-        LuaBehaviour = CS.KSFramework.LuaBehaviour
-    end
-    LuaBehaviour.Create(controller.CachedGameObject, 'Behaviour/TestLuaBehaviour')
 end
 
 function UILogin:OnOpen(num1)
@@ -73,6 +66,11 @@ function UILogin:OnOpen(num1)
     Cookie.Set('UILogin.OpenCount', openCount)
 
     Log.Info('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
+end
+
+function UILogin:OnClose()
+    print(self.btnTest)
+    print(self.sceneIndex)
 end
 
 return UILogin
