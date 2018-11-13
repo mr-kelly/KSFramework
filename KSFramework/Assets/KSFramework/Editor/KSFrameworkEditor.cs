@@ -117,7 +117,7 @@ Shorcuts:
                         }
 
                         File.WriteAllText(scriptPath, LuaUITempalteCode.Replace("$UI_NAME", "UI" + uiName));
-                        Debug.LogWarning("New Lua Script: " + scriptPath);
+                        Debug.Log("New Lua Script: " + scriptPath);
                     }
                     else
                     {
@@ -138,9 +138,6 @@ Shorcuts:
         /// </summary>
         private static string LuaUITempalteCode = @"
 local UIBase = import('KSFramework/UIBase')
-
-if not Cookie then local Cookie = Slua.GetClass('KSFramework.Cookie') end
-if not Log then Log = Slua.GetClass('KEngine.Log') end
 
 local $UI_NAME = {}
 extends($UI_NAME, UIBase)
@@ -168,10 +165,6 @@ return $UI_NAME
         /// </summary>
         private static string LuaUITempalteCode = @"
 local UIBase = import('UI/UIBase')
-
-if not Cookie then local Cookie = CS.KSFramework.Cookie end
-if not UIModule then local UIModule = CS.KSFramework.UI.UIModule end
-if not Log then Log = CS.KEngine.Log end
 
 local $UI_NAME = {}
 extends($UI_NAME, UIBase)
