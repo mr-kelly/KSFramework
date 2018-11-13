@@ -1,20 +1,5 @@
 local UIBase = import("UI/UIBase")
 
-if not Cookie then
-    Cookie = Slua.GetClass('KSFramework.Cookie')
-end
-
-if not I18N then
-    I18N = Slua.GetClass('KSFramework.I18N') -- use slua reflection mode
-end
-
-if not UIModule then
-    UIModule = Slua.GetClass('KEngine.UI.UIModule')
-end
-
-if not Log then
-    Log = Slua.GetClass('KEngine.Log')
-end
 
 local UILogin = {}
 extends(UILogin, UIBase)
