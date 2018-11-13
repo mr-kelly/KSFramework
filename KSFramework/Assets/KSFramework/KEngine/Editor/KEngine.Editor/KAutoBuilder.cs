@@ -170,7 +170,7 @@ namespace KEngine.Editor
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
-        [MenuItem("File/AutoBuilder/WindowsX86")]
+        [MenuItem("KEngine/AutoBuilder/WindowsX86")]
         static void PerformWinReleaseBuild()
         {
         	PerformBuild("KSFramework.exe", BuildTarget.StandaloneWindows, BuildOptions.None);

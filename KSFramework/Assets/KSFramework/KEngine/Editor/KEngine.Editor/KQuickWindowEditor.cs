@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
+using KEngine;
 using KEngine.Editor;
 using UnityEditor;
 
@@ -17,12 +19,33 @@ public class KQuickWindowEditor : EditorWindow
 
     public void OnGUI()
     {
+        DrawKEngineInit();
+        GUILayout.Space(20);
+
         DrawKEngineUI();
         GUILayout.Space(20);
 
         DrawAssetBundleUI();
+        GUILayout.Space(20);
+
+        DrawBuildUI();
+        GUILayout.Space(20);
     }
 
+
+    public void DrawKEngineInit()
+    {
+        GUILayout.BeginHorizontal("HelpBox");
+        EditorGUILayout.LabelField("== KEngine ==");
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("初始化AB资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            ResourcesSymbolLinkHelper.SymbolLinkResource();
+        }
+
+        GUILayout.EndHorizontal();
+    }
 
     public void DrawKEngineUI()
     {
@@ -83,5 +106,46 @@ public class KQuickWindowEditor : EditorWindow
 
         GUILayout.EndHorizontal();
 
+    }
+
+    void DrawBuildUI()
+    {
+        GUILayout.BeginHorizontal("HelpBox");
+        EditorGUILayout.LabelField("== 常用的功能键 ==");
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("打PC版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KAutoBuilder.PerformWinBuild();
+        }
+        if (GUILayout.Button("打Android包", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KAutoBuilder.PerformAndroidBuild();
+        }
+     
+        if (GUILayout.Button("打IOS版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KAutoBuilder.PerformiOSBuild();
+        }
+        if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            var path = KResourceModule.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
+            var fullPath = Path.GetFullPath(path);
+            if (Directory.Exists(fullPath) == false)
+            {
+                Log.Debug("{0} 目录不存在，定位到父目录。", fullPath);
+
+                DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
+                fullPath = directoryInfo.Parent.FullName;
+            }
+            Log.Debug("open: {0}", fullPath);
+            System.Diagnostics.Process.Start("explorer.exe", fullPath);
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+       
+        
+        GUILayout.EndHorizontal();
     }
 }
