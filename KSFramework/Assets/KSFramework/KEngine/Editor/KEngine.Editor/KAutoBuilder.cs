@@ -184,9 +184,10 @@ namespace KEngine.Editor
 
         public static string PerformiOSBuild(string ipaName, bool isDevelopment = true)
         {
+            //增量生成xcode project
             BuildOptions opt = isDevelopment
-                ? (BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler)
-                : BuildOptions.None;
+                ? (BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler | BuildOptions.AcceptExternalModificationsToPlayer)
+                : BuildOptions.AcceptExternalModificationsToPlayer;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             return PerformBuild("Apps/IOSProjects/" + ipaName, BuildTarget.iOS, opt);
 #else
