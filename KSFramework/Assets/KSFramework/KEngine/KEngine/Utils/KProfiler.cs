@@ -27,10 +27,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace KEngine
 {
-    public class Profiler
+    public class KProfiler
     {
         public static bool bEnable = false;
 
@@ -147,14 +148,14 @@ namespace KEngine
         {
             if (!CanWatch) return;
 
-            Profiler.BeginSample(strName);
+            UnityEngine.Profiling.Profiler.BeginSample(strName);
         }
 
         public static void EndSample()
         {
             if (!CanWatch) return;
 
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
         }
     }
 }

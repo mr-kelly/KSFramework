@@ -824,19 +824,20 @@ namespace KEngine
             return obj;
         }
 
-        public static void SetChild(GameObject child, GameObject parent, bool selfRotation = false, bool selfScale = false)
+        public static void SetChild(GameObject child, GameObject parent, bool selfPos = false, bool selfRotation = false, bool selfScale = false)
         {
-            SetChild(child.transform, parent.transform, selfRotation, selfScale);
+            SetChild(child.transform, parent.transform, selfPos,selfRotation, selfScale);
         }
 
-        public static void SetChild(Transform child, Transform parent, bool selfRotation = false, bool selfScale = false)
+        public static void SetChild(Transform child, Transform parent,bool selfPos = false, bool selfRotation = false, bool selfScale = false)
         {
-            child.parent = parent;
-            ResetTransform(child, selfRotation, selfScale);
+            child.SetParent(parent);
+            ResetTransform(child, selfPos,selfRotation, selfScale);
         }
 
-        public static void ResetTransform(UnityEngine.Transform transform, bool selfRotation = false, bool selfScale = false)
+        public static void ResetTransform(UnityEngine.Transform transform, bool selfPos = false, bool selfRotation = false, bool selfScale = false)
         {
+            if(!selfPos)
             transform.localPosition = UnityEngine.Vector3.zero;
             if (!selfRotation)
                 transform.localEulerAngles = UnityEngine.Vector3.zero;
