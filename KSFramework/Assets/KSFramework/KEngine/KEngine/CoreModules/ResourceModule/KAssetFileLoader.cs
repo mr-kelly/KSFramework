@@ -227,7 +227,7 @@ namespace KEngine
                 }
             }
 
-            if (getAsset != null)
+            if (getAsset != null && IsLoadAssetBundle)
             {
                 // 更名~ 注明来源asset bundle 带有类型
                 getAsset.name = String.Format("{0}~{1}", getAsset, Url);
