@@ -1,7 +1,8 @@
 
 [KEngine]
 AssetBundleExt = .k	
-AssetBundleBuildRelPath	= ../Product/Bundles	
+; if use 2 project(art,code)£¬use:../Product
+AssetBundleBuildRelPath	= ./Product/Bundles	
 StreamingBundlesFolderName = Bundles	
 IsEditorLoadAsset = 0
 
