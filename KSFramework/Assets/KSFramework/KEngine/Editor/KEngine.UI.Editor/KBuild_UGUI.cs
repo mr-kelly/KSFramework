@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.IO;
 using KEngine.UI;
 using KUnityEditorTools;
@@ -168,6 +169,24 @@ namespace KEngine.Editor
             return windowAssets;
         }
 
+        [MenuItem("KEngine/UI(UGUI)/Export All UI")]
+        public static void ExportAllUI()
+        {
+            if (Application.isPlaying)
+            {
+                Log.Error("Cannot export in playing mode! Please stop!");
+                return;
+            }
+            var uiPath = Application.dataPath + "/" + KEngineDef.ResourcesEditDir + "/UI";
+            var uiScenes = Directory.GetFiles(uiPath, "*.unity", SearchOption.AllDirectories);
+            foreach (string uiScene in uiScenes)
+            {
+                Log.Info("begin export {0}", uiScene);
+                EditorSceneManager.OpenScene(uiScene);
+                KUGUIBuilder.UISceneToPrefabs();
+            }
+            BuildTools.BuildAllAssetBundles();
+        }
         public static string GetBuildRelPath(string uiName)
         {
             return string.Format("UI/{0}_UI{1}", uiName, KEngine.AppEngine.GetConfig("KEngine", "AssetBundleExt"));
@@ -200,8 +219,18 @@ namespace KEngine.Editor
 
             var canvas = uiObj.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            uiObj.AddComponent<CanvasScaler>();
+            CanvasScaler canvasScaler = uiObj.AddComponent<CanvasScaler>();
             uiObj.AddComponent<GraphicRaycaster>();
+            var uiSize = new Vector2(1280,720);
+            var uiResolution = AppEngine.GetConfig("KEngine.UI", "UIResolution");
+            if (!string.IsNullOrEmpty(uiResolution))
+            {
+                var sizeArr = uiResolution.Split(',');
+                if (sizeArr.Length >= 2) { uiSize=new Vector2(sizeArr[0].ToInt32(),sizeArr[1].ToInt32()); }
+            }
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvasScaler.referenceResolution = uiSize;
+            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 
             if (GameObject.Find("EventSystem") == null)
             {

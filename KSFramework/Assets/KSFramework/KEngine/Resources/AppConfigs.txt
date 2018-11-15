@@ -1,11 +1,14 @@
 
 [KEngine]
 AssetBundleExt = .k	
+AssetBundleBuildRelPath	= ../Product/Bundles	
+StreamingBundlesFolderName = Bundles	
 IsEditorLoadAsset = 0
 
 ; Override default "UGUIBridge"
 [KEngine.UI]
 UIModuleBridge = KSFramework.UGUISLuaBridge
+UIResolution = 1280,720
 
 [KSFramework.I18N]
 
