@@ -65,7 +65,7 @@ namespace KEngine.Editor
         private static void OnSaveScene()
         {
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
-            if (AutoUIPrefab)
+            if (AutoUIPrefab && !Application.isPlaying)
             {
                 var scenePath = EditorSceneManager.GetActiveScene().path;
                 if (!scenePath.Contains("Assets/" + KEngineDef.ResourcesEditDir + "/UI") &&
