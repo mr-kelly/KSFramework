@@ -61,16 +61,9 @@ namespace KEngine.Editor
             }
         }
 
-        /// <summary>
-        /// Unity 5新AssetBundle系统，需要为打包的AssetBundle配置名称
-        /// 
-        /// 直接将KEngine配置的BundleResources目录整个自动配置名称，因为这个目录本来就是整个导出
-        /// </summary>
-        [MenuItem("KEngine/AssetBundle/Make Names from [BundleResources]")]
-        public static void MakeAssetBundleNames()
+        [MenuItem("KEngine/AssetBundle/Clear assetBundleName exclude BundleResources")]
+        public static void ClearOtherAssetBundleNames()
         {
-            var dir = ResourcesBuildDir;
-
             // Check marked asset bundle whether real
             foreach (var assetGuid in AssetDatabase.FindAssets(""))
             {
@@ -81,12 +74,23 @@ namespace KEngine.Editor
                 {
                     continue;
                 }
-                if (!assetPath.StartsWith(dir))
+                if (!assetPath.StartsWith(ResourcesBuildDir))
                 {
                     assetImporter.assetBundleName = null;
                 }
             }
+        }
 
+        /// <summary>
+        /// Unity 5新AssetBundle系统，需要为打包的AssetBundle配置名称
+        /// 
+        /// 直接将KEngine配置的BundleResources目录整个自动配置名称，因为这个目录本来就是整个导出
+        /// </summary>
+        [MenuItem("KEngine/AssetBundle/Make Names from [BundleResources]")]
+        public static void MakeAssetBundleNames()
+        {
+            var dir = ResourcesBuildDir;
+            
             // set BundleResources's all bundle name
             foreach (var filepath in Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories))
             {
@@ -103,7 +107,6 @@ namespace KEngine.Editor
             }
 
             Log.Info("Make all asset name successs!");
-
         }
 
         /// <summary>
@@ -224,6 +227,7 @@ namespace KEngine.Editor
             var outputPath = GetExportPath(EditorUserBuildSettings.activeBuildTarget);
             Log.Info("Asset bundle start build to: {0}", outputPath);
             BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.DeterministicAssetBundle, EditorUserBuildSettings.activeBuildTarget);
+            Log.Info("Asset bundle build success.");
         }
 
 #endif
