@@ -31,6 +31,12 @@ using System.Text;
 #if !KENGINE_DLL
 using UnityEngine;
 #endif
+#if UNITY_EDITOR
+using UnityEditor;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
+#endif
 
 namespace KEngine
 {
@@ -133,6 +139,9 @@ namespace KEngine
             }
 #endif
 
+#if UNITY_EDITOR
+            InitLogUtility();
+#endif
         }
 
         /// <summary>
@@ -332,7 +341,11 @@ namespace KEngine
                 szMsg = string.Format(szMsg, args);
             szMsg = string.Format("[{0}]{1}\n\n=================================================================\n\n",
                 DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
-
+#if UNITY_EDITOR
+            StackTrace stackTrace = new StackTrace(true);
+            var stackFrame = stackTrace.GetFrame(2);
+            s_LogStackFrameList.Add(stackFrame);
+#endif
             switch (emLevel)
             {
                 case LogLevel.Warning:
@@ -415,5 +428,163 @@ namespace KEngine
             return logPath + logName;
         }
 
+        #region 控制台双击日志跳到指定行
+#if UNITY_EDITOR
+        private static int s_InstanceID;
+        private static int[] s_Lines = { 354, 361, 368 };
+        private static List<StackFrame> s_LogStackFrameList = new List<StackFrame>();
+        private static object s_ConsoleWindow;
+        private static object s_LogListView;
+        private static FieldInfo s_LogListViewTotalRows;
+        private static FieldInfo s_LogListViewCurrentRow;
+        private static MethodInfo s_LogEntriesGetEntry;
+        private static object s_LogEntry;
+        private static FieldInfo s_LogEntryCondition;
+        static void InitLogUtility()
+        {
+            s_InstanceID = AssetDatabase.LoadAssetAtPath<MonoScript>("Assets/KSFramework/KEngine/KEngine.Lib/Logger.cs").GetInstanceID();
+            s_LogStackFrameList.Clear();
+
+            GetConsoleWindowListView();
+        }
+        //Unity5.3适用
+        private static void GetConsoleWindowListView()
+        {
+            if (s_LogListView == null && !UnityEditorInternal.InternalEditorUtility.inBatchMode)
+            {
+                Assembly unityEditorAssembly = Assembly.GetAssembly(typeof(EditorWindow));
+                Type consoleWindowType = unityEditorAssembly.GetType("UnityEditor.ConsoleWindow");
+                FieldInfo fieldInfo = consoleWindowType.GetField("ms_ConsoleWindow", BindingFlags.Static | BindingFlags.NonPublic);
+                s_ConsoleWindow = fieldInfo.GetValue(null);
+                FieldInfo listViewFieldInfo = consoleWindowType.GetField("m_ListView", BindingFlags.Instance | BindingFlags.NonPublic);
+                s_LogListView = listViewFieldInfo.GetValue(s_ConsoleWindow);
+                s_LogListViewTotalRows = listViewFieldInfo.FieldType.GetField("totalRows", BindingFlags.Instance | BindingFlags.Public);
+                s_LogListViewCurrentRow = listViewFieldInfo.FieldType.GetField("row", BindingFlags.Instance | BindingFlags.Public);
+                //LogEntries  
+#if UNITY_2017_1_OR_NEWER
+                Type logEntriesType = unityEditorAssembly.GetType("UnityEditor.LogEntries");
+                s_LogEntriesGetEntry = logEntriesType.GetMethod("GetEntryInternal", BindingFlags.Static | BindingFlags.Public);
+                Type logEntryType = unityEditorAssembly.GetType("UnityEditor.LogEntry");
+#else
+                Type logEntriesType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntries");                
+                s_LogEntriesGetEntry = logEntriesType.GetMethod("GetEntryInternal", BindingFlags.Static | BindingFlags.Public);
+                Type logEntryType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntry");
+#endif
+                s_LogEntry = Activator.CreateInstance(logEntryType);
+                //s_LogEntryInstanceId = logEntryType.GetField("instanceID", BindingFlags.Instance | BindingFlags.Public);
+                //s_LogEntryLine = logEntryType.GetField("line", BindingFlags.Instance | BindingFlags.Public);
+                s_LogEntryCondition = logEntryType.GetField("condition", BindingFlags.Instance | BindingFlags.Public);
+            }
+        }
+
+        private static StackFrame GetListViewRowCount()
+        {
+            GetConsoleWindowListView();
+            if (s_LogListView == null)
+                return null;
+            else
+            {
+                int totalRows = (int)s_LogListViewTotalRows.GetValue(s_LogListView);
+                int row = (int)s_LogListViewCurrentRow.GetValue(s_LogListView);
+                int logByThisClassCount = 0;
+                for (int i = totalRows - 1; i >= row; i--)
+                {
+                    s_LogEntriesGetEntry.Invoke(null, new object[] { i, s_LogEntry });
+                    string condition = s_LogEntryCondition.GetValue(s_LogEntry) as string;
+                    //判断是否是由LoggerUtility打印的日志  
+                    if (condition.Contains("==================="))
+                        logByThisClassCount++;
+                    if (condition.Contains("]LUA:") || condition.Contains("][ERROR][string") || condition.Contains("][ERROR]c# excep"))
+                        _luaLog = condition;
+                    else _luaLog = null;
+
+
+                }
+
+                //同步日志列表，ConsoleWindow 点击Clear 会清理  
+                while (s_LogStackFrameList.Count > totalRows)
+                    s_LogStackFrameList.RemoveAt(0);
+                if (s_LogStackFrameList.Count >= logByThisClassCount)
+                    return s_LogStackFrameList[s_LogStackFrameList.Count - logByThisClassCount];
+                return null;
+            }
+        }
+        private static string _luaLog;
+        private static bool ArrayContains<T>(T[] t, T v)
+        {
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (t[i].Equals(v)) return true;
+            }
+            return false;
+        }
+        [UnityEditor.Callbacks.OnOpenAssetAttribute(0)]
+        static bool OnOpenAsset(int instanceID, int line)
+        {
+
+            if (instanceID == s_InstanceID && ArrayContains(s_Lines, line))
+            {
+                var stackFrame = GetListViewRowCount();
+                if (stackFrame != null)
+                {
+                    if (_luaLog != null)
+                    {
+                        Regex reg = new Regex(@".*\[string ""(.*)""\]:(\d+):.*");
+                        string luaFile = reg.Match(_luaLog).Groups[1].Value;
+                        int luaLine = int.Parse(reg.Match(_luaLog).Groups[2].Value);
+
+                        string fullPath = Application.dataPath.Replace("Assets", "") + "../Product/Lua/" + luaFile + ".lua";
+                        return openFileInSublime(fullPath, luaLine);
+                    }
+                    string fileName = stackFrame.GetFileName();
+                    string fileAssetPath = fileName.Substring(fileName.IndexOf("Assets"));
+                    AssetDatabase.OpenAsset(AssetDatabase.LoadAssetAtPath<MonoScript>(fileAssetPath), stackFrame.GetFileLineNumber());
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        static bool openFileInVS(string filePath, int line)
+        {
+            System.Diagnostics.Process scriptProc = new System.Diagnostics.Process();
+
+            scriptProc.StartInfo.FileName = Application.dataPath.Replace("Assets", "") + "runvs.vbs";
+            scriptProc.StartInfo.Arguments = filePath + " " + line + " 1";
+            scriptProc.Start();
+            scriptProc.WaitForExit();
+            scriptProc.Close();
+            return true;
+        }
+
+        static bool openFileInSublime(string filePath, int line)
+        {
+            string idePath = EditorPrefs.GetString("sublimePath", "");
+            filePath = Path.GetFullPath(filePath);
+            if (!string.IsNullOrEmpty(idePath) && File.Exists(idePath))
+            {
+                string fileArgs = null;
+                if (idePath.Contains("idea"))
+                {
+                    //TODO idea跳到指定行
+                    //                    fileArgs = string.Format("{0}?{1}:{2}",filePath,line,1);
+                    //                    UnityEngine.Debug.Log("idea==>"+fileArgs);
+                    //                    fileArgs = string.Format("{0}:{1}", filePath, line);
+                }
+                else
+                {
+                    fileArgs = string.Format("{0}:{1}", filePath, line);
+                }
+                System.Diagnostics.Process.Start(idePath, fileArgs);
+            }
+            else
+            {
+                openFileInVS(filePath, line);
+            }
+            return true;
+        }
+#endif
+        #endregion
     }
 }
