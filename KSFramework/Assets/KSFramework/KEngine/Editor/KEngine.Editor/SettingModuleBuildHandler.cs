@@ -57,10 +57,14 @@ namespace KSFramework.Editor
             {
                 _hasBeforeBuildApp = true;
                 // 这里是编译前, Setting目录的配置文件拷贝进去StreamingAssetse
-                Debug.Log("[SettingModuleBuildHandler]Start copy settings...");
                 var editorLuaScriptPath = AppEngine.GetConfig("KEngine.Setting", "SettingCompiledPath");
+                if (Directory.Exists(editorLuaScriptPath) == false)
+                {
+                    Debug.LogWarning(string.Format("[SettingModuleBuildHandler]DirectoryNotFound: {0}", editorLuaScriptPath));
+                    return;
+                }
                 //var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
-
+                Debug.Log("[SettingModuleBuildHandler]Start copy settings...");
                 var luaCount = 0;
                 //var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath, compilePath);
                 editorLuaScriptPath = editorLuaScriptPath.Replace("\\", "/");
