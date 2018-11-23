@@ -20,9 +20,19 @@
 
 对于运营人员，利用KSFramework的热重载特性，可以针对运营需求，在项目运行过程中配置表、脚本代码在用户无知觉的情况下进行热更新。
 
-# 基础知识
+## ShowCase
 
-## 方式1，下载即用
+showcase 列表页面：https://github.com/mr-kelly/KSFramework/wiki
+
+| [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  |
+| ----------- | ----------- |----------- |----------- |
+| ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) |
+
+
+
+## Quick Start
+
+### 方式1，下载即用
 
 以下方法任选其一：
 
@@ -44,7 +54,7 @@ KSFramework\Assets\slua
 
 
 
-## 方式2，从产品包安装
+### 方式2，从产品包安装
 
 （这种方式获得的版本非最新版本），您可以从[KSFramework Release](https://github.com/mr-kelly/KSFramework/releases)页面下载最新版本的产品包。
 
@@ -55,21 +65,21 @@ KSFramework\Assets\slua
 > - [KSFramework Appveyor Artifacts](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts): 包含每次提交的构建结果
 > - [KSFramework OSChina镜像](http://git.oschina.net/mrkelly/KSFramework)): 国内的镜像Git
 
-
-## 编辑器下无需打包资源
+### 编辑器下无需打包资源
 
 在Editor下，无需打包AB资源即可运行，没有打包时间，提高工作效率。
 
 如果需要调试AB相关信息，请打包AB。
 
-## 工程打包方法
+### 工程打包方法
+
 1. 点击菜单栏 **KEngine** - **AutoBuilder** - **Android**/**iOS**/**Windows**
 2. Unity会执行生成安装包，放在**Product/Apps/Android/**KSFramework.apk `[根据平台区分目录]`
 3. 打包期间会自动Link AB资源到**StreamingAssets**目录下
 
 注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。
 
-## Unity3D版本支持
+### Unity3D版本支持
 
 | Unity3D版本  | 支持情况 | 备注                        |
 | ---------- | ---- | ------------------------- |
@@ -78,8 +88,7 @@ KSFramework\Assets\slua
 | Unity 2017 | 支持   |                           |
 | Unity 2018 | 支持   | 2018.2.7f1已测试             |
 
-
-## 其它热更新方案
+### 其它热更新方案
 
 理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。
 
@@ -88,7 +97,7 @@ KSFramework\Assets\slua
 
 更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/
 
-## 错误解决
+### 错误解决
 
 下载后如果运行出错，或者使用其它版本的Unity打开，尝试以下方法：
 
