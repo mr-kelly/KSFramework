@@ -1,6 +1,15 @@
 
 ![KSFramework](Docs/KSFramework-logo.png)
 
+## ShowCase(商业案例)
+
+showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
+
+| [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  |
+| ----------- | ----------- |----------- |----------- |
+| ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) |
+
+
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
 [**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)|[XLua](https://github.com/Tencent/xLua)+ **Framework** = KSFramework
@@ -22,7 +31,7 @@
 
 ## TOC(目录)
 
-  * [ShowCase](#showcase)
+  * [ShowCase(商业案例)](#showcase%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B)
   * [Quick Start](#quick-start)
     * [方式1，下载即用](#%E6%96%B9%E5%BC%8F1%E4%B8%8B%E8%BD%BD%E5%8D%B3%E7%94%A8)
     * [方式2，从产品包安装](#%E6%96%B9%E5%BC%8F2%E4%BB%8E%E4%BA%A7%E5%93%81%E5%8C%85%E5%AE%89%E8%A3%85)
@@ -36,13 +45,7 @@
 * [结构组成](#%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90)
 * [涉及第三方库](#%E6%B6%89%E5%8F%8A%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93)
 
-## ShowCase
 
-showcase 列表页面：https://github.com/mr-kelly/KSFramework/wiki
-
-| [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  |
-| ----------- | ----------- |----------- |----------- |
-| ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) |
 
 
 
