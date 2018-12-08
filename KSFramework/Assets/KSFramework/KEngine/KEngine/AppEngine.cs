@@ -51,8 +51,11 @@ namespace KEngine
     public class AppEngine : MonoBehaviour
     {
         public static bool IsDebugBuild { get; private set; } // cache Debug.isDebugBuild for multi thread
+#if !DEBUG_DISABLE
+        public bool ShowFps = true; //show fps
+#else
         public bool ShowFps = false;
-
+#endif
         /// <summary>
         /// To Display FPS in the Debug Mode (Debug.isDebugBuild is true)
         /// </summary>
@@ -132,7 +135,7 @@ namespace KEngine
         private void Awake()
         {
             IsDebugBuild = Debug.isDebugBuild;
-            ShowFps = IsDebugBuild;
+            //ShowFps = IsDebugBuild;
 
             if (EngineInstance != null)
             {
@@ -326,6 +329,9 @@ namespace KEngine
             var font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             fpsTextObj.font = font;
             CacheText = fpsTextObj;
+            GameObject.DontDestroyOnLoad(canvasGameObj);
+            Log.Debug("create fps canvas");
+
 #endif
         }
 

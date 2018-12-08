@@ -237,19 +237,7 @@ namespace KEngine.Editor
             BuildTools.ShowDialog("Prefs Cleared!");
         }
 
-        [MenuItem("KEngine/UI(UGUI)/Export All UI")]
-        public static void ExportAllUI()
-        {
-            var uiPath = Application.dataPath + "/" + KEngineDef.ResourcesEditDir + "/UI";
-            var uiScenes = Directory.GetFiles(uiPath, "*.unity", SearchOption.AllDirectories);
-            foreach (string uiScene in uiScenes)
-            {
-                Log.Info("begin export {0}",uiScene);
-                KUGUIBuilder.UISceneToPrefabs();
-                EditorSceneManager.OpenScene(uiScene);
-            }
-        }
-    }
+   }
 
     public class ResourcesSymbolLinkHelper
     {

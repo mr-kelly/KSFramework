@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using KEngine;
 using KEngine.Editor;
+using KSFramework.Editor;
 using UnityEditor;
 
 public class KQuickWindowEditor : EditorWindow
@@ -60,7 +61,7 @@ public class KQuickWindowEditor : EditorWindow
         }
         if (GUILayout.Button("为当前UI创建Lua脚本", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            //            KSFrameworkEditor.AutoMakeUILuaScripts();
+             KSFrameworkEditor.AutoMakeUILuaScripts();
         }
         GUILayout.EndHorizontal();
 
@@ -72,7 +73,7 @@ public class KQuickWindowEditor : EditorWindow
         }
         if (GUILayout.Button("导出全部UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-//            KUGUIBuilder.ExportAllUI();
+            KUGUIBuilder.ExportAllUI();
         }
         GUILayout.EndHorizontal();
     }
