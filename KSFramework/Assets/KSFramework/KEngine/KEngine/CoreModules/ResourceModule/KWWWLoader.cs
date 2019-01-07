@@ -96,7 +96,7 @@ namespace KEngine
         }
 
         /// <summary>
-        /// 协和加载Assetbundle，加载完后执行callback
+        /// 协程加载Assetbundle，加载完后执行callback
         /// </summary>
         /// <param name="url">资源的url</param>
         /// <param name="callback"></param>
@@ -108,7 +108,7 @@ namespace KEngine
             //在Unity2017.1.1下，路径中包含两种分隔符(/和\),仅限windows平台
             //比如：C:\Code\KSFramework\Product/Bundles/Windows/ui/login.prefab.k)会报: UriFormatException: Invalid URI: Invalid port number
             //此处对路径处理成Unity标准路径格式：C:/Code/KSFramework/Product/Bundles/Windows/ui/login.prefab.k
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
             url = KTool.FormatToAssetUrl(url);
 #endif
 #endif
