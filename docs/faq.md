@@ -15,7 +15,11 @@
 
 ### 配置表生成C#代码，如何热更？
 
-配置部分可以修改生成Lua代码，或读取tsv，而不使用C#代码。
+可以把配置文件生成Lua代码，或读取tsv，或配置文件插入到数据库，等等方式。
+
+C#代码是配置表的字段，在开发期可以直接使用Class类的字段，而不用查表的字段。
+
+可以参考 tableml 的修改版本：https://www.cnblogs.com/zhaoqingqing/p/7440867.html
 
 
 
@@ -94,3 +98,11 @@ lzma也可以loadfromfile
 
 
 更多xlua相关的知识，可以查看xlua的官方文档
+
+## 遇到报错
+
+> 问题：TargetException: Non-static field reqires a target 
+>
+> 调用堆栈 KEngine.Log.Logger
+>
+> 解决办法：游戏启动时，打开Unity的日志窗口(Console界面)，因为添加了双击日志跳转到Lua文件中
