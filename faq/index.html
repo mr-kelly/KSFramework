@@ -101,6 +101,9 @@
     <li class="toctree-l2"><a href="#xlua">xlua相关</a></li>
     
 
+    <li class="toctree-l2"><a href="#_2">遇到报错</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -343,7 +346,9 @@
 </code></pre>
 
 <h3 id="c">配置表生成C#代码，如何热更？</h3>
-<p>配置部分可以修改生成Lua代码，或读取tsv，而不使用C#代码。</p>
+<p>可以把配置文件生成Lua代码，或读取tsv，或配置文件插入到数据库，等等方式。</p>
+<p>C#代码是配置表的字段，在开发期可以直接使用Class类的字段，而不用查表的字段。</p>
+<p>可以参考 tableml 的修改版本：https://www.cnblogs.com/zhaoqingqing/p/7440867.html</p>
 <h3 id="build">build之后，运行报错</h3>
 <p>请检查是否有生成xlua/slua代码，根据具体的报错日志进行排查。</p>
 <h3 id="luabehaviour">LuaBehaviour</h3>
@@ -386,6 +391,12 @@ return TestLuaBehaivour
 <p>提示：code has not been genrate, may be not work in phone!</p>
 <p>这是因为xlua通过 DelegateBridge.Gen_Flag 来判断是否生成代码，但我们在打包过程中，先生成代码，然后删除生成后的代码，并没有设置此flag，但功能是正常的。</p>
 <p>更多xlua相关的知识，可以查看xlua的官方文档</p>
+<h2 id="_2">遇到报错</h2>
+<blockquote>
+<p>问题：TargetException: Non-static field reqires a target </p>
+<p>调用堆栈 KEngine.Log.Logger</p>
+<p>解决办法：游戏启动时，打开Unity的日志窗口(Console界面)，因为添加了双击日志跳转到Lua文件中</p>
+</blockquote>
               
             </div>
           </div>
