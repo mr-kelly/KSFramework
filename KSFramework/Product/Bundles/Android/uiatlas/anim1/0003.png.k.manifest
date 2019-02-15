@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 73072487
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8dfdc05eda6b64cb1b152b267e9de221
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/BundleResources/UIAtlas/Anim1/0003.png
+Dependencies: []

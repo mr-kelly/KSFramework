@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 1523044066
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7fabb9b3798c495c9e22a3b997dfe0ee
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/BundleResources/UIAtlas/Button/button_green.png
+Dependencies: []
