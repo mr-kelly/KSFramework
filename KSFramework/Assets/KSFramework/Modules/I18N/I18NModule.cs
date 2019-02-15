@@ -78,8 +78,7 @@ namespace KSFramework
             if (_isInited)
                 return;
 
-            var settingPath = string.Format("I18N/{0}{1}", Lang,
-                AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt));
+            var settingPath = string.Format("I18N/{0}{1}", Lang,AppEngine.GetConfig(KEngineDefaultConfigs.SettingExt));
             var settingReader = SettingModule.Get(settingPath, false);
             foreach (var row in settingReader)
             {

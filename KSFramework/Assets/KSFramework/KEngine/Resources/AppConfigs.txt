@@ -1,9 +1,9 @@
-
 [KEngine]
 AssetBundleExt = .k	
 AssetBundleBuildRelPath	= ./Product/Bundles	
 StreamingBundlesFolderName = Bundles	
 IsEditorLoadAsset = 0
+SettingExt = .bytes
 
 ; Override default "UGUIBridge"
 [KEngine.UI]

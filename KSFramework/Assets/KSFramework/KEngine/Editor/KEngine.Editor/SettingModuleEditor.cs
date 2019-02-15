@@ -79,7 +79,7 @@ namespace KEngine.Editor
         {
             get
             {
-                return AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt);
+                return AppEngine.GetConfig(KEngineDefaultConfigs.SettingExt);
             }
         }
 

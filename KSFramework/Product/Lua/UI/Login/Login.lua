@@ -18,9 +18,8 @@ function UILogin:OnInit(controller)
     self.sceneIndex = 1
     Log.Info("================================ UILogin:OnInit ============================")
 
-    --local text = self:GetUIText("Login")
-    --text.text = I18N.Str("UILogin.LoginDescText")
-    -- read LoginText from Outlet
+    ---多语言示例，从语言表中读取
+    -- self.LoginText from LuaOutlet
     self.LoginText.text = I18N.Str("UILogin.LoginDescText")
 
     Tools.SetButton(self.btnSwithScene, function()

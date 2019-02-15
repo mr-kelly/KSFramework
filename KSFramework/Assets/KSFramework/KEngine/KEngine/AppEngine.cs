@@ -295,9 +295,10 @@ namespace KEngine
         AssetBundleExt,
         ProductRelPath,
         AssetBundleBuildRelPath, // FromRelPath
-
-        StreamingBundlesFolderName,
         // StreamingAssets inner folder name, when build, will link the Bundle build Path to here
+        StreamingBundlesFolderName,
+
+        SettingExt,
     }
 
     class FpsWatcher
