@@ -81,7 +81,7 @@ namespace AppSettings
 
 
 	/// <summary>
-	/// Auto Generate for Tab File: "Billboard.k"
+	/// Auto Generate for Tab File: "Billboard.bytes"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class BillboardSettings : IReloadableSettings
@@ -93,7 +93,7 @@ namespace AppSettings
 
 		public static readonly string[] TabFilePaths = 
         {
-            "Billboard.k"
+            "Billboard.bytes"
         };
         internal static BillboardSettings _instance = new BillboardSettings();
         Dictionary<string, BillboardSetting> _dict = new Dictionary<string, BillboardSetting>();
@@ -245,7 +245,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "Billboard.k"
+	/// Auto Generate for Tab File: "Billboard.bytes"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class BillboardSetting : TableRowFieldParser
@@ -292,7 +292,7 @@ namespace AppSettings
 	}
 
 	/// <summary>
-	/// Auto Generate for Tab File: "Test.k"
+	/// Auto Generate for Tab File: "Test.bytes"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class TestSettings : IReloadableSettings
@@ -304,7 +304,7 @@ namespace AppSettings
 
 		public static readonly string[] TabFilePaths = 
         {
-            "Test.k"
+            "Test.bytes"
         };
         internal static TestSettings _instance = new TestSettings();
         Dictionary<string, TestSetting> _dict = new Dictionary<string, TestSetting>();
@@ -456,7 +456,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "Test.k"
+	/// Auto Generate for Tab File: "Test.bytes"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class TestSetting : TableRowFieldParser
@@ -497,7 +497,7 @@ namespace AppSettings
 	}
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig/#Base.k", "GameConfig/#TSV.k"
+	/// Auto Generate for Tab File: "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
     /// No use of generic and reflection, for better performance,  less IL code generating
 	/// </summary>>
     public partial class GameConfigSettings : IReloadableSettings
@@ -509,7 +509,7 @@ namespace AppSettings
 
 		public static readonly string[] TabFilePaths = 
         {
-            "GameConfig/#Base.k", "GameConfig/#TSV.k"
+            "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
         };
         internal static GameConfigSettings _instance = new GameConfigSettings();
         Dictionary<string, GameConfigSetting> _dict = new Dictionary<string, GameConfigSetting>();
@@ -661,7 +661,7 @@ namespace AppSettings
     }
 
 	/// <summary>
-	/// Auto Generate for Tab File: "GameConfig/#Base.k", "GameConfig/#TSV.k"
+	/// Auto Generate for Tab File: "GameConfig/#Base.bytes", "GameConfig/#TSV.bytes"
     /// Singleton class for less memory use
 	/// </summary>
 	public partial class GameConfigSetting : TableRowFieldParser
