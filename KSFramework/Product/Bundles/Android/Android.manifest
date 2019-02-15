@@ -1,16 +1,60 @@
 ManifestFileVersion: 0
-CRC: 1960637441
+CRC: 2793988428
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: scene/testscene/testscene.unity.k
-      Dependencies: {}
-    Info_1:
       Name: ui/login.prefab.k
-      Dependencies: {}
-    Info_2:
+      Dependencies:
+        Dependency_0: uiatlas/anim1/0004.png.k
+        Dependency_1: uiatlas/button/button_green.png.k
+    Info_1:
       Name: ui/main.prefab.k
       Dependencies: {}
-    Info_3:
+    Info_2:
       Name: ui/billboard.prefab.k
+      Dependencies: {}
+    Info_3:
+      Name: images/red.png.k
+      Dependencies: {}
+    Info_4:
+      Name: scene/scene1001/scene1001.unity.k
+      Dependencies: {}
+    Info_5:
+      Name: scene/scene1002/scene1002.unity.k
+      Dependencies: {}
+    Info_6:
+      Name: ui/testui.prefab.k
+      Dependencies: {}
+    Info_7:
+      Name: ui/loaduisprite.prefab.k
+      Dependencies: {}
+    Info_8:
+      Name: uiatlas/anim1/0001.png.k
+      Dependencies: {}
+    Info_9:
+      Name: uiatlas/anim1/0002.png.k
+      Dependencies: {}
+    Info_10:
+      Name: uiatlas/anim1/0003.png.k
+      Dependencies: {}
+    Info_11:
+      Name: uiatlas/anim1/0004.png.k
+      Dependencies: {}
+    Info_12:
+      Name: uiatlas/anim1/0005.png.k
+      Dependencies: {}
+    Info_13:
+      Name: uiatlas/button/button_green.png.k
+      Dependencies: {}
+    Info_14:
+      Name: uiatlas/button/button_green_border.png.k
+      Dependencies: {}
+    Info_15:
+      Name: uiatlas/button/button_red.png.k
+      Dependencies: {}
+    Info_16:
+      Name: uiatlas/button/button_yellow.png.k
+      Dependencies: {}
+    Info_17:
+      Name: ui/navbar.prefab.k
       Dependencies: {}

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2269790815
+CRC: 3790439083
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 991dfeef09a2a7bb7d0d8d8534a34f23
+    Hash: 18b8d59f1811520a9dc44ea2c571efc3
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 293a043d421bf53d4cf340177dc3ad3c
+    Hash: 2dd81b41c59a4fc18ff0bef9ffd20af1
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -19,6 +19,18 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 0c01f3f0b88b4448ab1ccfa117a1d57e, type: 3}
+- Class: 114
+  Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -2095666955, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -2061169968, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -45,4 +57,6 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/BundleResources/UI/Login.prefab
-Dependencies: []
+Dependencies:
+- C:/Code/KSFramework_master_2018/KSFramework/Product/Bundles/Android/uiatlas/anim1/0004.png.k
+- C:/Code/KSFramework_master_2018/KSFramework/Product/Bundles/Android/uiatlas/button/button_green.png.k

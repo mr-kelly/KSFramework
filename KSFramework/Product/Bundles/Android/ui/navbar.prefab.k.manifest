@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 502629546
+CRC: 2779690695
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8c5c76531475e472f616615c0317256a
+    Hash: 91dc901585c3abd19f55809fcca9e0c6
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3427ad98be41a4707e85edaf15e2da19
@@ -44,5 +44,5 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/BundleResources/UI/Main.prefab
+- Assets/BundleResources/UI/Navbar.prefab
 Dependencies: []
