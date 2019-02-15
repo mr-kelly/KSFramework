@@ -182,7 +182,7 @@ namespace CSObjectWrapEditor
 
         static IEnumerable<Type> type_has_extension_methods = null;
 
-        static IEnumerable<MethodInfo> GetExtensionMethods(Type extendedType)
+        public static IEnumerable<MethodInfo> GetExtensionMethods(Type extendedType)
         {
             if (type_has_extension_methods == null)
             {
@@ -200,7 +200,7 @@ namespace CSObjectWrapEditor
                         select method;
         }
 
-        static bool isSupportedExtensionMethod(MethodBase method, Type extendedType)
+        public static bool isSupportedExtensionMethod(MethodBase method, Type extendedType)
         {
             if (!method.IsDefined(typeof(ExtensionAttribute), false))
                 return false;

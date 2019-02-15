@@ -14,6 +14,7 @@ using System;
 /// intellij idea智能提示
 /// form  w90ang@163.com(408880935)
 /// 使用说明：https://www.cnblogs.com/zhaoqingqing/p/7719376.html
+/// 1. 点击KEngine/Tools/生成Lua代码提示 2.在IDEA中设置添加UnityAPI目录的引用
 /// </summary>
 public class ExportIdeaLuaSyntax
 {
@@ -38,11 +39,11 @@ public class ExportIdeaLuaSyntax
     /// <summary>
     /// wrap文件生成文件夹
     /// </summary>
-    public static string IntellijLuaWrapPath = Application.dataPath + "/../../UnityAPI/";
+    public static string IntellijLuaWrapPath = Application.dataPath + "/../UnityAPI/";
     /// <summary>
     /// zip文件路径
     /// </summary>
-    public static string IntellijLuaWrapZIPPath = Application.dataPath + "/../../UnityAPI_xLua.zip";
+    public static string IntellijLuaWrapZIPPath = Application.dataPath + "/../UnityAPI_xLua.zip";
 
     /// <summary>
     /// 从xlua copy的含有扩展方法类型列表
