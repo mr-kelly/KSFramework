@@ -23,8 +23,6 @@ function UILogin:OnInit(controller)
     -- read LoginText from Outlet
     self.LoginText.text = I18N.Str("UILogin.LoginDescText")
 
-    self.LoginButtonText.text = I18N.Str('UILogin.LoginButtonText')
-
     Tools.SetButton(self.btnSwithScene, function()
         self.sceneIndex = self.sceneIndex == 1 and 2 or 1
         SceneLoader.Load(scenes[self.sceneIndex], function(isOK)
@@ -34,14 +32,20 @@ function UILogin:OnInit(controller)
             print("switch scene success")
         end,LoaderMode.Async)
     end)
-    Tools.SetButton(self.btnTest, function()
+    Tools.SetButton(self.btnBillboard, function()
         print('Click the button!!!')
+        UIModule.Instance:OpenWindow("Billboard")
     end)
 
     Tools.SetButton(self.btnSwithUI, function()
         UIModule.Instance:CloseWindow("Login")
         UIModule.Instance:OpenWindow("Main", "user1")
     end)
+    Tools.SetButton(self.btnLoadSprite, function()
+        --UIModule.Instance:CloseWindow("Login")
+        UIModule.Instance:OpenWindow("LoadUISprite")
+    end)
+    UIModule.Instance:OpenWindow("Navbar")
 end
 
 function UILogin:OnOpen(num1)

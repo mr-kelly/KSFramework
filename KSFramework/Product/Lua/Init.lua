@@ -29,15 +29,23 @@ function new(table, ctorFunc)
 
     return tb
 end
-
+---@type KSFramework.Cookie
 Cookie = CS.KSFramework.Cookie
+---@type KEngine.Log
 Log = CS.KEngine.Log
+---@type KSFramework.I18N
 I18N = CS.KSFramework.I18N
+---@type KEngine.UI.UIModule
 UIModule = CS.KEngine.UI.UIModule
+---@type KEngine.SceneLoader
 SceneLoader = CS.KEngine.SceneLoader
+---@type KEngine.LoaderMode
 LoaderMode = CS.KEngine.LoaderMode
+---@type AppSettings.BillboardSettings
 BillboardSettings = CS.AppSettings.BillboardSettings
+---@type AppSettings.GameConfigSettings
 GameConfigSettings = CS.AppSettings.GameConfigSettings
+---@type AppSettings.TestSettings
 TestSettings = CS.AppSettings.TestSettings
 
 UIBase = import("UI/UIBase")

@@ -1,6 +1,4 @@
-
-local UIBase = import('UI/UIBase')
-
+---@type UILoadUISprite
 local UILoadUISprite = {}
 extends(UILoadUISprite, UIBase)
 

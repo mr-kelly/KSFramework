@@ -1,11 +1,3 @@
-if not Log then
-    Log = CS.KEngine.Log
-end
-
-if not Time then 
-	Time = CS.UnityEngine.Time
-end
-
 local TestLuaBehaivour = {}
 
 function TestLuaBehaivour:Awake()

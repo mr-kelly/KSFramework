@@ -6,7 +6,7 @@ function Tools.SetButton (button, func)
         button.onClick:RemoveAllListeners()
         button.onClick:AddListener(func)
     else
-        print("set event faild ,not button")
+        print("set click event faild ,type not button")
     end
 end
 
