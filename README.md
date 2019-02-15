@@ -42,17 +42,6 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 - 方法二：在项目页面点击 **Clone or download**  选择 **Download ZIP** 
 
 
-**如何更新仓库：**
-
-如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。
-
-原有目录如下：
-
-```c#
-KSFramework\Assets\KSFramework\KEngine
-KSFramework\Assets\xLua
-KSFramework\Assets\slua
-```
 
 
 ### 方式2，从产品包安装
@@ -66,19 +55,7 @@ KSFramework\Assets\slua
 > - [KSFramework Appveyor Artifacts](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master/artifacts): 包含每次提交的构建结果
 > - [KSFramework OSChina镜像](http://git.oschina.net/mrkelly/KSFramework)): 国内的镜像Git
 
-### 编辑器下无需打包资源
 
-在Editor下，无需打包AB资源即可运行，减少打包时间，提高工作效率。
-
-如果需要调试AB相关信息，请打包AB。
-
-### 工程打包方法
-
-1. 点击菜单栏 **KEngine** - **AutoBuilder** - **Android**/**iOS**/**Windows**
-2. Unity会执行生成安装包，放在**Product/Apps/Android/**KSFramework.apk `[根据平台区分目录]`
-3. 打包期间会自动Link AB资源到**StreamingAssets**目录下
-
-注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。
 
 ### Unity3D版本支持
 
@@ -89,24 +66,25 @@ KSFramework\Assets\slua
 | Unity 2017 | 支持   |                           |
 | Unity 2018 | 支持   | 2018.2.7f1已测试             |
 
-### 其它热更新方案
+### 解决遇到的问题
 
-理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。
-
-- `KSFramework/Modules/LuaModule/LuaBehaviour.cs`  
-- `KSFramework/Modules/LuaModule/LuaModule.cs`
-
-更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/
-
-### 错误解决
-
-下载后如果运行出错，或者使用其它版本的Unity打开，尝试以下方法：
+下载后，如果运行出错，或者使用其它版本的Unity打开无法运行，尝试以下方法：
 
 1. 重新生成Assetbundle，方法如下：点击菜单项 **KEngine** - **AssetBundle** - **Bulld All**
+
 2. 删除xlua或slua的生成代码，重新生成，生成的代码不同的Unity版本有差异
-3. 上传报错信息，提issuse。如果能自己调试解决，那更棒，同时欢迎pull 到仓库中。
+
+3. 如果前两步不能解决问题，请上传报错信息，提issuse。
+
+
+
+KSFramework常见问题解答篇：https://mr-kelly.github.io/KSFramework/faq/
+
+如果发现框架中存在的问题，欢迎pull 到仓库中，或提issuse。
 
 ## 教程
+
+- 常见问题解答：https://mr-kelly.github.io/KSFramework/faq/
 
 - [**KSFramework: Unity3D开发辅助框架快速入门**](http://www.jianshu.com/p/ccb491ed4260)
 - [KEngine策划指南: 配置表格的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
