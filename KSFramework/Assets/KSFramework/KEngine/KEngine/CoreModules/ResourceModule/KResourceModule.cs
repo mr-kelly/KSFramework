@@ -227,10 +227,7 @@ namespace KEngine
             bool hasDocUrl = TryGetDocumentResourceUrl(url, withFileProtocol, out docUrl);
 
             string inAppUrl;
-            bool hasInAppUrl;
-            {
-                hasInAppUrl = TryGetInAppStreamingUrl(url, withFileProtocol, out inAppUrl);
-            }
+            bool hasInAppUrl  = TryGetInAppStreamingUrl(url, withFileProtocol, out inAppUrl);
 
             if (ResourcePathPriorityType == KResourcePathPriorityType.PersistentDataPathPriority) // 優先下載資源模式
             {

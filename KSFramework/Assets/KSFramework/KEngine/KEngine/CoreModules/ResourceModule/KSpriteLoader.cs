@@ -51,7 +51,13 @@ namespace KEngine
             LoaderDelgate newCallback = null;
             if (callback != null)
             {
-                newCallback = (isOk, obj) => callback(isOk, obj as Sprite);
+                newCallback = (isOk, obj) =>
+                {
+//                    var t2d = obj as UnityEngine.Texture2D;
+//                    var sp = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), new Vector2(0.5f, 0.5f));
+//                    callback(isOk, sp as Sprite);
+                    callback(isOk, obj as Sprite);
+                };
             }
             return AutoNew<SpriteLoader>(path, newCallback);
         }

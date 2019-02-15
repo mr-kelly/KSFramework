@@ -126,6 +126,93 @@ namespace KEngine.UI
 //        {
 //            return OpenWindow(typeof(T), args);
 //        }
+        public UILoadState PreLoadUIWindow(string uiTemplateName, bool isOnInit = false,params object[] args)
+        {
+            UILoadState uiState;
+            if (!UIWindows.TryGetValue(uiTemplateName, out uiState))
+            {
+                if (isOnInit)
+                {
+                    LoadWindow(uiTemplateName, false, args);
+                }
+                else
+                {
+                    uiState = new UILoadState(uiTemplateName, uiTemplateName);
+                    uiState.IsStaticUI = true;
+                    uiState.OpenArgs = args;
+
+                    uiState.OpenWhenFinish = false;
+                    UIWindows.Add(uiTemplateName, uiState);
+                    LoadingUICount++;
+                    KResourceModule.Instance.StartCoroutine(PreLoadUIAssetBundle(uiTemplateName, uiState)); 
+                }
+            }
+
+            return uiState;
+        }
+
+        private IEnumerator PreLoadUIAssetBundle(string windowTemplateName, UILoadState uiState)
+        {
+            if (uiState.UIResourceLoader != null)
+            {
+                uiState.UIResourceLoader.Release(true);// now!
+                Log.Info("Release UI ResourceLoader: {0}", uiState.UIResourceLoader.Url);
+                uiState.UIResourceLoader = null;
+            }
+
+            var request = new UILoadRequest();
+            yield return KResourceModule.Instance.StartCoroutine(UiBridge.LoadUIAsset(uiState, request));
+
+            GameObject uiObj = (GameObject)request.Asset;
+            GameObject uiRoot = GameObject.Find("UIRoot");
+            if (uiRoot == null)
+            {
+                uiRoot = new GameObject("UIRoot");
+                if(!SceneLoader.isLoadSceneAdditive) GameObject.DontDestroyOnLoad(uiRoot);
+            }
+            if (uiObj != null)
+            {
+                uiObj.transform.SetParent(uiRoot.transform);
+                uiObj.transform.localRotation = Quaternion.identity;
+                uiObj.transform.localScale = Vector3.one;
+                // 具体加载逻辑结束...这段应该放到Bridge里
+
+                uiObj.SetActive(false);
+                uiObj.name = uiState.TemplateName;
+
+                var uiBase = UiBridge.CreateUIController(uiObj, uiState.TemplateName);
+
+                if (uiState.UIWindow != null)
+                {
+                    Log.Info("Destroy exist UI Window, maybe for reload");
+                    GameObject.Destroy(uiState.UIWindow.CachedGameObject);
+                    uiState.UIWindow = null;
+                }
+
+                uiState.UIWindow = uiBase;
+
+                uiBase.UIName = uiBase.UITemplateName = uiState.TemplateName;
+
+                UiBridge.UIObjectFilter(uiBase, uiObj);
+
+                uiState.IsLoading = false; // Load完
+
+                uiBase.gameObject.SetActive(false);
+                uiState.OnUIWindowLoadedCallbacks(uiState, uiBase);
+
+                if (uiState.OpenWhenFinish)
+                {
+                    InitWindow(uiState, uiBase, true, uiState.OpenArgs);
+                }
+                else
+                {
+                    if (OnInitEvent != null)
+                        OnInitEvent(uiBase);
+                }
+            }
+
+            LoadingUICount--;
+        }
 
         // 打开窗口（非复制）
         public UILoadState OpenWindow(string uiTemplateName, params object[] args)
@@ -137,6 +224,11 @@ namespace KEngine.UI
                 return uiState;
             }
 
+            if (!uiState.isOnInit)
+            {
+                uiState.isOnInit = true;
+                if (uiState.UIWindow != null) uiState.UIWindow.OnInit();
+            }
             OnOpen(uiState, args);
             return uiState;
         }
@@ -292,7 +384,7 @@ namespace KEngine.UI
             }
 
             foreach (string item in LoadList)
-                DestroyWindow(item);
+                DestroyWindow(item, true);
         }
 
         [Obsolete("Deprecated: Please don't use this")]
@@ -346,6 +438,12 @@ namespace KEngine.UI
             return uiBase == null ? false : uiBase.gameObject.activeSelf;
         }
 
+        public UIController GetOpenedWindow(string name)
+        {
+            UIController uiBase = GetUIBase(name);
+            if (uiBase != null && uiBase.gameObject.activeSelf) { return uiBase; }
+            return null;
+        }
         public bool IsLoad(string name)
         {
             if (UIWindows.ContainsKey(name))
@@ -378,8 +476,7 @@ namespace KEngine.UI
         {
             if (openState.UIResourceLoader != null)
             {
-                openState.UIResourceLoader.Release();// now!
-                KResourceModule.Collect();
+                openState.UIResourceLoader.Release(true);// now!
                 Log.Info("Release UI ResourceLoader: {0}", openState.UIResourceLoader.Url);
                 openState.UIResourceLoader = null;
             }
@@ -390,28 +487,39 @@ namespace KEngine.UI
             yield return KResourceModule.Instance.StartCoroutine(UiBridge.LoadUIAsset(openState, request));
 
             GameObject uiObj = (GameObject)request.Asset;
-            // 具体加载逻辑结束...这段应该放到Bridge里
-
-            uiObj.SetActive(false);
-            uiObj.name = openState.TemplateName;
-
-            var uiBase = UiBridge.CreateUIController(uiObj, openState.TemplateName);
-
-            if (openState.UIWindow != null)
+            GameObject uiRoot = GameObject.Find("UIRoot");
+            if (uiRoot == null)
             {
-                Log.Info("Destroy exist UI Window, maybe for reload");
-                GameObject.Destroy(openState.UIWindow.CachedGameObject);
-                openState.UIWindow = null;
+                uiRoot = new GameObject("UIRoot");
+                if (!SceneLoader.isLoadSceneAdditive) GameObject.DontDestroyOnLoad(uiRoot);
             }
+            if (uiObj != null)
+            {
+                uiObj.transform.SetParent(uiRoot.transform);
+                // 具体加载逻辑结束...这段应该放到Bridge里
 
-            openState.UIWindow = uiBase;
+                uiObj.SetActive(false);
+                uiObj.name = openState.TemplateName;
 
-            uiBase.UIName = uiBase.UITemplateName = openState.TemplateName;
+                var uiBase = UiBridge.CreateUIController(uiObj, openState.TemplateName);
 
-            UiBridge.UIObjectFilter(uiBase, uiObj);
+                if (openState.UIWindow != null)
+                {
+                    Log.Info("Destroy exist UI Window, maybe for reload");
+                    GameObject.Destroy(openState.UIWindow.CachedGameObject);
+                    openState.UIWindow = null;
+                }
 
-            openState.IsLoading = false; // Load完
-            InitWindow(openState, uiBase, openState.OpenWhenFinish, openState.OpenArgs);
+                openState.UIWindow = uiBase;
+
+                uiBase.UIName = uiBase.UITemplateName = openState.TemplateName;
+
+                UiBridge.UIObjectFilter(uiBase, uiObj);
+
+                openState.IsLoading = false; // Load完
+                openState.isOnInit = true;
+                InitWindow(openState, uiBase, openState.OpenWhenFinish, openState.OpenArgs);
+            }
 
             LoadingUICount--;
 
@@ -435,7 +543,7 @@ namespace KEngine.UI
             return KResourceModule.Instance.StartCoroutine(LoadUIAssetBundle(windowTemplateName, uiState));
         }
 
-        public void DestroyWindow(string uiTemplateName)
+        public void DestroyWindow(string uiTemplateName, bool destroyImmediate=false)
         {
             UILoadState uiState;
             UIWindows.TryGetValue(uiTemplateName, out uiState);
@@ -444,8 +552,14 @@ namespace KEngine.UI
                 Log.Info("{0} has been destroyed", uiTemplateName);
                 return;
             }
-
+            if (destroyImmediate)
+            {
+                UnityEngine.Object.DestroyImmediate(uiState.UIWindow.gameObject);
+            }
+            else
+            {
             UnityEngine.Object.Destroy(uiState.UIWindow.gameObject);
+            }
 
             // Instance UI State has no Resources loader, so fix here
             if (uiState.UIResourceLoader != null)
@@ -536,8 +650,11 @@ namespace KEngine.UI
                 uiBase.BeforeOpen(args, () =>
                 {
                     uiBase.gameObject.SetActive(true);
-
+                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                    stopwatch.Start();
                     uiBase.OnOpen(args);
+                    stopwatch.Stop();
+                    Log.Debug("OnOpen UI {0}, cost {1}", uiBase.name, stopwatch.Elapsed.TotalMilliseconds*0.001f);
 
                     if (OnOpenEvent != null)
                         OnOpenEvent(uiBase);
@@ -550,7 +667,11 @@ namespace KEngine.UI
 
         private void InitWindow(UILoadState uiState, UIController uiBase, bool open, params object[] args)
         {
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
             uiBase.OnInit();
+            stopwatch.Stop();
+            Log.Debug("OnInit UI {0}, cost {1}", uiBase.name, stopwatch.Elapsed.TotalMilliseconds * 0.001f);
             if (OnInitEvent != null)
                 OnInitEvent(uiBase);
             if (open)
@@ -593,6 +714,7 @@ namespace KEngine.UI
         internal Queue<Action<UIController, object[]>> CallbacksWhenFinish;
         internal Queue<object[]> CallbacksArgsWhenFinish;
         public AbstractResourceLoader UIResourceLoader; // 加载器，用于手动释放资源
+        public bool isOnInit = false;//是否初始化
 
         public UILoadState(string uiTemplateName, string uiInstanceName, Type uiControllerType = default(Type))
         {

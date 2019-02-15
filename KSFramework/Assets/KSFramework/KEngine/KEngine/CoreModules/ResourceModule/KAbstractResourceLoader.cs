@@ -407,7 +407,20 @@ namespace KEngine
                 justDo();
             }
         }
+        /// <summary>
+        /// 执行Release，并立刻触发残余清理
+        /// </summary>
+        /// <param name="gcNow">是否立刻触发垃圾回收，默认垃圾回收是隔几秒进行的</param>
+        public virtual void Release(bool gcNow)
+        {
+//            if (gcNow)
+//                IsBeenReleaseNow = true;
 
+            Release();
+
+            if (gcNow)
+                DoGarbageCollect();
+        }
         /// <summary>
         /// 释放资源，减少引用计数
         /// </summary>

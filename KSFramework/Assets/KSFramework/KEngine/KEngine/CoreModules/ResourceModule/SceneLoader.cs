@@ -48,6 +48,7 @@ namespace KEngine
             get { return _sceneName; }
         }
 
+        public static bool isLoadSceneAdditive = false;
         private static SceneLoader preSceneLoader;
 
         public static void UnloadPreScene()

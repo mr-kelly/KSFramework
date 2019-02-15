@@ -35,8 +35,7 @@ using SLua;
 using LuaInterface;
 #else
 using XLua;
-//using LuaTypes = LuaInterface.LuaTypes;
-
+using XLua.LuaDLL;
 #endif
 
 namespace KSFramework
@@ -50,7 +49,15 @@ namespace KSFramework
         private readonly LuaSvr _luaSvr;
 #else
         private readonly LuaEnv _luaEnv;
+        public LuaEnv ENV
+        {
+            get
+            {
+                return _luaEnv;
+            }
+        }
 #endif
+
 
         public static LuaModule Instance = new LuaModule();
 
@@ -279,6 +286,12 @@ namespace KSFramework
             LuaDLL.lua_pushcfunction(L, ImportCSharpType);
             LuaDLL.lua_setglobal(L, "import_type"); // same as SLua's SLua.GetClass(), import C# type
 #else
+
+            var L = _luaEnv.L;
+            Lua.lua_pushstdcallcfunction(L, LuaImport);
+            Lua.xlua_setglobal(L, "require");
+            //TODO 如果有新加入的库，加入进去
+//            _luaEnv.AddBuildin("",);
             yield return null;
 #endif
 
@@ -382,6 +395,22 @@ namespace KSFramework
 
             LuaObject.pushValue(L, obj);
             LuaObject.pushValue(L, true);
+            return 2;
+
+        }
+#else
+        [MonoPInvokeCallback(typeof(lua_CSFunction))]
+        internal static int LuaImport(IntPtr L)
+        {
+            LuaModule luaModule = Instance;
+
+            string fileName = Lua.lua_tostring(L, 1);
+            var obj = luaModule.Import(fileName);
+
+            ObjectTranslator ot = ObjectTranslatorPool.Instance.Find(L);
+            ot.PushAny(L, obj);
+            ot.PushAny(L, true);
+
             return 2;
 
         }
