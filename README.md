@@ -29,24 +29,6 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 
 对于运营人员，利用KSFramework的热重载特性，可以针对运营需求，在项目运行过程中配置表、脚本代码在用户无知觉的情况下进行热更新。
 
-## TOC(目录)
-
-  * [ShowCase(商业案例)](#showcase%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B)
-  * [Quick Start](#quick-start)
-    * [方式1，下载即用](#%E6%96%B9%E5%BC%8F1%E4%B8%8B%E8%BD%BD%E5%8D%B3%E7%94%A8)
-    * [方式2，从产品包安装](#%E6%96%B9%E5%BC%8F2%E4%BB%8E%E4%BA%A7%E5%93%81%E5%8C%85%E5%AE%89%E8%A3%85)
-    * [编辑器下无需打包资源](#%E7%BC%96%E8%BE%91%E5%99%A8%E4%B8%8B%E6%97%A0%E9%9C%80%E6%89%93%E5%8C%85%E8%B5%84%E6%BA%90)
-    * [工程打包方法](#%E5%B7%A5%E7%A8%8B%E6%89%93%E5%8C%85%E6%96%B9%E6%B3%95)
-    * [Unity3D版本支持](#unity3d%E7%89%88%E6%9C%AC%E6%94%AF%E6%8C%81)
-    * [其它热更新方案](#%E5%85%B6%E5%AE%83%E7%83%AD%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88)
-    * [错误解决](#%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3)
-* [教程](#%E6%95%99%E7%A8%8B)
-* [文档](#%E6%96%87%E6%A1%A3)
-* [结构组成](#%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90)
-* [涉及第三方库](#%E6%B6%89%E5%8F%8A%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93)
-
-
-
 
 
 ## Quick Start
@@ -55,11 +37,12 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 
 以下方法任选其一：
 
-方法一：把源码**git clone**到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
+- 方法一：把源码**git clone**到本地（推荐）：  https://github.com/mr-kelly/KSFramework.git
 
-方法二：在项目页面点击 **Clone or download**  选择 **Download ZIP** 
+- 方法二：在项目页面点击 **Clone or download**  选择 **Download ZIP** 
 
-**更新说明：**
+
+**如何更新仓库：**
 
 如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。
 
@@ -70,7 +53,6 @@ KSFramework\Assets\KSFramework\KEngine
 KSFramework\Assets\xLua
 KSFramework\Assets\slua
 ```
-
 
 
 ### 方式2，从产品包安装
@@ -86,7 +68,7 @@ KSFramework\Assets\slua
 
 ### 编辑器下无需打包资源
 
-在Editor下，无需打包AB资源即可运行，没有打包时间，提高工作效率。
+在Editor下，无需打包AB资源即可运行，减少打包时间，提高工作效率。
 
 如果需要调试AB相关信息，请打包AB。
 
@@ -124,7 +106,7 @@ KSFramework\Assets\slua
 2. 删除xlua或slua的生成代码，重新生成，生成的代码不同的Unity版本有差异
 3. 上传报错信息，提issuse。如果能自己调试解决，那更棒，同时欢迎pull 到仓库中。
 
-# 教程
+## 教程
 
 - [**KSFramework: Unity3D开发辅助框架快速入门**](http://www.jianshu.com/p/ccb491ed4260)
 - [KEngine策划指南: 配置表格的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
@@ -134,7 +116,7 @@ KSFramework\Assets\slua
 - [KEngine配置表：扩展表格解析类型](http://www.jianshu.com/p/722c5856166f)
 - [KEngine:配置表的条件编译](http://www.jianshu.com/p/cb7ddfab23ba)
 
-# 文档
+## 文档
 
 - [【查看完整文档】](https://mr-kelly.github.io/KSFramework/)
 - [功能特性](https://mr-kelly.github.io/KSFramework/overview/features/)
@@ -142,13 +124,13 @@ KSFramework\Assets\slua
 
 ...
 
-# 结构组成
+## 结构组成
 
 ![KSFramework由KEngine和SLua结合组成](Docs/Structure.png)
 
 
 
-# 涉及第三方库
+## 涉及第三方库
 
 - [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua), master分支已切换为默认使用xLua
 - [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua) 较少维护
