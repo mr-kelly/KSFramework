@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using AppSettings;
 using KEngine;
 using KEngine.Editor;
+using KEngine.UI;
 using KSFramework.Editor;
 using UnityEditor;
 
@@ -21,6 +23,9 @@ public class KQuickWindowEditor : EditorWindow
     public void OnGUI()
     {
         DrawKEngineInit();
+        GUILayout.Space(20);
+
+        DrawHotReLoadUI();
         GUILayout.Space(20);
 
         DrawKEngineUI();
@@ -45,6 +50,42 @@ public class KQuickWindowEditor : EditorWindow
             ResourcesSymbolLinkHelper.SymbolLinkResource();
         }
 
+        GUILayout.EndHorizontal();
+    }
+
+    public void DrawHotReLoadUI()
+    {
+        GUILayout.BeginHorizontal("HelpBox");
+        EditorGUILayout.LabelField("== 热重载 ==");
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("重载配置表", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            //仅仅是重载编译后的配置表
+            SettingsManager.AllSettingsReload();
+        }
+        if (GUILayout.Button("快速编译配置表", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            SettingModuleEditor.QuickCompileSettings();
+        }
+        if (GUILayout.Button("编译配置表并生成代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            SettingModuleEditor.CompileSettings();
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("重载UI的Lua代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KSFrameworkEditor.ReloadLuaCache();
+        }
+        if (GUILayout.Button("重新打开UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KSFrameworkEditor.ReloadUILua();
+        }
+        if (GUILayout.Button("重新加载并打开UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KSFrameworkEditor.ReloadUI();
+        }
         GUILayout.EndHorizontal();
     }
 
