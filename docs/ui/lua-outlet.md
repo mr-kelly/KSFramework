@@ -15,9 +15,15 @@
 
 ## LuaOutlet 拖拽绑定控件
 
-在KSFramework中，可以在Editor中编辑UI的时候绑定控件，然后在UI代码可以直接使用self.xxx进行引用，
+在KSFramework中，可以在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx进行引用，
 
 比如：self.txtTips，就指向txtTips这个Object，类型为UnityEngine.UI.Text
+
+```lua
+self.txtTips.text = "这是给文本赋值"
+```
+
+
 
 ![](../images/ui/luaoutlet.png)
 
@@ -44,9 +50,9 @@ txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，
 
 ## 可视化查找引用丢失
 
-在代码中通过路径查找控件，而如果这个控件后来因UI的结构修改而被删除了，这个变量就变成了Null。 程序对变量的访问就会引发NullReferenceException。 这种问题出现的时候，非常的不好查。
+在代码中通过路径查找控件，而如果这个控件后来因于UI的结构修改而被删除了，或者美术、策划调整了UI层级结构，这个路径就找不到对应的控件，从而变量变成了Null， 程序对变量的访问就会引发NullReferenceException。 如果经常出现这种问题的话，让技术同学去检查路径是一种浪费不必要的时间。
 
-而如果outlet则提供可视化的方法查找，在Inspect面板会**以红色标识丢失的引用，或者同名的变量**。
+而outlet则提供可视化的方法，在Inspect面板会**以红色标识丢失的引用，和具有同名的变量**。
 
 ![outlet-error](../images/ui/outlet-error.png)
 
