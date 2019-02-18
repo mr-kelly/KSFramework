@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>自定义与扩展配置表的解析 - KSFramework Documentation</title>
+  <title>两种绑定方式对比 - KSFramework Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u81ea\u5b9a\u4e49\u4e0e\u6269\u5c55\u914d\u7f6e\u8868\u7684\u89e3\u6790";
-    var mkdocs_page_input_path = "setting\\custom-table-reader.md";
-    var mkdocs_page_url = "/setting/custom-table-reader/";
+    var mkdocs_page_name = "\u4e24\u79cd\u7ed1\u5b9a\u65b9\u5f0f\u5bf9\u6bd4";
+    var mkdocs_page_input_path = "ui\\ui-bind-vs-outlet.md";
+    var mkdocs_page_url = "/ui/ui-bind-vs-outlet/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -118,32 +118,23 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../guide/">策划指南：配置表的使用</a>
+    <a class="" href="../../setting/guide/">策划指南：配置表的使用</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../condition-compile/">配置表的条件编译</a>
+    <a class="" href="../../setting/condition-compile/">配置表的条件编译</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../lazy-load/">惰式加载</a>
+    <a class="" href="../../setting/lazy-load/">惰式加载</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+    <a class="" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
                 </li>
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">自定义与扩展配置表的解析</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#_1">自定义解析</a></li>
-    
-
-    <li class="toctree-l3"><a href="#_2">扩展列的类型</a></li>
-    
-
-    </ul>
+    <a class="" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
                 </li>
     </ul>
 	    </li>
@@ -177,23 +168,41 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../ui/guide/">UI模块使用指南</a>
+    <a class="" href="../guide/">UI模块使用指南</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../ui/ui-binding/">手工代码绑定控件</a>
+    <a class="" href="../ui-binding/">手工代码绑定控件</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../ui/lua-outlet/">拖拽绑定控件</a>
+    <a class="" href="../lua-outlet/">拖拽绑定控件</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">两种绑定方式对比</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#_1">手工代码绑定</a></li>
+    
+
+    <li class="toctree-l3"><a href="#luaoutlet">LuaOutlet 拖拽绑定控件</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#_2">可视化查找引用丢失</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l3"><a href="#_3">总结</a></li>
+    
+
+    </ul>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../ui/ui-bind-vs-outlet/">两种绑定方式对比</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../ui/data-binding/">单向数据绑定</a>
+    <a class="" href="../data-binding/">单向数据绑定</a>
                 </li>
     </ul>
 	    </li>
@@ -324,11 +333,11 @@
     
       
         
-          <li>配置表模块 &raquo;</li>
+          <li>UI模块 &raquo;</li>
         
       
     
-    <li>自定义与扩展配置表的解析</li>
+    <li>两种绑定方式对比</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -338,100 +347,32 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="_1">自定义解析</h2>
-<p>分析配置表模块自动生成的代码，会发现，所有的XXXSettings类都使用partial修饰的。因此你可以扩展partial类来实现自己的字符串解析。</p>
-<pre><code class="csharp">
-    public partial class GameConfigSetting
-    {
-        public int IntValue {
-            get
-            {
-                int intValue;
-                if (!int.TryParse(Value, out intValue))
-                    return -1;
-                return intValue;
-            }
-        }
-    }
+                <p>在KSFramework中，提供两种方式进行控件绑定：</p>
+<ol>
+<li>通过代码手工实现控件的绑定</li>
+<li>通过拖拽的方式绑定(LuaOutlet)</li>
+</ol>
+<p>本篇对这两种绑定方式进行对比。</p>
+<h2 id="_1">手工代码绑定</h2>
+<p>技术同学在代码中完成控件绑定，而不需要去手动拖拽。</p>
+<pre><code class="lua">-- Type and Path
+local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
 </code></pre>
 
-<p>如上示例，为GameConfigSetting配置项增加一个IntValue的Getter，自动将读取到的Value字符串，强制解析成数字整形。</p>
-<h2 id="_2">扩展列的类型</h2>
-<p>配置表模块在编译时，把Excel转化成TSV，并根据Excel的头部信息，生成对应的代码； 比如源码库中的Test.xlsx Excel文件，两个列头，Id和Value，其下的列头信息标注其分别是string和I18N。 这是对这两个列的类型声明。</p>
-<p><img alt="列Id注明是string类型，列Value注明是I18N类型" src="../../images/setting/custom-1.png" /></p>
-<p>在生成代码的时候，会把其类型作为代码的一部分，写入到代码中：</p>
-<pre><code class="csharp">
-    /// &lt;summary&gt;
-    /// Auto Generate for Tab File: &quot;Test.bytes&quot;
-    /// Singleton class for less memory use
-    /// &lt;/summary&gt;
-    public partial class TestSetting : TableRowParser
-    {
-
-        /// &lt;summary&gt;
-        /// ID Column/编号/主键
-        /// &lt;/summary&gt;
-        public string Id { get; private set;}
-
-        /// &lt;summary&gt;
-        /// Name/名字
-        /// &lt;/summary&gt;
-        public I18N Value { get; private set;}
-
-
-        internal TestSetting(TableRow row)
-        {
-            Reload(row);
-        }
-
-        internal void Reload(TableRow row)
-        {
-            Id = row.Get_string(row.Values[0], &quot;&quot;);
-            Value = row.Get_I18N(row.Values[1], &quot;&quot;);
-        }
-
-        /// &lt;summary&gt;
-        /// Get PrimaryKey from a table row
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;row&quot;&gt;&lt;/param&gt;
-        /// &lt;returns&gt;&lt;/returns&gt;
-        public static string ParsePrimaryKey(TableRow row)
-        {
-            var primaryKey = row.Get_string(row.Values[0], &quot;&quot;);
-            return primaryKey;
-        }
-
+<h2 id="luaoutlet">LuaOutlet 拖拽绑定控件</h2>
+<p>在KSFramework中，可以在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx进行引用，</p>
+<p>比如：self.txtTips，就指向txtTips这个Object，类型为UnityEngine.UI.Text</p>
+<pre><code class="lua">self.txtTips.text = &quot;这是给文本赋值&quot;
 </code></pre>
 
-<p>其中，生成的代码，总结生成的核心是：</p>
-<pre><code class="csharp">// string                   // string
-string Id = row.Get_string(row.Values[0], &quot;&quot;);
-// I18N                      // I18N
-I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
-</code></pre>
-
-<p>代码中，会引用I18N类、Get_I18N方法。
-默认情况，KEngine的TableRowParser提供了string、int、bool等常见类型的解析方法，而像I18N这样的一个类，则是通过C#的扩展功能，扩展KEngine中的TableRow类型，来自定义解析配置表读取的方法。</p>
-<pre><code class="csharp">// 定义类
-public class I18N
-{
-    public I18N(str) {}
-}
-// 定义扩展方法
-public static class I18NExtensions
-{
-    public static I18N Get_I18N(this TableRow tableRow, string value, string defaultValue)
-    {
-        var str = tableRow.Get_string(value, defaultValue);
-        return new I18N(str);
-
-    }
-}
-</code></pre>
-
-<p>这样做之后，配置表自动生成的代码就能正确的按照你自定义的方法进行解析了：</p>
-<pre><code class="csharp">I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
-</code></pre>
+<p><img alt="" src="../../images/ui/luaoutlet.png" /></p>
+<h3 id="_2">可视化查找引用丢失</h3>
+<p>在代码中通过路径查找控件，而如果这个控件后来因于UI的结构修改而被删除了，或者美术、策划调整了UI层级结构，这个路径就找不到对应的控件，从而变量变成了Null， 程序对变量的访问就会引发NullReferenceException。 如果经常出现这种问题的话，让技术同学去检查路径是一种浪费不必要的时间。</p>
+<p>而outlet则提供可视化的方法，在Inspect面板会<strong>以红色标识丢失的引用，和具有同名的变量</strong>。</p>
+<p><img alt="outlet-error" src="../../images/ui/outlet-error.png" /></p>
+<h2 id="_3">总结</h2>
+<p>如果是从代码的可读性来讲，那么工程师喜欢使用代码手工实现控件绑定。</p>
+<p>如果对于策划或美术同学的可视化操作来讲，那么策划师和设计师喜欢拖拽实现控件绑定。</p>
               
             </div>
           </div>
@@ -439,10 +380,10 @@ public static class I18NExtensions
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../resource/guide/" class="btn btn-neutral float-right" title="使用资源模块打包、加载">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../data-binding/" class="btn btn-neutral float-right" title="单向数据绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../tsv-instead-excel/" class="btn btn-neutral" title="使用TSV，不用Excel作为源表"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../lua-outlet/" class="btn btn-neutral" title="拖拽绑定控件"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -468,10 +409,10 @@ public static class I18NExtensions
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../tsv-instead-excel/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../lua-outlet/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../resource/guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../data-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>控件与变量绑定 - KSFramework Documentation</title>
+  <title>手工代码绑定控件 - KSFramework Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,7 +17,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u63a7\u4ef6\u4e0e\u53d8\u91cf\u7ed1\u5b9a";
+    var mkdocs_page_name = "\u624b\u5de5\u4ee3\u7801\u7ed1\u5b9a\u63a7\u4ef6";
     var mkdocs_page_input_path = "ui\\ui-binding.md";
     var mkdocs_page_url = "/ui/ui-binding/";
   </script>
@@ -59,6 +59,18 @@
                     
     <a class="" href="../../overview/why/">项目的由来</a>
                 </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../Home/">商业项目列表</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">简介</span>
+    <ul class="subnav">
                 <li class="">
                     
     <a class="" href="../../overview/structure/">模块结构组织</a>
@@ -160,7 +172,7 @@
                 </li>
                 <li class=" current">
                     
-    <a class="current" href="./">控件与变量绑定</a>
+    <a class="current" href="./">手工代码绑定控件</a>
     <ul class="subnav">
             
     <li class="toctree-l3"><a href="#_1">为什么不用拖拽的方式绑定？</a></li>
@@ -180,11 +192,15 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../data-binding/">单向数据绑定</a>
+    <a class="" href="../lua-outlet/">拖拽绑定控件</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../lua-outlet/">Lua控件绑定</a>
+    <a class="" href="../ui-bind-vs-outlet/">两种绑定方式对比</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../data-binding/">单向数据绑定</a>
                 </li>
     </ul>
 	    </li>
@@ -319,7 +335,7 @@
         
       
     
-    <li>控件与变量绑定</li>
+    <li>手工代码绑定控件</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -357,7 +373,7 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../data-binding/" class="btn btn-neutral float-right" title="单向数据绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../lua-outlet/" class="btn btn-neutral float-right" title="拖拽绑定控件">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../guide/" class="btn btn-neutral" title="UI模块使用指南"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -389,7 +405,7 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
         <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../data-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../lua-outlet/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
