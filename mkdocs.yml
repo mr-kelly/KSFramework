@@ -6,6 +6,7 @@ extra:
 pages:
     - [index.md, "简介", "KSFramework介绍"]
     - [overview/why.md, "简介", "项目的由来"]
+    - [Home.md,"商业项目列表"]
     - [overview/structure.md, "简介", "模块结构组织"]
     - [overview/features.md, "简介", "功能特性"]
     - [quickstart.md, "【快速入门指南！】"]
@@ -28,9 +29,10 @@ pages:
     - [resource/edit_mode.md, "资源模块", "Editor下无需打包"]
 
     - [ui/guide.md, "UI模块", "UI模块使用指南"]
-    - [ui/ui-binding.md, "UI模块", "控件与变量绑定"]
+    - [ui/ui-binding.md, "UI模块", "手工代码绑定控件"]
+    - [ui/lua-outlet.md, "UI模块", "拖拽绑定控件"]
+    - [ui/ui-bind-vs-outlet.md, "UI模块", "两种绑定方式对比"]
     - [ui/data-binding.md, "UI模块", "单向数据绑定"]
-    - [ui/lua-outlet.md, "UI模块", "Lua控件绑定"]
 
     - [scripting/functions.md, "脚本指南", "Lua内置函数列表"]
     - [scripting/cookie.md, "脚本指南", "Cookie状态缓存"]
