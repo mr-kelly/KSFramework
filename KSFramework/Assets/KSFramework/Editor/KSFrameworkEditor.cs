@@ -138,7 +138,7 @@ Shorcuts:
         /// </summary>
         private static string LuaUITempalteCode = @"
 local UIBase = import('KSFramework/UIBase')
-
+---@type $UI_NAME
 local $UI_NAME = {}
 extends($UI_NAME, UIBase)
 
@@ -165,7 +165,7 @@ return $UI_NAME
         /// </summary>
         private static string LuaUITempalteCode = @"
 local UIBase = import('UI/UIBase')
-
+---@type $UI_NAME
 local $UI_NAME = {}
 extends($UI_NAME, UIBase)
 
@@ -201,6 +201,7 @@ return $UI_NAME
                 if (luaController) // 只处理LuaUIController
                 {
                     luaController.ClearLuaTableCache();
+                    luaController.OnOpen(luaController.LastOnOpenArgs);
                     Log.LogWarning("Reload Lua - {0}", kv.Key);
                 }
             }
