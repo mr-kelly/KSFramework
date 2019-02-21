@@ -111,14 +111,26 @@ namespace KEngine.Modules
         /// <returns></returns>
         public static byte[] DefaultLoadSetting(string path)
         {
+            //NOTE 在Editor下Reload 配置表失败
+#if UNITY_EDITOR
+            return LoadSettingFromFile(path);
+#else
             byte[] fileContent;
             var loader = HotBytesLoader.Load(SettingFolderName + "/" + path, LoaderMode.Sync);
-
             Debuger.Assert(!loader.IsError);
             fileContent = loader.Bytes;
-
+            
             loader.Release();
             return fileContent;
+#endif
+        }
+
+        private static byte[] LoadSettingFromFile(string path)
+        {
+            var resPath = GetFileSystemPath(path);
+            var bytes = File.ReadAllBytes(resPath);
+            bytes = SettingBytesFilter != null ? SettingBytesFilter(bytes) : bytes;
+            return bytes;
         }
 
         private static string GetFileSystemPath(string path)
@@ -172,10 +184,36 @@ namespace KEngine.Modules
             watcher.Changed += (sender, e) =>
             {
                 Log.LogConsole_MultiThread("Setting changed: {0}", e.FullPath);
-                action(path);
+                action.Invoke(path);
             };
         }
 #endif
+        /// <summary>
+        /// Load from unity Resources folder
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        [Obsolete("LoadSettingFromStreamingAssets instead!")]
+        private static byte[] LoadSettingFromResources(string path)
+        {
+            var resPath = SettingFolderName + "/" + Path.ChangeExtension(path, null);
+            var fileContentAsset = Resources.Load(resPath) as TextAsset;
+            var bytes = SettingBytesFilter != null ? SettingBytesFilter(fileContentAsset.bytes) : fileContentAsset.bytes;
+            return bytes;
+        }
+		
+        /// <summary>
+        /// KEngine 3 后，增加同步loadStreamingAssets文件，统一只用StreamingAsset路径
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private static byte[] LoadSettingFromStreamingAssets(string path)
+        {
+            var resPath = SettingFolderName + "/" + path;
+            var bytes = KResourceModule.LoadSyncFromStreamingAssets(resPath);
+            bytes = SettingBytesFilter != null ? SettingBytesFilter(bytes) : bytes;
+            return bytes;
+        }
 
         /// <summary>
         /// whether or not using file system file, in unity editor mode only
