@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3027279974
+CRC: 323509419
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -58,3 +58,10 @@ AssetBundleManifest:
     Info_17:
       Name: ui/navbar.prefab.k
       Dependencies: {}
+    Info_18:
+      Name: uiatlas/buttonatlas.spriteatlas.k
+      Dependencies:
+        Dependency_0: uiatlas/button/button_green.png.k
+        Dependency_1: uiatlas/button/button_green_border.png.k
+        Dependency_2: uiatlas/button/button_red.png.k
+        Dependency_3: uiatlas/button/button_yellow.png.k

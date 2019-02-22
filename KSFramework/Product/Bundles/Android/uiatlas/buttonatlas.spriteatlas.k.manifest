@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 407855787
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7998bc0a676827add069000677aadb9c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/BundleResources/UIAtlas/buttonAtlas.spriteatlas
+Dependencies:
+- C:/Code/KSFramework_master_2018/KSFramework/Product/Bundles/Android/uiatlas/button/button_green.png.k
+- C:/Code/KSFramework_master_2018/KSFramework/Product/Bundles/Android/uiatlas/button/button_green_border.png.k
+- C:/Code/KSFramework_master_2018/KSFramework/Product/Bundles/Android/uiatlas/button/button_red.png.k
+- C:/Code/KSFramework_master_2018/KSFramework/Product/Bundles/Android/uiatlas/button/button_yellow.png.k
