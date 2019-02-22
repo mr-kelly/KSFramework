@@ -430,6 +430,7 @@ namespace KEngine
 
         #region 控制台双击日志跳到指定行
 #if UNITY_EDITOR
+        private static string s_logFilePath = "Assets/KSFramework/KEngine/KEngine.Lib/Logger.cs";
         private static int s_InstanceID;
         private static int[] s_Lines = { 354, 361, 368 };
         private static List<StackFrame> s_LogStackFrameList = new List<StackFrame>();
@@ -442,12 +443,12 @@ namespace KEngine
         private static FieldInfo s_LogEntryCondition;
         static void InitLogUtility()
         {
-            s_InstanceID = AssetDatabase.LoadAssetAtPath<MonoScript>("Assets/KSFramework/KEngine/KEngine.Lib/Logger.cs").GetInstanceID();
+            s_InstanceID = AssetDatabase.LoadAssetAtPath<MonoScript>(s_logFilePath).GetInstanceID();
             s_LogStackFrameList.Clear();
 
             GetConsoleWindowListView();
         }
-        //Unity5.3适用
+
         private static void GetConsoleWindowListView()
         {
             if (s_LogListView == null && !UnityEditorInternal.InternalEditorUtility.inBatchMode)
@@ -457,15 +458,22 @@ namespace KEngine
                 FieldInfo fieldInfo = consoleWindowType.GetField("ms_ConsoleWindow", BindingFlags.Static | BindingFlags.NonPublic);
                 s_ConsoleWindow = fieldInfo.GetValue(null);
                 FieldInfo listViewFieldInfo = consoleWindowType.GetField("m_ListView", BindingFlags.Instance | BindingFlags.NonPublic);
-                s_LogListView = listViewFieldInfo.GetValue(s_ConsoleWindow);
-                s_LogListViewTotalRows = listViewFieldInfo.FieldType.GetField("totalRows", BindingFlags.Instance | BindingFlags.Public);
-                s_LogListViewCurrentRow = listViewFieldInfo.FieldType.GetField("row", BindingFlags.Instance | BindingFlags.Public);
+                if (listViewFieldInfo != null && s_ConsoleWindow != null)
+                {
+                    s_LogListView = listViewFieldInfo.GetValue(s_ConsoleWindow);
+                    s_LogListViewTotalRows =
+                        listViewFieldInfo.FieldType.GetField("totalRows", BindingFlags.Instance | BindingFlags.Public);
+                    s_LogListViewCurrentRow =
+                        listViewFieldInfo.FieldType.GetField("row", BindingFlags.Instance | BindingFlags.Public);
+                }
+
                 //LogEntries  
 #if UNITY_2017_1_OR_NEWER
                 Type logEntriesType = unityEditorAssembly.GetType("UnityEditor.LogEntries");
                 s_LogEntriesGetEntry = logEntriesType.GetMethod("GetEntryInternal", BindingFlags.Static | BindingFlags.Public);
                 Type logEntryType = unityEditorAssembly.GetType("UnityEditor.LogEntry");
 #else
+                //Unity5.3适用
                 Type logEntriesType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntries");                
                 s_LogEntriesGetEntry = logEntriesType.GetMethod("GetEntryInternal", BindingFlags.Static | BindingFlags.Public);
                 Type logEntryType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntry");
