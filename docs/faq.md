@@ -43,9 +43,9 @@ KSFramework\Assets\slua
 
 可以把配置文件生成Lua代码，或读取tsv，或配置文件插入到数据库，等等方式。
 
-C#代码是配置表的字段，在开发期可以直接使用Class类的字段，而不用查表的字段。
+C#代码是配置表的字段，在开发期可以直接使用Class类的字段，而不用打开配置表查字段。
 
-可以参考 tableml 的修改版本：https://www.cnblogs.com/zhaoqingqing/p/7440867.html
+可以参考 tableml 的修改版，改成sqlite：https://www.cnblogs.com/zhaoqingqing/p/7440867.html
 
 
 
