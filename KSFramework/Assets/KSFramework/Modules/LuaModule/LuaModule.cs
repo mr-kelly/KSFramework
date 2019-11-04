@@ -148,6 +148,10 @@ namespace KSFramework
         /// <returns></returns>
         public object CallScript(string scriptRelativePath)
         {
+            if (string.IsNullOrEmpty(scriptRelativePath))
+            {
+                return null;
+            }
             Debuger.Assert(HasScript(scriptRelativePath), "Not exist Lua: " + scriptRelativePath);
 
             var scriptPath = GetScriptPath(scriptRelativePath);

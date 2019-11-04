@@ -64,6 +64,10 @@ namespace KSFramework
 
         public object CallLuaFunction(string function, params object[] args)
         {
+            if (string.IsNullOrEmpty(LuaPath))
+            {
+                return null;
+            }
             if (!LuaModule.CacheMode)
                 Reload();
             if (_cacheTable == null)
