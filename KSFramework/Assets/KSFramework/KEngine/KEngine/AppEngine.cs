@@ -312,7 +312,12 @@ namespace KEngine
 #if USE_UGUI_FPS
         private Text CacheText;
 #endif
-
+        private float _LastInterval;  
+        //统计周期
+        private float _UpdateInterval = 0.1f;  
+        private int _Frames = 0;  
+        private float _FPS;  
+        
         public FpsWatcher(float sensitivity)
         {
             Value = 0f;
@@ -331,6 +336,8 @@ namespace KEngine
             fpsTextObj.font = font;
             CacheText = fpsTextObj;
             GameObject.DontDestroyOnLoad(canvasGameObj);
+            _Frames = 0;
+            _LastInterval = Time.realtimeSinceStartup; 
             Log.Debug("create fps canvas");
 
 #endif
@@ -338,6 +345,16 @@ namespace KEngine
 
         public void OnUIUpdate()
         {
+            _Frames++;  
+            if(Time.realtimeSinceStartup > _LastInterval + _UpdateInterval)  
+            {  
+                _FPS = _Frames / (Time.realtimeSinceStartup - _LastInterval);  
+                _Frames = 0;  
+                _LastInterval = Time.realtimeSinceStartup;  
+                
+                _cacheFPSStr = string.Format("FPS: {0}", (int)_FPS);
+            }  
+            
             if (Time.frameCount % 30 == 0 || _cacheMemoryStr == null || _cacheFPSStr == null)
             {
                 _cacheMemoryStr = string.Format("Memory: {0:F3}KB",
@@ -347,7 +364,6 @@ namespace KEngine
 					UnityEngine.Profiler.GetMonoUsedSize() / 1024f
 #endif
 				);
-                _cacheFPSStr = Watch("FPS: {0:N0}", 1f / Time.deltaTime);
 #if USE_UGUI_FPS
                 if (CacheText == null) return;
                 CacheText.text = _cacheMemoryStr + "\n" + _cacheFPSStr;
