@@ -118,7 +118,14 @@ public static class KEngineExtensions
     {
         return t.localPosition.z;
     }
-
+    
+    public static bool IsActive(this Transform t)
+    {
+        if(t&&t.gameObject)
+            return t.gameObject.activeInHierarchy;
+        return false;
+    }
+    
     public static bool HasRigidbody(this GameObject gobj)
     {
         return (gobj.GetComponent<Rigidbody>() != null);
