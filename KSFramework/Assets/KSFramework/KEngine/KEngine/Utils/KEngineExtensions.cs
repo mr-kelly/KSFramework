@@ -126,6 +126,13 @@ public static class KEngineExtensions
         return false;
     }
     
+    public static RectTransform rectTransform(this Transform t)
+    {
+        if(t&&t.gameObject)
+            return t.gameObject.GetComponent<RectTransform>();
+        return null;
+    }
+    
     public static bool HasRigidbody(this GameObject gobj)
     {
         return (gobj.GetComponent<Rigidbody>() != null);

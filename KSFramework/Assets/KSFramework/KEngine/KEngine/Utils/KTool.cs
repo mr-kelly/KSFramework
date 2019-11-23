@@ -1310,6 +1310,21 @@ namespace KEngine
                     callback(ipAddress);
             }
         }
+        
+        public static List<GameObject> GetAllChild(GameObject obj)
+        {
+            List<GameObject> objList = new List<GameObject>();
+            objList.Add(obj);
+            var childCount = obj.transform.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = obj.transform.GetChild(i).gameObject;
+                var childList = GetAllChild(child);
+                objList.AddRange(childList);
+            }
+
+            return objList;
+        }
     }
 
     public class XMemoryParser<T>
