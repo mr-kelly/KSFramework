@@ -31,7 +31,9 @@ using System.Reflection;
 using System.Text;
 using KEngine;
 using UnityEditor;
+using UnityEditor.Build.Content;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace KEngine.Editor
@@ -289,8 +291,14 @@ namespace KEngine.Editor
 
         public static void ClearConsole()
         {
-            Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
+#if UNITY_2018_1_OR_NEWER
+            var assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.ActiveEditorTracker));
+            var type = assembly.GetType("UnityEditor.LogEntries");
+#else
+            var assembly = Assembly.GetAssembly(typeof(SceneView));
             System.Type type = assembly.GetType("UnityEditorInternal.LogEntries");
+#endif
+ 
             MethodInfo method = type.GetMethod("Clear");
             method.Invoke(null, null);
         }

@@ -227,10 +227,14 @@ namespace KEngine
             if (BundleParser != null)
                 BundleParser.Dispose(false);
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
-            foreach (var depLoader in _depLoaders)
+            if (_depLoaders != null && _depLoaders.Length > 0)
             {
-                depLoader.Release();
+                foreach (var depLoader in _depLoaders)
+                {
+                    depLoader.Release();
+                }
             }
+
             _depLoaders = null;
 #endif
 
