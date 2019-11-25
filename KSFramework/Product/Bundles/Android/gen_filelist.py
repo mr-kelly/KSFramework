@@ -61,7 +61,7 @@ def makeFileLists(dir,save_path):
                 size = str(os.path.getsize(path_name));
                 line = "{0},{1},{2}".format(sname,version,size)
                 new_str = new_str +line+"\n"
-                print("append:" ,line)
+                #print("find:" ,line)
 
 
     #生成filelist
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         genVersion(dir+version_name,[filelist_name])
     except Exception as ex:
         print
-        'Load library Exception:\r\n'
+        'Exception:\r\n'
         print
         ex
     os.system("pause")
