@@ -14,6 +14,7 @@
 
 /KSFramework/Assets/XLua/Gen/*
 /KSFramework/UnityAPI/
+/KSFramework/.idea/*
 #Others
 /AssetBundles-Browser
 
