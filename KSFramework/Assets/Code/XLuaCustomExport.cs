@@ -221,7 +221,9 @@ public static class XLuaCustomExport
         typeof(Rigidbody),
         typeof(CharacterController),
         typeof(PlayerPrefs),
+#if !UNITY_2019_1_OR_NEWER
         typeof(GUIText),
+#endif
         typeof(Input),
         typeof(Renderer),
         typeof(Camera),
