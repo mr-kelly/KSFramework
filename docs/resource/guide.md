@@ -16,6 +16,14 @@ Unity 5中，Asset Bundle系统做了很大的变化。你只需将需要打包�
 
 在KEngine+Unity 5.x中，把配置AssetBundle Name的这一步也省掉了。你只需把需要打包的资源，放在Assets/BundleResources目录中，所有的AssetBundle将会完整导出。
 
+## AssetBundle分组？
+
+如何合理的资源对资源设置AssetBundle分组？建议遵循这些原则：
+
+- 同一时刻同时使用资源设置到一个AssetBundle
+- 所有的shader设置到一个AssetBundle
+- 同一个图集的所有图元设置到一个AssetBundle
+- 尽可能的不使用内建的资源（Shader/Texture&Spritre etc.）
 
 # 路径定义
 
