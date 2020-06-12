@@ -33,15 +33,28 @@
 
 
 
-### 文档维护说明
+## 一起来维护文档？
 
-安装python环境
+### 搭建环境
 
-1. 添加新的md文件，编写内容
+安装python环境，安装python的pip(python3自带)，如果是python2或没有pip可参考《[使用Mkdocs构建你的项目文档](https://www.cnblogs.com/zhaoqingqing/p/7501062.html)》
+
+通过pip安装mkdocs，命令
+
+```python
+pip install mkdocs
+```
+
+mkdocs文档： https://markdown-docs-zh.readthedocs.io/zh_CN/latest/
+
+
+
+### 编写新文档
+
+1. 添加新的md文件，编写内容，按照目录规范把md文件放到指定目录下
 2. **mkdocs.yml** 配置新加的md文件到此，配置目录结构
 3. **server.bat** 开启本地服务器：在本地预览网站的生成效果 ，地址：http://127.0.0.1:8000
 4. **deploy.bat** 把生成后的网站推送到github，会推送到默认的分支。
 
 
 
-mkdocs文档： https://markdown-docs-zh.readthedocs.io/zh_CN/latest/
