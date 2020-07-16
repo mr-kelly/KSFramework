@@ -119,8 +119,6 @@ namespace KSFramework
                     Log.LogWarning("Import UI Lua Script failed: {0}", relPath);
                 return false;
             }
-
-            scriptResult = KSGame.Instance.LuaModule.CallScript(relPath);
             Debuger.Assert(scriptResult is LuaTable, "{0} Script Must Return Lua Table with functions!", UITemplateName);
 
             _luaTable = scriptResult as LuaTable;

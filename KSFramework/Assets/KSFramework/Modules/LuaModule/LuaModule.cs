@@ -230,10 +230,13 @@ namespace KSFramework
         /// <returns></returns>
         public bool TryImport(string fileName, out object result)
         {
-            //            result = null;
+            result = null;
 
-            //            if (!HasScript(fileName))
-            //                return false;
+            if (!HasScript(fileName))
+            {
+                Log.LogError("{0} not exist !",fileName);
+                return false;
+            }
 
             result = DoImportScript(fileName);
             return true;
