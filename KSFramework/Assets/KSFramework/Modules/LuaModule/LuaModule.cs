@@ -290,12 +290,11 @@ namespace KSFramework
             LuaDLL.lua_pushcfunction(L, ImportCSharpType);
             LuaDLL.lua_setglobal(L, "import_type"); // same as SLua's SLua.GetClass(), import C# type
 #else
-
+            //TODO require第三方库的处理,本地会无法找到
             var L = _luaEnv.L;
             Lua.lua_pushstdcallcfunction(L, LuaImport);
             Lua.xlua_setglobal(L, "require");
-            //TODO 如果有新加入的库，加入进去
-//            _luaEnv.AddBuildin("",);
+
             yield return null;
 #endif
 
