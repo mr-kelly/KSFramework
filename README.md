@@ -39,13 +39,15 @@
 
 安装python环境，安装python的pip(python3自带)，如果是python2或没有pip可参考《[使用Mkdocs构建你的项目文档](https://www.cnblogs.com/zhaoqingqing/p/7501062.html)》
 
-通过pip安装mkdocs，命令
+通过pip安装mkdocs，需要安装旧版本的mkdocs因为新版本的mkdocs.yml格式有区别，目前来看是去掉自定义左侧目录的功能
 
 ```python
-pip install mkdocs
+pip install mkdocs==1.0.4
 ```
 
-mkdocs文档： https://markdown-docs-zh.readthedocs.io/zh_CN/latest/
+mkdocs文档： https://www.mkdocs.org/
+
+（中文文档目前有些过时） https://markdown-docs-zh.readthedocs.io/zh_CN/latest/
 
 
 
