@@ -25,15 +25,17 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using KEngine;
 using UnityEngine;
+using Object = System.Object;
 
 /// <summary>
 /// Extension Unity's function, to be more convinient
 /// </summary>
-public static class KEngineExtensions
+public static class KGameObjectExtensions
 {
     public static void SetWidth(this RectTransform rectTrans, float width)
     {
@@ -118,21 +120,21 @@ public static class KEngineExtensions
     {
         return t.localPosition.z;
     }
-    
+
     public static bool IsActive(this Transform t)
     {
-        if(t&&t.gameObject)
+        if (t && t.gameObject)
             return t.gameObject.activeInHierarchy;
         return false;
     }
-    
+
     public static RectTransform rectTransform(this Transform t)
     {
-        if(t&&t.gameObject)
+        if (t && t.gameObject)
             return t.gameObject.GetComponent<RectTransform>();
         return null;
     }
-    
+
     public static bool HasRigidbody(this GameObject gobj)
     {
         return (gobj.GetComponent<Rigidbody>() != null);
@@ -152,7 +154,10 @@ public static class KEngineExtensions
     {
         return new Vector2(vec.x, vec.y);
     }
+}
 
+public static class KEngineExtensions
+{
     public static byte ToByte(this string val)
     {
         byte ret = 0;
@@ -161,11 +166,12 @@ public static class KEngineExtensions
             if (!String.IsNullOrEmpty(val))
             {
                 ret = Convert.ToByte(val);
-    }
+            }
         }
         catch (Exception)
-    {
+        {
         }
+
         return ret;
     }
 
@@ -182,6 +188,7 @@ public static class KEngineExtensions
         catch (Exception)
         {
         }
+
         return ret;
     }
 
@@ -198,6 +205,7 @@ public static class KEngineExtensions
         catch (Exception)
         {
         }
+
         return ret;
     }
 
@@ -214,8 +222,10 @@ public static class KEngineExtensions
         catch (Exception)
         {
         }
+
         return ret;
     }
+
     public static Int32 ToInt32(this object obj)
     {
         Int32 ret = 0;
@@ -229,8 +239,10 @@ public static class KEngineExtensions
         catch (Exception)
         {
         }
+
         return ret;
     }
+
     /// <summary>
     /// Get from object Array
     /// </summary>
@@ -251,7 +263,7 @@ public static class KEngineExtensions
             {
                 try
                 {
-                    ret = (T)Convert.ChangeType(arrElement, typeof(T));
+                    ret = (T) Convert.ChangeType(arrElement, typeof(T));
                 }
                 catch (Exception)
                 {
@@ -324,6 +336,7 @@ public static class KEngineToolExtensions
                 {
                     break;
                 }
+
                 items.Add(item);
             }
         }
@@ -377,6 +390,7 @@ public static class KEngineToolExtensions
         {
             result = item;
         }
+
         return result;
     }
 
@@ -401,6 +415,7 @@ public static class KEngineToolExtensions
                 {
                     continue;
                 }
+
                 items.Add(item);
             }
         }
@@ -422,6 +437,7 @@ public static class KEngineToolExtensions
         {
             allAdded &= @this.Add(item);
         }
+
         return allAdded;
     }
 
@@ -432,6 +448,7 @@ public static class KEngineToolExtensions
         {
             list.Add(item);
         }
+
         return list.ToArray();
     }
 
@@ -442,6 +459,7 @@ public static class KEngineToolExtensions
         {
             list.Add(item);
         }
+
         return list;
     }
 
@@ -461,11 +479,13 @@ public static class KEngineToolExtensions
                     break;
                 }
             }
+
             if (!include)
             {
                 results.Add(item);
             }
         }
+
         return results;
     }
 
@@ -483,6 +503,7 @@ public static class KEngineToolExtensions
                 result.Append(sp).Append(item);
             }
         }
+
         return result.ToString();
     }
 
@@ -495,6 +516,7 @@ public static class KEngineToolExtensions
                 return true;
             }
         }
+
         return false;
     }
 
