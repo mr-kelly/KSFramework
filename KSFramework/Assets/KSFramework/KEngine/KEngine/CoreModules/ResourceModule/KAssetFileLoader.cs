@@ -255,7 +255,10 @@ namespace KEngine
         protected override void DoDispose()
         {
             base.DoDispose();
-            _bundleLoader.Release(); // 释放Bundle(WebStream)
+            if (_bundleLoader != null)
+            {
+                _bundleLoader.Release(); // 释放Bundle(WebStream)
+            }
             //if (IsFinished)
             {
                 if (!IsLoadAssetBundle)
