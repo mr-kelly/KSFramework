@@ -39,15 +39,40 @@
 
 安装python环境，安装python的pip(python3自带)，如果是python2或没有pip可参考《[使用Mkdocs构建你的项目文档](https://www.cnblogs.com/zhaoqingqing/p/7501062.html)》
 
-通过pip安装mkdocs，需要安装旧版本的mkdocs因为新版本的mkdocs.yml格式有区别，目前来看是去掉自定义左侧目录的功能
+通过pip安装mkdocs，新版本的mkdocs去掉原来的多级目录支持，同时也支持到了新版本
 
 ```python
-pip install mkdocs==1.0.4
+pip install mkdocs
 ```
 
 mkdocs文档： https://www.mkdocs.org/
 
 （中文文档目前有些过时） https://markdown-docs-zh.readthedocs.io/zh_CN/latest/
+
+### 旧版本mkdocs?
+
+目前来看新版本的mkdocs是去掉自定义左侧目录的功能，两者配置格式差异对比
+
+| mkdocs版本 | 单篇文档的格式                          |
+| ---------- | --------------------------------------- |
+| 1.0.4      | - [index.md, "简介", "KSFramework介绍"] |
+| 1.1.2      | - "KSFramework介绍": index.md           |
+
+安装旧版本的mkdocs
+
+```python
+pip install mkdocs==1.0.4
+```
+
+如果安装失败，使用这个历史版本
+
+> pip install --no-index --find-links=/your_offline_packages/ package_name
+
+```
+pip install --no-index --find-links=/mkdocs-1.0.4-py2.py3-none-any.whl/ mkdocs
+```
+
+PS：在我的电脑上比较折腾安装回旧版本的mkdocs，因为旧版本mkdocs只支持到python2.7 ~ 3.5，所以格式改成了新版本的格式
 
 
 

@@ -1,58 +1,58 @@
-site_name: KSFramework Documentation
-theme: readthedocs
+site_name:  KSFramework Documentation
+theme:  readthedocs
 
-extra:
-    version: 0.9
-pages:
-    - [index.md, "简介", "KSFramework介绍"]
-    - [overview/why.md, "简介", "项目的由来"]
-    - [Home.md,"商业项目列表"]
-    - [overview/structure.md, "简介", "模块结构组织"]
-    - [overview/features.md, "简介", "功能特性"]
-    - [quickstart.md, "【快速入门指南！】"]
-    - [faq.md, "常见问题及解答"]   
-    - [build-project.md, "工程打包方法"]   
-        
-    
-    - [basic/config.md, "基础约定", "Ini配置文件"]
-    - [basic/file-structure.md, "基础约定", "文件目录结构"]
-
-    - [setting/guide.md, "配置表模块", "策划指南：配置表的使用"]
-    - [setting/condition-compile.md, "配置表模块", "配置表的条件编译"]
-    - [setting/lazy-load.md, "配置表模块", "惰式加载"]
-    - [setting/tsv-instead-excel.md, "配置表模块", "使用TSV，不用Excel作为源表"]
-    - [setting/custom-table-reader.md, "配置表模块", "自定义与扩展配置表的解析"]
-
-    - [resource/guide.md, "资源模块", "使用资源模块打包、加载"]
-    - [resource/debug.md, "资源模块", "资源实时调试监控"]
-    - [resource/gc.md, "资源模块", "垃圾回收机制"]
-    - [resource/edit_mode.md, "资源模块", "Editor下无需打包"]
-
-    - [ui/guide.md, "UI模块", "UI模块使用指南"]
-    - [ui/ui-binding.md, "UI模块", "手工代码绑定控件"]
-    - [ui/lua-outlet.md, "UI模块", "拖拽绑定控件"]
-    - [ui/ui-bind-vs-outlet.md, "UI模块", "两种绑定方式对比"]
-    - [ui/data-binding.md, "UI模块", "单向数据绑定"]
-
-    - [scripting/functions.md, "脚本指南", "Lua内置函数列表"]
-    - [scripting/cookie.md, "脚本指南", "Cookie状态缓存"]
-    - [scripting/lua-module.md, "脚本指南", "将Lua脚本模块化"]
-
-    - [hotreload/setting.md, "热重载", "配置表热重载"]
-    - [hotreload/assetbundle.md, "热重载", "Asset Bundle热重载"]
-    - [hotreload/ui.md, "热重载", "UI热重载"]
-    - [hotreload/code.md, "热重载", "其它代码热重载"]
-
-    - [advanced/seperate-unity-projects.md, "开发经验", "使用两个Unity工程"]
-    - [advanced/versioning.md, "开发经验", "版本号与版本管理"]
-    - [advanced/excel-diff.md, "开发经验", "Excel如何进行SVN协作、差异比较？"]
-    - [advanced/app-compile.md, "开发经验", "编译客户端时的内部细节"]
-    - [advanced/autoupdate.md, "开发经验", "资源包更新"]
-    - [advanced/script-reload.md, "开发经验", "Lua脚本热重载，内存状态数据丢失？"]
-    - [advanced/editor.md, "开发经验", "编辑器强化"]
-    - [advanced/roles.md, "开发经验", "假定角色需求"]
-
-    - [license.md, "其它", "版权说明"]
-    - [roadmap.md, "其它", "开发计划"]
-    - [overview/environment-other-hotfix-solution.md, "其它", "运行环境和其它热更新方案"]
-    - [github wiki-mkdocs.md, "其它", "为什么不使用wiki"]
+extra: 
+    version:  0.9
+nav: 
+    - "KSFramework介绍": index.md
+    - "项目的由来": overview/why.md
+    - "商业项目列表": Home.md
+    - "模块结构组织": overview/structure.md
+    - "功能特性": overview/features.md
+    - "快速入门指南": quickstart.md
+    - "常见问题及解答": faq.md
+    - "工程打包方法": build-project.md
+      
+    - "Ini配置文件": basic/config.md
+    - "文件目录结构": basic/file-structure.md
+      
+    - "策划指南：配置表的使用": setting/guide.md
+    - "配置表的条件编译": setting/condition-compile.md
+    - "惰式加载": setting/lazy-load.md
+    - "使用TSV，不用Excel作为源表": setting/tsv-instead-excel.md
+    - "自定义与扩展配置表的解析": setting/custom-table-reader.md
+    - "配置表解析GUI工具": setting/tableml_gui.md
+      
+    - "使用资源模块打包、加载": resource/guide.md
+    - "资源实时调试监控": resource/debug.md
+    - "垃圾回收机制": resource/gc.md
+    - "Editor下无需打包": resource/edit_mode.md
+      
+    - "UI模块使用指南": ui/guide.md
+    - "手工代码绑定控件": ui/ui-binding.md
+    - "拖拽绑定控件": ui/lua-outlet.md
+    - "两种绑定方式对比": ui/ui-bind-vs-outlet.md
+    - "单向数据绑定": ui/data-binding.md
+      
+    - "Lua内置函数列表": scripting/functions.md
+    - "Cookie状态缓存": scripting/cookie.md
+    - "将Lua脚本模块化": scripting/lua-module.md
+      
+    - "配置表热重载": hotreload/setting.md
+    - "Asset Bundle热重载": hotreload/assetbundle.md
+    - "UI热重载": hotreload/ui.md
+    - "其它代码热重载": hotreload/code.md
+      
+    - "使用两个Unity工程": advanced/seperate-unity-projects.md
+    - "版本号与版本管理": advanced/versioning.md
+    - "Excel如何进行SVN协作、差异比较？": advanced/excel-diff.md
+    - "编译客户端时的内部细节": advanced/app-compile.md
+    - "资源包更新": advanced/autoupdate.md
+    - "Lua脚本热重载，内存状态数据丢失？": advanced/script-reload.md
+    - "编辑器强化": advanced/editor.md
+    - "假定角色需求": advanced/roles.md
+      
+    - "版权说明": license.md
+    - "开发计划": roadmap.md
+    - "运行环境和其它热更新方案": overview/environment-other-hotfix-solution.md
+    - "为什么不使用wiki": github wiki-mkdocs.md
