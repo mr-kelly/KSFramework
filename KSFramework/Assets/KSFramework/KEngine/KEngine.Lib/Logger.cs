@@ -373,9 +373,17 @@ namespace KEngine
             }
         }
 
-        public static void LogToFile(string szMsg)
+        public static void LogToFile(string szMsg,params object[] args)
         {
-            LogToFile(szMsg, true); // 默认追加模式
+			// 默认追加模式
+            if (args == null || args.Length == 0)
+            {
+                LogToFile(szMsg, true); 
+            }
+            else if (args != null && args.Length > 0)
+            {
+                LogToFile(string.Format(szMsg,args), true);
+            }
         }
 
         // 是否写过log file
