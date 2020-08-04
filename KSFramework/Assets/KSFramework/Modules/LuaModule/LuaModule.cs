@@ -221,7 +221,7 @@ namespace KSFramework
         public object Import(string fileName)
         {
             object obj;
-			//NOTE 是否直接从cache中取?
+			//NOTE 优先从cache中取
             if(_importCache.TryGetValue(fileName, out obj))
             {
                 return obj;

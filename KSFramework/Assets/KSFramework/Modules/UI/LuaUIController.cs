@@ -33,18 +33,7 @@ namespace KSFramework
                 return relPath;
             }
         }
-
-        /// <summary>
-        /// Whether or not cache mode
-        /// </summary>
-        protected virtual bool IsCachedLuaTable
-        {
-            get
-            {
-                return LuaModule.CacheMode;
-            }
-        }
-
+        
         public override void OnInit()
         {
             base.OnInit();
@@ -63,8 +52,11 @@ namespace KSFramework
             LastOnOpenArgs = args;
 
             base.OnOpen(args);
-            if (!CheckInitScript())
-                return;
+            if (_luaTable == null)
+            {
+                if (!CheckInitScript())
+                    return;
+            }
 
             var onOpenFuncObj = _luaTable.Get<LuaFunction>("OnOpen");
             if (onOpenFuncObj == null)
@@ -86,8 +78,11 @@ namespace KSFramework
         public override void OnClose()
         {
             base.OnClose();
-            if (!CheckInitScript())
-                return;
+            if (_luaTable == null)
+            {
+                if (!CheckInitScript())
+                    return;
+            }
             var closeFunc = _luaTable["OnClose"];
             if (closeFunc != null)
             {
@@ -104,7 +99,7 @@ namespace KSFramework
         /// </summary>
         bool CheckInitScript(bool showWarn = false)
         {
-            if (!IsCachedLuaTable)
+            if (!LuaModule.CacheMode)
             {
                 ClearLuaTableCache();
             }

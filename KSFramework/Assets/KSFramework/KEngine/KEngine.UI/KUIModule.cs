@@ -349,8 +349,8 @@ namespace KEngine.UI
                 return;
             }
 
-            Action doCloseAction = () =>
-            {
+//            Action doCloseAction = () =>
+//            {
                 uiState.UIWindow.gameObject.SetActive(false);
 
                 uiState.UIWindow.OnClose();
@@ -362,9 +362,9 @@ namespace KEngine.UI
                 {
                     DestroyWindow(name);
                 }
-            };
+//            };
 
-            doCloseAction();
+//            doCloseAction();
         }
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace KEngine.UI
             UIController uiBase = uiState.UIWindow;
 
             //Action doOpenAction = () =>
-            {
+//            {
                 if (uiBase.gameObject.activeSelf)
                 {
 					uiBase.OnClose();
@@ -659,7 +659,7 @@ namespace KEngine.UI
                     if (OnOpenEvent != null)
                         OnOpenEvent(uiBase);
                 });
-            };
+//            };
 
             //            doOpenAction();
         }

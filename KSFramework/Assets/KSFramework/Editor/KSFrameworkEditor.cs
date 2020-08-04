@@ -201,6 +201,7 @@ return $UI_NAME
                 if (luaController) // 只处理LuaUIController
                 {
                     luaController.ClearLuaTableCache();
+                    luaController.OnInit();
                     luaController.OnOpen(luaController.LastOnOpenArgs);
                     Log.LogWarning("Reload Lua - {0}", kv.Key);
                 }
