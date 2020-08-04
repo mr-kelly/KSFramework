@@ -36,6 +36,10 @@ using LuaInterface;
 #else
 using XLua;
 using XLua.LuaDLL;
+using LuaSvr = XLua.LuaEnv;
+using LuaDLL = XLua.LuaDLL.Lua;
+using RealStatePtr = System.IntPtr;
+using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 #endif
 
 namespace KSFramework
@@ -108,7 +112,7 @@ namespace KSFramework
         /// <param name="scriptCode"></param>
         /// <param name="ret">return result</param>
         /// <returns></returns>
-        public bool ExecuteScript(byte[] scriptCode, out object ret, string file = "code")
+        public bool ExecuteScript(byte[] scriptCode, out object ret, string file = "chunk")
         {
 #if SLUA
             return _luaSvr.luaState.doBuffer(scriptCode, Encoding.UTF8.GetString(scriptCode), out ret);
@@ -132,7 +136,7 @@ namespace KSFramework
         /// </summary>
         /// <param name="scriptCode"></param>
         /// <returns></returns>
-        public object ExecuteScript(byte[] scriptCode, string file = "code")
+        public object ExecuteScript(byte[] scriptCode, string file = "chunk")
         {
             object ret;
             ExecuteScript(scriptCode, out ret, file);
@@ -162,7 +166,7 @@ namespace KSFramework
             }
             else
             {
-                //热更新从PersistentDataPath路径读取
+                //TODO 热更新从PersistentDataPath路径读取
                 //script = KResourceModule.LoadSyncFromPersistentDataPath(scriptPath);
                 script = KResourceModule.LoadSyncFromStreamingAssets(scriptPath);
             }
@@ -216,8 +220,14 @@ namespace KSFramework
         /// <returns></returns>
         public object Import(string fileName)
         {
-            //			if (!HasScript (fileName))
-            //                throw new FileNotFoundException(string.Format("Not found UI Lua Script: {0}", fileName));
+            object obj;
+			//NOTE 是否直接从cache中取?
+            if(_importCache.TryGetValue(fileName, out obj))
+            {
+                return obj;
+            }
+			if (!HasScript (fileName))
+                throw new FileNotFoundException(string.Format("Not found Lua Script: {0}", fileName));
 
             return DoImportScript(fileName);
         }
@@ -293,11 +303,15 @@ namespace KSFramework
             LuaDLL.lua_pushcfunction(L, ImportCSharpType);
             LuaDLL.lua_setglobal(L, "import_type"); // same as SLua's SLua.GetClass(), import C# type
 #else
-            //TODO require第三方库的处理,本地会无法找到
             var L = _luaEnv.L;
-            Lua.lua_pushstdcallcfunction(L, LuaImport);
-            Lua.xlua_setglobal(L, "require");
-
+            LuaDLL.lua_pushstdcallcfunction(L, LuaImport);
+            LuaDLL.xlua_setglobal(L, "import");
+            
+            //TODO lua中需要require的第三方库加到这里
+            _luaEnv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
+            _luaEnv.AddBuildin("lpeg", XLua.LuaDLL.Lua.LoadLpeg);
+            _luaEnv.AddBuildin("pb", XLua.LuaDLL.Lua.LoadLuaProfobuf);
+            _luaEnv.AddBuildin("ffi", XLua.LuaDLL.Lua.LoadFFI);
             yield return null;
 #endif
 
@@ -421,7 +435,6 @@ namespace KSFramework
 
         }
 #endif
-
     }
 
 }

@@ -11,7 +11,7 @@ function UILogin.New(controller)
 end
 
 ---测试场景数组
-local scenes = {"Scene/Scene1001/Scene1001.unity","Scene/Scene1002/Scene1002.unity"}
+local scenes = { "Scene/Scene1001/Scene1001.unity", "Scene/Scene1002/Scene1002.unity" }
 
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)
@@ -29,7 +29,7 @@ function UILogin:OnInit(controller)
                 return print("SceneLoader.Load faild")
             end
             print("switch scene success")
-        end,LoaderMode.Async)
+        end, LoaderMode.Async)
     end)
     Tools.SetButton(self.btnBillboard, function()
         print('Click the button!!!')
@@ -67,7 +67,7 @@ function UILogin:OnOpen(num1)
     end
     openCount = openCount + 1
     Cookie.Set('UILogin.OpenCount', openCount)
-
+    self:TestJson()
     Log.Info('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
 end
 
@@ -76,4 +76,19 @@ function UILogin:OnClose()
     print(self.sceneIndex)
 end
 
+function UILogin:TestJson()
+    --table转成json
+    local lua_table = {
+        a = "hello",
+        b = "ksframework",
+        c = 2020,
+        d = "2020", }
+    local json_str = table.table2JsonString(lua_table)
+    print("lua table to json string ---->"..json_str)
+    
+    local t = table.jsonStr2Table("{\"name\":\"ksframework\",\"year\":2020}")
+    print("json string to lua table----> table.name:"..t.name)
+    t.a = 456
+    
+end
 return UILogin

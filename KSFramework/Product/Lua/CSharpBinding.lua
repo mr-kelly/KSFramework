@@ -96,7 +96,7 @@ Profiler	= CS.UnityEngine.Profiler
 ThreadPriority = CS.UnityEngine.ThreadPriority
 ---@type UnityEngine.TextAnchor
 TextAnchor = CS.UnityEngine.TextAnchor
--------------------------KEngine/KSFramework/CYFramework-------------------
+-------------------------KEngine/KSFramework-------------------
 ---@type KEngine.AssetFileLoader
 ResLoader		= CS.KEngine.AssetFileLoader
 StaticResLoader = CS.KEngine.StaticAssetLoader
