@@ -111,7 +111,8 @@ namespace KEngine
         private bool _isNewByStatic = false;
 
         public IAppEntry AppEntry { get; private set; }
-
+        public static long TotalFrame = 0;
+        
         [Obsolete("Use New(GameObject, IAppEntry, IModuleInitable[]) instead!")]
         public static AppEngine New(GameObject gameObjectToAttach, IModuleInitable[] modules)
         {
@@ -232,6 +233,16 @@ namespace KEngine
                     RenderWatcher = new FpsWatcher(0.95f);
                 RenderWatcher.OnUIUpdate();
             }
+        }
+
+        private void FixedUpdate()
+        {
+            ++TotalFrame;
+        }
+
+        void OnApplicationQuit()
+        {
+            LogFileRecorder.CloseStream();
         }
 
         private static EngineConfigs _engineConfigs;

@@ -22,6 +22,8 @@ namespace KSFramework
 
         LuaTable _luaTable;
 
+        public static int sortOrder = 1;
+        public Canvas canvas;
         /// <summary>
         /// Lua Script for this UI 's path
         /// </summary>
@@ -36,10 +38,18 @@ namespace KSFramework
         
         public override void OnInit()
         {
+#if !DEBUG_DISABLE
+            float timer = Time.realtimeSinceStartup;
+#endif
+            canvas = GetComponent<Canvas>();
+           
             base.OnInit();
 
             if (!CheckInitScript(true))
                 return;
+#if !DEBUG_DISABLE
+            LogFileRecorder.WriteProfileLog("UI", string.Format("{0},OnInit,{1:0.000}", UIName, (Time.realtimeSinceStartup - timer) * 1000));
+#endif
         }
 
         /// <summary>
@@ -48,6 +58,15 @@ namespace KSFramework
         /// <param name="args"></param>
         public override void OnOpen(params object[] args)
         {
+#if !DEBUG_DISABLE
+            float timer = Time.realtimeSinceStartup;
+#endif
+            if (sortOrder >= int.MaxValue)
+            {
+                sortOrder = 0;
+            }
+            canvas.sortingOrder = sortOrder++;
+            
             // 编辑器模式下，记录
             LastOnOpenArgs = args;
 
@@ -73,6 +92,9 @@ namespace KSFramework
             }
 
             (onOpenFuncObj as LuaFunction).Call(newArgs);
+#if !DEBUG_DISABLE
+            LogFileRecorder.WriteProfileLog("UI", string.Format("{0},OnOpen,{1:0.000}", UIName, (Time.realtimeSinceStartup - timer) * 1000));
+#endif
         }
 
         public override void OnClose()
@@ -83,10 +105,20 @@ namespace KSFramework
                 if (!CheckInitScript())
                     return;
             }
-            var closeFunc = _luaTable["OnClose"];
+            var closeFunc = _luaTable.Get<LuaFunction>("OnClose");
             if (closeFunc != null)
             {
                 (closeFunc as LuaFunction).Call(_luaTable);
+            }
+        }
+		
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            var destroyFunc = _luaTable.Get<LuaFunction>("OnDestroy");
+            if (destroyFunc != null)
+            {
+                (destroyFunc as LuaFunction).Call(_luaTable);
             }
         }
 
