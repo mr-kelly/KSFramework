@@ -3,6 +3,7 @@ local UIBillboard = {}
 extends(UIBillboard, UIBase)
 
 function UIBillboard:OnInit(controller)
+    Log.Info("================================ UIBillboard:OnInit ============================")
     self.Controller = controller
     if not self.txtTitle then
         self.txtTitle = self:GetUIText('txtTitle')
@@ -13,11 +14,12 @@ function UIBillboard:OnInit(controller)
     Tools.SetButton(self.btnBack, function()
         print('Click the button!!!')
         UIModule.Instance:CloseWindow("Billboard")
-        UIModule.Instance:OpenWindow("Login")
+        --UIModule.Instance:OpenWindow("Login")
     end)
 end
 
 function UIBillboard:OnOpen()
+    Log.Info("================================ UIBillboard:OnOpen ============================")
     local rand
     --rand = Cookie.Get('UIBillboard.RandomNumber')
     --if not rand then
@@ -29,4 +31,7 @@ function UIBillboard:OnOpen()
     self.txtContent.text = billboardSetting.Content
 end
 
+function UIBillboard:OnClose()
+    Log.Info("================================ UIBillboard:OnClose ============================")
+end
 return UIBillboard
