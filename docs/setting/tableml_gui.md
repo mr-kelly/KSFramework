@@ -2,5 +2,5 @@
 
 windows上编译好的可执行文件下载：
 
-源代码下载：https://github.com/zhaoqingqing/TableML ，如果你们的excel是有其它的特殊格式，可以修改源代码进行定制，参考repo的README
+源代码下载：https://github.com/zhaoqingqing/TableML ，如果你们的excel有其它的特殊格式或者需要自定义格式，可以修改源代码进行定制，参考repo的README
 

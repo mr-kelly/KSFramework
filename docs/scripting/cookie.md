@@ -15,7 +15,6 @@ Cookie的本质就是缓存层。将尽可能多的状态信息放到缓存层�
 
 查看章节：[利用Cookie脚本重载](../advanced/script-reload)
 
-
 ## 使用Cookie
 
 Cookie的实现本质，是一个C#端的key-value存取模块：

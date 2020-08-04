@@ -21,7 +21,7 @@ nav:
     - "惰式加载": setting/lazy-load.md
     - "使用TSV，不用Excel作为源表": setting/tsv-instead-excel.md
     - "自定义与扩展配置表的解析": setting/custom-table-reader.md
-    - "配置表解析GUI工具": setting/tableml_gui.md
+    - "配置表编译GUI工具": setting/tableml_gui.md
       
     - "使用资源模块打包、加载": resource/guide.md
     - "资源实时调试监控": resource/debug.md
@@ -37,6 +37,7 @@ nav:
     - "Lua内置函数列表": scripting/functions.md
     - "Cookie状态缓存": scripting/cookie.md
     - "将Lua脚本模块化": scripting/lua-module.md
+    - "为Lua集成第三方库": scripting/lua-lib.md
       
     - "配置表热重载": hotreload/setting.md
     - "Asset Bundle热重载": hotreload/assetbundle.md
