@@ -626,7 +626,13 @@ namespace XLua
 
                     LuaAPI.lua_pop(L, 1);  /* pop result */
                 }
-                UnityEngine.Debug.Log("LUA: " + s);
+
+                var ret_code = PrintWithLua(L, s);
+                if (ret_code != 200)
+                {
+                    return ret_code;
+                }
+//                UnityEngine.Debug.Log("LUA: " + s);
                 return 0;
             }
             catch (System.Exception e)
