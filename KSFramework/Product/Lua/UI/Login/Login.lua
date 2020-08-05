@@ -16,7 +16,7 @@ local scenes = { "Scene/Scene1001/Scene1001.unity", "Scene/Scene1002/Scene1002.u
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)
     self.sceneIndex = 1
-    Log.Info("================================ UILogin:OnInit ============================")
+    print("================================ UILogin:OnInit ============================")
 
     ---多语言示例，从语言表中读取
     -- self.LoginText from LuaOutlet
@@ -52,7 +52,7 @@ function UILogin:OnOpen(num1)
 
     if AppSettings then
         using("AppSettings") -- namespace all
-        Log.Info("================================ Read settings throught Lua ============================")
+        print("================================ Read settings throught Lua ============================")
         for config in foreach(GameConfigSettings.GetAll()) do
             print(string.format("Lua Read Setting, Id: %s, Value: %s", config.Id, config.Value))
         end
@@ -68,7 +68,7 @@ function UILogin:OnOpen(num1)
     openCount = openCount + 1
     Cookie.Set('UILogin.OpenCount', openCount)
     self:TestJson()
-    Log.Info('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
+    print('Test cookie, Reload UI use (Ctrl+Alt+Shift+R)... UI Open Count: ' .. tostring(openCount))
 end
 
 function UILogin:OnClose()
