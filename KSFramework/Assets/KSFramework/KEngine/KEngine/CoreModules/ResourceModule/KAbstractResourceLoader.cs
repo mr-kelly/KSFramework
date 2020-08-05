@@ -349,8 +349,8 @@ namespace KEngine
 
         protected virtual void OnFinish(object resultObj)
         {
-            Action doFinish = () =>
-            {
+//            Action doFinish = () =>
+//            {
                 // 如果ReadyDispose，无效！不用传入最终结果！
                 ResultObject = resultObj;
 
@@ -369,9 +369,9 @@ namespace KEngine
                     //Dispose();
                     Log.Trace("[BaseResourceLoader:OnFinish]时，准备Disposed {0}", Url);
                 }
-            };
-
-            doFinish();
+//            };
+//
+//            doFinish();
         }
 
         /// <summary>

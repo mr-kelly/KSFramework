@@ -444,6 +444,7 @@ namespace KEngine.UI
             if (uiBase != null && uiBase.gameObject.activeSelf) { return uiBase; }
             return null;
         }
+		
         public bool IsLoad(string name)
         {
             if (UIWindows.ContainsKey(name))

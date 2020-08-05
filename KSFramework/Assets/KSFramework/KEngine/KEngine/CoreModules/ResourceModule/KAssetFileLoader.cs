@@ -46,13 +46,6 @@ namespace KEngine
         }
 
         private bool IsLoadAssetBundle;
-		public static bool IsEditorLoadAsset
-		{
-			get
-			{
-	            return AppEngine.GetConfig("KEngine", "IsEditorLoadAsset").ToInt32() != 0 && Application.isEditor;
-			}
-		}
 
         public override float Progress
         {
@@ -69,7 +62,7 @@ namespace KEngine
         public static AssetFileLoader Load(string path, AssetFileBridgeDelegate assetFileLoadedCallback = null, LoaderMode loaderMode = LoaderMode.Async)
         {
             // 添加扩展名
-			if (!IsEditorLoadAsset)
+			if (!KResourceModule.IsEditorLoadAsset)
 	            path = path + AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt);
 
             LoaderDelgate realcallback = null;
@@ -81,6 +74,22 @@ namespace KEngine
             return AutoNew<AssetFileLoader>(path, realcallback, false, loaderMode);
         }
 
+        /// <summary>
+        /// Check Bundles/[Platform]/xxxx.kk exists?
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool IsBundleResourceExist(string url)
+        {
+            if (KResourceModule.IsEditorLoadAsset)
+            {
+                var editorPath = "Assets/" + KEngineDef.ResourcesBuildDir + "/" + url;
+                var hasEditorUrl = File.Exists(editorPath);
+                if (hasEditorUrl) return true;
+            }
+
+            return KResourceModule.IsResourceExist(KResourceModule.BundlesPathRelative  + url.ToLower() + AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt));
+        }
         protected override void Init(string url, params object[] args)
         {
             var loaderMode = (LoaderMode)args[0];
@@ -95,7 +104,7 @@ namespace KEngine
 
             Object getAsset = null;
 
-			if (IsEditorLoadAsset) 
+			if (KResourceModule.IsEditorLoadAsset) 
 			{
 #if UNITY_EDITOR
 				if (path.EndsWith(".unity"))
@@ -116,8 +125,6 @@ namespace KEngine
 				Log.Error("`IsEditorLoadAsset` is Unity Editor only");
 
 #endif
-				OnFinish(getAsset);
-
 			}
             else if (!IsLoadAssetBundle)
             {
@@ -129,7 +136,6 @@ namespace KEngine
                 {
                     Log.Error("Asset is NULL(from Resources Folder): {0}", path);
                 }
-                OnFinish(getAsset);
             }
             else
             {
@@ -227,7 +233,7 @@ namespace KEngine
                 }
             }
 
-            if (getAsset != null && IsLoadAssetBundle)
+            if (getAsset != null)
             {
                 // 更名~ 注明来源asset bundle 带有类型
                 getAsset.name = String.Format("{0}~{1}", getAsset, Url);
@@ -255,10 +261,10 @@ namespace KEngine
         protected override void DoDispose()
         {
             base.DoDispose();
+
             if (_bundleLoader != null)
-            {
                 _bundleLoader.Release(); // 释放Bundle(WebStream)
-            }
+
             //if (IsFinished)
             {
                 if (!IsLoadAssetBundle)

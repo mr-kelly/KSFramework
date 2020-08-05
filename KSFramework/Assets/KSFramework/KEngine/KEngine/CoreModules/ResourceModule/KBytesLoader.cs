@@ -54,39 +54,59 @@ namespace KEngine
 
         private string _fullUrl;
 
-        private IEnumerator CoLoad(string url)
+        /// <summary>
+        /// Convenient method to load file sync auto.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static byte[] LoadSync(string url)
         {
-            var getResPathType = KResourceModule.GetResourceFullPath(url, _loaderMode == LoaderMode.Async, out _fullUrl);
+            string fullUrl;
+            var getResPathType = KResourceModule.GetResourceFullPath(url, false, out fullUrl);
             if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
             {
                 if (Debug.isDebugBuild)
                     Log.Error("[HotBytesLoader]Error Path: {0}", url);
-                OnFinish(null);
-                yield break;
+                return null;
             }
 
-            if (_loaderMode == LoaderMode.Sync)
+            byte[] bytes;
+            if (getResPathType == KResourceModule.GetResourceFullPathType.InApp)
             {
-                // 存在应用内的，StreamingAssets内的，同步读取；否则去PersitentDataPath
-                if (getResPathType == KResourceModule.GetResourceFullPathType.InApp)
+                if (Application.isEditor) // Editor mode : 读取Product配置目录
                 {
-                    if (Application.isEditor) // Editor mode : 读取Product配置目录
-                    {
-                        var loadSyncPath = Path.Combine(KResourceModule.ProductPathWithoutFileProtocol, url);
-                        Bytes = KResourceModule.ReadAllBytes(loadSyncPath);
-                    }
-                    else // product mode: read streamingAssetsPath
-                    {
-                        Bytes = KResourceModule.LoadSyncFromStreamingAssets(url);
-                    }
+                    var loadSyncPath = Path.Combine(KResourceModule.ProductPathWithoutFileProtocol, url);
+                    bytes = KResourceModule.ReadAllBytes(loadSyncPath);
                 }
-                else
+                else // product mode: read streamingAssetsPath
                 {
-                    Bytes = KResourceModule.ReadAllBytes(_fullUrl);
+                    bytes = KResourceModule.LoadSyncFromStreamingAssets(url);
                 }
             }
             else
             {
+                bytes = KResourceModule.ReadAllBytes(fullUrl);
+            }
+            return bytes;
+        }
+
+        private IEnumerator CoLoad(string url)
+        {
+            if (_loaderMode == LoaderMode.Sync)
+            {
+                Bytes = LoadSync(url);
+            }
+            else
+            {
+
+                var getResPathType = KResourceModule.GetResourceFullPath(url, _loaderMode == LoaderMode.Async, out _fullUrl);
+                if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
+                {
+                    if (Debug.isDebugBuild)
+                        Log.Error("[HotBytesLoader]Error Path: {0}", url);
+                    OnFinish(null);
+                    yield break;
+                }
 
                 _wwwLoader = KWWWLoader.Load(_fullUrl);
                 while (!_wwwLoader.IsCompleted)

@@ -147,15 +147,21 @@ namespace KEngine
         public static void BeginSample(string strName)
         {
             if (!CanWatch) return;
-
+#if UNITY_2017_1_OR_NEWER
             UnityEngine.Profiling.Profiler.BeginSample(strName);
+#else
+            Profiler.BeginSample(strName);
+#endif
         }
 
         public static void EndSample()
         {
             if (!CanWatch) return;
-
+#if UNITY_2017_1_OR_NEWER
             UnityEngine.Profiling.Profiler.EndSample();
+#else
+            Profiler.EndSample();
+#endif
         }
     }
 }

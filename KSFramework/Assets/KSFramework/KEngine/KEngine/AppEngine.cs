@@ -59,7 +59,7 @@ namespace KEngine
         /// <summary>
         /// To Display FPS in the Debug Mode (Debug.isDebugBuild is true)
         /// </summary>
-        static FpsWatcher RenderWatcher { get; set; } // 帧数监听器
+        public static FpsWatcher RenderWatcher { get; set; } // 帧数监听器
 
         /// <summary>
         /// In Init func has a check if the user has the write privillige
@@ -103,6 +103,12 @@ namespace KEngine
         /// 是否初始化完成
         /// </summary>
         public bool IsInited { get; private set; }
+
+        public bool IsBeforeInit { get; private set; }
+
+        public bool IsOnInit { get; private set; }
+
+        public bool IsStartGame { get; private set; }
 
         /// <summary>
         /// AppEngine must be new by static function New(xxx)!
@@ -183,14 +189,17 @@ namespace KEngine
         private IEnumerator DoInit()
         {
             yield return null;
-
+            IsBeforeInit = true;
             if (AppEntry != null)
+            {
                 yield return StartCoroutine(AppEntry.OnBeforeInit());
+            }
 
 
-//            if (GameModules != null)
+            IsOnInit = true;
             yield return StartCoroutine(DoInitModules(GameModules));
 
+            IsStartGame = true;
             if (AppEntry != null)
             {
                 yield return StartCoroutine(AppEntry.OnGameStart());
@@ -312,7 +321,7 @@ namespace KEngine
         SettingExt,
     }
 
-    class FpsWatcher
+    public class FpsWatcher
     {
         private float Value;
         private float Sensitivity;

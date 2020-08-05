@@ -209,6 +209,15 @@ namespace KEngine
             InDocument,
         }
 
+        public static bool IsResourceExist(string url)
+        {
+            string fullPath;
+            var hasDocUrl = TryGetDocumentResourceUrl(url, false, out fullPath);
+
+            var hasInAppUrl = TryGetInAppStreamingUrl(url, false, out fullPath);
+            return hasDocUrl || hasInAppUrl;
+        }
+
         /// <summary>
         /// 根据相对路径，获取到StreamingAssets完整路径，或Resources中的路径
         /// </summary>
@@ -273,6 +282,14 @@ namespace KEngine
             return Application.persistentDataPath;
         }
 
+        public static bool IsEditorLoadAsset
+        {
+            get
+            {
+                return AppEngine.GetConfig("KEngine", "IsEditorLoadAsset").ToInt32() != 0 && Application.isEditor;
+            }
+        }
+
 
         /// <summary>
         /// (not android ) only! Android资源不在目录！
@@ -330,6 +347,7 @@ namespace KEngine
                 string[] files = Directory.GetFiles(directory, fileTitle);
                 var realFilePath = files[0].Replace("\\", "/");
                 filePath = filePath.Replace("\\", "/");
+                filePath = filePath.Replace("//", "/");
 
                 return String.CompareOrdinal(realFilePath, filePath) == 0;
             }

@@ -59,13 +59,13 @@ namespace KEngine
 
             if (versionArr.Length >= 5)
             {
-                var strVerType = versionArr[5];
+                var strVerType = versionArr[4];
                 VersionType = strVerType;
             }
 
-            if (versionArr.Length >= 7)
+            if (versionArr.Length >= 6)
             {
-                VersionDesc = string.Join(".", versionArr, 6, versionArr.Length - 6); // 剩余的串起来
+                VersionDesc = string.Join(".", versionArr, 5, versionArr.Length - 5); // 剩余的串起来
             }
         }
 

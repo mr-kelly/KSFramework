@@ -99,9 +99,15 @@ public static class XLuaCustomExport
         typeof(UnityAction<int, GameObject>),
         typeof(UnityAction<int, Transform>),
         typeof(AssetBundleLoader.CAssetBundleLoaderDelegate),
-        typeof(Action<bool>),
+        typeof(Action),
+        typeof(Func<double, double, double>),
+        typeof(Action<string>),
+        typeof(Action<string,int>),
+        typeof(System.Action<bool>),
+        typeof(System.Action<Boolean>),
         typeof(Action<int>),
         typeof(Action<float>),
+        typeof(Action<double>),
         typeof(Action<bool, GameObject>),
         typeof(UnityEngine.Events.UnityEvent),
         typeof(UnityEngine.Events.UnityEvent<bool>),
@@ -121,13 +127,6 @@ public static class XLuaCustomExport
         //typeof(TweenCallback),
         typeof(UnityEngine.Events.UnityAction<UnityEngine.EventSystems.BaseEventData>),
         typeof(UnityEngine.Events.UnityAction<string>),
-
-        typeof(Action),
-        typeof(Func<double, double, double>),
-        typeof(Action<string>),
-        typeof(Action<string,int>),
-        typeof(Action<int>),
-        typeof(Action<double>),
         typeof(Action<Sprite>),
         typeof(AbstractResourceLoader.LoaderDelgate),
         typeof(KEngine.AssetFileLoader.AssetFileBridgeDelegate),
@@ -140,7 +139,6 @@ public static class XLuaCustomExport
         typeof(KEngine.SpriteLoader.CSpriteLoaderDelegate),
         typeof(System.Action<KEngine.UI.UIController, object[]>),
         typeof(UnityAction<string,string>),
-
     };
 
     [ReflectionUse]
@@ -186,6 +184,7 @@ public static class XLuaCustomExport
 #else
         typeof(UnityEngine.Profiler),
 #endif 
+        typeof(System.Action<bool>),
     };
 
     [LuaCallCSharp]

@@ -96,10 +96,11 @@ namespace KEngine
         private static AssetBundleManifest _assetBundleManifest;
         /// <summary>
         /// Unity5下，使用manifest进行AssetBundle的加载
+        /// bool isForce,在热更新后，可能需要强制刷新AssetBundleManifest。
         /// </summary>
-        static void PreLoadManifest()
+        public static void PreLoadManifest(bool isForce = false)
         {
-            if (_hasPreloadAssetBundleManifest)
+            if (_hasPreloadAssetBundleManifest && isForce == false)
                 return;
 
             _hasPreloadAssetBundleManifest = true;
