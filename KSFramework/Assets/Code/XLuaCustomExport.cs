@@ -290,10 +290,10 @@ public static class XLuaCustomExport
     [GCOptimize]
     public static List<Type> LuaCallCSharpStruct = new List<Type>()
     {
-        typeof(Ray),
-        typeof(Vector2),
-        typeof(Vector3),
-        typeof(Color),
+        //typeof(Ray),
+        //typeof(Vector2),
+        //typeof(Vector3),
+        //typeof(Color),
         // typeof(AnimatorStateInfo),
         // 
     };
