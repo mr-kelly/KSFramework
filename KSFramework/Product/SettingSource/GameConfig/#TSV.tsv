@@ -1,8 +1,8 @@
 Id	Value	CommentA	#B
 string	string		
-ID Column/±àºÅ/Ö÷¼ü	Name/Ãû×Ö	CommentA×¢ÊÍÁĞ	CommentB¾®ºÅ×¢ÊÍÁĞ
-TestKey2	²âÊÔÊı¾İ		
-TestKey3	ÖĞÎÄ²âÊÔ		
-Comment	×¢ÊÍĞĞ		
-#	¾®ºÅ¿ªÍ·µÄ£¬×¢ÊÍĞĞ		
-TestKey4	ÖĞÎÄ²âÊÔ		
+ID Column/ç¼–å·/ä¸»é”®	Name/åå­—	CommentAæ³¨é‡Šåˆ—	CommentBäº•å·æ³¨é‡Šåˆ—
+TestKey2	æµ‹è¯•æ•°æ®		
+TestKey3	ä¸­æ–‡æµ‹è¯•		
+Comment	æ³¨é‡Šè¡Œ		
+#	äº•å·å¼€å¤´çš„ï¼Œæ³¨é‡Šè¡Œ		
+TestKey4	ä¸­æ–‡æµ‹è¯•		

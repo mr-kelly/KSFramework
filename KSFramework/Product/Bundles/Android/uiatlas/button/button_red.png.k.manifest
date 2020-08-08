@@ -1,17 +1,17 @@
 ManifestFileVersion: 0
-CRC: 1284329400
+CRC: 2900244143
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 09c9b9103afd73abe3c20150335cfd3f
+    Hash: 35c636ca137150668c7a33ef9047d6ed
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+    Hash: a354baa3bcdaca8cba5e1ac053aaeade
 HashAppended: 0
 ClassTypes:
-- Class: 28
-  Script: {instanceID: 0}
 - Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
   Script: {instanceID: 0}
 Assets:
 - Assets/BundleResources/UIAtlas/Button/button_red.png

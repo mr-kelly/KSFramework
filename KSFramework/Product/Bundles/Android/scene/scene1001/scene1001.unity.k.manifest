@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1140835462
+CRC: 1049653156
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 107357885df719c22f5eceec58b2b3e8
+    Hash: 443226779363871ecfb4f2d429ff4fb8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a1055546c7e4c47bcf8891454ea215bb
+    Hash: f014ba5221482d1978716a1da0e0e59d
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,8 +27,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
-- Class: 92
-  Script: {instanceID: 0}
 - Class: 102
   Script: {instanceID: 0}
 - Class: 104
@@ -42,6 +40,8 @@ ClassTypes:
 - Class: 135
   Script: {instanceID: 0}
 - Class: 157
+  Script: {instanceID: 0}
+- Class: 196
   Script: {instanceID: 0}
 Assets:
 - Assets/BundleResources/Scene/Scene1001/Scene1001.unity
