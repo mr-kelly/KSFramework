@@ -2,7 +2,7 @@
 
 ## UI约定
 
-在KSFramework中，每个UI都是一个场景文件，保存时，会自动把(UIWindowAsset脚本)节点下变成prefab放在BundleResource目录下。
+在KSFramework中，每个UI都是一个场景文件，保存时，会自动把(UIWindowAsset脚本)节点下变成prefab放在BundleResource目录下，所以请不要直接修改BundleResource下的UI Prefab，而是修改UI场景然后按保存，会自动替换Prefab。
 
 每个UI对应一个同名的Lua文件，可通过 **KEngine** - **UI(UGUI)** - **Auto Make UI Lua Scripts(Current Scene)** 创建模版脚本
 
