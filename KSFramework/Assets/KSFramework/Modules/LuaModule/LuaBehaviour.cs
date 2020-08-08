@@ -2,8 +2,12 @@
 using UnityEngine;
 using System.Collections;
 using KEngine;
-//using SLua;
+#if SLUA
+using SLua;
+#else
 using XLua;
+#endif
+
 
 public static class LuaBehaivourExtensions
 {
@@ -38,7 +42,8 @@ namespace KSFramework
         public static LuaBehaviour Create(GameObject attach, string luaPath)
         {
             // only one same lua behaviour can attach
-            foreach (var b in attach.GetComponents<LuaBehaviour>())
+            var behaviours = attach.GetComponents<LuaBehaviour>();
+            foreach (var b in behaviours)
             {
                 if (b.LuaPath == luaPath)
                     return b;
@@ -85,7 +90,7 @@ namespace KSFramework
 #if xLua
                 return func.Call(args);
 #else
-                           return func.call(args);
+                return func.call(args);
 #endif
             }
 

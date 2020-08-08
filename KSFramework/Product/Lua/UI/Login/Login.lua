@@ -44,12 +44,14 @@ function UILogin:OnInit(controller)
         --UIModule.Instance:CloseWindow("Login")
         UIModule.Instance:OpenWindow("LoadUISprite")
     end)
-    UIModule.Instance:OpenWindow("Navbar")
+    
 end
 
 function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
-
+    UIModule.Instance:OpenWindow("Navbar")
+    UIModule.Instance.OpenWindow("Main", 888);
+    
     if AppSettings then
         using("AppSettings") -- namespace all
         print("================================ Read settings throught Lua ============================")

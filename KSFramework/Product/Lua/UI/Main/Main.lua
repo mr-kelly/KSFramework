@@ -16,13 +16,12 @@ function UIMain:OnInit(controller)
     Log.Info("================================ UIMain:OnInit ============================")
 
     self.TitleText.text = ' ++ form Main.lua'
-    print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), self.BackBtn:GetType().FullName))
+    print(string.format("Controller type: %s, Button type full name: %s", type(self.Controller), self.BtnHead:GetType().FullName))
 
-    Tools.SetButton(self.BackBtn,function()
-        UIModule.Instance:CloseAllWindows()
-        UIModule.Instance:OpenWindow("Login","name:user1,pwd:123")
+    Tools.SetButton(self.BtnHead,function()
+        print('button onClick event!')
     end)
-    print('Success bind back button onClick event!')
+   
 
 end
 
