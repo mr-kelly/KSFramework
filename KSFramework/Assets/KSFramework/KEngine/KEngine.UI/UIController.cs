@@ -36,6 +36,7 @@ namespace KEngine.UI
     /// </summary>
     public class UIController : KBehaviour
     {
+        //TODO 默认情况下脚本对应的UI资源名是一样的，但也有例外：多个脚本对应同个UI界面资源
         /// <summary>
         /// Set from KUIModule, Resource Name
         /// </summary>

@@ -27,6 +27,13 @@ using UnityEngine;
 
 namespace KEngine.UI 
 {
+    public enum PanelType
+    {
+        MainUI,//main ui 
+        NormalUI,//normal ui
+        HeadInfoUI//hud ui
+    }
+    
     /// <summary>
     /// Mark for build UI window
     /// </summary>
@@ -34,5 +41,7 @@ namespace KEngine.UI
     public class UIWindowAsset : MonoBehaviour
     {
         public string StringArgument;
+        public PanelType PanelType = PanelType.NormalUI;
+        
     }
 }

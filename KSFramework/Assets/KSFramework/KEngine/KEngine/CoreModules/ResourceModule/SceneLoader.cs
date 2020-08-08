@@ -109,9 +109,9 @@ namespace KEngine
             Debuger.Assert(_assetFileBridge.Asset);
             _loadedSceneName = _sceneName;
             if (_mode == LoaderMode.Sync)
-                UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneName,
+            {    UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneName,
                     UnityEngine.SceneManagement.LoadSceneMode.Additive);
-
+            }
             else
             {
                 var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);

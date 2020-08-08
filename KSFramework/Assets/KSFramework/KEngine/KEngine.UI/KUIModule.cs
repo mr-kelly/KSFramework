@@ -112,6 +112,7 @@ namespace KEngine.UI
             }
 
             UiBridge.InitBridge();
+            CreateRoot();
         }
 
 //        [Obsolete("Use string ui name instead for more flexible!")]
@@ -126,6 +127,72 @@ namespace KEngine.UI
 //        {
 //            return OpenWindow(typeof(T), args);
 //        }
+
+        #region UI根节点初始化
+
+        public GameObject UIRoot { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Camera UICamera { get; private set; }
+        public GameObject MainUIRoot { get; private set; }
+        public GameObject NormalUIRoot { get; private set; }
+        public GameObject HeadInfoUIRoot { get; private set; }
+
+        private void CreateRoot()
+        {
+            UIRoot = new GameObject("UIRoot");
+            MainUIRoot = new GameObject("MainUIRoot");
+            NormalUIRoot = new GameObject("NormalUIRoot");
+            HeadInfoUIRoot = new GameObject("HeadInfoUIRoot");
+            MainUIRoot.transform.SetParent(UIRoot.transform,true);
+            NormalUIRoot.transform.SetParent(UIRoot.transform,true);
+            HeadInfoUIRoot.transform.SetParent(UIRoot.transform,true);
+           
+            //create camera
+            UICamera = new GameObject("UICamera").AddComponent<Camera>();
+            UICamera.transform.SetParent(UIRoot.transform,true);
+            UICamera.cullingMask =  (1<< (int)UnityLayerDef.UI);
+            UICamera.clearFlags = CameraClearFlags.Depth;
+            UICamera.nearClipPlane = UIDefs.Camera_Near;
+            UICamera.farClipPlane = UIDefs.Camera_Far;
+            UICamera.orthographic = true;
+            UICamera.orthographicSize = UIDefs.Camera_Size;
+            UICamera.depth = UIDefs.Camera_Depth;
+            GameObject.DontDestroyOnLoad(UIRoot);
+        }
+
+        private void InitUIAsset(GameObject uiObj)
+        {
+            if (!uiObj)
+            {
+                Log.LogError("uiObj is null !");
+                return;
+            }
+            var windowAsset = uiObj.GetComponent<UIWindowAsset>();
+            var canvas = uiObj.GetComponent<Canvas>();
+            switch (windowAsset.PanelType)
+            {
+                case PanelType.MainUI:
+                    uiObj.transform.SetParent(MainUIRoot.transform);
+                    break;
+                case PanelType.NormalUI:
+                    uiObj.transform.SetParent(NormalUIRoot.transform);
+                    break;
+                case PanelType.HeadInfoUI:
+                    uiObj.transform.SetParent(HeadInfoUIRoot.transform);
+                    break;
+                default:
+                    Log.LogError("not define PanelType",windowAsset.PanelType);
+                    uiObj.transform.SetParent(UIRoot.transform);
+                    break;
+            }
+
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = UICamera;
+        }
+        
+        #endregion
         public UILoadState PreLoadUIWindow(string uiTemplateName, bool isOnInit = false,params object[] args)
         {
             UILoadState uiState;
@@ -164,15 +231,11 @@ namespace KEngine.UI
             yield return KResourceModule.Instance.StartCoroutine(UiBridge.LoadUIAsset(uiState, request));
 
             GameObject uiObj = (GameObject)request.Asset;
-            GameObject uiRoot = GameObject.Find("UIRoot");
-            if (uiRoot == null)
-            {
-                uiRoot = new GameObject("UIRoot");
-                if(!SceneLoader.isLoadSceneAdditive) GameObject.DontDestroyOnLoad(uiRoot);
-            }
+ 
             if (uiObj != null)
             {
-                uiObj.transform.SetParent(uiRoot.transform);
+                InitUIAsset(uiObj);
+                
                 uiObj.transform.localRotation = Quaternion.identity;
                 uiObj.transform.localScale = Vector3.one;
                 // 具体加载逻辑结束...这段应该放到Bridge里
@@ -217,6 +280,7 @@ namespace KEngine.UI
         // 打开窗口（非复制）
         public UILoadState OpenWindow(string uiTemplateName, params object[] args)
         {
+            //TODO UI可自定义资源名和lua脚本路径，需要先创建脚本对象，再根据脚本中的值进行加载资源
             UILoadState uiState;
             if (!UIWindows.TryGetValue(uiTemplateName, out uiState))
             {
@@ -386,8 +450,8 @@ namespace KEngine.UI
             foreach (string item in LoadList)
                 DestroyWindow(item, true);
         }
-
-        [Obsolete("Deprecated: Please don't use this")]
+        //NOTE 在非生成代码情况下,xlua无法访问Obsolete的方法
+        //[Obsolete("Deprecated: Please don't use this")]
         public void CloseAllWindows()
         {
             List<string> toCloses = new List<string>();
@@ -488,15 +552,10 @@ namespace KEngine.UI
             yield return KResourceModule.Instance.StartCoroutine(UiBridge.LoadUIAsset(openState, request));
 
             GameObject uiObj = (GameObject)request.Asset;
-            GameObject uiRoot = GameObject.Find("UIRoot");
-            if (uiRoot == null)
-            {
-                uiRoot = new GameObject("UIRoot");
-                if (!SceneLoader.isLoadSceneAdditive) GameObject.DontDestroyOnLoad(uiRoot);
-            }
+         
             if (uiObj != null)
             {
-                uiObj.transform.SetParent(uiRoot.transform);
+                InitUIAsset(uiObj);
                 // 具体加载逻辑结束...这段应该放到Bridge里
 
                 uiObj.SetActive(false);
@@ -559,7 +618,7 @@ namespace KEngine.UI
             }
             else
             {
-            UnityEngine.Object.Destroy(uiState.UIWindow.gameObject);
+                UnityEngine.Object.Destroy(uiState.UIWindow.gameObject);
             }
 
             // Instance UI State has no Resources loader, so fix here

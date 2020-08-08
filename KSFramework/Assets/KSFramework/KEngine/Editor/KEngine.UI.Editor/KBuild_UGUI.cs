@@ -218,7 +218,7 @@ namespace KEngine.Editor
             KTool.ResetLocalTransform(uiPanel.transform);
 
             var canvas = uiObj.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
             CanvasScaler canvasScaler = uiObj.AddComponent<CanvasScaler>();
             uiObj.AddComponent<GraphicRaycaster>();
             var uiSize = new Vector2(1280,720);
