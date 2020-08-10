@@ -50,7 +50,7 @@ end
 function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
     UIModule.Instance:OpenWindow("Navbar")
-    UIModule.Instance.OpenWindow("Main", 888);
+    UIModule.Instance:OpenWindow("Main", 888);
     
     if AppSettings then
         using("AppSettings") -- namespace all
