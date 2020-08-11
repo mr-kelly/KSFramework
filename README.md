@@ -2,21 +2,6 @@
 ![KSFramework](Docs/KSFramework-logo.png)
 
 
-## Sponsor
-
-
-[![KSFramework](Docs/vikadata.png)](https://vika.cn)
-
-[维格表vika.cn](https://vika.cn)，支持API的数据表，完美实时协同，可用于丝滑般的项目管理、游戏策划配置表、数据整理等场景。
-
-## ShowCase(商业案例)
-
-showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
-
-| [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  | [撞击女神](http://u.360.cn/zjns_1) | [七七捕鱼](http://www.9game.cn/qiqibuyu/) |
-| ----------- | ----------- |----------- |----------- | ----------- | ----------- |
-| ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/撞击女神-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/七七捕鱼-icon.png) |
-
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
@@ -25,6 +10,23 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 **[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua/XLua 的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
 
 ---------------------
+
+### Sponsor
+
+
+[![KSFramework](Docs/vikadata.png)](https://vika.cn)
+
+[维格表vika.cn](https://vika.cn)，支持API的数据表，完美实时协同，可用于丝滑般的项目管理、游戏策划配置表、数据整理等1000+场景。
+
+### ShowCase(商业案例)
+
+showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
+
+| [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  | [撞击女神](http://u.360.cn/zjns_1) | [七七捕鱼](http://www.9game.cn/qiqibuyu/) |
+| ----------- | ----------- |----------- |----------- | ----------- | ----------- |
+| ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/撞击女神-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/七七捕鱼-icon.png) |
+
+### KSFramework
 
 **热重载**是KSFramework的开发重点——在不重启游戏的前提下，重载代码、配置表可立刻看到修改效果，最大限度的提升开发、调试的速度，方便运营阶段热更新。
 
