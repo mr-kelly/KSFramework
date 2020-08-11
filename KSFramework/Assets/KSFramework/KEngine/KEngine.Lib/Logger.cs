@@ -373,9 +373,22 @@ namespace KEngine
             }
         }
 
+        private static string log_file_path;
+        static void InitLog2File()
+        {
+            if (!string.IsNullOrEmpty(log_file_path))
+            {
+                return;
+            }
+            //TODO 考虑日志文件累积越来越多问题
+            log_file_path = GetLogPath();
+            string dir = Path.GetDirectoryName(log_file_path);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+        }
+        
         public static void LogToFile(string szMsg,params object[] args)
         {
-			// 默认追加模式
             if (args == null || args.Length == 0)
             {
                 LogToFile(szMsg, true); 
@@ -396,13 +409,18 @@ namespace KEngine
         // 写log文件
         public static void LogToFile(string szMsg, bool append)
         {
-            string fullPath = GetLogPath();
-            string dir = Path.GetDirectoryName(fullPath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
+            InitLog2File();
+            if (!szMsg.EndsWith("\n"))
+            {
+                szMsg += "\n";
+            }
+            szMsg = string.Format("[{0}]{1}",DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
+            if (IsUnityEditor)
+            {
+                UnityEngine.Debug.Log(szMsg);
+            }
             using (
-                FileStream fileStream = new FileStream(fullPath, append ? FileMode.Append : FileMode.CreateNew,
+                FileStream fileStream = new FileStream(log_file_path, append ? FileMode.Append : FileMode.CreateNew,
                     FileAccess.Write, FileShare.ReadWrite)) // 不会锁死, 允许其它程序打开
             {
                 lock (fileStream)
@@ -418,20 +436,18 @@ namespace KEngine
         // 用于写日志的可写目录
         public static string GetLogPath()
         {
-            string logPath;
-
-#if !KENGINE_DLL
+            string logPath ;
             if (IsUnityEditor)
-#endif
-
-                logPath = "logs/";
-#if !KENGINE_DLL
+            {
+                logPath = Path.Combine(Application.dataPath, "../logs/");
+            }
             else
-                logPath = Path.Combine(Application.persistentDataPath, "logs/");
-#endif
-
+            {
+                logPath = Path.Combine(Application.temporaryCachePath, "logs/");    
+            }
+            // 每次启动游戏都用一个新的日志文件
             var now = DateTime.Now;
-            var logName = string.Format("game_{0}_{1}_{2}.log", now.Year, now.Month, now.Day);
+            var logName = string.Format("game_{0}_{1}_{2}_{3}_{4}_{5}.log", now.Year, now.Month, now.Day,now.Hour,now.Minute,now.Second);
 
             return logPath + logName;
         }
