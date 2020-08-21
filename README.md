@@ -75,7 +75,7 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 | Unity 5.x   | 支持     | 部分版本API有差异，建议使用5.3.7及以上版本 |
 | Unity 2017  | 支持     |                                            |
 | Unity 2018  | 支持     | 2018.2.7f1已测试                           |
-| Unity 2019  | 支持     | 2018.3.7f1已测试                           |
+| Unity 2019  | 支持     | 2019.3.7f1已测试                           |
 
 ### 解决遇到的问题
 
