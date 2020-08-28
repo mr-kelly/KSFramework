@@ -356,6 +356,8 @@ namespace KEngine
 
         private void Update()
         {
+            //heap to stack value
+            var _mainThreadCallbacks = this._mainThreadCallbacks;
             foreach (var i in _mainThreadCallbacks)
             {
                 i();
@@ -365,6 +367,8 @@ namespace KEngine
 
         private void StopAllThreads()
         {
+            //heap to stack value
+            var _threads = this._threads;
             foreach (var thread in _threads)
             {
                 if (thread != null)
