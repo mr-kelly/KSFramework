@@ -118,12 +118,14 @@ namespace KEngine
 
         public IAppEntry AppEntry { get; private set; }
         public static long TotalFrame = 0;
+        public static bool IsApplicationQuit = false;
+        public static bool IsApplicationFocus = true;
         
-        [Obsolete("Use New(GameObject, IAppEntry, IModuleInitable[]) instead!")]
-        public static AppEngine New(GameObject gameObjectToAttach, IModuleInitable[] modules)
-        {
-            return New(gameObjectToAttach, null, modules);
-        }
+//        [Obsolete("Use New(GameObject, IAppEntry, IModuleInitable[]) instead!")]
+//        public static AppEngine New(GameObject gameObjectToAttach, IModuleInitable[] modules)
+//        {
+//            return New(gameObjectToAttach, null, modules);
+//        }
 
         /// <summary>
         /// Engine entry.... all begins from here
@@ -205,7 +207,7 @@ namespace KEngine
                 yield return StartCoroutine(AppEntry.OnGameStart());
 
             }
-
+            UnityThreadDetect.Start();
             IsInited = true;
         }
 
@@ -251,9 +253,15 @@ namespace KEngine
 
         void OnApplicationQuit()
         {
+            IsApplicationQuit = true;
             LogFileRecorder.CloseStream();
         }
-
+        
+        void OnApplicationFocus(bool focus)
+        {
+            IsApplicationFocus = focus;
+        }
+        
         private static EngineConfigs _engineConfigs;
 
         /// <summary>
