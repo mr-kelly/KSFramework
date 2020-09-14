@@ -53,6 +53,12 @@ namespace KEngine.Editor
             return scenes;
         }
 
+        /// <summary>
+        /// 命令行给unity传参数 示例：-BundleVersion=1.0.1 -AndroidKeyStoreName=KSFramework
+        /// Unity.exe -batchmode -projectPath %codePath%\ -nographics -executeMethod BuildTest.PerformAndroidBuild -BundleVersion=1.0.1 -AndroidKeyStoreName=KSFramework -logFile %~dp0\build.log -quit
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="outputpath"></param>
         private static void ParseArgs(ref BuildOptions opt, ref string outputpath)
         {
             string[] args = System.Environment.GetCommandLineArgs();
@@ -106,7 +112,7 @@ namespace KEngine.Editor
                             outputpath = item.Value;
                             break;
                     }
-                    UnityEngine.Debug.Log(item.Key + " : " + item.Value);
+                    UnityEngine.Debug.Log("parse arg -> " + item.Key + " : " + item.Value);
                 }
             }
         }
