@@ -25,8 +25,8 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 | [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  | [撞击女神](http://u.360.cn/zjns_1) | [七七捕鱼](http://www.9game.cn/qiqibuyu/) |
 | ----------- | ----------- |----------- |----------- | ----------- | ----------- |
 | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/撞击女神-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/七七捕鱼-icon.png) |
-| 命运抉择VR |  |  |  |  |  |
-| ![](Docs/showcase/命运抉择.png) |  |  |  |  |  |
+| 命运抉择VR | [我的冒险屋](https://www.taptap.com/app/200744) |  |  |  |  |
+| ![](Docs/showcase/命运抉择.png) | ![](Docs/showcase/我的冒险屋.png) |  |  |  |  |
 
 ### KSFramework
 
