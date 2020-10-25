@@ -51,7 +51,7 @@ mkdocs文档： https://www.mkdocs.org/
 
 ### 旧版本mkdocs?
 
-目前来看新版本的mkdocs是去掉自定义左侧目录的功能，两者配置格式差异对比
+新版本的mkdocs去掉自定义左侧目录的功能(把多篇文章放在一大类下)，新旧配置格式差异对比
 
 | mkdocs版本 | 单篇文档的格式                          |
 | ---------- | --------------------------------------- |
@@ -72,7 +72,7 @@ pip install mkdocs==1.0.4
 pip install --no-index --find-links=/mkdocs-1.0.4-py2.py3-none-any.whl/ mkdocs
 ```
 
-PS：在我的电脑上比较折腾安装回旧版本的mkdocs，因为旧版本mkdocs只支持到python2.7 ~ 3.5，所以格式改成了新版本的格式
+PS：在我的电脑上安装回旧版本的mkdocs后，依然无法使用旧版配置生成html，所以格式改成了新版本的格式
 
 
 
