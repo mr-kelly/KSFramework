@@ -7,24 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
+  
   <link rel="shortcut icon" href="../../img/favicon.ico">
   <title>将Lua脚本模块化 - KSFramework Documentation</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="../../css/highlight.css">
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
     var mkdocs_page_name = "\u5c06Lua\u811a\u672c\u6a21\u5757\u5316";
     var mkdocs_page_input_path = "scripting\\lua-module.md";
-    var mkdocs_page_url = "/scripting/lua-module/";
+    var mkdocs_page_url = null;
   </script>
   
-  <script src="../../js/jquery-2.1.1.min.js"></script>
-  <script src="../../js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
 
@@ -34,274 +36,201 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href="../.." class="icon icon-home"> KSFramework Documentation</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-	<ul class="current">
-	  
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">简介</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../..">KSFramework介绍</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../overview/why/">项目的由来</a>
-                </li>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">KSFramework介绍</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../overview/why/">项目的由来</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../Home/">商业项目列表</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../overview/structure/">模块结构组织</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../overview/features/">功能特性</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">快速入门指南</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../faq/">常见问题及解答</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../build-project/">工程打包方法</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">Ini配置文件</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../basic/file-structure/">文件目录结构</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setting/guide/">策划指南：配置表的使用</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setting/condition-compile/">配置表的条件编译</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setting/lazy-load/">惰式加载</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setting/tableml_gui/">配置表编译GUI工具</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../resource/guide/">使用资源模块打包、加载</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../resource/debug/">资源实时调试监控</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../resource/gc/">垃圾回收机制</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../resource/edit_mode/">Editor下无需打包</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/guide/">UI模块使用指南</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-binding/">手工代码绑定控件</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/lua-outlet/">拖拽绑定控件</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-bind-vs-outlet/">两种绑定方式对比</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/data-binding/">单向数据绑定</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../functions/">Lua内置函数列表</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../cookie/">Cookie状态缓存</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">将Lua脚本模块化</a>
+    <ul class="current">
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../../Home/">商业项目列表</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">简介</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../overview/structure/">模块结构组织</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../overview/features/">功能特性</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../../quickstart/">【快速入门指南！】</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../../faq/">常见问题及解答</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../../build-project/">工程打包方法</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">基础约定</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../basic/config/">Ini配置文件</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../basic/file-structure/">文件目录结构</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">配置表模块</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../setting/guide/">策划指南：配置表的使用</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../setting/condition-compile/">配置表的条件编译</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../setting/lazy-load/">惰式加载</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">资源模块</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../resource/guide/">使用资源模块打包、加载</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../resource/debug/">资源实时调试监控</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../resource/gc/">垃圾回收机制</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../resource/edit_mode/">Editor下无需打包</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">UI模块</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../ui/guide/">UI模块使用指南</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../ui/ui-binding/">手工代码绑定控件</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../ui/lua-outlet/">拖拽绑定控件</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../ui/ui-bind-vs-outlet/">两种绑定方式对比</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../ui/data-binding/">单向数据绑定</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">脚本指南</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../functions/">Lua内置函数列表</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../cookie/">Cookie状态缓存</a>
-                </li>
-                <li class=" current">
-                    
-    <a class="current" href="./">将Lua脚本模块化</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#_1">模块化与热重载</a></li>
-    
-
-    </ul>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">热重载</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../hotreload/setting/">配置表热重载</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../hotreload/assetbundle/">Asset Bundle热重载</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../hotreload/ui/">UI热重载</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../hotreload/code/">其它代码热重载</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">开发经验</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/versioning/">版本号与版本管理</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/autoupdate/">资源包更新</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/editor/">编辑器强化</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../advanced/roles/">假定角色需求</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">其它</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../license/">版权说明</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../roadmap/">开发计划</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../../github%20wiki-mkdocs/">为什么不使用wiki</a>
-                </li>
-    </ul>
-	    </li>
-          
-        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../lua-lib/">为Lua集成第三方库</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../hotreload/setting/">配置表热重载</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../hotreload/assetbundle/">Asset Bundle热重载</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../hotreload/ui/">UI热重载</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../hotreload/code/">其它代码热重载</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/versioning/">版本号与版本管理</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/autoupdate/">资源包更新</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/editor/">编辑器强化</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/roles/">假定角色需求</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../license/">版权说明</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../roadmap/">开发计划</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../overview/environment-other-hotfix-solution/">运行环境和其它热更新方案</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../github%20wiki-mkdocs/">为什么不使用wiki</a>
+                    </li>
+                </ul>
       </div>
-      &nbsp;
+    </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -320,16 +249,13 @@
     <li><a href="../..">Docs</a> &raquo;</li>
     
       
-        
-          <li>脚本指南 &raquo;</li>
-        
-      
     
     <li>将Lua脚本模块化</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
   </ul>
+  
   <hr/>
 </div>
           <div role="main">
@@ -376,7 +302,7 @@ return game
 
 </code></pre>
 
-<p>每一Lua文件，都尽可能不执行具体的行为，而是返回一个函数、返回值、或返回Table，由外部来决定它的行为。</p>
+<p>每一个Lua文件，都尽可能不执行具体的行为，而是返回一个函数、返回值、或返回Table，由外部来决定它的行为。</p>
 <p>其实这跟面向对象编程是一样的，比如C#、Java中需要定义class。在定义class的时候进行静态构造器执行功能是不常用的。</p>
 <h2 id="_1">模块化与热重载</h2>
 <p>在KSFramework中的UI模块设计中，所有的UI脚本都必须在结尾处返回一个Table。C#端可以决定这个Table是否进行缓存：如果不缓存，每次都重新读取Lua脚本，返回新的Table，达到热重载目的；如果进行缓存，节省Lua语法词法分析的时间，提升性能。</p>
@@ -387,7 +313,7 @@ return game
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../hotreload/setting/" class="btn btn-neutral float-right" title="配置表热重载">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../lua-lib/" class="btn btn-neutral float-right" title="为Lua集成第三方库">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../cookie/" class="btn btn-neutral" title="Cookie状态缓存"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -402,28 +328,35 @@ return game
     
   </div>
 
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-	  
+      
         </div>
       </div>
 
     </section>
-    
+
   </div>
 
-  <div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
         <span><a href="../cookie/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../hotreload/setting/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../lua-lib/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
-    <script src="../../js/theme.js"></script>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
 
 </body>
 </html>
