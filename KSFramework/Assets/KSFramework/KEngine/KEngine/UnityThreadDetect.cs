@@ -22,9 +22,9 @@ namespace KEngine
             long frame = 0;
             while(!AppEngine.IsApplicationQuit)
             {
-                frame = AppEngine.TotalFrame;
+                frame = Log.TotalFrame;
                 Thread.Sleep(check_interval);
-                if (frame == AppEngine.TotalFrame)
+                if (frame == Log.TotalFrame)
                 {
                     Log.LogToFile("unity thread dead,ThreadState:{0}",_MainThread.ThreadState);
                     if (AppEngine.IsApplicationFocus)

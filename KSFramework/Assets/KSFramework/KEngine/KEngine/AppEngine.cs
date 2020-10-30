@@ -46,7 +46,7 @@ namespace KEngine
     }
 
     /// <summary>
-    /// Cosmos Engine - Unity3D Game Develop Framework
+    /// KEngine - Unity3D Game Develop Framework
     /// </summary>
     public class AppEngine : MonoBehaviour
     {
@@ -117,7 +117,6 @@ namespace KEngine
         private bool _isNewByStatic = false;
 
         public IAppEntry AppEntry { get; private set; }
-        public static long TotalFrame = 0;
         public static bool IsApplicationQuit = false;
         public static bool IsApplicationFocus = true;
         
@@ -248,7 +247,7 @@ namespace KEngine
 
         private void FixedUpdate()
         {
-            ++TotalFrame;
+            Log.TotalFrame ++;
         }
 
         void OnApplicationQuit()

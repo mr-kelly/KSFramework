@@ -64,6 +64,7 @@ namespace KEngine
 
         private static event LogCallback LogCallbackEvent;
         private static bool _hasRegisterLogCallback = false;
+        public static long TotalFrame;
 
         /// <summary>
         /// 第一次使用时注册，之所以不放到静态构造器，因为多线程问题
@@ -191,55 +192,7 @@ namespace KEngine
                 }
             }
         }
-
-        /// <summary>
-        /// Check if a object null
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="formatStr"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        [Obsolete("Use Debugger.Check instead")]
-        public static bool Check(object obj, string formatStr = null, params object[] args)
-        {
-            if (obj != null) return true;
-
-            if (string.IsNullOrEmpty(formatStr))
-                formatStr = "[Check Null] Failed!";
-
-            LogError("[!!!]" + formatStr, args);
-            return false;
-        }
-
-        [Obsolete("Use Debugger.Assert instead")]
-        public static void Assert(bool result)
-        {
-            if (result)
-                return;
-
-            LogErrorWithStack("Assertion Failed!", 2);
-
-            throw new Exception("Assert"); // 中断当前调用
-        }
-
-        [Obsolete("Use Debugger.Assert instead")]
-        public static void Assert(int result)
-        {
-            Assert(result != 0);
-        }
-
-        [Obsolete("Use Debugger.Assert instead")]
-        public static void Assert(Int64 result)
-        {
-            Assert(result != 0);
-        }
-
-        [Obsolete("Use Debugger.Assert instead")]
-        public static void Assert(object obj)
-        {
-            Assert(obj != null);
-        }
-
+        
         // 这个使用系统的log，这个很特别，它可以再多线程里用，其它都不能再多线程内用！！！
         public static void LogConsole_MultiThread(string log, params object[] args)
         {
@@ -251,6 +204,16 @@ namespace KEngine
                 Console.WriteLine(log, args);
         }
 
+        private static int mainthreadid = System.Threading.Thread.CurrentThread.ManagedThreadId;
+        public static long GetMonoUseMemory()
+        {
+            var ismain = mainthreadid == System.Threading.Thread.CurrentThread.ManagedThreadId ;
+            var memory = ismain? UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() / 1024 :0 ;
+            return memory;
+        }
+        
+        #region log函数
+        
         public static void Trace(string log, params object[] args)
         {
             DoLog(log, args, LogLevel.Trace);
@@ -339,8 +302,8 @@ namespace KEngine
                 return;
             if (args != null)
                 szMsg = string.Format(szMsg, args);
-            szMsg = string.Format("[{0}]{1}\n\n=================================================================\n\n",
-                DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
+            szMsg = string.Format("[{0}](totalframe:{1} ,mem:{2}KB){3}\n\n=================================================================\n\n",
+                DateTime.Now.ToString("HH:mm:ss.ffff"), TotalFrame,GetMonoUseMemory(),szMsg);
 #if UNITY_EDITOR
             StackTrace stackTrace = new StackTrace(true);
             var stackFrame = stackTrace.GetFrame(2);
@@ -372,6 +335,10 @@ namespace KEngine
                     break;
             }
         }
+        
+        #endregion
+        
+        #region log2file
 
         private static string log_file_path;
         static void InitLog2File()
@@ -451,7 +418,9 @@ namespace KEngine
 
             return logPath + logName;
         }
-
+        
+        #endregion
+        
         #region 控制台双击日志跳到指定行
 #if UNITY_EDITOR
         private static string s_logFilePath = "Assets/KSFramework/KEngine/KEngine.Lib/Logger.cs";
