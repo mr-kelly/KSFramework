@@ -105,7 +105,7 @@ namespace KEngine.Editor
                     var prefab = PrefabUtility.CreatePrefab(uiPrefabPath, windowAsset.gameObject, ReplacePrefabOptions.Default);
                     EditorUtility.SetDirty(prefab);
                 }
-
+                //NOTE 有同学反馈在unity2019.3.4下这里会导致unity卡死(我在2019.3.7未遇到)，如出现问题可注释这行
                 AssetDatabase.ImportAsset(uiPrefabPath, ImportAssetOptions.ForceSynchronousImport);
                 Debug.Log("Create UIWindowAsset to prfab: " + uiPrefabPath);
             }
