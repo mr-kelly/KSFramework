@@ -122,11 +122,22 @@ lzma也可以loadfromfile
 
 更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/
 
-### xlua相关
+## xlua相关
 
 提示：code has not been genrate, may be not work in phone!
 
 这是因为xlua通过 DelegateBridge.Gen_Flag 来判断是否生成代码，但我们在打包过程中，先生成代码，然后删除生成后的代码，并没有设置此flag，但功能是正常的。
+
+在Unity2019下xlua下调用切换场景(SceneLoader.Load)遇到报错：
+
+```shell
+LuaException: c# exception:This type must add to CSharpCallLua: System.Action<bool>,stack:  at XLua.ObjectTranslator.CreateDelegateBridge (System.IntPtr L, System.Type delegateType, System.Int32 idx) [0x001a8] in E:\Code\KSFramework\KSFramework\Assets\XLua\Src\ObjectTranslator.cs:546 
+  at XLua.ObjectCasters+<>c__DisplayClass23_0.<genCaster>b__1 (System.IntPtr L, System.Int32 idx, System.Object target) [0x0002f] in E:\Code\KSFramework\KSFramework\Assets\XLua\Src\ObjectCasters.cs:442 
+  at XLua.OverloadMethodWrap.Call (System.IntPtr L) [0x001ac] in E:\Code\KSFramework\KSFramework\Assets\XLua\Src\MethodWarpsCache.cs:232 
+  at XLua.MethodWrap.Call (System.IntPtr L) [0x0006b] in E:\Code\KSFramework\KSFramework\Assets\XLua\Src\MethodWarpsCache.cs:304 
+```
+
+解决办法：把Api Compatiblity Level从.NET Standard2.0改成.NET 4.x，这是因为.net standard不支持反射调用，原因可看：https://github.com/Tencent/xLua/issues/784#event-3628025061
 
 
 
