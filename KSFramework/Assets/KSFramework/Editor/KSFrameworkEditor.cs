@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Diagnostics;
 using System.IO;
 using KEngine;
 using KEngine.UI;
 using UnityEditor;
+using Debug = UnityEngine.Debug;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
 using UnityEditor.SceneManagement;
 #endif
@@ -187,6 +189,7 @@ end
 return $UI_NAME
 ";
 #endif
+        
         [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]
         public static void ReloadLuaCache()
         {
@@ -238,6 +241,7 @@ return $UI_NAME
             }
             
         }
+       
         /// <summary>
         /// 找到所有的LuaUIController被进行Reload
         /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
@@ -265,6 +269,24 @@ return $UI_NAME
                     if (inOpenState)
                         UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 提供一个独立的gui工具编译excel
+        /// </summary>
+        [MenuItem("KEngine/Get Or Open Tableml GUI(a gui tool compile excel)")]
+        public static void GetTablemlGUI()
+        {
+            var path = Path.GetFullPath(Application.dataPath +"./../Product/Tableml_GUI/TableMLGUI.exe");
+            if (File.Exists(path))
+            {
+                Process.Start(path);
+            }
+            else
+            {
+                //下载tablemlgui,放在.\Product\目录下
+                Application.OpenURL("https://github.com/zhaoqingqing/TableML/releases");
             }
         }
     }
