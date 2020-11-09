@@ -450,6 +450,7 @@ namespace KEngine
                     case "StandaloneOSXIntel":
                     case "StandaloneOSXIntel64":
                     case "StandaloneOSXUniversal":
+                    case "StandaloneOSX":
                         buildPlatformName = "MacOS";
                         break;
                     case "StandaloneWindows": // UnityEditor.BuildTarget.StandaloneWindows:
