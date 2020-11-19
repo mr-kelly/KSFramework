@@ -281,8 +281,8 @@
 <ol>
 <li><strong>第一个表单（Sheet）为需要编译的内容</strong>；</li>
 <li><strong>表单的第一行是列名，如Id，Name等</strong>；</li>
-<li><strong>表单的第二行是列配置信息，如string/default，意思是列是string字符串类型，默认值是default； <a href="https://github.com/mr-kelly/KEngine">KEngine</a>目前只使用前两位信息</strong>；</li>
-<li><strong>表单的第三行是注释，可以添加对列名的一些解释，最常用莫过于为英文的列明配上中文的注释了</strong>；</li>
+<li><strong>表单的第二行是列配置信息，如string/default，表示此列的数据类型是string字符串类型，默认值是default； <a href="https://github.com/mr-kelly/KEngine">KEngine</a>目前只使用前两位信息</strong>；</li>
+<li><strong>表单的第三行是注释，可以添加对列名的一些解释，最常用莫过于为英文的列名配上中文的注释了</strong>；</li>
 </ol>
 <p>最终效果如图：</p>
 <p><img alt="** 使用编译模式的最大好处，策划人员可以在Excel上进行注释、图表、批注等附加工作，甚至可以把一些文字描述文档，放到Sheet2。让配置表与文档结合在一起。 **" src="../../images/setting/guide-1.png" /></p>
@@ -300,7 +300,7 @@
 <p>但是要注意，务必确保这三个文件的表头信息要一样的。</p>
 <h3 id="_5">配置表格的编译</h3>
 <p><img alt="Excel另存为中的“制表符分隔”文本文件就是所谓的TSV" src="../../images/setting/guide-3.png" /></p>
-<p>TSV，类似CSV，即Tab-sepertated Values，类似CSV表格，仅仅是分隔符从逗号变成了Tab。 就我公司所经历的所有游戏项目，策划均直接用Excel撸TSV格式配置表。</p>
+<p>TSV，即Tab-sepertated Values，类似CSV表格，仅仅是分隔符从逗号变成了Tab。 就我公司所经历的所有游戏项目，策划均直接用Excel撸TSV格式配置表。</p>
 <p>KEngine配置表编译的本质，其实就是——<strong>把Excel文件转换成纯文本TSV格式文件</strong>。而在编译过程中，会删掉注释内容：第三行的注释，带##井号的注释等。</p>
 <p>上图中的Excel，经过编译后变成的TSV文件内容：</p>
 <p><img alt="**Excel文件经过编译后变成TSV格式的表格，并且去掉了注释行。**" src="../../images/setting/guide-4.png" /></p>
@@ -316,7 +316,8 @@
 <p><img alt="对Excel文件改动后，Unity会监测到变更，点击OK，就会重新编译" src="../../images/setting/guide-6.png" /></p>
 <p>不过，当修改配置表时并没有打开带有KEngine的Unity工程，就无法监测到配置表的变更，这时就需要手工执行菜单的配置表格编译了。</p>
 <h2 id="_7">配置表读取的代码生成</h2>
-<p>根据Excel配置表的头部信息，KEngine会在Unity Assets根目录（可通过EngineConfigs.txt这个INI文件进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。</p>
+<h3 id="ctsv">C#+Tsv读取配置文件</h3>
+<p>根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过EngineConfigs.txt这个INI文件进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。</p>
 <p>直接来看看配置表代码的调用方法——获取所有、获取某个、热重载：</p>
 <pre><code class="csharp">
 // 获取所有的配置项
@@ -334,13 +335,41 @@ GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 
 <p><img alt="生成代码的GameConfig.xlsx" src="../../images/setting/guide-7.png" /></p>
 <p>Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSettings.cs代码文件中。</p>
-<h3 id="_8">热重载</h3>
+<h3 id="lua">使用Lua做为配置表文件</h3>
+<p>新版本增加了把excel的内容生成到Lua文件中，在lua端做为一个table直接读取配置文件内容，就无需通过c#+tsv方式来读取。</p>
+<p>Lua文件中的前几行注解，是用于配合EmmlyLua插件在IDEA下可实现代码提示功能，使用效果如下图：
+<img alt="生成代码的GameConfig.xlsx" src="../../images/setting/lua_code_hinting.png" /></p>
+<p>关于如何使用EmmlyLua来编写Lua，可参考我的文章《<a href="https://www.cnblogs.com/zhaoqingqing/p/8296753.html">在Lua中提示UnityEngine.dll的方法</a>》和《<a href="https://www.cnblogs.com/zhaoqingqing/p/9121991.html">在Unity中对Lua进行调试</a>》</p>
+<p>生成的配置文件格式如下：</p>
+<pre><code class="lua">---auto generate by tools
+---@class Billboard
+---@field public Id string ID Column/编号/主键
+---@field public Title string 公告标题
+---@field public Content string 公告内容
+return {
+[&quot;Billboard1&quot;] = {
+    Id=&quot;Billboard1&quot;,
+    Title=&quot;公告1XXXXXXXX&quot;,
+    Content=&quot;公告内容aaaaaaaa&quot;
+},
+---此处省略更多的数据内容
+[&quot;Billboard4&quot;] = {
+    Id=&quot;Billboard4&quot;,
+    Title=&quot;公告4&quot;,
+    Content=&quot;公告内容4444444444444444444444&quot;
+}
+}
+</code></pre>
+
+<h3 id="_8">切换配置项</h3>
+<p>在EngineConfigs.txt 或 AppConfigs.txt 这个INI文件修改字段 IsUseLuaConfig = 0 的值来进行切换</p>
+<h3 id="_9">热重载</h3>
 <p>对策划来说，简单的修改Excel配置表后，往往需要重启游戏，来看修改的效果。</p>
 <p>KEngine配置表提供一种方法，可以在不重启游戏的前提下，重载配置表，来立即查看效果。</p>
 <p>生成的配置表代码中，会监测其加载过的编译后的配置文件，当配置文件发生变化，就会进行重载。</p>
 <p>如果文件监测失灵，你也可以通过菜单项来主动重载：</p>
 <p><img alt="通过菜单热重载配置表" src="../../images/setting/guide-8.png" /></p>
-<h2 id="_9">其他</h2>
+<h2 id="_10">其他</h2>
 <p>既然KEngine中使用了Excel这种非纯文本格式进行配置表的编辑，那么在配合SVN等版本管理工具时，如何进行差异化的配置表比较？可参详：<a href="http://www.jianshu.com/p/2ea5468e9d5b">《KEngine：Excel如何进行SVN协作、差异比较？》</a></p>
               
             </div>
