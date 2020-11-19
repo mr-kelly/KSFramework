@@ -10,6 +10,7 @@ function UIMain.New(controller)
     return newUINews
 end
 
+
 -- controller also pass to OnInit function
 function UIMain:OnInit(controller)
 
@@ -20,6 +21,13 @@ function UIMain:OnInit(controller)
 
     Tools.SetButton(self.BtnHead,function()
         print('button onClick event!')
+        local begin = os.clock()
+        local cnt = 0;
+        for i = 1, 500000 do
+            cnt = cnt + i;
+        end
+        local diff =  os.clock() - begin;
+        print(string.format("performance test: add 500000  cost:%.2fms", diff*1000))
     end)
    
 

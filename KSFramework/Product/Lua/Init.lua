@@ -51,4 +51,7 @@ TestSettings = CS.AppSettings.TestSettings
 UIBase = import("UI/UIBase")
 Tools 		= import("Tools")
 import("CSharpBinding")
+
+--import lua config
+Billboard = import("configs/Billboard")
 print("Init.lua script finish!")

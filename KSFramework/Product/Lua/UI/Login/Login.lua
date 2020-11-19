@@ -20,7 +20,7 @@ function UILogin:OnInit(controller)
 
     ---多语言示例，从语言表中读取
     -- self.LoginText from LuaOutlet
-    self.LoginText.text = I18N.Str("UILogin.LoginDescText")
+    --self.LoginText.text = I18N.Str("UILogin.LoginDescText")
 
     Tools.SetButton(self.btnSwithScene, function()
         self.sceneIndex = self.sceneIndex == 1 and 2 or 1

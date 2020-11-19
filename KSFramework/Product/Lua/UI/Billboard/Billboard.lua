@@ -1,5 +1,6 @@
 ---@type UIBillboard
 local UIBillboard = {}
+
 extends(UIBillboard, UIBase)
 
 function UIBillboard:OnInit(controller)
@@ -15,6 +16,10 @@ function UIBillboard:OnInit(controller)
         print('Click the button!!!')
         UIModule.Instance:CloseWindow("Billboard")
         --UIModule.Instance:OpenWindow("Login")
+        --尝试从Billboard.lua中读取配置数据
+        ---@type Billboard
+        local config = Billboard["Billboard1"]
+        print(config.Id)
     end)
 end
 
@@ -26,9 +31,14 @@ function UIBillboard:OnOpen()
     rand = math.random(1, 3)
     --    Cookie.Set('UIBillboard.RandomNumber', rand)
     --end
-    local billboardSetting = BillboardSettings.Get('Billboard' .. tostring(rand))
+    --local billboardSetting = BillboardSettings.Get('Billboard' .. tostring(rand))
+    ---@type Billboard
+    local billboardSetting = Billboard['Billboard1']
     self.txtTitle.text = billboardSetting.Title
     self.txtContent.text = billboardSetting.Content
+
+    --尝试从Billboard.lua中读取配置数据
+    print("from lua config ,id:",billboardSetting.Id)
 end
 
 function UIBillboard:OnClose()
