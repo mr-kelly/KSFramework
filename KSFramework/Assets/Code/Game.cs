@@ -28,7 +28,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using AppSettings;
 using KEngine;
 using KEngine.UI;
 using KSFramework;
@@ -67,11 +66,11 @@ public class Game : KSGame
     {
 
         // Print AppConfigs
-        Log.Info("======================================= Read Settings from C# =================================");
-        foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
-        {
-            Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
-        }
+        // Log.Info("======================================= Read Settings from C# =================================");
+        // foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
+        // {
+        //     Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
+        // }
 
         yield return null;
 

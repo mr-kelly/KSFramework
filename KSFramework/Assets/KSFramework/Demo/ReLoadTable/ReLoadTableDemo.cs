@@ -1,5 +1,4 @@
-﻿using AppSettings;
-using KEngine;
+﻿using KEngine;
 using UnityEngine;
 
 /// <summary>
@@ -24,7 +23,7 @@ public class ReLoadTableDemo : MonoBehaviour
     void LoadTable()
     {
         //运行时热重载配置表数据
-        var val1 = BillboardSettings.Get("Billboard1");
+        var val1 = AppSettings.BillboardSettings.Get("Billboard1");
         Log.Info(val1.Title);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
-using AppSettings;
 using KEngine;
 using KEngine.Editor;
 using KEngine.UI;
@@ -61,9 +60,12 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("重载配置表", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            //仅仅是重载编译后的配置表
-            SettingsManager.AllSettingsReload();
+            //TODO 仅仅是重载编译后的配置表
+            //SettingsManager.AllSettingsReload();
         }
+        GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("快速编译配置表", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             SettingModuleEditor.QuickCompileSettings();
@@ -73,6 +75,7 @@ public class KQuickWindowEditor : EditorWindow
             SettingModuleEditor.CompileSettings();
         }
         GUILayout.EndHorizontal();
+        
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("重载UI的Lua代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
@@ -82,6 +85,9 @@ public class KQuickWindowEditor : EditorWindow
         {
             KSFrameworkEditor.ReloadUILua();
         }
+        GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("重新加载并打开UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             KSFrameworkEditor.ReloadUI();
@@ -125,11 +131,11 @@ public class KQuickWindowEditor : EditorWindow
         EditorGUILayout.LabelField("== Assetbundle相关 ==");
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("打包Assetbundle（增量）", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("打包Assetbundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.BuildAllAssetBundles();
         }
-        if (GUILayout.Button("重新打包Assetbundle（先删除再重打）", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("删除并重新打包Assetbundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.ReBuildAllAssetBundles();
         }
@@ -137,10 +143,13 @@ public class KQuickWindowEditor : EditorWindow
 
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("为Prefab设置Assetbundle name(BoundleResources)", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("设置AB Name(BoundleResources)", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.MakeAssetBundleNames();
         }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("清理冗余资源", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.CleanAssetBundlesRedundancies();
@@ -165,7 +174,9 @@ public class KQuickWindowEditor : EditorWindow
         {
             KAutoBuilder.PerformAndroidBuild();
         }
-     
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("打IOS版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             KAutoBuilder.PerformiOSBuild();

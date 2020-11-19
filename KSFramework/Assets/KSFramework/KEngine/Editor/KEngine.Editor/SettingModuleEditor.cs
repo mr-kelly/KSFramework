@@ -84,22 +84,6 @@ namespace KEngine.Editor
         }
 
         /// <summary>
-        /// 生成代码吗？它的路径配置
-        /// </summary>
-        public static string SettingCodePath
-        {
-            get
-            {
-                var compilePath = AppEngine.GetConfig("KEngine.Setting", "SettingCompileCodePath", false);
-                if (string.IsNullOrEmpty(compilePath))
-                {
-                    return "Assets/AppSettings.cs"; // default value
-                }
-                return compilePath;
-            }
-        }
-
-        /// <summary>
         /// 标记，是否正在打开提示配置变更对话框
         /// </summary>
         private static bool _isPopUpConfirm = false;
@@ -158,7 +142,7 @@ namespace KEngine.Editor
         /// </summary>
         public static Action CustomCompileSettings;
         /// <summary>
-        /// 
+        /// do compile settings
         /// </summary>
         /// <param name="force">Whether or not,check diff.  false will be faster!</param>
         /// <param name="genCode">Generate static code?</param>
@@ -170,26 +154,51 @@ namespace KEngine.Editor
                 return;
             }
 
-            var sourcePath = SettingSourcePath;//AppEngine.GetConfig("SettingSourcePath");
+            var sourcePath = SettingSourcePath;
             if (string.IsNullOrEmpty(sourcePath))
             {
                 Log.Error("Need to KEngineConfig: SettingSourcePath");
                 return;
             }
-            var compilePath = AppEngine.GetConfig("KEngine.Setting", "SettingCompiledPath");
-            if (string.IsNullOrEmpty(compilePath))
-            {
-                Log.Error("Need to KEngineConfig: SettingCompiledPath");
-                return;
-            }
 
-            var bc = new BatchCompiler();
-
+            List<TableCompileResult> results = null;
+            var exportTsvPath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
             var settingCodeIgnorePattern = AppEngine.GetConfig("KEngine.Setting", "SettingCodeIgnorePattern", false);
-            var template = force ? (forceTemplate ?? DefaultTemplate.GenCodeTemplate) : null; // 
-            var results = bc.CompileTableMLAll(sourcePath, compilePath, SettingCodePath, template, "AppSettings", SettingExtension, settingCodeIgnorePattern, force);
-
-            //            CompileTabConfigs(sourcePath, compilePath, SettingCodePath, SettingExtension, force);
+            var useLuaConfig = AppEngine.GetConfig("KEngine.Setting", "IsUseLuaConfig") == "1";
+            if (useLuaConfig)
+            {
+                var exportLuaPath = AppEngine.GetConfig("KEngine.Setting", "ExportLuaPath");
+                if (string.IsNullOrEmpty(exportLuaPath))
+                {
+                    Log.Error("Need to KEngineConfig: ExportLuaPath");
+                    return;
+                }
+                Log.Info("Start Compile to lua");
+                var genParam = new GenParam()
+                {
+                    settingCodeIgnorePattern = settingCodeIgnorePattern,
+                    genCSharpClass = false, genCodeFilePath = null, forceAll = true, ExportLuaPath = exportLuaPath
+                };
+                var compilerParam = new CompilerParam() {CanExportTsv = false, ExportTsvPath = exportTsvPath, ExportLuaPath = exportLuaPath};
+                results = new BatchCompiler().CompileAll(sourcePath, exportLuaPath, genParam,compilerParam);     
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(exportTsvPath))
+                {
+                    Log.Error("Need to KEngineConfig: ExportTsvPath");
+                    return;
+                }
+                Log.Info("Start Compile to c#+tsv");
+                var exportCSPath = AppEngine.GetConfig("KEngine.Setting", "ExportCSharpPath");
+                var template = force ? (forceTemplate ?? DefaultTemplate.GenCodeTemplateOneFile) : null; 
+                var genParam = new GenParam(){forceAll = force, genCSharpClass = true,genCodeFilePath = exportCSPath,
+                    genCodeTemplateString = template,changeExtension = SettingExtension,
+                    settingCodeIgnorePattern = settingCodeIgnorePattern,nameSpace = "AppSettings"};
+                var compilerParam = new CompilerParam() {CanExportTsv = true, ExportTsvPath = exportTsvPath, ExportLuaPath = null};
+                results = new BatchCompiler().CompileAll(sourcePath, exportTsvPath, genParam,compilerParam);
+            }
+            
             var sb = new StringBuilder();
             foreach (var r in results)
             {

@@ -57,7 +57,7 @@ namespace KSFramework.Editor
             {
                 _hasBeforeBuildApp = true;
                 // 这里是编译前, Setting目录的配置文件拷贝进去StreamingAssetse
-                var editorLuaScriptPath = AppEngine.GetConfig("KEngine.Setting", "SettingCompiledPath");
+                var editorLuaScriptPath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
                 if (Directory.Exists(editorLuaScriptPath) == false)
                 {
                     Debug.LogWarning(string.Format("[SettingModuleBuildHandler]DirectoryNotFound: {0}", editorLuaScriptPath));
@@ -71,7 +71,8 @@ namespace KSFramework.Editor
                 var toDir = "Assets/StreamingAssets/" + AppEngine.GetConfig("KEngine.Setting", "SettingResourcesPath"); // 文件夹名称获取
 
                 // 所有的Lua脚本拷贝到StreamingAssets
-                foreach (var path in Directory.GetFiles(editorLuaScriptPath, "*", SearchOption.AllDirectories))
+                var allFiles = Directory.GetFiles(editorLuaScriptPath, "*", SearchOption.AllDirectories);
+                foreach (var path in allFiles)
                 {
                     var cleanPath = path.Replace("\\", "/");
 

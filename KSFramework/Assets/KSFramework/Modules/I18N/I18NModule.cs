@@ -31,7 +31,7 @@ using KEngine.Modules;
 
 namespace KSFramework
 {
-
+    
     /// <summary>
     /// 多语言模块
     /// </summary>
@@ -47,7 +47,7 @@ namespace KSFramework
         private static string _lang = null;
 
         /// <summary>
-        /// 如果没配置语言，使用第一个第一
+        /// 如果没配置语言，使用第一个语言
         /// </summary>
         private static string Lang
         {
@@ -140,8 +140,6 @@ namespace KSFramework
 
             return new I18N(str);
         }
-
-
     }
 
 }

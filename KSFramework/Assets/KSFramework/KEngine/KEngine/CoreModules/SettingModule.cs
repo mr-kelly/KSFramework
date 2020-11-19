@@ -135,7 +135,7 @@ namespace KEngine.Modules
 
         private static string GetFileSystemPath(string path)
         {
-            var compilePath = AppEngine.GetConfig("KEngine.Setting", "SettingCompiledPath");
+            var compilePath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
             var resPath = Path.Combine(compilePath, path);
             return resPath;
         }

@@ -33,35 +33,7 @@ namespace KEngine
 {
     public class EngineConfigs
     {
-        public static string DefaultEngineConfigs = @"
-
-[KEngine]
-ProductRelPath	= Product	
-
-AssetBundleBuildRelPath	= Product/Bundles	
-StreamingBundlesFolderName = Bundles	
-AssetBundleExt = .bytes	
-IsLoadAssetBundle = 1	
-
-;whether use assetdata.loadassetatpath insead of load asset bundle, editor only
-IsEditorLoadAsset = 0
-
-[KEngine.Setting]
-SettingSourcePath = Product/SettingSource	
-
-;settings where compile to?	
-SettingCompiledPath = Product/Setting
-
-;Folder in Resources
-SettingResourcesPath = Setting
-
-; Ignore genereate code for these excel.
-SettingCodeIgnorePattern = (I18N/.*)|(StringsTable.*)
-
-[KEngine.UI]
-UIModuleBridge = KEngine.UI.UGUIBridge	
-
-";
+        public static string DefaultEngineConfigs = @"";
         private readonly IniData _iniData;
         public EngineConfigs(string customConfigs)
         {

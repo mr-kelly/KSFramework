@@ -314,7 +314,11 @@ namespace KEngine
         {
             return GetConfig("KEngine", cfg.ToString());
         }
-
+        
+        public static bool IsUseLuaConfig
+        {
+            get { return GetConfig("KEngine.Setting", "IsUseLuaConfig") == "1"; }
+        }
     }
 
     public enum KEngineDefaultConfigs
