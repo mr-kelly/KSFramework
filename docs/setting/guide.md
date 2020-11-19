@@ -25,8 +25,8 @@
 
 1. **第一个表单（Sheet）为需要编译的内容**；
 - **表单的第一行是列名，如Id，Name等**；
-- **表单的第二行是列配置信息，如string/default，意思是列是string字符串类型，默认值是default； [KEngine](https://github.com/mr-kelly/KEngine)目前只使用前两位信息**；
-- **表单的第三行是注释，可以添加对列名的一些解释，最常用莫过于为英文的列明配上中文的注释了**；
+- **表单的第二行是列配置信息，如string/default，表示此列的数据类型是string字符串类型，默认值是default； [KEngine](https://github.com/mr-kelly/KEngine)目前只使用前两位信息**；
+- **表单的第三行是注释，可以添加对列名的一些解释，最常用莫过于为英文的列名配上中文的注释了**；
 
 最终效果如图：
 
@@ -55,7 +55,7 @@
 
 ![Excel另存为中的“制表符分隔”文本文件就是所谓的TSV](../images/setting/guide-3.png)
 
-TSV，类似CSV，即Tab-sepertated Values，类似CSV表格，仅仅是分隔符从逗号变成了Tab。 就我公司所经历的所有游戏项目，策划均直接用Excel撸TSV格式配置表。
+TSV，即Tab-sepertated Values，类似CSV表格，仅仅是分隔符从逗号变成了Tab。 就我公司所经历的所有游戏项目，策划均直接用Excel撸TSV格式配置表。
 
 KEngine配置表编译的本质，其实就是——**把Excel文件转换成纯文本TSV格式文件**。而在编译过程中，会删掉注释内容：第三行的注释，带##井号的注释等。
 
@@ -80,10 +80,11 @@ KEngine配置表编译的本质，其实就是——**把Excel文件转换成纯
 
 不过，当修改配置表时并没有打开带有KEngine的Unity工程，就无法监测到配置表的变更，这时就需要手工执行菜单的配置表格编译了。
 
-
 ## 配置表读取的代码生成
 
-根据Excel配置表的头部信息，KEngine会在Unity Assets根目录（可通过EngineConfigs.txt这个INI文件进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。
+### C#+Tsv读取配置文件
+
+根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过EngineConfigs.txt这个INI文件进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。
 
 直接来看看配置表代码的调用方法——获取所有、获取某个、热重载：
 ```csharp
@@ -103,6 +104,42 @@ GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 ![生成代码的GameConfig.xlsx](../images/setting/guide-7.png)
 
 Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSettings.cs代码文件中。
+
+### 使用Lua做为配置表文件
+
+新版本增加了把excel的内容生成到Lua文件中，在lua端做为一个table直接读取配置文件内容，就无需通过c#+tsv方式来读取。
+
+Lua文件中的前几行注解，是用于配合EmmlyLua插件在IDEA下可实现代码提示功能，使用效果如下图：
+![生成代码的GameConfig.xlsx](../images/setting/lua_code_hinting.png)
+
+关于如何使用EmmlyLua来编写Lua，可参考我的文章《[在Lua中提示UnityEngine.dll的方法](https://www.cnblogs.com/zhaoqingqing/p/8296753.html)》和《[在Unity中对Lua进行调试](https://www.cnblogs.com/zhaoqingqing/p/9121991.html)》
+
+生成的配置文件格式如下：
+
+```lua
+---auto generate by tools
+---@class Billboard
+---@field public Id string ID Column/编号/主键
+---@field public Title string 公告标题
+---@field public Content string 公告内容
+return {
+["Billboard1"] = {
+	Id="Billboard1",
+	Title="公告1XXXXXXXX",
+	Content="公告内容aaaaaaaa"
+},
+---此处省略更多的数据内容
+["Billboard4"] = {
+	Id="Billboard4",
+	Title="公告4",
+	Content="公告内容4444444444444444444444"
+}
+}
+```
+
+### 切换配置项
+
+在EngineConfigs.txt 或 AppConfigs.txt 这个INI文件修改字段 IsUseLuaConfig = 0 的值来进行切换
 
 ### 热重载
 
