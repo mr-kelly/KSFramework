@@ -109,10 +109,10 @@ Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSet
 
 新版本增加了把excel的内容生成到Lua文件中，在lua端做为一个table直接读取配置文件内容，就无需通过c#+tsv方式来读取。
 
-Lua文件中的前几行注解，是用于配合EmmlyLua插件在IDEA下可实现代码提示功能，使用效果如下图：
+Lua文件中的前几行注解，是用于配合EmmyLua插件在IDEA下可实现代码提示功能，使用效果如下图：
 ![生成代码的GameConfig.xlsx](../images/setting/lua_code_hinting.png)
 
-关于如何使用EmmlyLua来编写Lua，可参考我的文章《[在Lua中提示UnityEngine.dll的方法](https://www.cnblogs.com/zhaoqingqing/p/8296753.html)》和《[在Unity中对Lua进行调试](https://www.cnblogs.com/zhaoqingqing/p/9121991.html)》
+关于如何使用EmmyLua来编写Lua，可参考我的文章《[在Lua中提示UnityEngine.dll的方法](https://www.cnblogs.com/zhaoqingqing/p/8296753.html)》和《[在Unity中对Lua进行调试](https://www.cnblogs.com/zhaoqingqing/p/9121991.html)》
 
 生成的配置文件格式如下：
 
