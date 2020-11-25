@@ -260,6 +260,11 @@ public static class XLuaCustomExport
                 new List<string>(){"UnityEngine.Security", "GetChainOfTrustValue"},
                 new List<string>(){"UnityEngine.CanvasRenderer", "onRequestRebuild"},
                 new List<string>(){"UnityEngine.Light", "areaSize"},
+                new List<string>(){"UnityEngine.Light", "shadowRadius"},
+                new List<string>(){"UnityEngine.Light", "SetLightDirty"},
+                new List<string>(){"UnityEngine.Light", "shadowAngle"},
+                new List<string>(){"UnityEngine.Light", "lightmapBakeType"},
+
                 new List<string>(){"UnityEngine.AnimatorOverrideController", "PerformOverrideClipListCleanup"},
 #if !UNITY_WEBPLAYER
                 new List<string>(){"UnityEngine.Application", "ExternalEval"},
