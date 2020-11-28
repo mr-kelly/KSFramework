@@ -41,11 +41,18 @@ KSFramework\Assets\slua
 
 ### 配置表生成C#代码，如何热更？
 
-可以把配置文件生成Lua代码，或读取tsv，或配置文件插入到数据库，等等方式。
+可以把数据表生成Lua代码，或在lua中读取tsv，或把数据表保存到数据库，等等方式。
 
-C#代码是配置表的字段，在开发期可以直接使用Class类的字段，而不用打开配置表查字段。
+>  在KSFramework中的Appconfig.txt中修改 IsUseLuaConfig = 1，就会把配置表生成lua代码
 
-可以参考 tableml 的修改版，改成sqlite：https://www.cnblogs.com/zhaoqingqing/p/7440867.html
+更新于2020年-11月，tableml支持把数据表的内容生成为lua代码，目前在lua中读取配置表有这几种方式：
+
+1. 数据表转为lua代码
+2. 仅生成数据表的字段做为lua文件，用于代码提示，把数据内容保存到sqlite中
+3. 数据表转为csv，在lua中解析csv
+4. 不需要热更的代码，通过c#读取配置
+
+可以参考 tableml 的修改版，把数据表保存到sqlite：https://www.cnblogs.com/zhaoqingqing/p/7440867.html
 
 
 
