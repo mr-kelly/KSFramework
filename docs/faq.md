@@ -52,7 +52,7 @@ KSFramework\Assets\slua
 3. 数据表转为csv，在lua中解析csv
 4. 不需要热更的代码，通过c#读取配置
 
-可以参考 tableml 的修改版，把数据表保存到sqlite：https://www.cnblogs.com/zhaoqingqing/p/7440867.html
+可以参考我的这篇文章《[TableML-GUI篇(C# 编译/解析 Excel/CSV工具)](https://www.cnblogs.com/zhaoqingqing/p/7440867.html)》 ，把数据表保存到sqlite
 
 
 
