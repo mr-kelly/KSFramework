@@ -56,6 +56,7 @@ namespace KSFramework
         }
         /// <summary>
         /// Serialized outlet infos
+        /// 可以减少lua端的find操作
         /// </summary>
         public List<OutletInfo> OutletInfos = new List<OutletInfo>();
     }

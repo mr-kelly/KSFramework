@@ -32,16 +32,14 @@ using System;
 
 namespace KEngine
 {
+    /// <summary>
+    /// 对UnityEngine.Debug.Assert的扩展
+    /// </summary>
     public class Debuger
     {
-
         /// <summary>
-        /// Check if a object null
+        /// Check if a object null，条件不满足打印Error，不会中断当前调用
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="formatStr"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
         public static bool Check(object obj, string formatStr = null, params object[] args)
         {
             if (obj != null) return true;
@@ -52,12 +50,33 @@ namespace KEngine
             Log.Error("[!!!]" + formatStr, args);
             return false;
         }
+        
+        /// <summary>
+        /// 条件不满足打印Error，不会中断当前调用
+        /// </summary>
+        public static bool Check(bool result, string formatStr = null, params object[] args)
+        {
+            if (result) return true;
 
+            if (string.IsNullOrEmpty(formatStr))
+                formatStr = "Check Failed!";
+
+            Log.Error("[!!!]" + formatStr, args);
+            return false;
+        }
+        
+        /// <summary>
+        /// 条件不满足会中断当前调用
+        /// </summary>
         public static void Assert(bool result)
         {
             Assert(result, null);
         }
-
+        
+        /// <summary>
+        /// 条件不满足会中断当前调用
+        /// </summary>
+        /// <param name="msg">出错时的error日志</param>
         public static void Assert(bool result, string msg, params object[] args)
         {
             if (!result)
@@ -71,7 +90,10 @@ namespace KEngine
                 throw new Exception(formatMsg); // 中断当前调用
             }
         }
-
+        
+        /// <summary>
+        /// 当前值是否!=0
+        /// </summary>
         public static void Assert(int result)
         {
             Assert(result != 0);
@@ -81,7 +103,10 @@ namespace KEngine
         {
             Assert(result != 0);
         }
-
+        
+        /// <summary>
+        /// 检查参数是否为null，条件不满足会中断当前调用
+        /// </summary>
         public static void Assert(object obj)
         {
             Assert(obj != null);
@@ -96,6 +121,11 @@ namespace KEngine
 
         public static void BeginRecordTime(string key)
         {
+            if (RecordPos >= RecordTime.Length)
+            {
+                Log.Info("BeginRecordTime will replace first pos data");
+                RecordPos = 0;
+            }
             RecordTime[RecordPos] = UnityEngine.Time.realtimeSinceStartup;
             RecordKey[RecordPos] = key;
             RecordPos++;
@@ -114,19 +144,19 @@ namespace KEngine
 #endif
 
         // 添加性能观察, 使用C#内置
-        public static void WatchPerformance(Action del)
+        public static void WatchPerformance(Action callback)
         {
-            WatchPerformance("执行耗费时间: {0}s", del);
+            WatchPerformance("执行耗费时间: {0}s", callback);
         }
 
-        public static void WatchPerformance(string outputStr, Action del)
+        public static void WatchPerformance(string outputStr, Action callback)
         {
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start(); //  开始监视代码运行时间
 
-            if (del != null)
+            if (callback != null)
             {
-                del();
+                callback();
             }
 
             stopwatch.Stop(); //  停止监视
