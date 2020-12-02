@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using KUnityEditorTools;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -130,8 +131,7 @@ namespace KEngine.Editor
 
             ParseArgs(ref opt, ref outputpath);
 
-            string fullPath = System.IO.Path.Combine(KEngine.AppEngine.GetConfig("KEngine", "ProductRelPath"),
-                outputpath);
+            string fullPath = System.IO.Path.Combine(KEngine.AppEngine.GetConfig("KEngine", "ProductRelPath"),outputpath);
 
             string fullDir = System.IO.Path.GetDirectoryName(fullPath);
 
@@ -139,6 +139,7 @@ namespace KEngine.Editor
                 Directory.CreateDirectory(fullDir);
 
             Log.Info("Start Build Client {0} to: {1}", tag, Path.GetFullPath(fullPath));
+
             //NOTE xlua在编辑器开发不生成代码，因为.NET Standard 2.0不支持emit会导致某些CSharpCallLua注册失败，所以需要改成.Net4.X，在打包时如果有需要再修改回
             //NOTE xlua打包前生成Lua绑定代码
 #if xLua
@@ -149,9 +150,9 @@ namespace KEngine.Editor
 #endif
             var buildResult = BuildPipeline.BuildPlayer(GetScenePaths(), fullPath, tag, opt);
 #if xLua
-            CSObjectWrapEditor.Generator.ClearAll();
+            if(buildResult.summary.result == BuildResult.Succeeded) CSObjectWrapEditor.Generator.ClearAll();
 #endif
-            Log.Info("Build Client Finish.");
+            Log.Info("Build App result:{0} ,errors:{1}",buildResult.summary.result ,buildResult.summary.totalErrors);
             return fullPath;
         }
 
@@ -170,17 +171,17 @@ namespace KEngine.Editor
         //    return programVersionFile;
         //}
 
-        [MenuItem("KEngine/AutoBuilder/WindowsX86 Dev")] // 注意，PC版本放在不一样的目录的！
+        [MenuItem("KEngine/AutoBuilder/WindowsX86 Dev")] 
         public static void PerformWinBuild()
         {
-            PerformBuild("KSFramework_Dev.exe", BuildTarget.StandaloneWindows,
+            PerformBuild("Apps/Win_Dev/KSFramework_Dev.exe", BuildTarget.StandaloneWindows,
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
         [MenuItem("KEngine/AutoBuilder/WindowsX86")]
-        static void PerformWinReleaseBuild()
+        public static void PerformWinReleaseBuild()
         {
-        	PerformBuild("KSFramework.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+        	PerformBuild("Apps/Win/KSFramework.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
         }
 
         [MenuItem("KEngine/AutoBuilder/iOS")]
