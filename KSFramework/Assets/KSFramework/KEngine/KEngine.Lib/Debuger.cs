@@ -24,10 +24,6 @@
 
 #endregion
 
-#if UNITY_5 || UNITY_2017_1_OR_NEWER || UNITY_4 || UNITY_3
-#define UNITY
-#endif
-
 using System;
 
 namespace KEngine
@@ -112,62 +108,6 @@ namespace KEngine
             Assert(obj != null);
         }
 
-        #region Record Time
-
-#if UNITY
-        private static float[] RecordTime = new float[10];
-        private static string[] RecordKey = new string[10];
-        private static int RecordPos = 0;
-
-        public static void BeginRecordTime(string key)
-        {
-            if (RecordPos >= RecordTime.Length)
-            {
-                Log.Info("BeginRecordTime will replace first pos data");
-                RecordPos = 0;
-            }
-            RecordTime[RecordPos] = UnityEngine.Time.realtimeSinceStartup;
-            RecordKey[RecordPos] = key;
-            RecordPos++;
-        }
-
-        public static string EndRecordTime(bool printLog = true)
-        {
-            RecordPos--;
-            double s = (UnityEngine.Time.realtimeSinceStartup - RecordTime[RecordPos]);
-            if (printLog)
-            {
-                Log.Info("[RecordTime] {0} use {1}s", RecordKey[RecordPos], s);
-            }
-            return string.Format("[RecordTime] {0} use {1}s.", RecordKey[RecordPos], s);
-        }
-#endif
-
-        // 添加性能观察, 使用C#内置
-        public static void WatchPerformance(Action callback)
-        {
-            WatchPerformance("执行耗费时间: {0}s", callback);
-        }
-
-        public static void WatchPerformance(string outputStr, Action callback)
-        {
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start(); //  开始监视代码运行时间
-
-            if (callback != null)
-            {
-                callback();
-            }
-
-            stopwatch.Stop(); //  停止监视
-            TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
-            //double seconds = timespan.TotalSeconds;  //  总秒数
-            double millseconds = timespan.TotalMilliseconds;
-            decimal seconds = (decimal)millseconds / 1000m;
-
-            Log.Warning(outputStr, seconds.ToString("F7")); // 7位精度
-        }
-
-        #endregion
+       
     }
 }
