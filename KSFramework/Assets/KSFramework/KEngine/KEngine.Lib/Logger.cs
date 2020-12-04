@@ -302,7 +302,7 @@ namespace KEngine
                 return;
             if (args != null)
                 szMsg = string.Format(szMsg, args);
-            szMsg = string.Format("[{0}](totalframe:{1} ,mem:{2}KB){3}\n\n=================================================================\n\n",
+            szMsg = string.Format("[{0}](frame:{1} ,mem:{2}KB){3}\n\n=================================================================\n\n",
                 DateTime.Now.ToString("HH:mm:ss.ffff"), TotalFrame,GetMonoUseMemory(),szMsg);
 #if UNITY_EDITOR
             StackTrace stackTrace = new StackTrace(true);
@@ -381,11 +381,12 @@ namespace KEngine
             {
                 szMsg += "\n";
             }
-            szMsg = string.Format("[{0}]{1}",DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
+         
             if (IsUnityEditor)
             {
-                UnityEngine.Debug.Log(szMsg);
+               Info(szMsg);
             }
+            szMsg = string.Format("[{0}]{1}",DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
             using (
                 FileStream fileStream = new FileStream(log_file_path, append ? FileMode.Append : FileMode.CreateNew,
                     FileAccess.Write, FileShare.ReadWrite)) // 不会锁死, 允许其它程序打开

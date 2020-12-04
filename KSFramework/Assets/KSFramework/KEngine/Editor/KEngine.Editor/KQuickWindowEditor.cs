@@ -9,6 +9,8 @@ using UnityEditor;
 
 public class KQuickWindowEditor : EditorWindow
 {
+    Vector3 scrollPos = Vector2.zero;
+
     [MenuItem("KEngine/Open Quick Window %&Q")]
     static void DoIt()
     {
@@ -21,6 +23,7 @@ public class KQuickWindowEditor : EditorWindow
 
     public void OnGUI()
     {
+        scrollPos = GUI.BeginScrollView(new Rect(0, 0, position.width, position.height),scrollPos, new Rect(0, 0, 360, 1000));
         DrawKEngineInit();
         GUILayout.Space(20);
 
@@ -35,6 +38,10 @@ public class KQuickWindowEditor : EditorWindow
 
         DrawBuildUI();
         GUILayout.Space(20);
+
+        DrawDebugUI();
+        GUILayout.Space(20);
+        GUI.EndScrollView();
     }
 
 
@@ -162,25 +169,32 @@ public class KQuickWindowEditor : EditorWindow
     void DrawBuildUI()
     {
         GUILayout.BeginHorizontal("HelpBox");
-        EditorGUILayout.LabelField("== 常用的功能键 ==");
+        EditorGUILayout.LabelField("== 生成安装包 ==");
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("打PC版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
-            KAutoBuilder.PerformWinBuild();
+            KAutoBuilder.PerformWinReleaseBuild();
         }
-        if (GUILayout.Button("打Android包", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        if (GUILayout.Button("打PC版-Dev", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
-            KAutoBuilder.PerformAndroidBuild();
+            KAutoBuilder.PerformWinBuild();
         }
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
+        if (GUILayout.Button("打Android版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KAutoBuilder.PerformAndroidBuild();
+        }
         if (GUILayout.Button("打IOS版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             KAutoBuilder.PerformiOSBuild();
         }
+        GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             var path = KResourceModule.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
@@ -199,6 +213,22 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
        
         
+        GUILayout.EndHorizontal();
+    }
+
+    void DrawDebugUI()
+    {
+        GUILayout.BeginHorizontal("HelpBox");
+        EditorGUILayout.LabelField("== Debug Module ==");
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Dump", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KProfiler.Dump();
+        }
+
+       
         GUILayout.EndHorizontal();
     }
 }

@@ -9,7 +9,11 @@ namespace KEngine
     public class LogFileRecorder
     {
         private StreamWriter writer;
-
+        /// <summary>
+        /// 初始化记录器，在游戏退出时调用Close
+        /// </summary>
+        /// <param name="filePath">文件名中不能包含特殊字符比如:</param>
+        /// <param name="mode"></param>
         public LogFileRecorder(string filePath, FileMode mode = FileMode.Create)
         {
             int index = 0;
@@ -21,6 +25,7 @@ namespace KEngine
             catch (IOException e)
             {
                 filePath = Path.GetDirectoryName(filePath) + "/" + Path.GetFileNameWithoutExtension(filePath) + "_" + (index++) + Path.GetExtension(filePath);
+				Debug.LogError(e.Message);
             }
         }
 
