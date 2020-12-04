@@ -154,6 +154,17 @@ public static class KGameObjectExtensions
     {
         return new Vector2(vec.x, vec.y);
     }
+    
+    public static void SetActive(this Component com, bool visible)
+    {
+        if(com &&  com.gameObject && com.gameObject.activeSelf!=visible) com.gameObject.SetActive(visible);
+    }
+    
+    public static void SetActiveX(this GameObject go, bool visible)
+    {
+        if(go && go.activeSelf!=visible) go.SetActive(visible);
+    }
+
 }
 
 public static class KEngineExtensions
