@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -9,11 +10,14 @@ using UnityEngine.Profiling;
 /// </summary>
 public static class FindEx
 {
+    #region 扩展Unity的FindChild
+
     private static Queue<Transform> s_findchild_stack = new Queue<Transform>();
 
     /// <summary>
     /// 按名字查找
     /// 出于性能考虑应避免节点太深，可优先查找他们共用的父节点
+    /// 经过多次测试和项目中使用此查找方法性能比递归调用耗时和gc都更少
     /// 比如下面的层级，dst_name会忽略层级查找到节点
     ///     ."dst_name" 单个名字
     ///     ."name1/name2/.../dst_name" 多个名字组合的路径，越详细性能越好
@@ -43,11 +47,12 @@ public static class FindEx
         var t = FindChild(go.transform, id, check_visible, raise_error);
         if (t)
         {
-            var com =  t.GetComponent<T>();
+            var com = t.GetComponent<T>();
             if (com == null && raise_error)
             {
-                Debug.LogError(string.Format("FindChild<T> faild. {0} Not Have Component:{1}",t,typeof(T)));
+                Debug.LogError(string.Format("FindChild<T> faild. {0} Not Have Component:{1}", t, typeof(T)));
             }
+
             return com;
         }
 
@@ -55,23 +60,32 @@ public static class FindEx
         return default(T);
     }
 
-    private static Transform FindChild(Transform t, string id, bool check_visible, bool raise_error)
+    public static Transform FindChild(Transform findTrans, string id, bool check_visible, bool raise_error)
     {
-        Transform transform = t;
+        if (!findTrans)
+        {
+            if (raise_error)
+            {
+                Debug.LogError("FindChild faild. findTrans is null!");
+            }
+
+            return null;
+        }
+        Transform transform = findTrans;
         if (string.IsNullOrEmpty(id))
-            return  null;
-        if (check_visible && !t.IsActive())
-            return  null;
+            return null;
+        if (check_visible && !findTrans.IsActive())
+            return null;
         if (id == ".")
-            return t;
+            return findTrans;
         if (id.IndexOf('/') >= 0)
         {
             string str = id;
             char[] chArray = new char[1] {'/'};
             foreach (string id1 in str.Split(chArray))
             {
-                t = FindChildDirect(t, id1, check_visible);
-                if (t == null)
+                findTrans = FindChildDirect(findTrans, id1, check_visible);
+                if (findTrans == null)
                 {
                     if (raise_error)
                     {
@@ -83,13 +97,18 @@ public static class FindEx
                 }
             }
 
-            return t;
+            return findTrans;
         }
 
-        t = FindChildDirect(t, id, check_visible);
-        if (t == null && raise_error)
-            Debug.LogError(string.Format("FindChild failed, id:{0},parent={1}", id,  transform));
-        return t;
+        findTrans = FindChildDirect(findTrans, id, check_visible);
+        if (findTrans == null && raise_error)
+            Debug.LogError(string.Format("FindChild failed, id:{0},parent={1}", id, transform));
+        return findTrans;
+    }
+
+    public static Transform FindChildX(this Transform t, string id, bool check_visible = false, bool raise_error = true)
+    {
+        return FindChild(t, id, check_visible, raise_error);
     }
 
     private static Transform FindChildDirect(Transform trans, string id, bool check_visible)
@@ -116,8 +135,9 @@ public static class FindEx
                     findchildStack.Enqueue(t1);
             }
         }
+
         Profiler.EndSample();
-        return  null;
+        return null;
     }
 
     /// <summary>
@@ -150,4 +170,8 @@ public static class FindEx
 
         return comp;
     }
+
+    #endregion
+
+    
 }
