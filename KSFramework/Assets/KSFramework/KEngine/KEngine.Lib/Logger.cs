@@ -49,11 +49,7 @@ namespace KEngine
         Warning,
         Error,
     }
-
-    [Obsolete("The name 'Logger' conflict with Unity 5 'Logger', use 'Log' instead, at 2016/04/08")]
-    public class Logger : Log
-    {}
-
+    
     /// <summary>
     /// KEngine Logger, file write + console output
     /// </summary>
@@ -139,7 +135,7 @@ namespace KEngine
                 Log.LogConsole_MultiThread(e.Message + " , " + e.StackTrace);
             }
 #endif
-
+            InitLog2File();
 #if UNITY_EDITOR
             InitLogUtility();
 #endif
@@ -205,10 +201,11 @@ namespace KEngine
         }
 
         private static int mainthreadid = System.Threading.Thread.CurrentThread.ManagedThreadId;
-        public static long GetMonoUseMemory()
+        public static double GetMonoUseMemory()
         {
             var ismain = mainthreadid == System.Threading.Thread.CurrentThread.ManagedThreadId ;
-            var memory = ismain? UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() / 1024 :0 ;
+            //乘法比除法快，所以/1024改成 *0.0009765625
+            var memory = ismain? UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() * 0.0009765625 *0.0009765625 :0 ;
             return memory;
         }
         
@@ -302,8 +299,8 @@ namespace KEngine
                 return;
             if (args != null)
                 szMsg = string.Format(szMsg, args);
-            szMsg = string.Format("[{0}](frame:{1} ,mem:{2}KB){3}\n\n=================================================================\n\n",
-                DateTime.Now.ToString("HH:mm:ss.ffff"), TotalFrame,GetMonoUseMemory(),szMsg);
+            szMsg = string.Format("[{0}](frame:{1},mem:{2:0.##}MB){3}\n\n=================================================================\n\n",
+                DateTime.Now.ToString("HH:mm:ss.ff"), TotalFrame,GetMonoUseMemory(),szMsg);
 #if UNITY_EDITOR
             StackTrace stackTrace = new StackTrace(true);
             var stackFrame = stackTrace.GetFrame(2);
@@ -376,7 +373,6 @@ namespace KEngine
         // 写log文件
         public static void LogToFile(string szMsg, bool append)
         {
-            InitLog2File();
             if (!szMsg.EndsWith("\n"))
             {
                 szMsg += "\n";
