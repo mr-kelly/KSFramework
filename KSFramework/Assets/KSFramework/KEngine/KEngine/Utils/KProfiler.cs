@@ -145,7 +145,7 @@ namespace KEngine
             double millseconds = timespan.TotalMilliseconds;
             decimal seconds = (decimal) millseconds/1000m;
 
-            string format = "[Watcher] {0}, Time: {1}s, MemDiff: {2}KB";
+            string format = "[Watcher] {0}, CostTime: {1}s, MemDiff: {2}KB";
             var memDiff = GC.GetTotalMemory(false) - lastMem; // byte
             Log.LogToFile(string.Format(format,
                 string.IsNullOrEmpty(name) ? key : name, seconds.ToString("F7"),

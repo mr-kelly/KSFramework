@@ -38,11 +38,6 @@ using Object = UnityEngine.Object;
 
 namespace KEngine.Editor
 {
-    [Obsolete("Please use BuildTools instead")]
-    public class KBuildTools : BuildTools
-    {
-    }
-
     public partial class BuildTools
     {
 #if UNITY_4
@@ -198,7 +193,7 @@ namespace KEngine.Editor
 
             foreach (var platform in platforms)
             {
-                if (EditorUserBuildSettings.SwitchActiveBuildTarget(platform))
+                if (platform != currentBuildTarget && EditorUserBuildSettings.SwitchActiveBuildTarget(platform))
                     BuildAllAssetBundles();
             }
 
@@ -227,9 +222,12 @@ namespace KEngine.Editor
             }
             MakeAssetBundleNames();
             var outputPath = GetExportPath(EditorUserBuildSettings.activeBuildTarget);
-            Log.Info("Asset bundle start build to: {0}", outputPath);
-            BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.DeterministicAssetBundle, EditorUserBuildSettings.activeBuildTarget);
-            Log.Info("Asset bundle build success.");
+            KProfiler.BeginWatch("BuildAB");
+            Log.Info("AsseBundle start build to: {0}", outputPath);
+            //压缩算法不建议用Lzma，要用LZ4 . Lzma读全部的buffer Lz4一个一个block读取，只读取4字节
+            var opt = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;//BuildAssetBundleOptions.AppendHashToAssetBundleName;
+            BuildPipeline.BuildAssetBundles(outputPath, opt, EditorUserBuildSettings.activeBuildTarget);
+            KProfiler.EndWatch("BuildAB","AsseBundle build Finish");
         }
 
 #endif
