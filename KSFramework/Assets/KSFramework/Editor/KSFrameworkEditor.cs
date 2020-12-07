@@ -191,7 +191,7 @@ return $UI_NAME
 #endif
         
         [MenuItem("KEngine/UI(UGUI)/Reload UI Lua %&r")]
-        public static void ReloadLuaCache()
+        public static void ReloadAllUIScript()
         {
             if (!EditorApplication.isPlaying)
             {
@@ -200,19 +200,37 @@ return $UI_NAME
             }
             foreach (var kv in UIModule.Instance.UIWindows)
             {
-                var luaController = kv.Value.UIWindow as LuaUIController;
-                if (luaController) // 只处理LuaUIController
+                ReloadUIScript(kv.Key);
+            }
+        }
+        
+        public static void ReloadUIScript(string uiName)
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Log.LogError("Reload UI only when your editor is playing!");
+                return;
+            }
+            UILoadState state = null;
+            if (UIModule.Instance.UIWindows.TryGetValue(uiName, out state))
+            {
+                var luaController = state.UIWindow as LuaUIController;
+                if (luaController)
                 {
                     luaController.ClearLuaTableCache();
                     luaController.OnInit();
                     luaController.OnOpen(luaController.LastOnOpenArgs);
-                    Log.LogWarning("Reload Lua - {0}", kv.Key);
+                    Log.Info("Reload Lua - {0}", uiName);
                 }
             }
+            else
+            {
+                Log.Info("UI:{0} 未打开过，无需处理",uiName);
+            }
         }
-
+        
         [MenuItem("KEngine/UI(UGUI)/Reload Lua + Reload UI AssetBundle")]
-        public static void ReloadUI()
+        public static void ReloadAllUIAB()
         {
             if (!EditorApplication.isPlaying)
             {
@@ -221,33 +239,50 @@ return $UI_NAME
             }
             foreach (var kv in UIModule.Instance.UIWindows)
             {
-                var luaController = kv.Value.UIWindow as LuaUIController;
-                if (luaController) // 只处理LuaUIController
-                {
-                    var inOpenState = UIModule.Instance.IsOpen(kv.Key);
-                    if (inOpenState)
-                        UIModule.Instance.CloseWindow(kv.Key);
-
-                    luaController.ClearLuaTableCache();
-                    Log.LogWarning("Reload Lua - {0}", kv.Key);
-
-                    UIModule.Instance.ReloadWindow(kv.Key, (args, err) =>
-                    {
-                        if (inOpenState)
-                            UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);
-                    });
-
-                }
+                ReloadUIAB(kv.Key);
             }
             
         }
-       
+
+        public static void ReloadUIAB(string uiName)
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Log.LogError("Reload UI only when your editor is playing!");
+                return;
+            }
+
+            UILoadState state = null;
+            if (UIModule.Instance.UIWindows.TryGetValue(uiName, out state))
+            {
+                var inOpenState = UIModule.Instance.IsOpen(uiName);
+                if (inOpenState)
+                    UIModule.Instance.CloseWindow(uiName);
+                var luaController = state.UIWindow as LuaUIController;
+                if (luaController != null)
+                {
+                    luaController.ClearLuaTableCache();
+                    Log.Info("Reload UI Lua - {0}", uiName);
+                }
+
+                UIModule.Instance.ReloadWindow(uiName, (args, err) =>
+                {
+                    if (inOpenState)
+                        UIModule.Instance.OpenWindow(uiName, luaController.LastOnOpenArgs);
+                });
+            }
+            else
+            {
+                Log.Info("UI:{0} 未打开过，无需处理",uiName);
+            }
+        }
+        
         /// <summary>
         /// 找到所有的LuaUIController被进行Reload
         /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
         /// </summary>
         [MenuItem("KEngine/UI(UGUI)/Reload Lua + ReOpen UI #%&r")]
-        public static void ReloadUILua()
+        public static void ReloadAllUI()
         {
             if (!EditorApplication.isPlaying)
             {
@@ -256,22 +291,30 @@ return $UI_NAME
             }
             foreach (var kv in UIModule.Instance.UIWindows)
             {
-                var luaController = kv.Value.UIWindow as LuaUIController;
-                if (luaController) // 只处理LuaUIController
-                {
-                    var inOpenState = UIModule.Instance.IsOpen(kv.Key);
-                    if (inOpenState)
-                        UIModule.Instance.CloseWindow(kv.Key);
-
-                    luaController.ClearLuaTableCache();
-                    Log.LogWarning("Reload Lua - {0}", kv.Key);
-
-                    if (inOpenState)
-                        UIModule.Instance.OpenWindow(kv.Key, luaController.LastOnOpenArgs);
-                }
+                    ReloadUI(kv.Key);
             }
         }
+        
+        public static void ReloadUI(string uiName)
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Log.LogError("Reload UI only when your editor is playing!");
+                return;
+            }
 
+            UILoadState state;
+            if (UIModule.Instance.UIWindows.TryGetValue(uiName, out state))
+            {
+                ReloadUIAB(uiName);
+                ReloadUIScript(uiName);
+            }
+            else
+            {
+                Log.Info("UI:{0} 未打开过，无需处理",uiName);
+            }
+        }
+        
         /// <summary>
         /// 提供一个独立的gui工具编译excel
         /// </summary>

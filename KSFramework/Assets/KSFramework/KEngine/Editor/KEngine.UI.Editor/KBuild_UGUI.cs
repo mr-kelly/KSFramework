@@ -82,7 +82,6 @@ namespace KEngine.Editor
         /// <summary>
         /// Unity 5下，将场景中的UI对象转成Prefab
         /// </summary>
-
         [MenuItem("KEngine/UI(UGUI)/UIScene -> Prefabs")]
         public static void UISceneToPrefabs()
         {
@@ -93,18 +92,11 @@ namespace KEngine.Editor
 
             foreach (var windowAsset in windowAssets)
             {
+                CheckUIRule(windowAsset);
                 var uiPrefabPath = uiPrefabDir + "/" + windowAsset.name + ".prefab";
-                //if (File.Exists(uiPrefabPath))
-                //{
-                //    var srcPrefab = AssetDatabase.LoadAssetAtPath(uiPrefabPath, typeof (UnityEngine.Object));
-                //    var newPrefab = PrefabUtility.ReplacePrefab(windowAsset.gameObject, srcPrefab, ReplacePrefabOptions.Default);
-                //    EditorUtility.SetDirty(newPrefab);
-                //}
-                //else
-                {
-                    var prefab = PrefabUtility.CreatePrefab(uiPrefabPath, windowAsset.gameObject, ReplacePrefabOptions.Default);
-                    EditorUtility.SetDirty(prefab);
-                }
+                var prefab = PrefabUtility.CreatePrefab(uiPrefabPath, windowAsset.gameObject, ReplacePrefabOptions.Default);
+                EditorUtility.SetDirty(prefab);
+                
                 //NOTE 有同学反馈在unity2019.3.4下这里会导致unity卡死(我在2019.3.7未遇到)，如出现问题可注释这行
                 AssetDatabase.ImportAsset(uiPrefabPath, ImportAssetOptions.ForceSynchronousImport);
                 Debug.Log("Create UIWindowAsset to prfab: " + uiPrefabPath);
@@ -112,6 +104,12 @@ namespace KEngine.Editor
             AssetDatabase.SaveAssets();
         }
 
+        private static void CheckUIRule(UIWindowAsset asset)
+        {
+		 	//TODO 导出前检查UI，比如只能使用一个图集，Text不勾选bestFit，不使用空的Image接受事件
+            //var images = asset.GetComponentsInChildren<Image>(false);
+
+        }
 #endif
 
 
@@ -153,7 +151,6 @@ namespace KEngine.Editor
 
         static UIWindowAsset[] GetUIWIndoeAssetsFromCurrentScene()
         {
-
             //var UIName = Path.GetFileNameWithoutExtension(EditorApplication.currentScene);
             var windowAssets = GameObject.FindObjectsOfType<UIWindowAsset>();
             if (windowAssets.Length <= 0)
@@ -207,7 +204,7 @@ namespace KEngine.Editor
             var uiName = Path.GetFileNameWithoutExtension(currentScene);
             if (string.IsNullOrEmpty(uiName) || GameObject.Find(uiName) != null) // default use scene name, if exist create random name
             {
-                uiName = "NewUI_" + Path.GetRandomFileName();
+                uiName = "UI" + Path.GetRandomFileName();
             }
             GameObject uiObj = new GameObject(uiName);
             uiObj.layer = (int)UnityLayerDef.UI;
@@ -243,25 +240,32 @@ namespace KEngine.Editor
 
             }
 
-            if (GameObject.Find("Camera") == null)
+            Camera camera;
+            var go = GameObject.Find("UICamera");
+            if (go == null)
             {
-                GameObject cameraObj = new GameObject("Camera");
+                GameObject cameraObj = new GameObject("UICamera");
                 cameraObj.layer = (int)UnityLayerDef.UI;
 
-                Camera camera = cameraObj.AddComponent<Camera>();
+                camera = cameraObj.AddComponent<Camera>();
                 camera.clearFlags = CameraClearFlags.Skybox;
                 camera.depth = 0;
                 camera.backgroundColor = Color.grey;
                 camera.cullingMask = 1 << (int)UnityLayerDef.UI;
                 camera.orthographicSize = 1f;
                 camera.orthographic = true;
-                camera.nearClipPlane = -2f;
-                camera.farClipPlane = 2f;
+                camera.nearClipPlane = 0.3f;
+                camera.farClipPlane = 1000f;
 
                 camera.gameObject.AddComponent<AudioListener>();
 
             }
+            else
+            {
+                camera = go.GetComponent<Camera>();
+            }
 
+            canvas.worldCamera = camera;
             Selection.activeGameObject = uiObj;
         }
 

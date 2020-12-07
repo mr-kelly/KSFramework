@@ -10,20 +10,37 @@ using UnityEditor;
 public class KQuickWindowEditor : EditorWindow
 {
     Vector3 scrollPos = Vector2.zero;
-
+    [SerializeField]
+    private string reloadUIAb;
+    [SerializeField]
+    private string reloadUIScript;
+    private GUIStyle textFieldStyle;
+    private bool init = false;
+	
     [MenuItem("KEngine/Open Quick Window %&Q")]
     static void DoIt()
     {
+       
         //note 在Windows Editor下Scree.Width,Screen.Height获取的并不是真实的显示器宽度和高度
         KQuickWindowEditor window = EditorWindow.GetWindow<KQuickWindowEditor>();
         window.titleContent = new GUIContent("快捷工具窗");
         window.position = new Rect(400, 100, 640, 480);
+        window.InitStyle();
         window.Show();
     }
 
+    void InitStyle()
+    {
+        if (init) return;
+        textFieldStyle = new GUIStyle (GUI.skin.textField);
+        textFieldStyle.alignment = TextAnchor.MiddleLeft;
+        
+        init = true;
+    }
+    
     public void OnGUI()
     {
-        scrollPos = GUI.BeginScrollView(new Rect(0, 0, position.width, position.height),scrollPos, new Rect(0, 0, 360, 1000));
+        scrollPos = GUI.BeginScrollView(new Rect(10, 10, position.width, position.height),scrollPos, new Rect(0, 0, 360, 1000));
         DrawKEngineInit();
         GUILayout.Space(20);
 
@@ -84,22 +101,35 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.EndHorizontal();
         
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("重载UI的Lua代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("重载所有UI的Lua代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            KSFrameworkEditor.ReloadLuaCache();
+            KSFrameworkEditor.ReloadAllUIScript();
         }
-        if (GUILayout.Button("重新打开UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("重新打开所有UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            KSFrameworkEditor.ReloadUILua();
+            KSFrameworkEditor.ReloadAllUI();
         }
         GUILayout.EndHorizontal();
         
+        GUILayout.Space(10);
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("重新加载并打开UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        EditorGUILayout.LabelField("UI名字:",GUILayout.Width(40));
+        reloadUIScript = EditorGUILayout.TextField(reloadUIScript,GUILayout.MinWidth(120));
+        if (GUILayout.Button("重载Lua脚本", GUILayout.MinWidth(100), GUILayout.MaxHeight(30)))
         {
-            KSFrameworkEditor.ReloadUI();
+            KSFrameworkEditor.ReloadUIScript(reloadUIScript);
         }
         GUILayout.EndHorizontal();
+        GUILayout.Space(10);
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("UI名字:",GUILayout.Width(40));
+        reloadUIAb = EditorGUILayout.TextField(reloadUIAb,GUILayout.MinWidth(120));
+        if (GUILayout.Button("重载AB并打开", GUILayout.MinWidth(100), GUILayout.MaxHeight(30)))
+        {
+            KSFrameworkEditor.ReloadUIAB(reloadUIAb);
+        }
+        GUILayout.EndHorizontal();
+        //GUILayout.Space(10);
     }
 
     public void DrawKEngineUI()
@@ -138,11 +168,11 @@ public class KQuickWindowEditor : EditorWindow
         EditorGUILayout.LabelField("== Assetbundle相关 ==");
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("打包Assetbundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("打包AB", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.BuildAllAssetBundles();
         }
-        if (GUILayout.Button("删除并重新打包Assetbundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("全部删除并重新打包AB", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.ReBuildAllAssetBundles();
         }
@@ -150,9 +180,14 @@ public class KQuickWindowEditor : EditorWindow
 
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("设置AB Name(BoundleResources)", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("设置AB Name", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.MakeAssetBundleNames();
+        }
+        if (GUILayout.Button("打开AB目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            var path = KResourceModule.ProductRelPath +"/Bundles/"+  KResourceModule.GetBuildPlatformName();
+            OpenFolder(path);
         }
         GUILayout.EndHorizontal();
 
@@ -198,16 +233,7 @@ public class KQuickWindowEditor : EditorWindow
         if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             var path = KResourceModule.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
-            var fullPath = Path.GetFullPath(path);
-            if (Directory.Exists(fullPath) == false)
-            {
-                Log.Debug("{0} 目录不存在，定位到父目录。", fullPath);
-
-                DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
-                fullPath = directoryInfo.Parent.FullName;
-            }
-            Log.Debug("open: {0}", fullPath);
-            System.Diagnostics.Process.Start("explorer.exe", fullPath);
+           OpenFolder(path);
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
@@ -231,4 +257,19 @@ public class KQuickWindowEditor : EditorWindow
        
         GUILayout.EndHorizontal();
     }
+
+    void OpenFolder(string path)
+    {
+        var fullPath = Path.GetFullPath(path);
+        if (Directory.Exists(fullPath) == false)
+        {
+            Log.Debug("{0} 目录不存在，尝试定位到父目录。", fullPath);
+
+            DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
+            if (directoryInfo.Parent != null) fullPath = directoryInfo.Parent.FullName;
+        }
+        Log.Debug("open: {0}", fullPath);
+        System.Diagnostics.Process.Start("explorer.exe", fullPath);
+    }
+    
 }
