@@ -24,7 +24,7 @@ namespace KEngine
             {
                 frame = Log.TotalFrame;
                 Thread.Sleep(check_interval);
-                if (frame == Log.TotalFrame)
+                if (frame == Log.TotalFrame && AppEngine.IsAppPlaying)
                 {
                     Log.LogToFile("unity thread dead,ThreadState:{0}",_MainThread.ThreadState);
                     if (AppEngine.IsApplicationFocus)

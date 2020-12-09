@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using KEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
@@ -204,6 +205,8 @@ namespace KUnityEditorTools
         /// </summary>
         private static void OnPlayModeStateChanged()
         {
+            AppEngine.IsAppPlaying = EditorApplication.isPlaying && !EditorApplication.isPaused;
+            //Log.Info($"playModelChange isPlaying:{EditorApplication.isPlaying} ,isPaused:{EditorApplication.isPaused}");
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 if (!EditorApplication.isPlaying) // means Will Change to Playmode
@@ -254,15 +257,15 @@ namespace KUnityEditorTools
 
         static void CheckComplie()
         {
-            // 检查编译中，立刻暂停游戏！
-            if (EditorApplication.isCompiling)
+            //NOTE 在Unity2019中设置为Recompile After Finished Playing，修改代码后继续运行比较稳定，所以修改代码后不停止播放 // 检查编译中，立刻暂停游戏！
+            /*if (EditorApplication.isCompiling)
             {
                 if (EditorApplication.isPlaying)
                 {
                     UnityEngine.Debug.Log("Force Stop Play, because of Compiling.");
                     EditorApplication.isPlaying = false;
                 }
-            }
+            }*/
         }
     }
 

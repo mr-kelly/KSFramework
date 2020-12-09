@@ -56,6 +56,7 @@ namespace KEngine
 #else
         public bool ShowFps = false;
 #endif
+        public bool UseDevFunc = true;
         /// <summary>
         /// To Display FPS in the Debug Mode (Debug.isDebugBuild is true)
         /// </summary>
@@ -119,13 +120,8 @@ namespace KEngine
         public IAppEntry AppEntry { get; private set; }
         public static bool IsApplicationQuit = false;
         public static bool IsApplicationFocus = true;
+        public static bool IsAppPlaying = false;
         
-//        [Obsolete("Use New(GameObject, IAppEntry, IModuleInitable[]) instead!")]
-//        public static AppEngine New(GameObject gameObjectToAttach, IModuleInitable[] modules)
-//        {
-//            return New(gameObjectToAttach, null, modules);
-//        }
-
         /// <summary>
         /// Engine entry.... all begins from here
         /// </summary>
@@ -157,6 +153,7 @@ namespace KEngine
 
         void Start()
         {
+            IsAppPlaying = true;
             Debuger.Assert(_isNewByStatic);
         }
 
@@ -253,6 +250,7 @@ namespace KEngine
         void OnApplicationQuit()
         {
             IsApplicationQuit = true;
+            IsAppPlaying = false;
             LogFileRecorder.CloseStream();
         }
         

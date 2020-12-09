@@ -117,7 +117,7 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.Space(10);
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("UI名字:", GUILayout.Width(40));
-        reloadUIScript = EditorGUILayout.TextField(reloadUIScript, GUILayout.MinWidth(120));
+        reloadUIScript = EditorGUILayout.TextField(reloadUIScript, GUILayout.MinWidth(120),GUILayout.MaxHeight(30));
         if (GUILayout.Button("重载Lua脚本", GUILayout.MinWidth(100), GUILayout.MaxHeight(30)))
         {
             KSFrameworkEditor.ReloadUIScript(reloadUIScript);
@@ -127,7 +127,7 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.Space(10);
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("UI名字:", GUILayout.Width(40));
-        reloadUIAb = EditorGUILayout.TextField(reloadUIAb, GUILayout.MinWidth(120));
+        reloadUIAb = EditorGUILayout.TextField(reloadUIAb, GUILayout.MinWidth(120),GUILayout.MaxHeight(30));
         if (GUILayout.Button("重载AB并打开", GUILayout.MinWidth(100), GUILayout.MaxHeight(30)))
         {
             KSFrameworkEditor.ReloadUIAB(reloadUIAb);
