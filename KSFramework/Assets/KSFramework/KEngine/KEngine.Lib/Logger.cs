@@ -28,14 +28,18 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+
 #if !KENGINE_DLL
 using UnityEngine;
 #endif
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Callbacks;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using UnityEditor.EditorTools;
+
 #endif
 
 namespace KEngine
@@ -119,7 +123,7 @@ namespace KEngine
 #endif
 
         public static event Action<string> LogErrorEvent;
-
+      
         static Log()
         {
 #if !KENGINE_DLL
@@ -299,12 +303,12 @@ namespace KEngine
                 return;
             if (args != null)
                 szMsg = string.Format(szMsg, args);
-            szMsg = string.Format("[{0}](frame:{1},mem:{2:0.##}MB){3}\n\n=================================================================\n\n",
-                DateTime.Now.ToString("HH:mm:ss.ff"), TotalFrame,GetMonoUseMemory(),szMsg);
+            szMsg = string.Format("[{0}] {1}(frame:{2},mem:{3:0.##}MB){4}\n\n=================================================================\n\n",
+                LogLevel,DateTime.Now.ToString("HH:mm:ss.fff"), TotalFrame,GetMonoUseMemory(),szMsg);
 #if UNITY_EDITOR
             StackTrace stackTrace = new StackTrace(true);
             var stackFrame = stackTrace.GetFrame(2);
-            s_LogStackFrameList.Add(stackFrame);
+            //s_LogStackFrameList.Add(stackFrame);
 #endif
             switch (emLevel)
             {
@@ -382,7 +386,7 @@ namespace KEngine
             {
                Info(szMsg);
             }
-            szMsg = string.Format("[{0}]{1}",DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
+            szMsg = string.Format("[FILE] {0}{1}",DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
             using (
                 FileStream fileStream = new FileStream(log_file_path, append ? FileMode.Append : FileMode.CreateNew,
                     FileAccess.Write, FileShare.ReadWrite)) // 不会锁死, 允许其它程序打开
@@ -419,7 +423,129 @@ namespace KEngine
         #endregion
         
         #region 控制台双击日志跳到指定行
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+        #if UNITY_2018_1_OR_NEWER
+        private static  Type _consoleWindowType;
+        private static  FieldInfo _activeTextInfo;
+        private static  FieldInfo _consoleWindowInfo;
+        private static  MethodInfo _setActiveEntry;
+        private static  object[] _setActiveEntryArgs;
+        private static  object _consoleWindow;
+
+        static void InitLogUtility()
+        {
+            _consoleWindowType = Type.GetType("UnityEditor.ConsoleWindow,UnityEditor");
+            if (_consoleWindowType == null)
+            {
+                UnityEngine.Debug.LogError("初始化[双击日志跳到指定行]失败，未找到(UnityEditor.ConsoleWindow,UnityEditor),请检查Unity版本");
+                return;
+            }
+            _activeTextInfo = _consoleWindowType.GetField("m_ActiveText", BindingFlags.Instance | BindingFlags.NonPublic);
+            _consoleWindowInfo = _consoleWindowType.GetField("ms_ConsoleWindow", BindingFlags.Static | BindingFlags.NonPublic);
+            _setActiveEntry = _consoleWindowType.GetMethod("SetActiveEntry", BindingFlags.Instance | BindingFlags.NonPublic);
+            _setActiveEntryArgs = new object[] { null };
+        }
+         [OnOpenAsset]
+        private static bool OnOpenAsset(int instanceID, int line)
+        {
+            UnityEngine.Object instance = EditorUtility.InstanceIDToObject(instanceID);
+            if (AssetDatabase.GetAssetOrScenePath(instance).EndsWith(".cs"))
+            {
+                return OpenAsset();
+            }
+            return false;
+        }
+
+        private  static  bool OpenAsset()
+        {
+            string stackTrace = GetStackTrace();
+            if (!string.IsNullOrEmpty(stackTrace))
+            {
+                if(stackTrace.Contains("Logger.cs"))
+                {
+                    string[] paths = stackTrace.Split('\n');
+                    int index = 0;
+                    if (stackTrace.Contains("LUA:"))
+                    {
+                        Regex reg = new Regex(@".*\[string ""(.*)""\]:(\d+):.*");
+                        string luaFile = reg.Match(stackTrace).Groups[1].Value;
+                        int luaLine = int.Parse(reg.Match(stackTrace).Groups[2].Value);
+
+                        string fullPath = Application.dataPath.Replace("Assets", "") + "./Product/Lua/" + luaFile + ".lua";
+                        //todo IDEA或Rider中跳到lua文件的指定行
+                        return false;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < paths.Length; i++)
+                        {
+                            if (paths[i].Contains(" (at "))
+                            {
+                                index += 1;
+
+                                if (index == 3)
+                                {
+                                    //C#代码打印的
+                                    return OpenScriptAsset(paths[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+               
+            }
+            return false;
+        }
+
+        private static  bool OpenScriptAsset(string path)
+        {
+            int startIndex = path.IndexOf(" (at ") + 5;
+            int endIndex = path.IndexOf(".cs:") + 3;
+            string filePath = path.Substring(startIndex, endIndex - startIndex);
+            string lineStr = path.Substring(endIndex + 1, path.Length - endIndex - 2);
+
+            TextAsset asset = AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
+            if (asset != null)
+            {
+                int line = 0;
+                if (int.TryParse(lineStr, out line))
+                {
+                    object consoleWindow = GetConsoleWindow();
+                    _setActiveEntry.Invoke(consoleWindow, _setActiveEntryArgs);
+
+                    EditorGUIUtility.PingObject(asset);
+                    AssetDatabase.OpenAsset(asset, line);
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        private static string GetStackTrace()
+        {
+            object consoleWindow = GetConsoleWindow();
+
+            if (consoleWindow != null)
+            {
+                if (consoleWindow == EditorWindow.focusedWindow as object)
+                {
+                    object value = _activeTextInfo.GetValue(consoleWindow);
+                    return value != null ? value.ToString() : "";
+                }
+            }
+            return "";
+        }
+
+        private  static object GetConsoleWindow()
+        {
+            if (_consoleWindow == null)
+            {
+                _consoleWindow = _consoleWindowInfo.GetValue(null);
+            }
+            return _consoleWindow;
+        }
+        
+        #else
         private static string s_logFilePath = "Assets/KSFramework/KEngine/KEngine.Lib/Logger.cs";
         private static int s_InstanceID;
         private static int[] s_Lines = { 354, 361, 368 };
@@ -543,7 +669,7 @@ namespace KEngine
 
             return false;
         }
-
+#endif
         static bool openFileInVS(string filePath, int line)
         {
             System.Diagnostics.Process scriptProc = new System.Diagnostics.Process();
@@ -582,6 +708,7 @@ namespace KEngine
             }
             return true;
         }
+
 #endif
         #endregion
     }
