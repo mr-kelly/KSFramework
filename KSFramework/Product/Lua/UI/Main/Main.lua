@@ -28,6 +28,8 @@ function UIMain:OnInit(controller)
         end
         local diff =  os.clock() - begin;
         print(string.format("performance test: add 500000  cost:%.2fms", diff*1000))
+        UIModule.Instance:OpenWindow("UIRoleInfo")
+
     end)
    
 

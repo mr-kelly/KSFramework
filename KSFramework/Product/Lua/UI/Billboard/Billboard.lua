@@ -1,3 +1,4 @@
+
 ---@type UIBillboard
 local UIBillboard = {}
 
@@ -12,7 +13,7 @@ function UIBillboard:OnInit(controller)
     if not self.txtContent then
         self.txtContent = self:GetUIText('txtContent')
     end
-    Tools.SetButton(self.btnBack, function()
+    Tools.SetButton(self.btn_close, function()
         print('Click the button!!!')
         UIModule.Instance:CloseWindow("Billboard")
         --UIModule.Instance:OpenWindow("Login")
