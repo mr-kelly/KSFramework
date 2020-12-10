@@ -2,8 +2,6 @@
 using System.IO;
 using KEngine;
 using KSFramework;
-using UnityEngine;
-using UnityEditor;
 using NUnit.Framework;
 
 public class KSFrameworkTests

@@ -9,8 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using KEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;

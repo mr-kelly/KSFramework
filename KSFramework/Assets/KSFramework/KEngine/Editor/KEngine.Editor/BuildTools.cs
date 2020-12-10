@@ -29,12 +29,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using KEngine;
 using UnityEditor;
-using UnityEditor.Build.Content;
 using UnityEngine;
-using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace KEngine.Editor
 {

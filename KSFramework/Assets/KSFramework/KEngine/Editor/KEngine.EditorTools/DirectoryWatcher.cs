@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Threading;
+﻿using System.Threading;
 
 namespace KUnityEditorTools
 {

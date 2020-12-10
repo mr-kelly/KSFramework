@@ -144,7 +144,7 @@ namespace KEngine
 
 
         /// <summary>
-        /// Destroy a game object's children
+        /// 清除一个GameObject下面所有的孩子
         /// </summary>
         /// <param name="go"></param>
         public static void DestroyGameObjectChildren(GameObject go)

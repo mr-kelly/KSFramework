@@ -24,9 +24,6 @@
 
 #endregion
 
-using UnityEngine;
-using System.Collections;
-using KEngine.Editor;
 using UnityEditor;
 
 /// <summary>

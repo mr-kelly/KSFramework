@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using KUnityEditorTools;
 using UnityEngine;
 
 namespace KUnityEditorTools
