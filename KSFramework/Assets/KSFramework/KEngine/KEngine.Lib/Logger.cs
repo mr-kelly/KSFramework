@@ -224,12 +224,7 @@ namespace KEngine
         {
             DoLog(log, args, LogLevel.Debug);
         }
-
-        //[Obsolete]
-        //public static void Trace(string log, params object[] args)
-        //{
-        //    DoLog(string.Format(log, args), LogLevel.Debug);
-        //}
+        
         public static void Info(string log, params object[] args)
         {
             DoLog(log, args, LogLevel.Info);
@@ -259,7 +254,7 @@ namespace KEngine
         public static void LogErrorWithStack(string err = "", int stack = 2)
         {
             StackFrame sf = GetTopStack(stack);
-            string log = string.Format("[ERROR]{0}\n\n{1}:{2}\t{3}", err, sf.GetFileName(), sf.GetFileLineNumber(),
+            string log = string.Format("{0}\n\n{1}:{2}\t{3}", err, sf.GetFileName(), sf.GetFileLineNumber(),
                 sf.GetMethod());
             Console.Write(log);
             DoLog(log, null, LogLevel.Error);
@@ -272,7 +267,6 @@ namespace KEngine
         public static StackFrame GetTopStack(int stack = 2)
         {
             StackFrame[] stackFrames = new StackTrace(true).GetFrames();
-            ;
             StackFrame sf = stackFrames[Math.Min(stack, stackFrames.Length - 1)];
             return sf;
         }
@@ -280,6 +274,7 @@ namespace KEngine
         public static void Error(string err, params object[] args)
         {
             LogErrorWithStack(string.Format(err, args), 2);
+            
         }
 
         public static void LogError(string err, params object[] args)
@@ -304,7 +299,7 @@ namespace KEngine
             if (args != null)
                 szMsg = string.Format(szMsg, args);
             szMsg = string.Format("[{0}] {1}(frame:{2},mem:{3:0.##}MB){4}\n\n=================================================================\n\n",
-                LogLevel,DateTime.Now.ToString("HH:mm:ss.fff"), TotalFrame,GetMonoUseMemory(),szMsg);
+                emLevel,DateTime.Now.ToString("HH:mm:ss.fff"), TotalFrame,GetMonoUseMemory(),szMsg);
 #if UNITY_EDITOR
             StackTrace stackTrace = new StackTrace(true);
             var stackFrame = stackTrace.GetFrame(2);
@@ -355,28 +350,16 @@ namespace KEngine
                 Directory.CreateDirectory(dir);
         }
         
-        public static void LogToFile(string szMsg,params object[] args)
-        {
-            if (args == null || args.Length == 0)
-            {
-                LogToFile(szMsg, true); 
-            }
-            else if (args != null && args.Length > 0)
-            {
-                LogToFile(string.Format(szMsg,args), true);
-            }
-        }
-
         // 是否写过log file
         public static bool HasLogFile()
         {
             string fullPath = GetLogPath();
             return File.Exists(fullPath);
         }
-
-        // 写log文件
-        public static void LogToFile(string szMsg, bool append)
+        
+        public static void LogToFile(string msg,params object[] args)
         {
+            var szMsg = args != null && args.Length > 0 ? string.Format(msg, args) : msg;
             if (!szMsg.EndsWith("\n"))
             {
                 szMsg += "\n";
@@ -384,16 +367,15 @@ namespace KEngine
          
             if (IsUnityEditor)
             {
-               Info(szMsg);
+                DoLog(szMsg,  null,LogLevel.Info);
             }
             szMsg = string.Format("[FILE] {0}{1}",DateTime.Now.ToString("HH:mm:ss.ffff"), szMsg);
-            using (
-                FileStream fileStream = new FileStream(log_file_path, append ? FileMode.Append : FileMode.CreateNew,
+            using (FileStream fileStream = new FileStream(log_file_path,  FileMode.Append,
                     FileAccess.Write, FileShare.ReadWrite)) // 不会锁死, 允许其它程序打开
             {
                 lock (fileStream)
                 {
-                    StreamWriter writer = new StreamWriter(fileStream); // Append
+                    StreamWriter writer = new StreamWriter(fileStream);
                     writer.Write(szMsg);
                     writer.Flush();
                     writer.Close();
@@ -445,26 +427,30 @@ namespace KEngine
             _setActiveEntry = _consoleWindowType.GetMethod("SetActiveEntry", BindingFlags.Instance | BindingFlags.NonPublic);
             _setActiveEntryArgs = new object[] { null };
         }
+        
          [OnOpenAsset]
         private static bool OnOpenAsset(int instanceID, int line)
         {
             UnityEngine.Object instance = EditorUtility.InstanceIDToObject(instanceID);
             if (AssetDatabase.GetAssetOrScenePath(instance).EndsWith(".cs"))
             {
-                return OpenAsset();
+                return OpenAsset(instance.name);
             }
             return false;
         }
 
-        private  static  bool OpenAsset()
+        private  static  bool OpenAsset(string fileName)
         {
+            if (fileName != "Logger")
+            {
+                //Unity2019中可以在堆栈中选中其它文件,手动选择的不处理
+                return false;
+            }
             string stackTrace = GetStackTrace();
             if (!string.IsNullOrEmpty(stackTrace))
             {
                 if(stackTrace.Contains("Logger.cs"))
                 {
-                    string[] paths = stackTrace.Split('\n');
-                    int index = 0;
                     if (stackTrace.Contains("LUA:"))
                     {
                         Regex reg = new Regex(@".*\[string ""(.*)""\]:(\d+):.*");
@@ -477,13 +463,15 @@ namespace KEngine
                     }
                     else
                     {
+                        string[] paths = stackTrace.Split('\n');
+                        int index = 0;
+                        var dstStack =  (stackTrace.StartsWith("[Error]") || stackTrace.StartsWith("[Exception]")) ? 4 : 3;
                         for (int i = 0; i < paths.Length; i++)
                         {
                             if (paths[i].Contains(" (at "))
                             {
                                 index += 1;
-
-                                if (index == 3)
+                                if (index == dstStack)
                                 {
                                     //C#代码打印的
                                     return OpenScriptAsset(paths[i]);
@@ -657,7 +645,7 @@ namespace KEngine
                         string luaFile = reg.Match(_luaLog).Groups[1].Value;
                         int luaLine = int.Parse(reg.Match(_luaLog).Groups[2].Value);
 
-                        string fullPath = Application.dataPath.Replace("Assets", "") + "../Product/Lua/" + luaFile + ".lua";
+                        string fullPath = Application.dataPath.Replace("Assets", "") + "./Product/Lua/" + luaFile + ".lua";
                         return openFileInSublime(fullPath, luaLine);
                     }
                     string fileName = stackFrame.GetFileName();
