@@ -116,7 +116,7 @@ namespace KEngine.Modules
             return LoadSettingFromFile(path);
 #else
             byte[] fileContent;
-            var loader = HotBytesLoader.Load(SettingFolderName + "/" + path, LoaderMode.Sync);
+            var loader = KBytesLoader.Load(SettingFolderName + "/" + path, LoaderMode.Sync);
             Debuger.Assert(!loader.IsError);
             fileContent = loader.Bytes;
             

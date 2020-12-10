@@ -42,18 +42,20 @@ namespace KEngine
         Async,
         Sync,
     }
-
-    // 調用WWWLoader
+    /// <summary>
+    /// ab加载器
+    /// 用法：1.Load
+    ///       2.用完之后手动调用Relase，当refCount为0时会Unload(true)来释放ab和内容
+    /// </summary>
     public class AssetBundleLoader : AbstractResourceLoader
     {
         public delegate void CAssetBundleLoaderDelegate(bool isOk, AssetBundle ab);
 
         public static Action<string> NewAssetBundleLoaderEvent;
-        public static Action<AssetBundleLoader> AssetBundlerLoaderErrorEvent;
-
+        #if UNITY_4
         private KWWWLoader _wwwLoader;
-        private KAssetBundleParser BundleParser;
-        //private bool UnloadAllAssets; // Dispose时赋值
+        #endif
+       
         public AssetBundle Bundle
         {
             get { return ResultObject as AssetBundle; }
@@ -66,16 +68,22 @@ namespace KEngine
         /// AssetBundle加载方式
         /// </summary>
         private LoaderMode _loaderMode;
-
+        
+        private float beginTime;
+        private string dependFrom = string.Empty;
         /// <summary>
-        /// AssetBundle读取原字节目录
+        /// 加载ab
         /// </summary>
-        //private KResourceInAppPathType _inAppPathType;
-
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">加载完成的回调</param>
+        /// <param name="loaderMode">Async异步，sync同步</param>
+        /// <returns></returns>
         public static AssetBundleLoader Load(string url, CAssetBundleLoaderDelegate callback = null,
             LoaderMode loaderMode = LoaderMode.Async)
         {
-
+            var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
+            if(!url.EndsWith(ext))
+                url = url + ext;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             url = url.ToLower();
 #endif
@@ -85,7 +93,6 @@ namespace KEngine
                 newCallback = (isOk, obj) => callback(isOk, obj as AssetBundle);
             }
             var newLoader = AutoNew<AssetBundleLoader>(url, newCallback, false, loaderMode);
-
 
             return newLoader;
         }
@@ -104,8 +111,11 @@ namespace KEngine
                 return;
 
             _hasPreloadAssetBundleManifest = true;
-            //            var mainAssetBundlePath = string.Format("{0}/{1}/{1}", KResourceModule.BundlesDirName,KResourceModule.BuildPlatformName);
-            HotBytesLoader bytesLoader = HotBytesLoader.Load(KResourceModule.BundlesPathRelative + KResourceModule.BuildPlatformName, LoaderMode.Sync);//string.Format("{0}/{1}", KResourceModule.BundlesDirName, KResourceModule.BuildPlatformName), LoaderMode.Sync);
+            //此方法不能加载到manifest文件
+            //var manifestPath = string.Format("{0}/{1}/{1}.manifest", KResourceModule.BundlesPathRelative,KResourceModule.BuildPlatformName);
+            // _mainAssetBundle = AssetBundle.LoadFromFile(manifestPath);
+            // _assetBundleManifest = _mainAssetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+            KBytesLoader bytesLoader = KBytesLoader.Load(KResourceModule.BundlesPathRelative + KResourceModule.BuildPlatformName, LoaderMode.Sync);
 
             _mainAssetBundle = AssetBundle.LoadFromMemory(bytesLoader.Bytes);//KResourceModule.LoadSyncFromStreamingAssets(mainAssetBundlePath));
             _assetBundleManifest = _mainAssetBundle.LoadAsset("AssetBundleManifest") as AssetBundleManifest;
@@ -115,7 +125,7 @@ namespace KEngine
         }
 #endif
 
-        protected override void Init(string url, params object[] args)
+        public override void Init(string url, params object[] args)
         {
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             PreLoadManifest();
@@ -129,7 +139,7 @@ namespace KEngine
                 NewAssetBundleLoaderEvent(url);
 
             RelativeResourceUrl = url;
-            KResourceModule.LogRequest("AssetBundle", RelativeResourceUrl);
+            if(AppConfig.IsLogAbInfo) Log.Info("[Request] AssetBundle, {1}", RelativeResourceUrl);
             KResourceModule.Instance.StartCoroutine(LoadAssetBundle(url));
         }
 
@@ -151,6 +161,8 @@ namespace KEngine
             {
                 var dep = deps[d];
                 _depLoaders[d] = AssetBundleLoader.Load(dep, null, _loaderMode);
+                if(_depLoaders[d].dependFrom == string.Empty)
+                    _depLoaders[d].dependFrom = relativeUrl;
             }
             for (var l = 0; l < _depLoaders.Length; l++)
             {
@@ -166,72 +178,82 @@ namespace KEngine
             // Unity 5 AssetBundle自动转小写
             relativeUrl = relativeUrl.ToLower();
 #endif
-            var bytesLoader = HotBytesLoader.Load(KResourceModule.BundlesPathRelative + relativeUrl, _loaderMode);
-            while (!bytesLoader.IsCompleted)
+            if (AppConfig.IsLogAbLoadCost) beginTime = Time.realtimeSinceStartup;
+            
+            string _fullUrl;
+            var pathType =  KResourceModule.GetResourceFullPath(KResourceModule.BundlesPathRelative + relativeUrl, false, out _fullUrl);
+             
+            if (pathType == KResourceModule.GetResourceFullPathType.Invalid)
             {
-                yield return null;
-            }
-            if (!bytesLoader.IsSuccess)
-            {
-                if (AssetBundlerLoaderErrorEvent != null)
-                {
-                    AssetBundlerLoaderErrorEvent(this);
-                }
-                Log.Error("[AssetBundleLoader]Error Load Bytes AssetBundle: {0}", relativeUrl);
                 OnFinish(null);
                 yield break;
             }
-
-            byte[] bundleBytes = bytesLoader.Bytes;
-            Progress = 1 / 2f;
-            bytesLoader.Release(); // 字节用完就释放
-
-            BundleParser = new KAssetBundleParser(RelativeResourceUrl, bundleBytes);
-            while (!BundleParser.IsFinished)
+            if(Application.platform == RuntimePlatform.Android && pathType == KResourceModule.GetResourceFullPathType.InApp)
             {
-                if (IsReadyDisposed) // 中途释放
-                {
-                    OnFinish(null);
-                    yield break;
-                }
-                Progress = BundleParser.Progress / 2f + 1 / 2f; // 最多50%， 要算上WWWLoader的嘛
-                yield return null;
+                _fullUrl = "jar:file://" + _fullUrl;
             }
-
-            Progress = 1f;
-            var assetBundle = BundleParser.Bundle;
+            
+            AssetBundle assetBundle = null;
+            if (_loaderMode == LoaderMode.Sync)
+            {
+                assetBundle = AssetBundle.LoadFromFile(_fullUrl);
+            }
+            else
+            {
+                var request = AssetBundle.LoadFromFileAsync(_fullUrl);
+                while (!request.isDone)
+                {
+                    if (IsReadyDisposed) // 中途释放
+                    {
+                        OnFinish(null);
+                        yield break;
+                    }
+                    Progress = request.progress;
+                    yield return null;
+                }
+                assetBundle = request.assetBundle;
+            }
             if (assetBundle == null)
-                Log.Error("WWW.assetBundle is NULL: {0}", RelativeResourceUrl);
-
+                Log.Error("assetBundle is NULL: {0}", RelativeResourceUrl);
+            if (AppConfig.IsLogAbLoadCost)
+            {
+                var str = string.Format("Load AssetBundle {0}, CostTime {1}s {2}", relativeUrl, Time.realtimeSinceStartup - beginTime,dependFrom);
+                Log.Info(str);
+            }
+            if (AppConfig.IsSaveAbLoadCost && !relativeUrl.StartsWith("ui/"))
+            {
+                LogFileRecorder.WriteLoadAbLog(relativeUrl, Time.realtimeSinceStartup - beginTime);
+            }
             OnFinish(assetBundle);
-
-            //Array.Clear(cloneBytes, 0, cloneBytes.Length);  // 手工释放内存
-
-            //GC.Collect(0);// 手工释放内存
         }
 
         protected override void OnFinish(object resultObj)
         {
+            #if UNITY_4
             if (_wwwLoader != null)
             {
                 // 释放WWW加载的字节。。释放该部分内存，因为AssetBundle已经自己有缓存了
                 _wwwLoader.Release();
                 _wwwLoader = null;
             }
+            #endif
             base.OnFinish(resultObj);
         }
 
         protected override void DoDispose()
         {
             base.DoDispose();
-
-            if (BundleParser != null)
-                BundleParser.Dispose(false);
+            if (Bundle != null && RefCount<=0)
+            {
+                Bundle.Unload(true);
+            }
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             if (_depLoaders != null && _depLoaders.Length > 0)
             {
                 foreach (var depLoader in _depLoaders)
                 {
+                    if (depLoader.Bundle != null && depLoader.RefCount<=0) 
+                        depLoader.Bundle.Unload(true);
                     depLoader.Release();
                 }
             }

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.IO;
 using KEngine;
 using KEngine.Editor;
-using KEngine.UI;
 using KSFramework.Editor;
 using UnityEditor;
 
@@ -269,6 +267,10 @@ public class KQuickWindowEditor : EditorWindow
         if (GUILayout.Button("Dump", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             KProfiler.Dump();
+        }
+        if (GUILayout.Button("打开AB加载耗时记录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            OpenFolder(Application.persistentDataPath);
         }
 
 

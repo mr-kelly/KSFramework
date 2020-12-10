@@ -161,7 +161,7 @@ namespace KEngine
         {
             IsRootUser = KTool.HasWriteAccessToFolder(Application.dataPath); // Root User运行时，能穿越沙盒写DataPath, 以此为依据
 
-            if (Debug.isDebugBuild)
+            if (AppConfig.IsLogDeviceInfo)
             {
                 Log.Info("====================================================================================");
                 Log.Info("Application.platform = {0}", Application.platform);

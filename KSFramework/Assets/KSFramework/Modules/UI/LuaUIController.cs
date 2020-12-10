@@ -22,8 +22,8 @@ namespace KSFramework
 
         LuaTable _luaTable;
 
-        public static int sortOrder = 1;
-        public Canvas canvas;
+       
+      
         /// <summary>
         /// Lua Script for this UI 's path
         /// </summary>
@@ -38,18 +38,9 @@ namespace KSFramework
         
         public override void OnInit()
         {
-#if !DEBUG_DISABLE
-            float timer = Time.realtimeSinceStartup;
-#endif
-            canvas = GetComponent<Canvas>();
-           
             base.OnInit();
-
             if (!CheckInitScript(true))
                 return;
-#if !DEBUG_DISABLE
-            LogFileRecorder.WriteProfileLog("UI", string.Format("{0},OnInit,{1:0.000}", UIName, (Time.realtimeSinceStartup - timer) * 1000));
-#endif
         }
 
         /// <summary>
@@ -58,16 +49,6 @@ namespace KSFramework
         /// <param name="args"></param>
         public override void OnOpen(params object[] args)
         {
-#if !DEBUG_DISABLE
-            float timer = Time.realtimeSinceStartup;
-#endif
-            if (sortOrder >= int.MaxValue)
-            {
-                sortOrder = 0;
-            }
-            canvas.sortingOrder = sortOrder++;
-            
-            // 编辑器模式下，记录
             LastOnOpenArgs = args;
 
             base.OnOpen(args);
@@ -92,9 +73,6 @@ namespace KSFramework
             }
 
             (onOpenFuncObj as LuaFunction).Call(newArgs);
-#if !DEBUG_DISABLE
-            LogFileRecorder.WriteProfileLog("UI", string.Format("{0},OnOpen,{1:0.000}", UIName, (Time.realtimeSinceStartup - timer) * 1000));
-#endif
         }
 
         public override void OnClose()
@@ -115,11 +93,15 @@ namespace KSFramework
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            var destroyFunc = _luaTable.Get<LuaFunction>("OnDestroy");
-            if (destroyFunc != null)
+            if (_luaTable != null)
             {
-                (destroyFunc as LuaFunction).Call(_luaTable);
+                var destroyFunc = _luaTable.Get<LuaFunction>("OnDestroy");
+                if (destroyFunc != null)
+                {
+                    (destroyFunc as LuaFunction).Call(_luaTable);
+                }
             }
+            _luaTable = null;
         }
 
         /// <summary>
@@ -178,6 +160,8 @@ namespace KSFramework
             return true;
         }
 
+        #region Setoutlet
+        
         public void SetOutlet(LuaTable _luaTable)
         {
             if (_luaTable != null)
@@ -308,27 +292,27 @@ namespace KSFramework
                 }
             }
         }
-
-        public UnityEngine.Object GetControl(string typeName, string uri, Transform findTrans)
+        
+        #endregion
+        
+        public UnityEngine.Object FindChild(string typeName, string uri, Transform findTrans)
         {
-            return GetControl(typeName, uri, findTrans);
+            return FindChild(typeName, uri, findTrans);
         }
 
-        public UnityEngine.Object GetControl(string typeName, string uri)
+        public UnityEngine.Object FindChild(string typeName, string uri)
         {
-            return GetControl(typeName, uri, null, true);
+            return FindChild(typeName, uri, null, true);
         }
 
-        public UnityEngine.Object GetControl(string typeName, string uri, Transform findTrans, bool isLog)
+        public UnityEngine.Object FindChild(string typeName, string uri, Transform findTrans, bool raise_error)
         {
             if (findTrans == null)
                 findTrans = transform;
 
-            Transform trans = findTrans.Find(uri);
+            Transform trans = findTrans.FindChildX(uri,false,raise_error);
             if (trans == null)
             {
-                if (isLog)
-                    Log.LogError("Get UI<{0}> Control Error: " + uri, this);
                 return null;
             }
 

@@ -90,7 +90,7 @@ namespace KEngine
 
             return KResourceModule.IsResourceExist(KResourceModule.BundlesPathRelative  + url.ToLower() + AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt));
         }
-        protected override void Init(string url, params object[] args)
+        public override void Init(string url, params object[] args)
         {
             var loaderMode = (LoaderMode)args[0];
 
@@ -208,7 +208,8 @@ namespace KEngine
                 }
 #endif
 
-                KResourceModule.LogLoadTime("AssetFileBridge", path, beginTime);
+                if(AppConfig.IsLogAbLoadCost)
+                    Log.Info("[Load] {0}, {1}, {2}s", "AssetFileBridge", path, (System.DateTime.Now - beginTime).TotalSeconds);
 
                 if (getAsset == null)
                 {
@@ -217,7 +218,7 @@ namespace KEngine
 
             }
 
-            if (Application.isEditor)
+            if (AppConfig.UseAssetDebugger)
             {
                 if (getAsset != null)
                     KResoourceLoadedAssetDebugger.Create(getAsset.GetType().Name, Url, getAsset as Object);

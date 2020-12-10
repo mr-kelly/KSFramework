@@ -8,6 +8,13 @@ namespace KEngine
 {
     public class LogFileRecorder
     {
+        public enum UIState
+        {
+            LoadAB = 0,
+            LoadAsset,
+            OnInit,
+            OnOpen
+        }
         private StreamWriter writer;
         /// <summary>
         /// 初始化记录器，在游戏退出时调用Close
@@ -54,22 +61,44 @@ namespace KEngine
             }
         }
         
+        /// <summary>
+        /// 保存UI的一些数据到文件中
+        /// </summary>
+        public static void WriteUILog(string uiName,UIState state, float time)
+        {
+            LogFileRecorder logger;
+            var logType = "ui";
+            if (!loggers.TryGetValue(logType, out logger))
+            {
+                logger = new LogFileRecorder(Application.persistentDataPath + $"/profiler_ui_{DateTime.Now.ToString("yyyy-M-d HH.mm.ss")}.csv");
+                loggers.Add(logType, logger);
+                logger.WriteLine("UI名字,操作(函数),耗时(ms)");
+            }
+
+            logger.WriteLine(string.Format("{0},{1},{2:0.###}",uiName,state,time));
+        }
+        
+        public static void WriteLoadAbLog(string abName,float time)
+        {
+            LogFileRecorder logger;
+            var logType = "loadab";
+            if (!loggers.TryGetValue(logType, out logger))
+            {
+                logger = new LogFileRecorder(Application.persistentDataPath + $"/profiler_loadab_{DateTime.Now.ToString("yyyy-M-d HH.mm.ss")}.csv");
+                loggers.Add(logType, logger);
+                logger.WriteLine("AB资源,耗时");
+            }
+
+            logger.WriteLine(string.Format("{0},{1:0.###}",abName,time));
+        }
+
         public static void WriteProfileLog(string logType, string line)
         {
             LogFileRecorder logger;
             if (!loggers.TryGetValue(logType, out logger))
             {
-                logger = new LogFileRecorder(Application.persistentDataPath + "/profiler_" + logType + ".csv");
+                logger = new LogFileRecorder(Application.persistentDataPath + $"/profiler_{logType}_{DateTime.Now.ToString("yyyy-M-d HH.mm.ss")}.csv");
                 loggers.Add(logType, logger);
-
-                if (logType == "UI")
-                {
-                    logger.WriteLine("UI Name,Operation,Cost(ms)");
-                }
-                else
-                {
-                    logger.WriteLine("");
-                }
             }
 
             logger.WriteLine(line);

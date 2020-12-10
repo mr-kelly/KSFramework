@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2015 KEngine / Kelly <http://github.com/mr-kelly>, All rights reserved.
+﻿#region Copyright (c) 2015 KEngine / Kelly <http: //github.com/mr-kelly>, All rights reserved.
 
 // KEngine - Toolset and framework for Unity3D
 // ===================================
@@ -25,6 +25,7 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
 
@@ -38,6 +39,7 @@ namespace KEngine
         private string _sceneName;
 
         private string _loadedSceneName;
+
         public override float Progress
         {
             get { return _assetFileBridge.Progress; }
@@ -55,9 +57,9 @@ namespace KEngine
         {
             if (preSceneLoader != null)
             {
-//                preSceneLoader.FullClear = true;
-//                preSceneLoader._assetFileBridge.FullClear = true;
-//                preSceneLoader.Release();
+                //preSceneLoader.UnloadAB = true;
+                //preSceneLoader._assetFileBridge.UnloadAB = true;
+                preSceneLoader.Release();
                 preSceneLoader._loadedSceneName = string.Empty;
                 UnityEngine.SceneManagement.SceneManager.UnloadScene(preSceneLoader.SceneName);
                 preSceneLoader = null;
@@ -73,16 +75,17 @@ namespace KEngine
             {
                 newCallback = (isOk, obj) => callback(isOk);
             }
+
             var loader = AutoNew<SceneLoader>(url, newCallback, true, mode);
             preSceneLoader = loader;
             return preSceneLoader;
         }
 
-        protected override void Init(string url, params object[] args)
+        public override void Init(string url, params object[] args)
         {
             base.Init(url, args);
 
-            _mode = (LoaderMode)args[0];
+            _mode = (LoaderMode) args[0];
             _url = url;
             _sceneName = Path.GetFileNameWithoutExtension(_url);
             KResourceModule.Instance.StartCoroutine(Start());
@@ -90,13 +93,13 @@ namespace KEngine
 
         IEnumerator Start()
         {
-            _assetFileBridge = AssetFileLoader.Load(_url, (bool isOk, UnityEngine.Object obj) => { },
-                _mode);
+            _assetFileBridge = AssetFileLoader.Load(_url, (bool isOk, UnityEngine.Object obj) => { }, _mode);
 
             while (!_assetFileBridge.IsCompleted)
             {
                 yield return null;
             }
+
             if (_assetFileBridge.IsError)
             {
                 Log.Error("[SceneLoader]Load SceneLoader Failed(Error) when Finished: {0}", _url);
@@ -109,12 +112,12 @@ namespace KEngine
             Debuger.Assert(_assetFileBridge.Asset);
             _loadedSceneName = _sceneName;
             if (_mode == LoaderMode.Sync)
-            {    UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneName,
-                    UnityEngine.SceneManagement.LoadSceneMode.Additive);
+            {
+                SceneManager.LoadScene(_sceneName,LoadSceneMode.Additive);
             }
             else
             {
-                var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+                var op = SceneManager.LoadSceneAsync(_sceneName, LoadSceneMode.Additive);
                 while (!op.isDone)
                 {
                     yield return null;
@@ -125,7 +128,6 @@ namespace KEngine
                 KResourceModule.Instance.StartCoroutine(EditorLoadSceneBugFix(null));
 
             OnFinish(_assetFileBridge);
-
         }
 
 
@@ -141,6 +143,7 @@ namespace KEngine
                 while (!op.isDone)
                     yield return null;
             }
+
             yield return null; // one more frame
 
             RefreshAllMaterialsShaders();
@@ -162,11 +165,12 @@ namespace KEngine
         {
             base.DoDispose();
             _assetFileBridge.Release();
-            if(_loadedSceneName == _sceneName)
+            if (_loadedSceneName == _sceneName)
             {
-            UnityEngine.SceneManagement.SceneManager.UnloadScene(_sceneName);
+                SceneManager.UnloadSceneAsync(_sceneName);
             }
         }
+
         protected override void OnReadyDisposed()
         {
             base.OnReadyDisposed();

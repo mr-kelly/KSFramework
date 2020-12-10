@@ -35,7 +35,7 @@ namespace KEngine
     /// <summary>
     /// 读取字节，调用WWW, 会自动识别Product/Bundles/Platform目录和StreamingAssets路径
     /// </summary>
-    public class HotBytesLoader : AbstractResourceLoader
+    public class KBytesLoader : AbstractResourceLoader
     {
         public byte[] Bytes { get; private set; }
 
@@ -46,9 +46,9 @@ namespace KEngine
 
         private LoaderMode _loaderMode;
 
-        public static HotBytesLoader Load(string path, LoaderMode loaderMode)
+        public static KBytesLoader Load(string path, LoaderMode loaderMode)
         {
-            var newLoader = AutoNew<HotBytesLoader>(path, null, false, loaderMode);
+            var newLoader = AutoNew<KBytesLoader>(path, null, false, loaderMode);
             return newLoader;
         }
 
@@ -65,8 +65,7 @@ namespace KEngine
             var getResPathType = KResourceModule.GetResourceFullPath(url, false, out fullUrl);
             if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
             {
-                if (Debug.isDebugBuild)
-                    Log.Error("[HotBytesLoader]Error Path: {0}", url);
+                Log.Error("[HotBytesLoader]Error Path: {0}", url);
                 return null;
             }
 
@@ -98,12 +97,10 @@ namespace KEngine
             }
             else
             {
-
                 var getResPathType = KResourceModule.GetResourceFullPath(url, _loaderMode == LoaderMode.Async, out _fullUrl);
                 if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
                 {
-                    if (Debug.isDebugBuild)
-                        Log.Error("[HotBytesLoader]Error Path: {0}", url);
+                    Log.Error("[HotBytesLoader]Error Path: {0}", url);
                     OnFinish(null);
                     yield break;
                 }
@@ -142,7 +139,7 @@ namespace KEngine
             }
         }
 
-        protected override void Init(string url, params object[] args)
+        public override void Init(string url, params object[] args)
         {
             base.Init(url, args);
 

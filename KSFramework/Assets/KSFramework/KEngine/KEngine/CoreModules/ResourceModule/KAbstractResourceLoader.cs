@@ -38,52 +38,7 @@ namespace KEngine
     public abstract class AbstractResourceLoader : IAsyncObject
     {
         public delegate void LoaderDelgate(bool isOk, object resultObject);
-
-        private static readonly Dictionary<Type, Dictionary<string, AbstractResourceLoader>> _loadersPool =
-            new Dictionary<Type, Dictionary<string, AbstractResourceLoader>>();
-
-        private readonly List<LoaderDelgate> _afterFinishedCallbacks = new List<LoaderDelgate>();
-
-        #region 垃圾回收 Garbage Collect
-
-        /// <summary>
-        /// Loader延迟Dispose
-        /// </summary>
-        private const float LoaderDisposeTime = 0;
-
-        /// <summary>
-        /// 间隔多少秒做一次GC(在AutoNew时)
-        /// </summary>
-        public static float GcIntervalTime
-        {
-            get
-            {
-                if (Application.platform == RuntimePlatform.WindowsEditor ||
-                    Application.platform == RuntimePlatform.OSXEditor)
-                    return 1f;
-
-                return Debug.isDebugBuild ? 5f : 10f;
-            }
-        }
-
-        /// <summary>
-        /// 上次做GC的时间
-        /// </summary>
-        private static float _lastGcTime = -1;
-
-        /// <summary>
-        /// 缓存起来要删掉的，供DoGarbageCollect函数用, 避免重复的new List
-        /// </summary>
-        private static readonly List<AbstractResourceLoader> CacheLoaderToRemoveFromUnUsed =
-            new List<AbstractResourceLoader>();
-
-        /// <summary>
-        /// 进行垃圾回收
-        /// </summary>
-        internal static readonly Dictionary<AbstractResourceLoader, float> UnUsesLoaders =
-            new Dictionary<AbstractResourceLoader, float>();
-
-        #endregion
+        private readonly List<AbstractResourceLoader.LoaderDelgate> _afterFinishedCallbacks = new List<AbstractResourceLoader.LoaderDelgate>();
 
         /// <summary>
         /// 最终加载结果的资源
@@ -131,7 +86,7 @@ namespace KEngine
         /// <summary>
         /// ForceNew的，非AutoNew
         /// </summary>
-        protected bool IsForceNew;
+        public bool IsForceNew;
 
         /// <summary>
         /// RefCount 为 0，进入预备状态
@@ -163,7 +118,17 @@ namespace KEngine
         /// <summary>
         /// 引用计数
         /// </summary>
-        public int RefCount { get; private set; }
+        private int refCount = 0;
+
+        public int RefCount
+        {
+            get { return refCount; }
+            set
+            {
+                //if(Application.isEditor && !string.IsNullOrEmpty(Url)) Log.Info($"{Url} ,refCount:{refCount}->{value}");
+                refCount = value;
+            }
+        }
 
         public string Url { get; private set; }
 
@@ -191,32 +156,6 @@ namespace KEngine
             }
         }
 
-        protected static int GetCount<T>()
-        {
-            return GetTypeDict(typeof(T)).Count;
-        }
-
-        protected static Dictionary<string, AbstractResourceLoader> GetTypeDict(Type type)
-        {
-            Dictionary<string, AbstractResourceLoader> typesDict;
-            if (!_loadersPool.TryGetValue(type, out typesDict))
-            {
-                typesDict = _loadersPool[type] = new Dictionary<string, AbstractResourceLoader>();
-            }
-            return typesDict;
-        }
-
-        public static int GetRefCount<T>(string url)
-        {
-            var dict = GetTypeDict(typeof(T));
-            AbstractResourceLoader loader;
-            if (dict.TryGetValue(url, out loader))
-            {
-                return loader.RefCount;
-            }
-            return 0;
-        }
-
         /// <summary>
         /// 统一的对象工厂
         /// </summary>
@@ -228,14 +167,16 @@ namespace KEngine
         protected static T AutoNew<T>(string url, LoaderDelgate callback = null, bool forceCreateNew = false,
             params object[] initArgs) where T : AbstractResourceLoader, new()
         {
-            Dictionary<string, AbstractResourceLoader> typesDict = GetTypeDict(typeof(T));
-            AbstractResourceLoader loader;
             if (string.IsNullOrEmpty(url))
             {
                 Log.Error("[{0}:AutoNew]url为空", typeof(T));
+                return null;
             }
-
-            if (forceCreateNew || !typesDict.TryGetValue(url, out loader))
+            
+            Dictionary<string, AbstractResourceLoader> typesDict = ABManager.GetTypeDict(typeof(T));
+            AbstractResourceLoader loader;
+            typesDict.TryGetValue(url, out loader);
+            if (forceCreateNew || loader == null )
             {
                 loader = new T();
                 if (!forceCreateNew)
@@ -251,6 +192,10 @@ namespace KEngine
                     KResourceLoaderDebugger.Create(typeof(T).Name, url, loader);
                 }
             }
+            else if (loader != null && loader.IsCompleted && loader.IsError)
+            {
+                loader.Init(url,initArgs);
+            }
             else
             {
                 if (loader.RefCount < 0)
@@ -263,9 +208,9 @@ namespace KEngine
             loader.RefCount++;
 
             // RefCount++了，重新激活，在队列中准备清理的Loader
-            if (UnUsesLoaders.ContainsKey(loader))
+            if (ABManager.UnUsesLoaders.ContainsKey(loader))
             {
-                UnUsesLoaders.Remove(loader);
+                ABManager.UnUsesLoaders.Remove(loader);
                 loader.Revive();
             }
 
@@ -274,58 +219,12 @@ namespace KEngine
             return loader as T;
         }
 
-        /// <summary>
-        /// 是否进行垃圾收集
-        /// </summary>
-        public static void CheckGcCollect()
-        {
-            if (_lastGcTime.Equals(-1) || (Time.time - _lastGcTime) >= GcIntervalTime)
-            {
-                DoGarbageCollect();
-                _lastGcTime = Time.time;
-            }
-        }
-
-        /// <summary>
-        /// 进行垃圾回收
-        /// </summary>
-        internal static void DoGarbageCollect()
-        {
-            foreach (var kv in UnUsesLoaders)
-            {
-                var loader = kv.Key;
-                var time = kv.Value;
-                if ((Time.time - time) >= LoaderDisposeTime)
-                {
-                    CacheLoaderToRemoveFromUnUsed.Add(loader);
-                }
-            }
-
-            for (var i = CacheLoaderToRemoveFromUnUsed.Count - 1; i >= 0; i--)
-            {
-                try
-                {
-                    var loader = CacheLoaderToRemoveFromUnUsed[i];
-                    UnUsesLoaders.Remove(loader);
-                    CacheLoaderToRemoveFromUnUsed.RemoveAt(i);
-                    loader.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Log.LogException(e);
-                }
-            }
-
-            if (CacheLoaderToRemoveFromUnUsed.Count > 0)
-            {
-                Log.Error("[DoGarbageCollect]CacheLoaderToRemoveFromUnUsed muse be empty!!");
-            }
-        }
+      
 
         /// <summary>
         /// 复活
         /// </summary>
-        protected virtual void Revive()
+        public virtual void Revive()
         {
             IsReadyDisposed = false; // 复活！
         }
@@ -335,7 +234,7 @@ namespace KEngine
             RefCount = 0;
         }
 
-        protected virtual void Init(string url, params object[] args)
+        public virtual void Init(string url, params object[] args)
         {
             InitTiming = Time.realtimeSinceStartup;
             ResultObject = null;
@@ -349,43 +248,38 @@ namespace KEngine
 
         protected virtual void OnFinish(object resultObj)
         {
-//            Action doFinish = () =>
-//            {
-                // 如果ReadyDispose，无效！不用传入最终结果！
-                ResultObject = resultObj;
+            // 如果ReadyDispose，无效！不用传入最终结果！
+            ResultObject = resultObj;
 
-                // 如果ReadyDisposed, 依然会保存ResultObject, 但在回调时会失败~无回调对象
-                var callbackObject = !IsReadyDisposed ? ResultObject : null;
+            // 如果ReadyDisposed, 依然会保存ResultObject, 但在回调时会失败~无回调对象
+            var callbackObject = !IsReadyDisposed ? ResultObject : null;
 
-                FinishTiming = Time.realtimeSinceStartup;
-                Progress = 1;
-                IsError = callbackObject == null;
+            FinishTiming = Time.realtimeSinceStartup;
+            Progress = 1;
+            IsError = callbackObject == null;
 
-                IsCompleted = true;
-                DoCallback(IsSuccess, callbackObject);
+            IsCompleted = true;
+            DoCallback(IsSuccess, callbackObject);
 
-                if (IsReadyDisposed)
-                {
-                    //Dispose();
-                    Log.Trace("[BaseResourceLoader:OnFinish]时，准备Disposed {0}", Url);
-                }
-//            };
-//
-//            doFinish();
+            if (IsReadyDisposed)
+            {
+                //Dispose();
+                Log.Trace("[AbstractResourceLoader:OnFinish]时，准备Disposed {0}", Url);
+            }
         }
 
         /// <summary>
         /// 在IsFinisehd后悔执行的回调
         /// </summary>
         /// <param name="callback"></param>
-        protected void AddCallback(LoaderDelgate callback)
+        public void AddCallback(LoaderDelgate callback)
         {
             if (callback != null)
             {
                 if (IsCompleted)
                 {
                     if (ResultObject == null)
-                        Log.Warning("Null ResultAsset {0}", Url);
+                      Log.LogError("Null ResultAsset {0}", Url);
                     callback(ResultObject != null, ResultObject);
                 }
                 else
@@ -395,18 +289,13 @@ namespace KEngine
 
         protected void DoCallback(bool isOk, object resultObj)
         {
-            Action justDo = () =>
+            foreach (var callback in _afterFinishedCallbacks)
             {
-                foreach (var callback in _afterFinishedCallbacks)
-                    callback(isOk, resultObj);
-                _afterFinishedCallbacks.Clear();
-            };
-
-
-            {
-                justDo();
+                callback(isOk, resultObj);
             }
+            _afterFinishedCallbacks.Clear();
         }
+        
         /// <summary>
         /// 执行Release，并立刻触发残余清理
         /// </summary>
@@ -419,14 +308,15 @@ namespace KEngine
             Release();
 
             if (gcNow)
-                DoGarbageCollect();
+                ABManager.DoGarbageCollect();
         }
+        
         /// <summary>
         /// 释放资源，减少引用计数
         /// </summary>
         public virtual void Release()
         {
-            if (IsReadyDisposed && Debug.isDebugBuild)
+            if (IsReadyDisposed && AppConfig.IsLogAbInfo)
             {
                 Log.Warning("[{0}]Too many dipose! {1}, Count: {2}", GetType().Name, this.Url, RefCount);
             }
@@ -434,30 +324,26 @@ namespace KEngine
             RefCount--;
             if (RefCount <= 0)
             {
-                // TODO: 全部Loader整理好后再设这里吧
-                if (Debug.isDebugBuild)
+                if (AppConfig.IsLogAbInfo)
                 {
                     if (RefCount < 0)
                     {
-                        Log.Error("[{3}]RefCount< 0, {0} : {1}, NowRefCount: {2}, Will be fix to 0", GetType().Name,
-                            Url, RefCount, GetType());
+                        Log.Error("[{3}]RefCount< 0, {0} : {1}, NowRefCount: {2}, Will be fix to 0", GetType().Name,Url, RefCount, GetType());
 
                         RefCount = Mathf.Max(0, RefCount);
                     }
 
-                    if (UnUsesLoaders.ContainsKey(this))
+                    if (ABManager.UnUsesLoaders.ContainsKey(this))
                     {
                         Log.Error("[{1}]UnUsesLoader exists: {0}", this, GetType());
                     }
                 }
 
                 // 加入队列，准备Dispose
-                UnUsesLoaders[this] = Time.time;
+                ABManager.UnUsesLoaders[this] = Time.time;
 
                 IsReadyDisposed = true;
                 OnReadyDisposed();
-
-                //DoGarbageCollect();
             }
         }
 
@@ -472,7 +358,7 @@ namespace KEngine
         /// <summary>
         /// Dispose是有引用检查的， DoDispose一般用于继承重写
         /// </summary>
-        private void Dispose()
+        public void Dispose()
         {
             //RealDisposed = true;
 
@@ -482,7 +368,7 @@ namespace KEngine
             if (!IsForceNew)
             {
                 var type = GetType();
-                var typeDict = GetTypeDict(type);
+                var typeDict = ABManager.GetTypeDict(type);
                 //if (Url != null) // TODO: 以后去掉
                 {
                     var bRemove = typeDict.Remove(Url);

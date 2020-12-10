@@ -67,13 +67,6 @@ namespace KEngine
 
         public delegate void AsyncLoadABAssetDelegate(Object asset, object[] args);
 
-        public enum LoadingLogLevel
-        {
-            None,
-            ShowTime,
-            ShowDetail,
-        }
-
         public static KResourceQuality Quality = KResourceQuality.Sd;
 
         public static float TextureScale
@@ -89,12 +82,12 @@ namespace KEngine
             {
                 if (_Instance == null)
                 {
-                    GameObject resMgr = GameObject.Find("_ResourceModule_");
-                    if (resMgr == null)
-                    {
-                        resMgr = new GameObject("_ResourceModule_");
+                    // GameObject resMgr = GameObject.Find("_ResourceModule_");
+                    // if (resMgr == null)
+                    // {
+                        var resMgr = new GameObject("_ResourceModule_");
                         GameObject.DontDestroyOnLoad(resMgr);
-                    }
+                    // }
 
                     _Instance = resMgr.AddComponent<KResourceModule>();
                 }
@@ -103,7 +96,6 @@ namespace KEngine
         }
 
         public static bool LoadByQueue = false;
-        public static int LogLevel = (int)LoadingLogLevel.None;
 
         public static string BuildPlatformName
         {
@@ -165,7 +157,7 @@ namespace KEngine
         public static System.Func<string, string> CustomGetResourcesPath; // 自定义资源路径。。。
 
         /// <summary>
-        /// 统一在字符串后加上.box, 取决于配置的AssetBundle后缀
+        /// 统一在字符串后加上ab文件的后缀, 取决于配置的AssetBundle后缀
         /// </summary>
         /// <param name="path"></param>
         /// <param name="formats"></param>
@@ -222,8 +214,8 @@ namespace KEngine
         /// 根据相对路径，获取到StreamingAssets完整路径，或Resources中的路径
         /// </summary>
         /// <param name="url"></param>
+        /// <param name="withFileProtocol"></param>
         /// <param name="fullPath"></param>
-        /// <param name="inAppPathType"></param>
         /// <param name="isLog"></param>
         /// <returns></returns>
         public static GetResourceFullPathType GetResourceFullPath(string url, bool withFileProtocol, out string fullPath,
@@ -281,12 +273,14 @@ namespace KEngine
 
             return Application.persistentDataPath;
         }
-
+        /// <summary>
+        /// use AssetDatabase.LoadAssetAtPath insead of load asset bundle, editor only
+        /// </summary>
         public static bool IsEditorLoadAsset
         {
             get
             {
-                return AppEngine.GetConfig("KEngine", "IsEditorLoadAsset").ToInt32() != 0 && Application.isEditor;
+                return Application.isEditor && AppEngine.GetConfig("KEngine", "IsEditorLoadAsset").ToInt32() != 0 ;
             }
         }
 
@@ -380,9 +374,8 @@ namespace KEngine
         {
             if (_Instance != null)
                 Debuger.Assert(_Instance == this);
-
-            //InvokeRepeating("CheckGcCollect", 0f, 3f);
-            if (Debug.isDebugBuild)
+            
+            if (AppConfig.IsLogDeviceInfo)
             {
                 Log.Info("ResourceManager ApplicationPath: {0}", ApplicationPath);
                 Log.Info("ResourceManager ProductPathWithProtocol: {0}", ProductPathWithProtocol);
@@ -394,7 +387,8 @@ namespace KEngine
 
         private void Update()
         {
-            AbstractResourceLoader.CheckGcCollect();
+            //NOTE 在Unity2019中有渐近式GC，而此处不会调用GC.Collect，仅仅对已加载的ab进行检查是否需要Unload
+            ABManager.CheckGcCollect();
         }
 
         private static string _unityEditorEditorUserBuildSettingsActiveBuildTarget;
@@ -627,9 +621,7 @@ namespace KEngine
         /// <returns></returns>
         static void InitResourcePath()
         {
-
             string editorProductPath = EditorProductFullPath;
-
             BundlesPathRelative = string.Format("{0}/{1}/", BundlesDirName, GetBuildPlatformName());
             DocumentResourcesPath = FileProtocol + DocumentResourcesPathWithoutFileProtocol;
 
@@ -659,16 +651,15 @@ namespace KEngine
                     {
                         ApplicationPath = string.Concat("jar:", GetFileProtocol(), Application.dataPath, "!/assets");
                         ProductPathWithProtocol = string.Concat(ApplicationPath, "/");
-                        ProductPathWithoutFileProtocol = string.Concat(Application.dataPath,
-                            "!/assets/");
+                        ProductPathWithoutFileProtocol = string.Concat(Application.dataPath,  "!/assets/");
                         // 注意，StramingAsset在Android平台中，是在壓縮的apk里，不做文件檢查
                         // Resources folder
                     }
                     break;
                 case RuntimePlatform.IPhonePlayer:
                     {
-                        ApplicationPath =
-                            System.Uri.EscapeUriString(GetFileProtocol() + Application.streamingAssetsPath); // MacOSX下，带空格的文件夹，空格字符需要转义成%20
+                        // MacOSX下，带空格的文件夹，空格字符需要转义成%20
+                        ApplicationPath = System.Uri.EscapeUriString(GetFileProtocol() + Application.streamingAssetsPath); 
 
                         ProductPathWithProtocol = string.Format("{0}/", ApplicationPath);
                         // only iPhone need to Escape the fucking Url!!! other platform works without it!!! Keng Die!
@@ -683,34 +674,17 @@ namespace KEngine
                     break;
             }
         }
-
-        public static void LogRequest(string resType, string resPath)
-        {
-            if (LogLevel < (int)LoadingLogLevel.ShowDetail)
-                return;
-
-            Log.Info("[Request] {0}, {1}", resType, resPath);
-        }
-
-        public static void LogLoadTime(string resType, string resPath, System.DateTime begin)
-        {
-            if (LogLevel < (int)LoadingLogLevel.ShowTime)
-                return;
-
-            Log.Info("[Load] {0}, {1}, {2}s", resType, resPath, (System.DateTime.Now - begin).TotalSeconds);
-        }
-
+        
         /// <summary>
         /// Collect all KEngine's resource unused loaders
         /// </summary>
         public static void Collect()
         {
-            while (AbstractResourceLoader.UnUsesLoaders.Count > 0)
-                AbstractResourceLoader.DoGarbageCollect();
+            while (ABManager.UnUsesLoaders.Count > 0)
+                ABManager.DoGarbageCollect();
 
             Resources.UnloadUnusedAssets();
             System.GC.Collect();
-
         }
     }
 

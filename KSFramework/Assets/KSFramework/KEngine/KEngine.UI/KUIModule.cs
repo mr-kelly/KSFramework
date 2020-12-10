@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using KEngine;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace KEngine.UI
 {
@@ -37,15 +38,10 @@ namespace KEngine.UI
     {
         public UnityEngine.Object Asset;
     }
-
-    [Obsolete("Use UIModule instead of KUIModule")]
-    public class KUIModule : UIModule
-    {
-
-    }
-
+    
     /// <summary>
     /// UI Module
+    /// TODO UI可自定义资源名和lua脚本路径，需要先创建脚本对象，再根据脚本中的值进行加载资源
     /// </summary>
     public class UIModule
     {
@@ -59,11 +55,11 @@ namespace KEngine.UI
             get { return _InstanceClass._Instance; }
         }
 
+       
+        private int _loadingUICount = 0;
         /// <summary>
         /// 正在加载的UI统计
         /// </summary>
-        private int _loadingUICount = 0;
-
         public int LoadingUICount
         {
             get { return _loadingUICount; }
@@ -76,9 +72,9 @@ namespace KEngine.UI
 
 
         /// <summary>
-        /// A bridge for different UI System, for instance, you can use NGUI or EZGUI or etc.. UI Plugin through UIBridge
+        /// A bridge for different UI System, for instance, you can use NGUI or EZGUI or UGUI etc.. UI Plugin through UIBridge
         /// </summary>
-        public IUIBridge UiBridge;
+        public GUIBridge UiBridge;
 
         public Dictionary<string, UILoadState> UIWindows = new Dictionary<string, UILoadState>();
 
@@ -86,48 +82,21 @@ namespace KEngine.UI
 
         public static Action<UIController> OnOpenEvent;
         public static Action<UIController> OnCloseEvent;
+        /// <summary>
+        /// 每个界面打开都会+1，新打开的界面始终在最顶层
+        /// </summary>
+        public static int sortOrder = 0;
 
+        
         public UIModule()
         {
+            UiBridge = new GUIBridge();
             var configUiBridge = AppEngine.GetConfig("KEngine.UI", "UIModuleBridge");
-
-            if (!string.IsNullOrEmpty(configUiBridge))
-            {
-                var uiBridgeTypeName = string.Format("{0}", configUiBridge);
-                var uiBridgeType = KTool.FindType(uiBridgeTypeName);
-                if (uiBridgeType != null)
-                {
-                    UiBridge = Activator.CreateInstance(uiBridgeType) as IUIBridge;
-                    Log.Debug("Use UI Bridge: {0}", uiBridgeType);
-                }
-                else
-                {
-                    Log.Error("Cannot find UIBridge Type: {0}", uiBridgeTypeName);
-                }
-            }
-
-            if (UiBridge == null)
-            {
-                UiBridge = new UGUIBridge();
-            }
-
+            UiBridge.IsLuaBridge = !string.IsNullOrEmpty(configUiBridge) && configUiBridge.Contains("Lua");
             UiBridge.InitBridge();
             CreateRoot();
         }
-
-//        [Obsolete("Use string ui name instead for more flexible!")]
-//        public UILoadState OpenWindow(Type type, params object[] args)
-//        {
-//            string uiName = type.Name.Remove(0, 3); // 去掉"CUI"
-//            return OpenWindow(uiName, args);
-//        }
-//
-//        [Obsolete("Use string ui name instead for more flexible!")]
-//        public UILoadState OpenWindow<T>(params object[] args) where T : UIController
-//        {
-//            return OpenWindow(typeof(T), args);
-//        }
-
+        
         #region UI根节点初始化
 
         public GameObject UIRoot { get; private set; }
@@ -193,6 +162,9 @@ namespace KEngine.UI
         }
         
         #endregion
+
+        #region 预加载
+        
         public UILoadState PreLoadUIWindow(string uiTemplateName, bool isOnInit = false,params object[] args)
         {
             UILoadState uiState;
@@ -223,7 +195,7 @@ namespace KEngine.UI
             if (uiState.UIResourceLoader != null)
             {
                 uiState.UIResourceLoader.Release(true);// now!
-                Log.Info("Release UI ResourceLoader: {0}", uiState.UIResourceLoader.Url);
+                if(AppConfig.IsLogAbInfo) Log.Info("Release UI ResourceLoader: {0}", uiState.UIResourceLoader.Url);
                 uiState.UIResourceLoader = null;
             }
 
@@ -240,7 +212,11 @@ namespace KEngine.UI
                 uiObj.transform.localScale = Vector3.one;
                 // 具体加载逻辑结束...这段应该放到Bridge里
 
-                uiObj.SetActive(false);
+                var canvas = uiObj.GetComponent<Canvas>();
+                if (canvas)
+                    canvas.enabled = false;
+                else 
+                    uiObj.SetActiveX(false);
                 uiObj.name = uiState.TemplateName;
 
                 var uiBase = UiBridge.CreateUIController(uiObj, uiState.TemplateName);
@@ -259,8 +235,7 @@ namespace KEngine.UI
                 UiBridge.UIObjectFilter(uiBase, uiObj);
 
                 uiState.IsLoading = false; // Load完
-
-                uiBase.gameObject.SetActive(false);
+                
                 uiState.OnUIWindowLoadedCallbacks(uiState, uiBase);
 
                 if (uiState.OpenWhenFinish)
@@ -276,50 +251,54 @@ namespace KEngine.UI
 
             LoadingUICount--;
         }
+        
+        #endregion
 
-        // 打开窗口（非复制）
-        public UILoadState OpenWindow(string uiTemplateName, params object[] args)
+        #region 公共接口
+
+        /// <summary>
+        /// 打开窗口（非复制）
+        /// </summary>
+        /// <param name="uiName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public UILoadState OpenWindow(string uiName, params object[] args)
         {
-            //TODO UI可自定义资源名和lua脚本路径，需要先创建脚本对象，再根据脚本中的值进行加载资源
             UILoadState uiState;
-            if (!UIWindows.TryGetValue(uiTemplateName, out uiState))
+            if (!UIWindows.TryGetValue(uiName, out uiState))
             {
-                uiState = LoadWindow(uiTemplateName, true, args);
+                uiState = LoadWindow(uiName, true, args);
                 return uiState;
             }
 
             if (!uiState.isOnInit)
             {
                 uiState.isOnInit = true;
-                if (uiState.UIWindow != null) uiState.UIWindow.OnInit();
+                if (uiState.UIWindow != null)
+                {
+                    uiState.UIWindow.OnInit();
+                }
             }
             OnOpen(uiState, args);
             return uiState;
         }
-
-        // 隐藏时打开，打开时隐藏
-        public void ToggleWindow<T>(params object[] args)
+        
+        public void ToggleWindow(string uiName, params object[] args)
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"CUI"
-            ToggleWindow(uiName, args);
-        }
-
-        public void ToggleWindow(string name, params object[] args)
-        {
-            if (IsOpen(name))
+            if (IsOpen(uiName))
             {
-                CloseWindow(name);
+                CloseWindow(uiName);
             }
             else
             {
-                OpenWindow(name, args);
+                OpenWindow(uiName, args);
             }
         }
 
         /// <summary>
         /// // Dynamic动态窗口，复制基准面板
         /// </summary>
-        public UILoadState OpenDynamicWindow(string template, string instanceName, params object[] args)
+        public UILoadState OpenDynamicWindow(string uiName, string instanceName, params object[] args)
         {
             UILoadState uiState = _GetUIState(instanceName);
             if (uiState != null)
@@ -331,7 +310,7 @@ namespace KEngine.UI
             UILoadState uiInstanceState;
             if (!UIWindows.TryGetValue(instanceName, out uiInstanceState)) // 实例创建
             {
-                uiInstanceState = new UILoadState(template, instanceName);
+                uiInstanceState = new UILoadState(uiName, instanceName);
                 uiInstanceState.IsStaticUI = false;
                 uiInstanceState.IsLoading = true;
                 uiInstanceState.UIWindow = null;
@@ -340,16 +319,16 @@ namespace KEngine.UI
                 UIWindows[instanceName] = uiInstanceState;
             }
 
-            CallUI(template, (_ui, _args) =>
+            CallUI(uiName, (_ui, _args) =>
             {
                 // _args useless
 
 					UILoadState newUiInstanceState = _GetUIState(instanceName);
-					UILoadState templateState = _GetUIState(template);
+					UILoadState templateState = _GetUIState(uiName);
 
                 // 组合template和name的参数 和args外部参数
 					object[] totalArgs = new object[newUiInstanceState.OpenArgs.Length + 2];
-                	totalArgs[0] = template;
+                	totalArgs[0] = uiName;
 	                totalArgs[1] = instanceName;
 					newUiInstanceState.OpenArgs.CopyTo(totalArgs, 2);
 
@@ -384,51 +363,43 @@ namespace KEngine.UI
                 originArgs[i - 2] = _args[i];
             InitWindow(instanceUIState, uiBase, instanceUIState.OpenWhenFinish, originArgs);
         }
+        
 
-        public void CloseWindow(Type t)
-        {
-            CloseWindow(t.Name.Remove(0, 3)); // XUI remove
-        }
-
-        public void CloseWindow<T>()
-        {
-            CloseWindow(typeof(T));
-        }
-
-        public void CloseWindow(string name)
+        public void CloseWindow(string uiName)
         {
             UILoadState uiState;
-            if (!UIWindows.TryGetValue(name, out uiState))
+            if (!UIWindows.TryGetValue(uiName, out uiState))
             {
                 if (Debug.isDebugBuild)
-                    Log.Warning("[CloseWindow]没有加载的UIWindow: {0}", name);
+                    Log.Warning("[CloseWindow]没有加载的UIWindow: {0}", uiName);
                 return; // 未开始Load
             }
 
             if (uiState.IsLoading) // Loading中
             {
                 if (Debug.isDebugBuild)
-                    Log.Info("[CloseWindow]IsLoading的{0}", name);
+                    Log.Info("[CloseWindow]IsLoading的{0}", uiName);
                 uiState.OpenWhenFinish = false;
                 return;
             }
 
-//            Action doCloseAction = () =>
-//            {
-                uiState.UIWindow.gameObject.SetActive(false);
+            if (uiState.UIWindow.Canvas != null)
+            {
+                uiState.UIWindow.Canvas.enabled = false;
+            }
+            else
+            {
+                uiState.UIWindow.SetActive(false);
+            }
+            uiState.UIWindow.OnClose();
 
-                uiState.UIWindow.OnClose();
+            if (OnCloseEvent != null)
+                OnCloseEvent(uiState.UIWindow);
 
-                if (OnCloseEvent != null)
-                    OnCloseEvent(uiState.UIWindow);
-
-                if (!uiState.IsStaticUI)
-                {
-                    DestroyWindow(name);
-                }
-//            };
-
-//            doCloseAction();
+            if (!uiState.IsStaticUI)
+            {
+                DestroyWindow(uiName);
+            }
         }
 
         /// <summary>
@@ -450,8 +421,10 @@ namespace KEngine.UI
             foreach (string item in LoadList)
                 DestroyWindow(item, true);
         }
-        //NOTE 在非生成代码情况下,xlua无法访问Obsolete的方法
-        //[Obsolete("Deprecated: Please don't use this")]
+        
+        /// <summary>
+        /// 关闭全部界面
+        /// </summary>
         public void CloseAllWindows()
         {
             List<string> toCloses = new List<string>();
@@ -469,7 +442,42 @@ namespace KEngine.UI
                 CloseWindow(toCloses[i]);
             }
         }
+        
+        #endregion
+        
+        #region 泛形接口
 
+        //[Obsolete("Use string ui name instead for more flexible!")]
+        public UILoadState OpenWindow(Type type, params object[] args)
+        {
+            string uiName = type.Name.Remove(0, 3); // 去掉"KUI"
+            return OpenWindow(uiName, args);
+        }
+        
+        //[Obsolete("Use string ui name instead for more flexible!")]
+        public UILoadState OpenWindow<T>(params object[] args) where T : UIController
+        {
+            return OpenWindow(typeof(T), args);
+        }
+        
+        //隐藏时打开，打开时隐藏
+        public void ToggleWindow<T>(params object[] args)
+        {
+            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"KUI"
+            ToggleWindow(uiName, args);
+        }
+        
+        public void CloseWindow(Type t)
+        {
+            CloseWindow(t.Name.Remove(0, 3)); // KUI remove
+        }
+
+        public void CloseWindow<T>()
+        {
+            CloseWindow(typeof(T));
+        }
+        #endregion
+        
         private UILoadState _GetUIState(string name)
         {
             UILoadState uiState;
@@ -480,10 +488,10 @@ namespace KEngine.UI
             return null;
         }
 
-        private UIController GetUIBase(string name)
+        private UIController GetUIBase(string uiName)
         {
             UILoadState uiState;
-            UIWindows.TryGetValue(name, out uiState);
+            UIWindows.TryGetValue(uiName, out uiState);
             if (uiState != null && uiState.UIWindow != null)
                 return uiState.UIWindow;
 
@@ -492,47 +500,57 @@ namespace KEngine.UI
 
         public bool IsOpen<T>() where T : UIController
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"CUI"
+            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"KUI"
             return IsOpen(uiName);
         }
 
-        public bool IsOpen(string name)
+        public bool IsOpen(string uiName)
         {
-            UIController uiBase = GetUIBase(name);
-            return uiBase == null ? false : uiBase.gameObject.activeSelf;
+            UIController uiBase = GetUIBase(uiName);
+            if (uiBase != null)
+            {
+                if (uiBase.Canvas != null) 
+                    return uiBase.Canvas.enabled;
+                var gameObject = uiBase.gameObject;
+                return gameObject && gameObject.activeSelf;
+            }
+
+            return false;
         }
 
         public UIController GetOpenedWindow(string name)
         {
             UIController uiBase = GetUIBase(name);
-            if (uiBase != null && uiBase.gameObject.activeSelf) { return uiBase; }
+            if (uiBase != null)
+            {
+                if (uiBase.Canvas != null && uiBase.Canvas.enabled)
+                    return uiBase;
+                if (uiBase.gameObject && uiBase.gameObject.activeSelf)
+                    return uiBase;
+            }
             return null;
         }
 		
-        public bool IsLoad(string name)
+        public bool IsLoad(string uiName)
         {
-            if (UIWindows.ContainsKey(name))
-                return true;
-            return false;
+            return UIWindows.ContainsKey(uiName);
         }
 
-        public UILoadState LoadWindow(string windowTemplateName, bool openWhenFinish, params object[] args)
+        public UILoadState LoadWindow(string uiName, bool openWhenFinish, params object[] args)
         {
-            if (UIWindows.ContainsKey(windowTemplateName))
+            if (UIWindows.ContainsKey(uiName))
             {
-                Log.Error("[LoadWindow]多次重复LoadWindow: {0}", windowTemplateName);
+                Log.Error("[LoadWindow]多次重复LoadWindow: {0}", uiName);
             }
-            Debuger.Assert(!UIWindows.ContainsKey(windowTemplateName));
+            Debuger.Assert(!UIWindows.ContainsKey(uiName));
 
-            UILoadState openState = new UILoadState(windowTemplateName, windowTemplateName);
+            UILoadState openState = new UILoadState(uiName, uiName);
             openState.IsStaticUI = true;
             openState.OpenArgs = args;
-
-            //if (openState.IsLoading)
             openState.OpenWhenFinish = openWhenFinish;
 
-			UIWindows.Add(windowTemplateName, openState);
-            KResourceModule.Instance.StartCoroutine(LoadUIAssetBundle(windowTemplateName, openState));
+			UIWindows.Add(uiName, openState);
+            KResourceModule.Instance.StartCoroutine(LoadUIAssetBundle(uiName, openState));
 
             return openState;
         }
@@ -551,14 +569,15 @@ namespace KEngine.UI
             var request = new UILoadRequest();
             yield return KResourceModule.Instance.StartCoroutine(UiBridge.LoadUIAsset(openState, request));
 
-            GameObject uiObj = (GameObject)request.Asset;
+            GameObject uiObj = request.Asset as GameObject;
          
             if (uiObj != null)
             {
                 InitUIAsset(uiObj);
-                // 具体加载逻辑结束...这段应该放到Bridge里
+                // 具体加载逻辑结束
 
-                uiObj.SetActive(false);
+                var canvas = uiObj.GetComponent<Canvas>(); //设置Canvas的enable，减少SetActive的消耗
+                if (canvas) canvas.enabled = false;
                 uiObj.name = openState.TemplateName;
 
                 var uiBase = UiBridge.CreateUIController(uiObj, openState.TemplateName);
@@ -580,6 +599,10 @@ namespace KEngine.UI
                 openState.isOnInit = true;
                 InitWindow(openState, uiBase, openState.OpenWhenFinish, openState.OpenArgs);
             }
+            else
+            {
+                Log.LogError("load ui {0} result.Asset not a gameobject",name);
+            }
 
             LoadingUICount--;
 
@@ -591,25 +614,25 @@ namespace KEngine.UI
         /// Hot reload a ui asset bundle
         /// </summary>
         /// <param name="uiTemplateName"></param>
-        public UnityEngine.Coroutine ReloadWindow(string windowTemplateName, KCallback callback)
-        {
-            UILoadState uiState;
-            UIWindows.TryGetValue(windowTemplateName, out uiState);
-            if (uiState == null || uiState.UIWindow == null)
-            {
-                Log.Info("{0} has been destroyed", windowTemplateName);
-                return null;
-            }
-            return KResourceModule.Instance.StartCoroutine(LoadUIAssetBundle(windowTemplateName, uiState));
-        }
-
-        public void DestroyWindow(string uiTemplateName, bool destroyImmediate=false)
+        public UnityEngine.Coroutine ReloadWindow(string uiTemplateName, KCallback callback)
         {
             UILoadState uiState;
             UIWindows.TryGetValue(uiTemplateName, out uiState);
-            if (uiState == null || uiState.UIWindow == null)
+            if (uiState == null)
             {
                 Log.Info("{0} has been destroyed", uiTemplateName);
+                return null;
+            }
+            return KResourceModule.Instance.StartCoroutine(LoadUIAssetBundle(uiTemplateName, uiState));
+        }
+
+        public void DestroyWindow(string uiName, bool destroyImmediate=false)
+        {
+            UILoadState uiState;
+            UIWindows.TryGetValue(uiName, out uiState);
+            if (uiState == null || uiState.UIWindow == null)
+            {
+                Log.Info("{0} has been destroyed", uiName);
                 return;
             }
             if (destroyImmediate)
@@ -626,7 +649,7 @@ namespace KEngine.UI
                 uiState.UIResourceLoader.Release();
             uiState.UIWindow = null;
 
-            UIWindows.Remove(uiTemplateName);
+            UIWindows.Remove(uiName);
         }
 
         /// <summary>
@@ -634,17 +657,16 @@ namespace KEngine.UI
         /// 源起Loadindg UI， 在加载过程中，进度条设置方法会失效
         /// 如果是DynamicWindow,，使用前务必先要Open!
         /// </summary>
-        /// <param name="uiTemplateName"></param>
+        /// <param name="uiName"></param>
         /// <param name="callback"></param>
         /// <param name="args"></param>
-        public void CallUI(string uiTemplateName, Action<UIController, object[]> callback, params object[] args)
+        public void CallUI(string uiName, Action<UIController, object[]> callback, params object[] args)
         {
             Debuger.Assert(callback);
-
             UILoadState uiState;
-            if (!UIWindows.TryGetValue(uiTemplateName, out uiState))
+            if (!UIWindows.TryGetValue(uiName, out uiState))
             {
-                uiState = LoadWindow(uiTemplateName, false); // 加载，这样就有UIState了, 但注意因为没参数，不要随意执行OnOpen
+                uiState = LoadWindow(uiName, false); // 加载，这样就有UIState了, 但注意因为没参数，不要随意执行OnOpen
             }
 
             uiState.DoCallback(callback, args);
@@ -659,7 +681,6 @@ namespace KEngine.UI
         public void CallDynamicUI(string uiName, Action<UIController, object[]> callback, params object[] args)
         {
             Debuger.Assert(callback);
-
             UILoadState uiState;
             if (!UIWindows.TryGetValue(uiName, out uiState))
             {
@@ -681,7 +702,7 @@ namespace KEngine.UI
         [Obsolete("Use string ui name instead for more flexible!")]
         public void CallUI<T>(Action<T, object[]> callback, params object[] args) where T : UIController
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉 "XUI"
+            string uiName = typeof(T).Name.Remove(0, 3); // 去掉 "KUI"
 
             CallUI(uiName, (_uibase, _args) => { callback(_uibase as T, _args); }, args);
         }
@@ -696,42 +717,46 @@ namespace KEngine.UI
             }
 
             UIController uiBase = uiState.UIWindow;
+            if (uiBase.Canvas != null && uiBase.Canvas.enabled)
+            {
+                //已经打开无需再次打开
+				return;
+            }
 
-            //Action doOpenAction = () =>
-//            {
-                if (uiBase.gameObject.activeSelf)
+            uiBase.BeforeOpen(args, () =>
+            {
+                uiBase.gameObject.SetActiveX(true);
+                if (uiBase.Canvas)
                 {
-					uiBase.OnClose();
-
-					if (OnCloseEvent != null)
-						OnCloseEvent(uiBase);
+                    uiBase.Canvas.enabled = true;
+                    if (sortOrder >= int.MaxValue)
+                    {
+                        sortOrder = 0;
+                    }
+                    uiBase.Canvas.sortingOrder = sortOrder++;
                 }
 
-                uiBase.BeforeOpen(args, () =>
-                {
-                    uiBase.gameObject.SetActive(true);
-                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-                    stopwatch.Start();
-                    uiBase.OnOpen(args);
-                    stopwatch.Stop();
-                    Log.Debug("OnOpen UI {0}, cost {1}", uiBase.name, stopwatch.Elapsed.TotalMilliseconds*0.001f);
+                KProfiler.BeginWatch("UI.OnOpen");
+                uiBase.OnOpen(args);
+                var profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+                if (AppConfig.IsLogAbLoadCost && profilerData != null)
+                    LogFileRecorder.WriteUILog(uiBase.name, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
 
-                    if (OnOpenEvent != null)
-                        OnOpenEvent(uiBase);
-                });
-//            };
-
-            //            doOpenAction();
+                if (OnOpenEvent != null)
+                    OnOpenEvent(uiBase);
+            });
         }
 
 
         private void InitWindow(UILoadState uiState, UIController uiBase, bool open, params object[] args)
         {
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
+           KProfiler.BeginWatch("UI.Init");
             uiBase.OnInit();
-            stopwatch.Stop();
-            Log.Debug("OnInit UI {0}, cost {1}", uiBase.name, stopwatch.Elapsed.TotalMilliseconds * 0.001f);
+            var profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.TemplateName,".OnInit"));
+            if (AppConfig.IsSaveAbLoadCost && profilerData != null)
+            {
+                LogFileRecorder.WriteUILog(uiState.TemplateName,LogFileRecorder.UIState.OnInit,profilerData.costTime);
+            }
             if (OnInitEvent != null)
                 OnInitEvent(uiBase);
             if (open)
@@ -748,7 +773,12 @@ namespace KEngine.UI
                 }
                 else
                 {
-                    uiBase.gameObject.SetActive(false);
+                    if(uiBase.Canvas!=null)
+                        uiBase.Canvas.enabled = false;
+                    else
+                    {
+                        uiBase.SetActive(false);
+                    }
                 }
             }
 

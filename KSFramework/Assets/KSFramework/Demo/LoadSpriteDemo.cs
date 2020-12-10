@@ -11,7 +11,7 @@ public class LoadSpriteDemo : MonoBehaviour
     public Button btnRelease, btnReleaseAtlas;
     private KSpriteAtlasLoader atlasLoader;
 
-    private Dictionary<string, SpriteLoader> spriteLoaders = new Dictionary<string, SpriteLoader>();
+    private Dictionary<string, AssetBundleLoader> spriteLoaders = new Dictionary<string, AssetBundleLoader>();
     public string[] iconNames = { "button_green", "button_red", "button_yellow" };
    
     // Use this for initialization
@@ -30,18 +30,19 @@ public class LoadSpriteDemo : MonoBehaviour
         {
             var selectName = iconNames[index];
             Log.Info("切换{0},{1}", selectName, index);
-            var spriteLoader = SpriteLoader.Load(string.Format("uiatlas/button/{0}.png", selectName), (isOk, loadSprite) =>
+            var spriteLoader = AssetBundleLoader.Load(string.Format("uiatlas/button/{0}.png", selectName), (isOk, ab) =>
          {
              if (isOk)
              {
-                 targetImage.sprite = loadSprite;
+                 var names = ab.GetAllAssetNames();
+                 targetImage.sprite = ab.LoadAssetAsync<Sprite>(names!=null && names.Length>=1?names[0]:"main").asset as Sprite;
                  targetImage.SetNativeSize();
                  Log.Info("图片加载完成:{0}", selectName);
              }
          });
-            if (!spriteLoaders.ContainsKey(spriteLoader.Path))
+            if (!spriteLoaders.ContainsKey(spriteLoader.Url))
             {
-                spriteLoaders.Add(spriteLoader.Path, spriteLoader);
+                spriteLoaders.Add(spriteLoader.Url, spriteLoader);
             }
         });
 
@@ -70,7 +71,7 @@ public class LoadSpriteDemo : MonoBehaviour
     {
         KAsync.Start().WaitForSeconds(5).Then(() =>
         {
-            foreach (KeyValuePair<string, SpriteLoader> keyValuePair in spriteLoaders)
+            foreach (KeyValuePair<string, AssetBundleLoader> keyValuePair in spriteLoaders)
             {
                 keyValuePair.Value.Release(true);
             }

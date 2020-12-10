@@ -45,7 +45,7 @@ namespace KEngine
             return AutoNew<KSpriteAtlasLoader>(path, newCallback);
         }
 
-        protected override void Init(string url, params object[] args)
+        public override void Init(string url, params object[] args)
         {
             base.Init(url, args);
             Path = url;

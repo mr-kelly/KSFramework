@@ -85,7 +85,7 @@ namespace KEngine
             return wwwLoader;
         }
 
-        protected override void Init(string url, params object[] args)
+        public override void Init(string url, params object[] args)
         {
             base.Init(url, args);
             WWWLoadersStack.Push(this); // 不执行开始加载，由www监控器协程控制
@@ -111,8 +111,7 @@ namespace KEngine
         /// <returns></returns>
         private IEnumerator CoLoad(string url)
         {
-            KResourceModule.LogRequest("WWW", url);
-            System.DateTime beginTime = System.DateTime.Now;
+            if(AppConfig.IsLogAbInfo)Log.Info("[Request] WWW, {1}", url);
 
             // 潜规则：不用LoadFromCache~它只能用在.assetBundle
             Www = new WWW(url);
@@ -156,7 +155,7 @@ namespace KEngine
             }
             else
             {
-                KResourceModule.LogLoadTime("WWW", url, beginTime);
+                
                 if (WWWFinishCallback != null)
                     WWWFinishCallback(url);
 
@@ -167,12 +166,12 @@ namespace KEngine
             // 预防WWW加载器永不反初始化, 造成内存泄露~
             if (Application.isEditor)
             {
-                while (GetCount<KWWWLoader>() > 0)
+                while (ABManager.GetCount<KWWWLoader>() > 0)
                     yield return null;
 
                 yield return new WaitForSeconds(5f);
 
-                while (Debug.isDebugBuild && !IsReadyDisposed)
+                while (!IsReadyDisposed)
                 {
                     Log.Error("[KWWWLoader]Not Disposed Yet! : {0}", this.Url);
                     yield return null;
@@ -210,7 +209,7 @@ namespace KEngine
             {
                 if (KResourceModule.LoadByQueue)
                 {
-                    while (GetCount<KWWWLoader>() != 0)
+                    while (ABManager.GetCount<KWWWLoader>() != 0)
                         yield return null;
                 }
                 while (WWWLoadingCount >= MAX_WWW_COUNT)

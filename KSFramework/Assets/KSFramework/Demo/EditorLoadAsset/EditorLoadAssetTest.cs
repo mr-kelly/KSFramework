@@ -6,89 +6,94 @@ using UnityEngine;
 
 public class EditorLoadAssetTest : MonoBehaviour
 {
-    private InstanceAssetLoader instanceLoader;
-    private StaticAssetLoader staticLoader;
+    private AssetBundleLoader loader_prefab;
+
+    public GameObject loadObj;
+    [SerializeField] public int 执行次数 = 20;
+
+    private WaitForSeconds _waitForSeconds;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(TestInstanceLoad());
+        _waitForSeconds = new WaitForSeconds(1);
+        StartCoroutine(TestLoadUI());
     }
 
-    IEnumerator TestInstanceLoad()
+    IEnumerator TestLoadUI()
     {
-        if (instanceLoader != null)
+        if (loader_prefab != null)
         {
-            Log.Debug("alread exist !");
+            Log.Info("alread exist !");
             yield break;
         }
 
         var path = "UI/Login.prefab";
-        instanceLoader = InstanceAssetLoader.Load(path);
-        while (!instanceLoader.IsCompleted)
+        loader_prefab = AssetBundleLoader.Load(path, (isOk, ab) =>
         {
-            yield return null;
-        }
-
-        Log.Debug("load complete");
-//        assetLoader.InstanceAsset.transform.SetParent(this.transform);
+            Log.Info("load complete");
+            if (isOk)
+            {
+                var request = ab.LoadAsset<GameObject>("Login");
+                loadObj = GameObject.Instantiate(request);
+                if (loadObj)
+                    loadObj.transform.SetParent(null);
+            }
+        });
     }
 
-    IEnumerator TestStaticLoad()
+    void UnLoadAB()
     {
-        if (staticLoader != null)
+        if (loader_prefab != null)
         {
-            Log.Debug("alread exist !");
-            yield break;
+            loader_prefab.Release();
+            loader_prefab = null;
+        }
+        else
+        {
+            Log.Info("please load");
         }
 
-        var path = "UI/Login.prefab";
-        staticLoader = StaticAssetLoader.Load(path);
-        while (!staticLoader.IsCompleted)
+        if (loadObj != null)
         {
+            GameObject.Destroy(loadObj);
+            loadObj = null;
+        }
+    }
+
+    IEnumerator LoopTest()
+    {
+        for (int i = 0; i < 执行次数; i++)
+        {
+            StartCoroutine(TestLoadUI());
+            yield return _waitForSeconds;
+            UnLoadAB();
             yield return null;
         }
-
-        Log.Debug("load complete");
+        
+        Log.Info( $"执行完成{执行次数}次");
     }
 
     private void OnGUI()
     {
-        if (GUILayout.Button("Instance Load", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
+        if (GUILayout.Button("加载Prefab", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
         {
-            StartCoroutine(TestInstanceLoad());
+            StartCoroutine(TestLoadUI());
         }
 
-        if (GUILayout.Button("Instance Release", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
+        if (GUILayout.Button("卸载Prefab", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
         {
-            if (instanceLoader != null)
-            {
-                instanceLoader.Release();
-                instanceLoader = null;
-            }
-            else
-            {
-                Log.Debug("please load");
-            }
+            UnLoadAB();
         }
 
-
-        if (GUILayout.Button("Static Load", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
+        if (GUILayout.Button($"执行{执行次数}次 加载->卸载", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
         {
-            StartCoroutine(TestStaticLoad());
+            StartCoroutine(LoopTest());
         }
-
-        if (GUILayout.Button("Static Release", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
+        
+        if (GUILayout.Button("加载不存在的资源", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
         {
-            if (staticLoader != null)
-            {
-                staticLoader.Release();
-                staticLoader = null;
-            }
-            else
-            {
-                Log.Debug("please load");
-            }
+            AssetBundleLoader.Load("aa/bb.ab");
         }
     }
 }
