@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using CSObjectWrapEditor;
@@ -11,10 +10,12 @@ using System;
 //using ICSharpCode.SharpZipLib.Zip;
 
 /// <summary>
-/// intellij idea智能提示
-/// form  w90ang@163.com(408880935)
-/// 使用说明：https://www.cnblogs.com/zhaoqingqing/p/7719376.html
-/// 1. 点击KEngine/Tools/生成Lua代码提示 2.在IDEA中设置添加UnityAPI目录的引用
+/// 在IDEA中为Lua提供C#中的API提示
+/// copyright  w90ang@163.com(408880935)
+/// 使用说明：
+///     1.点击KEngine/EmmyLua/生成Lua代码提示
+///     2.在IDEA中设置添加UnityAPI目录的引用
+///     教程：https://www.cnblogs.com/zhaoqingqing/p/7719376.html
 /// </summary>
 public class ExportIdeaLuaSyntax
 {
@@ -37,11 +38,11 @@ public class ExportIdeaLuaSyntax
         Extension,
     }
     /// <summary>
-    /// wrap文件生成文件夹
+    /// wrap文件保存的路径
     /// </summary>
     public static string IntellijLuaWrapPath = Application.dataPath + "/../UnityAPI/";
     /// <summary>
-    /// zip文件路径
+    /// zip文件保存的路径
     /// </summary>
     public static string IntellijLuaWrapZIPPath = Application.dataPath + "/../UnityAPI_xLua.zip";
 
@@ -166,7 +167,7 @@ public class ExportIdeaLuaSyntax
     /// <summary>
     /// 生成代码提示
     /// </summary>
-    [MenuItem("KEngine/Tools/为IntelliJ Idea生成代码提示", false, 10)]
+    [MenuItem("KEngine/EmmyLua/为Lua生成C#代码提示", false)]
     public static void GenIntellijLuaWrap()
     {
         s_type_has_extension_methods = null;
@@ -224,7 +225,7 @@ public class ExportIdeaLuaSyntax
         EditorUtility.ClearProgressBar();
     }
 
-    [MenuItem("KEngine/Tools/清除为IntelliJ Idea生成的代码提示", false, 11)]
+    [MenuItem("KEngine/EmmyLua/删除生成的提示代码", false)]
     public static void ClearIntellijLuaWrap()
     {
         if(Directory.Exists(IntellijLuaWrapPath))
