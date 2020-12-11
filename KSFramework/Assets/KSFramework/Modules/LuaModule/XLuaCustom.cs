@@ -38,7 +38,7 @@ namespace XLua
             {
                 KEngine.Log.Info("LUA: " + s);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //UnityEngine.Debug.LogError(ex.Message);
                 UnityEngine.Debug.Log("LUA: " + s);

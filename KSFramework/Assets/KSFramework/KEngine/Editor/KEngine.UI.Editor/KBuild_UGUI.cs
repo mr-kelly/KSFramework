@@ -93,7 +93,12 @@ namespace KEngine.Editor
             {
                 CheckUIRule(windowAsset);
                 var uiPrefabPath = uiPrefabDir + "/" + windowAsset.name + ".prefab";
+#if UNITY_2018_1_OR_NEWER
+                var prefab = PrefabUtility.SaveAsPrefabAssetAndConnect( windowAsset.gameObject,uiPrefabPath,InteractionMode.UserAction);
+#else
                 var prefab = PrefabUtility.CreatePrefab(uiPrefabPath, windowAsset.gameObject, ReplacePrefabOptions.Default);
+#endif
+                
                 EditorUtility.SetDirty(prefab);
                 
                 //NOTE 有同学反馈在unity2019.3.4下这里会导致unity卡死(我在2019.3.7未遇到)，如出现问题可注释这行

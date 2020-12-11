@@ -216,10 +216,9 @@ return $UI_NAME
                 var luaController = state.UIWindow as LuaUIController;
                 if (luaController)
                 {
-                    luaController.ClearLuaTableCache();
+                    luaController.ClearLuaTableCache(true);
                     luaController.OnInit();
                     luaController.OnOpen(luaController.LastOnOpenArgs);
-                    Log.Info("Reload Lua - {0}", uiName);
                 }
             }
             else
@@ -260,8 +259,7 @@ return $UI_NAME
                 var luaController = state.UIWindow as LuaUIController;
                 if (luaController != null)
                 {
-                    luaController.ClearLuaTableCache();
-                    Log.Info("Reload UI Lua - {0}", uiName);
+                    luaController.ClearLuaTableCache(true);
                 }
 
                 UIModule.Instance.ReloadWindow(uiName, (args, err) =>

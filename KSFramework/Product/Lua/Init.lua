@@ -1,12 +1,9 @@
-
 -- global variables / functions
 
 function import(filename)
     return CS.KSFramework.LuaModule.Instance:Import(filename)
 
 end
-
-
 
 -- simple class extends
 function extends(class, base)
@@ -29,6 +26,7 @@ function new(table, ctorFunc)
 
     return tb
 end
+---NOTE xlua中访问C#代码需要写完整的namespace
 ---@type KSFramework.Cookie
 Cookie = CS.KSFramework.Cookie
 ---@type KEngine.Log
@@ -55,3 +53,9 @@ import("CSharpBinding")
 --import lua config
 Billboard = import("configs/Billboard")
 print("Init.lua script finish!")
+--emmylua debug
+if Application.isEditor then
+    package.cpath = package.cpath .. ';C:/Users/qing/AppData/Roaming/JetBrains/IdeaIC2020.1/plugins/intellij-emmylua/classes/debugger/emmy/windows/x64/?.dll'
+    local dbg = require('emmy_core')
+    dbg.tcpListen('localhost', 9966)
+end 

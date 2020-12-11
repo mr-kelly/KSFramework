@@ -143,17 +143,20 @@ namespace KSFramework
                 _luaTable = newTableObj[0] as LuaTable;
 #endif
             }
-
-            SetOutlet(_luaTable);
+#if SLUA
+            SetOutlet_Slua(_luaTable);   
+#else
+             SetOutlet(_luaTable);
+#endif
             var luaInitObj = _luaTable.Get<LuaFunction>("OnInit");
             Debuger.Assert(luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
 
             // set table variable `Controller` to this
-            _luaTable["Controller"] = this;
-
 #if SLUA
-                (luaInitObj as LuaFunction).call(_luaTable, this);
+            _luaTable["Controller"] = this;
+            (luaInitObj as LuaFunction).call(_luaTable, this);
 #else
+            _luaTable.SetInPath("Controller", this);
             (luaInitObj as LuaFunction).Call(_luaTable, this);
 #endif
 
@@ -246,7 +249,8 @@ namespace KSFramework
 
             }
         }
-
+       
+#if SLUA
         //slua版本
         public void SetOutlet_Slua(LuaTable _luaTable)
         {
@@ -292,7 +296,7 @@ namespace KSFramework
                 }
             }
         }
-        
+        #endif
         #endregion
         
         public UnityEngine.Object FindChild(string typeName, string uri, Transform findTrans)
@@ -325,13 +329,13 @@ namespace KSFramework
         /// <summary>
         /// 清理Lua脚本缓存，下次执行时将重新加载Lua
         /// </summary>
-        public void ClearLuaTableCache()
+        public void ClearLuaTableCache(bool show_log = false)
         {
             _luaTable = null;
 
             var luaModule = KSGame.Instance.LuaModule;
             luaModule.ClearCache(UILuaPath);
-            Log.Warning("Reload Lua: {0}", UILuaPath);
+            if(Application.isEditor && show_log) Log.Info("Reload Lua: {0}", UILuaPath);
         }
 
     }

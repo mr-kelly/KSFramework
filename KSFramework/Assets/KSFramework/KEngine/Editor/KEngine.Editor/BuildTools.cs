@@ -179,7 +179,12 @@ namespace KEngine.Editor
                 BuildTarget.iOS,
                 BuildTarget.Android,
                 BuildTarget.StandaloneWindows,
-                BuildTarget.StandaloneOSXIntel,
+#if UNITY_2018_1_OR_NEWER
+                BuildTarget.StandaloneOSX,
+#else  
+               BuildTarget.StandaloneOSXIntel,
+#endif
+               
             };
 
             // Build all support platforms asset bundle

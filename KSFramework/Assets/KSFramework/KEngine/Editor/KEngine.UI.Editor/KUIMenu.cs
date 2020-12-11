@@ -12,7 +12,8 @@ namespace KEngine.Editor
     /// <summary>
     /// Author：qingqing.zhao (569032731@qq.com)
     /// Date：2020/12/7 20:12
-    /// Desc：   扩展UI菜单，包括重写Unity的UI右键菜单 
+    /// Desc：   扩展UI菜单，包括重写Unity的UI右键菜单
+    ///          如果遇到同名菜单，则在后面添加/创建，解决Unity的编译Warn: annot add menu item xxx.
     ///          来源：UnityEditor.UI/UI/MenuOptions.cs，如果没有 UnityEditor.DefaultControls(需要Unity2018.4)，或从对应的Unity版本UGUI源码中复制实现
     /// </summary>
     public class KUIMenu
@@ -103,19 +104,19 @@ namespace KEngine.Editor
             image.raycastTarget = true;
         }
 
-        [MenuItem(menu + "ScrollRect(水平列表)", false, 2062)]
+        [MenuItem(menu + "ScrollRect(水平列表)", false, 1002)]
         static public void AddScrollRectHorizontal(MenuCommand menuCommand)
         {
             AddScrollRect(menuCommand, typeof(HorizontalLayoutGroup));
         }
 
-        [MenuItem(menu + "ScrollRect(垂直列表)", false, 2062)]
+        [MenuItem(menu + "ScrollRect(垂直列表)", false, 1003)]
         static public void AddScrollRectVertical(MenuCommand menuCommand)
         {
             AddScrollRect(menuCommand, typeof(VerticalLayoutGroup));
         }
 
-        [MenuItem(menu + "ScrollRect(格子排列)", false, 2062)]
+        [MenuItem(menu + "ScrollRect(格子排列)", false, 1004)]
         static public void AddScrollRectGrid(MenuCommand menuCommand)
         {
             AddScrollRect(menuCommand, typeof(GridLayoutGroup));
@@ -302,7 +303,7 @@ namespace KEngine.Editor
 
         // Graphic elements
 
-        [MenuItem("GameObject/UI/Text", false, 2000)]
+        [MenuItem("GameObject/UI/Text/创建", false, 2000)]
         static public void AddText(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateText(GetStandardResources());
@@ -311,7 +312,7 @@ namespace KEngine.Editor
             lbl.raycastTarget = false;
         }
 
-        [MenuItem("GameObject/UI/Image", false, 2001)]
+        [MenuItem("GameObject/UI/Image/创建", false, 2001)]
         static public void AddImage(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateImage(GetStandardResources());
@@ -320,7 +321,7 @@ namespace KEngine.Editor
             image.raycastTarget = false;
         }
 
-        [MenuItem("GameObject/UI/Raw Image", false, 2002)]
+        [MenuItem("GameObject/UI/Raw Image/创建", false, 2002)]
         static public void AddRawImage(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateRawImage(GetStandardResources());
@@ -328,19 +329,19 @@ namespace KEngine.Editor
             var image = go.GetComponent<RawImage>();
             image.raycastTarget = false;
         }
-
+        
         // Controls
 
         // Button and toggle are controls you just click on.
 
-        [MenuItem("GameObject/UI/Button", false, 2030)]
+        //[MenuItem("GameObject/UI/Button", false, 2030)]
         static public void AddButton(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateButton(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
         }
 
-        [MenuItem("GameObject/UI/Toggle", false, 2031)]
+        //[MenuItem("GameObject/UI/Toggle", false, 2031)]
         static public void AddToggle(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateToggle(GetStandardResources());
@@ -349,14 +350,14 @@ namespace KEngine.Editor
 
         // Slider and Scrollbar modify a number
 
-        [MenuItem("GameObject/UI/Slider", false, 2033)]
+        //[MenuItem("GameObject/UI/Slider", false, 2033)]
         static public void AddSlider(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateSlider(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
         }
 
-        [MenuItem("GameObject/UI/Scrollbar", false, 2034)]
+        //[MenuItem("GameObject/UI/Scrollbar", false, 2034)]
         static public void AddScrollbar(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateScrollbar(GetStandardResources());
@@ -365,14 +366,14 @@ namespace KEngine.Editor
 
         // More advanced controls below
 
-        [MenuItem("GameObject/UI/Dropdown", false, 2035)]
+        //[MenuItem("GameObject/UI/Dropdown", false, 2035)]
         static public void AddDropdown(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateDropdown(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
         }
 
-        [MenuItem("GameObject/UI/Input Field", false, 2036)]
+        //[MenuItem("GameObject/UI/Input Field", false, 2036)]
         public static void AddInputField(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateInputField(GetStandardResources());
@@ -381,7 +382,7 @@ namespace KEngine.Editor
 
         // Containers
 
-        [MenuItem("GameObject/UI/Canvas", false, 2060)]
+        //[MenuItem("GameObject/UI/Canvas", false, 2060)]
         static public void AddCanvas(MenuCommand menuCommand)
         {
             var go = CreateNewUI();
@@ -398,7 +399,7 @@ namespace KEngine.Editor
             Selection.activeGameObject = go;
         }
 
-        [MenuItem("GameObject/UI/Panel", false, 2061)]
+        //[MenuItem("GameObject/UI/Panel", false, 2061)]
         static public void AddPanel(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreatePanel(GetStandardResources());
@@ -410,7 +411,7 @@ namespace KEngine.Editor
             rect.sizeDelta = Vector2.zero;
         }
 
-        [MenuItem("GameObject/UI/Scroll View", false, 2062)]
+        //[MenuItem("GameObject/UI/Scroll View", false, 2062)]
         static public void AddScrollView(MenuCommand menuCommand)
         {
             GameObject go = DefaultControls.CreateScrollView(GetStandardResources());
@@ -449,7 +450,7 @@ namespace KEngine.Editor
             return root;
         }
 
-        [MenuItem("GameObject/UI/Event System", false, 2100)]
+        //[MenuItem("GameObject/UI/Event System", false, 2100)]
         public static void CreateEventSystem(MenuCommand menuCommand)
         {
             GameObject parent = menuCommand.context as GameObject;

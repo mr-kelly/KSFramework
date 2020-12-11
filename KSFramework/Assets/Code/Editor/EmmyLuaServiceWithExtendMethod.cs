@@ -97,7 +97,7 @@ namespace EmmyLua
 				socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				socket.BeginConnect("127.0.0.1", PORT, OnConnect, socket);
 			}
-			catch (Exception e)
+			catch (Exception )
 			{
 				TryLater();
 			}
@@ -111,7 +111,7 @@ namespace EmmyLua
 				connected = true;
 				SendData(socket);
 			}
-			catch (Exception e)
+			catch (Exception )
 			{
 				TryLater();
 			}
@@ -196,7 +196,7 @@ namespace EmmyLua
 					var bytes = buf.GetBuffer();
 					socket.Send(bytes, 8, SocketFlags.None);
 				}
-				catch (Exception e)
+				catch (Exception )
 				{
 					TryLater();
 				}

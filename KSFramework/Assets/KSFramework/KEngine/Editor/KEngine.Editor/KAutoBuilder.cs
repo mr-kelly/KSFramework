@@ -124,9 +124,14 @@ namespace KEngine.Editor
         /// <param name="tag"></param>
         /// <param name="opt"></param>
         /// <returns></returns>
-        private static string PerformBuild(string outputpath, BuildTarget tag, BuildOptions opt)
+        private static string PerformBuild(string outputpath, BuildTargetGroup buildTargetGroup,BuildTarget tag, BuildOptions opt)
         {
-            EditorUserBuildSettings.SwitchActiveBuildTarget(tag);
+#if UNITY_2018_1_OR_NEWER
+            EditorUserBuildSettings.SwitchActiveBuildTarget( buildTargetGroup, tag);
+#else
+			EditorUserBuildSettings.SwitchActiveBuildTarget(tag);
+#endif
+           
 
             ParseArgs(ref opt, ref outputpath);
 
@@ -173,14 +178,14 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/WindowsX86 Dev")] 
         public static void PerformWinBuild()
         {
-            PerformBuild("Apps/Win_Dev/KSFramework_Dev.exe", BuildTarget.StandaloneWindows,
+            PerformBuild("Apps/Win_Dev/KSFramework_Dev.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows,
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
         [MenuItem("KEngine/AutoBuilder/WindowsX86")]
         public static void PerformWinReleaseBuild()
         {
-        	PerformBuild("Apps/Win/KSFramework.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+        	PerformBuild("Apps/Win/KSFramework.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
         }
 
         [MenuItem("KEngine/AutoBuilder/iOS")]
@@ -196,7 +201,7 @@ namespace KEngine.Editor
                 ? (BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler | BuildOptions.AcceptExternalModificationsToPlayer)
                 : BuildOptions.AcceptExternalModificationsToPlayer;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
-            return PerformBuild("Apps/IOSProjects/" + ipaName, BuildTarget.iOS, opt);
+            return PerformBuild("Apps/IOSProjects/" + ipaName, BuildTargetGroup.iOS,BuildTarget.iOS, opt);
 #else
             return PerformBuild("Apps/IOSProjects/" + ipaName, BuildTarget.iOS, opt);
 #endif
@@ -214,7 +219,7 @@ namespace KEngine.Editor
                 ? (BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler)
                 : BuildOptions.None;
             var path = string.Format("Apps/{0}/{1}.apk", "Android", apkName);
-            return PerformBuild(path, BuildTarget.Android, opt);
+            return PerformBuild(path,BuildTargetGroup.Android, BuildTarget.Android, opt);
         }
 
         [MenuItem("KEngine/Clear PC PersistentDataPath")]

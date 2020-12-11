@@ -32,7 +32,9 @@ namespace KEngine
             catch (IOException e)
             {
                 filePath = Path.GetDirectoryName(filePath) + "/" + Path.GetFileNameWithoutExtension(filePath) + "_" + (index++) + Path.GetExtension(filePath);
-				Debug.LogError(e.Message);
+				Debug.LogError(e.Message+" \n"+e.StackTrace);
+                var fs = new FileStream(filePath, mode);
+                writer = new StreamWriter(fs);
             }
         }
 
@@ -105,5 +107,61 @@ namespace KEngine
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// 监听Unity的日志事件
+    ///     用于在调试中写入Unity的所有日志到文件中
+    /// </summary>
+    public static class LogFileManager
+    {
+        static LogFileRecorder logWritter;
+
+        //把Unity所有的日志都保存起来
+        private static void OnLogCallback(string condition, string stackTrace, LogType type)
+        {
+            if (logWritter == null)
+            {
+                string filePath = "";
+                var logName = "/log_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".log";
+                switch (Application.platform)
+                {
+                    case RuntimePlatform.Android:
+                    case RuntimePlatform.IPhonePlayer:
+                        filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
+                        break;
+                    case RuntimePlatform.WindowsPlayer:
+                    case RuntimePlatform.WindowsEditor:
+                    case RuntimePlatform.OSXEditor:
+                        filePath = string.Format("{0}/../logs/{1}", Application.dataPath, logName);
+                        break;
+                    default:
+                        filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
+                        break;
+                }
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                    Directory.CreateDirectory(filePath);
+                logWritter = new LogFileRecorder(filePath, FileMode.Append);
+            }
+
+            var time = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+            //Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError是没有堆栈，可以通过StackTrace加上堆栈 by qingqing.zhao test in unity2019.3.7
+            // logWritter.WriteLine(string.Format("[{0}][{1}]{2}\n{3}", time, type, condition,  !string.IsNullOrEmpty(stackTrace)?stackTrace :Environment.StackTrace));
+            //logWritter.WriteLine(string.Format("[{0}][{1}]{2}\n{3}", time, type, condition,  Environment.StackTrace ));
+            logWritter.WriteLine(string.Format("[{0}][{1}]{2}\n{3}", time, type, condition,  stackTrace));
+        }
+
+
+        public static void Start()
+        {
+            Application.logMessageReceivedThreaded += OnLogCallback;
+            // Application.logMessageReceived += OnLogCallback;
+        }
+        
+        public static void Destory()
+        {
+            Application.logMessageReceivedThreaded -= OnLogCallback;
+            logWritter.Close();
+        }
     }
 }

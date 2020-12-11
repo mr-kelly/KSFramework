@@ -154,6 +154,8 @@ namespace KEngine
         void Start()
         {
             IsAppPlaying = true;
+            if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.OSXPlayer)
+                LogFileManager.Start();
             Debuger.Assert(_isNewByStatic);
         }
 
@@ -251,6 +253,8 @@ namespace KEngine
         {
             IsApplicationQuit = true;
             IsAppPlaying = false;
+            if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.OSXPlayer)
+             LogFileManager.Destory();
             LogFileRecorder.CloseStream();
         }
         
@@ -388,7 +392,7 @@ namespace KEngine
             {
                 _cacheMemoryStr = string.Format("Memory: {0:F3}KB",
 #if UNITY_5_5 || UNITY_2017_1_OR_NEWER
-					UnityEngine.Profiling.Profiler.GetMonoUsedSize() / 1024f
+					UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() / 1024f
 #else
 					UnityEngine.Profiler.GetMonoUsedSize() / 1024f
 #endif

@@ -61,7 +61,7 @@ namespace KEngine
                 //preSceneLoader._assetFileBridge.UnloadAB = true;
                 preSceneLoader.Release();
                 preSceneLoader._loadedSceneName = string.Empty;
-                UnityEngine.SceneManagement.SceneManager.UnloadScene(preSceneLoader.SceneName);
+                SceneManager.UnloadSceneAsync(preSceneLoader.SceneName);
                 preSceneLoader = null;
             }
         }

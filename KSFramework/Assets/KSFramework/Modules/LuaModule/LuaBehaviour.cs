@@ -78,7 +78,7 @@ namespace KSFramework
             if (_cacheTable == null)
                 throw new Exception(string.Format("{0}: cannot get table!", LuaPath));
 
-            var retFunc = _cacheTable[function];
+            var retFunc = _cacheTable.Get<LuaFunction>(function);
             if (retFunc != null)
             {
                 if (!(retFunc is LuaFunction))

@@ -145,6 +145,16 @@ namespace KUnityEditorTools
         public static bool IsInited { get; private set; }
         static KUnityEditorEventCatcher()
         {
+#if UNITY_2018_1_OR_NEWER
+            EditorApplication.update -= OnEditorUpdate;
+            EditorApplication.update += OnEditorUpdate;
+
+            SceneView.duringSceneGui -= OnSceneViewGUI;
+            SceneView.duringSceneGui += OnSceneViewGUI;
+
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+#else
             EditorApplication.update -= OnEditorUpdate;
             EditorApplication.update += OnEditorUpdate;
 
@@ -153,6 +163,8 @@ namespace KUnityEditorTools
 
             EditorApplication.playmodeStateChanged -= OnPlayModeStateChanged;
             EditorApplication.playmodeStateChanged += OnPlayModeStateChanged;
+#endif
+
 
 
 
@@ -201,7 +213,7 @@ namespace KUnityEditorTools
         /// <summary>
         /// 播放状态改变，进行一些编译性的东西, 比如点击播放，编译文件、编译脚本、编译配置等
         /// </summary>
-        private static void OnPlayModeStateChanged()
+        private static void OnPlayModeStateChanged(PlayModeStateChange change)
         {
             AppEngine.IsAppPlaying = EditorApplication.isPlaying && !EditorApplication.isPaused;
             //Log.Info($"playModelChange isPlaying:{EditorApplication.isPlaying} ,isPaused:{EditorApplication.isPaused}");
