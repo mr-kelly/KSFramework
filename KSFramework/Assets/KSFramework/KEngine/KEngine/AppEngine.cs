@@ -262,77 +262,8 @@ namespace KEngine
         {
             IsApplicationFocus = focus;
         }
-        
-        private static EngineConfigs _engineConfigs;
-
-        /// <summary>
-        /// Ensure Configs load
-        /// </summary>
-        /// <param name="forceReload"></param>
-        public static EngineConfigs PreloadConfigs(bool forceReload = false)
-        {
-            if (_engineConfigs != null && !forceReload)
-                return _engineConfigs;
-
-            string configContent = null;
-//            if (Application.isEditor && !Application.isPlaying)
-//            {
-//                // prevent Resources.Load fail on Batch Mode
-//                var filePath = "Assets/Resources/AppConfigs.txt";
-//                if (File.Exists(filePath))
-//                    configContent = System.IO.File.ReadAllText(filePath);
-//            }
-//            else
-//            {
-                var textAsset = Resources.Load<TextAsset>("AppConfigs");
-                if (textAsset != null)
-                    configContent = textAsset.text;
-//            }
-
-            _engineConfigs = new EngineConfigs(configContent);
-            return _engineConfigs;
-        }
-
-        /// <summary>
-        /// Get config from ini config file or the default ini string
-        /// </summary>
-        /// <param name="section"></param>
-        /// <param name="key"></param>
-        /// <param name="showLog"></param>
-        /// <returns></returns>
-        public static string GetConfig(string section, string key, bool showLog = true)
-        {
-            PreloadConfigs();
-            var value = _engineConfigs.GetConfig(section, key, false);
-            if (value == null)
-            {
-                if (showLog)
-                    Log.Error("Cannot get config, section: {0}, key: {1}", section, key);
-            }
-            return value;
-        }
-
-        public static string GetConfig(KEngineDefaultConfigs cfg)
-        {
-            return GetConfig("KEngine", cfg.ToString());
-        }
-        
-        public static bool IsUseLuaConfig
-        {
-            get { return GetConfig("KEngine.Setting", "IsUseLuaConfig") == "1"; }
-        }
     }
 
-    public enum KEngineDefaultConfigs
-    {
-        AssetBundleExt,
-        ProductRelPath,
-        AssetBundleBuildRelPath, // FromRelPath
-        // StreamingAssets inner folder name, when build, will link the Bundle build Path to here
-        StreamingBundlesFolderName,
-
-        SettingExt,
-    }
 
     public class FpsWatcher
     {

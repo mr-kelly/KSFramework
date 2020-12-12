@@ -81,9 +81,8 @@ namespace KEngine
         public static AssetBundleLoader Load(string url, CAssetBundleLoaderDelegate callback = null,
             LoaderMode loaderMode = LoaderMode.Async)
         {
-            var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
-            if(!url.EndsWith(ext))
-                url = url + ext;
+            if(!url.EndsWith(AppConfig.AssetBundleExt))
+                url = url + AppConfig.AssetBundleExt;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             url = url.ToLower();
 #endif

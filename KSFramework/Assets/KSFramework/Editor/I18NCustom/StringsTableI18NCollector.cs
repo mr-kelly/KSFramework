@@ -46,9 +46,7 @@ namespace KSFramework.Editor
         /// <param name="refItems"></param>
         static void CollectStringsTable(ref I18NItems refItems)
         {
-            var compilePath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
-            var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
-            var stringsTablePath = string.Format("{0}/StringsTable{1}", compilePath, ext);
+            var stringsTablePath = string.Format("{0}/StringsTable{1}", AppConfig.ExportTsvPath, AppConfig.AssetBundleExt);
             if (!File.Exists(stringsTablePath))
                 return;
 

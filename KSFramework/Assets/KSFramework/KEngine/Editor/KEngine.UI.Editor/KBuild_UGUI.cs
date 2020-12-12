@@ -188,10 +188,7 @@ namespace KEngine.Editor
             }
             BuildTools.BuildAllAssetBundles();
         }
-        public static string GetBuildRelPath(string uiName)
-        {
-            return string.Format("UI/{0}_UI{1}", uiName, KEngine.AppEngine.GetConfig("KEngine", "AssetBundleExt"));
-        }
+
 
         [MenuItem("KEngine/UI(UGUI)/Create UI(UGUI)")]
         public static void CreateNewUI()
@@ -222,15 +219,9 @@ namespace KEngine.Editor
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             CanvasScaler canvasScaler = uiObj.AddComponent<CanvasScaler>();
             uiObj.AddComponent<GraphicRaycaster>();
-            var uiSize = new Vector2(1280,720);
-            var uiResolution = AppEngine.GetConfig("KEngine.UI", "UIResolution");
-            if (!string.IsNullOrEmpty(uiResolution))
-            {
-                var sizeArr = uiResolution.Split(',');
-                if (sizeArr.Length >= 2) { uiSize=new Vector2(sizeArr[0].ToInt32(),sizeArr[1].ToInt32()); }
-            }
+          
             canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            canvasScaler.referenceResolution = uiSize;
+            canvasScaler.referenceResolution = AppConfig.UIResolution;
             canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 
             if (GameObject.Find("EventSystem") == null)

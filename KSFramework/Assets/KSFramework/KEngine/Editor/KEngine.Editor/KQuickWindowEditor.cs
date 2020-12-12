@@ -68,7 +68,10 @@ public class KQuickWindowEditor : EditorWindow
         {
             ResourcesSymbolLinkHelper.SymbolLinkResource();
         }
-
+        if (GUILayout.Button("删除AB资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            ResourcesSymbolLinkHelper.RemoveSymbolLinkResource();
+        }
         GUILayout.EndHorizontal();
     }
 
@@ -196,7 +199,7 @@ public class KQuickWindowEditor : EditorWindow
 
         if (GUILayout.Button("打开AB目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
-            var path = KResourceModule.ProductRelPath + "/Bundles/" + KResourceModule.GetBuildPlatformName();
+            var path = AppConfig.ProductRelPath + "/Bundles/" + KResourceModule.GetBuildPlatformName();
             OpenFolder(path);
         }
 
@@ -246,7 +249,7 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
-            var path = KResourceModule.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
+            var path = AppConfig.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
             OpenFolder(path);
         }
 

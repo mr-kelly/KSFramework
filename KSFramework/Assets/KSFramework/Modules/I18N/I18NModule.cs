@@ -55,11 +55,10 @@ namespace KSFramework
             {
                 if (_lang == null)
                 {
-                    var readLang = AppEngine.GetConfig("KSFramework.I18N", "I18N", false);
-                    if (!string.IsNullOrEmpty(readLang))
-                        _lang = readLang;
+                    if (!string.IsNullOrEmpty(AppConfig.I18N))
+                        _lang = AppConfig.I18N;
                     else
-                        return AppEngine.GetConfig("KSFramework.I18N", "I18NLanguages").Split(',')[0];
+                        return AppConfig.I18NLanguages[0];
                 }
                 return _lang;
             }
@@ -78,7 +77,7 @@ namespace KSFramework
             if (_isInited)
                 return;
 
-            var settingPath = string.Format("I18N/{0}{1}", Lang,AppEngine.GetConfig(KEngineDefaultConfigs.SettingExt));
+            var settingPath = string.Format("I18N/{0}{1}", Lang,AppConfig.SettingExt);
             var settingReader = SettingModule.Get(settingPath, false);
             foreach (var row in settingReader)
             {

@@ -64,16 +64,7 @@ namespace KEngine.Modules
         {
         }
 
-        /// <summary>
-        /// Load KEngineConfig.txt 's `SettingPath`
-        /// </summary>
-        protected static string SettingFolderName
-        {
-            get
-            {
-                return AppEngine.GetConfig("KEngine.Setting", "SettingResourcesPath");
-            }
-        }
+       
 
         /// <summary>
         /// Singleton
@@ -135,8 +126,7 @@ namespace KEngine.Modules
 
         private static string GetFileSystemPath(string path)
         {
-            var compilePath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
-            var resPath = Path.Combine(compilePath, path);
+            var resPath = Path.Combine(AppConfig.ExportTsvPath, path);
             return resPath;
         }
 
@@ -196,7 +186,7 @@ namespace KEngine.Modules
         [Obsolete("LoadSettingFromStreamingAssets instead!")]
         private static byte[] LoadSettingFromResources(string path)
         {
-            var resPath = SettingFolderName + "/" + Path.ChangeExtension(path, null);
+            var resPath = AppConfig.SettingResourcesPath + "/" + Path.ChangeExtension(path, null);
             var fileContentAsset = Resources.Load(resPath) as TextAsset;
             var bytes = SettingBytesFilter != null ? SettingBytesFilter(fileContentAsset.bytes) : fileContentAsset.bytes;
             return bytes;
@@ -209,7 +199,7 @@ namespace KEngine.Modules
         /// <returns></returns>
         private static byte[] LoadSettingFromStreamingAssets(string path)
         {
-            var resPath = SettingFolderName + "/" + path;
+            var resPath = AppConfig.SettingResourcesPath + "/" + path;
             var bytes = KResourceModule.LoadSyncFromStreamingAssets(resPath);
             bytes = SettingBytesFilter != null ? SettingBytesFilter(bytes) : bytes;
             return bytes;

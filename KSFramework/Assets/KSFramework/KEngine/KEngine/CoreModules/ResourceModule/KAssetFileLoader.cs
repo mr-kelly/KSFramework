@@ -45,8 +45,6 @@ namespace KEngine
             get { return ResultObject as Object; }
         }
 
-        private bool IsLoadAssetBundle;
-
         public override float Progress
         {
             get
@@ -63,7 +61,7 @@ namespace KEngine
         {
             // 添加扩展名
 			if (!KResourceModule.IsEditorLoadAsset)
-	            path = path + AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt);
+	            path = path + AppConfig.AssetBundleExt;
 
             LoaderDelgate realcallback = null;
             if (assetFileLoadedCallback != null)
@@ -88,7 +86,7 @@ namespace KEngine
                 if (hasEditorUrl) return true;
             }
 
-            return KResourceModule.IsResourceExist(KResourceModule.BundlesPathRelative  + url.ToLower() + AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt));
+            return KResourceModule.IsResourceExist(KResourceModule.BundlesPathRelative  + url.ToLower() + AppConfig.AssetBundleExt);
         }
         public override void Init(string url, params object[] args)
         {
@@ -100,7 +98,7 @@ namespace KEngine
 
         private IEnumerator _Init(string path, LoaderMode loaderMode)
         {
-            IsLoadAssetBundle = AppEngine.GetConfig("KEngine", "IsLoadAssetBundle").ToInt32() != 0;
+
 
             Object getAsset = null;
 
@@ -126,7 +124,7 @@ namespace KEngine
 
 #endif
 			}
-            else if (!IsLoadAssetBundle)
+            else if (!AppConfig.IsLoadAssetBundle)
             {
                 string extension = Path.GetExtension(path);
                 path = path.Substring(0, path.Length - extension.Length); // remove extensions
@@ -267,7 +265,7 @@ namespace KEngine
 
             //if (IsFinished)
             {
-                if (!IsLoadAssetBundle)
+                if (!AppConfig.IsLoadAssetBundle)
                 {
                     Resources.UnloadAsset(ResultObject as Object);
                 }

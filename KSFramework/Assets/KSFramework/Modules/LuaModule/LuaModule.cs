@@ -181,10 +181,7 @@ namespace KSFramework
         /// <returns></returns>
         static string GetScriptPath(string scriptRelativePath)
         {
-            var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
-            var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
-
-            var relativePath = string.Format("{0}/{1}.lua", luaPath, scriptRelativePath);
+            var relativePath = string.Format("{0}/{1}.lua", AppConfig.LuaPath, scriptRelativePath);
 
             if (Log.IsUnityEditor)
             {
@@ -193,7 +190,7 @@ namespace KSFramework
             }
             else
             {
-                relativePath += ext;
+                relativePath += AppConfig.AssetBundleExt;
             }
 
             return relativePath;

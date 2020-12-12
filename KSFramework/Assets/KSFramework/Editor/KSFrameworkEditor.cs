@@ -47,8 +47,8 @@ Shorcuts:
             EditorGUILayout.LabelField("Reload AppConfigs.txt");
             if (GUILayout.Button("Reload"))
             {
-                AppEngine.PreloadConfigs(true);
-                Debug.Log("Reload AppConfigs.txt!");
+                //AppEngine.PreloadConfigs(true); 
+                Debug.Log("TODO 运行时重载AppConfig");
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -98,9 +98,6 @@ Shorcuts:
         [MenuItem("KEngine/UI(UGUI)/Auto Make UI Lua Scripts(Current Scene)")]
         public static void AutoMakeUILuaScripts()
         {
-            var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
-            Debug.Log("Find UI from current scenes, LuaScriptPath: " + luaPath);
-
             var windowAssets = GameObject.FindObjectsOfType<UIWindowAsset>();
             if (windowAssets.Length > 0)
             {
@@ -108,7 +105,7 @@ Shorcuts:
                 {
                     var uiName = windowAsset.name;
                     var namePre = uiName.Substring(0, 2) == "UI" ? "" : "UI";
-                    var scriptPath = string.Format("{0}/{1}/UI/{2}/{3}{4}.lua", KResourceModule.EditorProductFullPath,luaPath, uiName,namePre,uiName);
+                    var scriptPath = string.Format("{0}/{1}/UI/{2}/{3}{4}.lua", KResourceModule.EditorProductFullPath,AppConfig.LuaPath, uiName,namePre,uiName);
                     if (!File.Exists(scriptPath))
                     {
                         var scriptDir = Path.GetDirectoryName(scriptPath);

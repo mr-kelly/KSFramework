@@ -62,12 +62,9 @@ namespace KEngine.Editor
         private static void ParseArgs(ref BuildOptions opt, ref string outputpath)
         {
             string[] args = System.Environment.GetCommandLineArgs();
-
-            string productPath = KEngine.AppEngine.GetConfig("KEngine", "ProductRelPath");
-
-            if (!Directory.Exists(productPath))
+            if (!Directory.Exists(AppConfig.ProductRelPath))
             {
-                Directory.CreateDirectory(productPath);
+                Directory.CreateDirectory(AppConfig.ProductRelPath);
             }
 
             if (args.Length >= 2)
@@ -131,12 +128,8 @@ namespace KEngine.Editor
 #else
 			EditorUserBuildSettings.SwitchActiveBuildTarget(tag);
 #endif
-           
-
             ParseArgs(ref opt, ref outputpath);
-
-            string fullPath = System.IO.Path.Combine(KEngine.AppEngine.GetConfig("KEngine", "ProductRelPath"),outputpath);
-
+            string fullPath = System.IO.Path.Combine(AppConfig.ProductRelPath,outputpath);
             string fullDir = System.IO.Path.GetDirectoryName(fullPath);
 
             if (!Directory.Exists(fullDir))
@@ -258,9 +251,7 @@ namespace KEngine.Editor
             get
             {
                 // StreamingAssetsPath
-                return "Assets/StreamingAssets/" +
-                       KEngine.AppEngine.GetConfig(KEngineDefaultConfigs.StreamingBundlesFolderName);
-                        // hold asset bundles
+                return "Assets/StreamingAssets/" + AppConfig.StreamingBundlesFolderName;
             }
         }
 

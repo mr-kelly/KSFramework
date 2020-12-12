@@ -96,7 +96,7 @@ namespace KEngine.Editor
                     continue;
                 }
                 var bundleName = filepath.Substring(dir.Length, filepath.Length - dir.Length);
-                importer.assetBundleName = bundleName + AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt);
+                importer.assetBundleName = bundleName + AppConfig.AssetBundleExt;
             }
 
             Log.Info("Make all asset name successs!");
@@ -141,7 +141,6 @@ namespace KEngine.Editor
                     }
                     else
                     {
-//                        AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleExt
                         // 去掉扩展名，因为AssetBundle额外扩展名
                         toList[i] = Path.ChangeExtension(rName, "");// 会留下最后句点
                         toList[i] = toList[i].Substring(0, toList[i].Length - 1); // 去掉句点
@@ -268,9 +267,7 @@ namespace KEngine.Editor
         /// <returns></returns>
         public static string GetExportPath(BuildTarget platfrom, KResourceQuality quality = KResourceQuality.Sd)
         {
-            string basePath =
-                Path.GetFullPath(KEngine.AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleBuildRelPath));
-
+            string basePath = Path.GetFullPath(AppConfig.AssetBundleBuildRelPath);
             if (File.Exists(basePath))
             {
                 BuildTools.ShowDialog("路径配置错误: " + basePath);

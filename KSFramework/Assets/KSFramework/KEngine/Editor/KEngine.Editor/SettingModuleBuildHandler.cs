@@ -57,26 +57,24 @@ namespace KSFramework.Editor
             {
                 _hasBeforeBuildApp = true;
                 // 这里是编译前, Setting目录的配置文件拷贝进去StreamingAssetse
-                var editorLuaScriptPath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
-                if (Directory.Exists(editorLuaScriptPath) == false)
+                
+                if (Directory.Exists(AppConfig.ExportTsvPath) == false)
                 {
-                    Debug.LogWarning(string.Format("[SettingModuleBuildHandler]DirectoryNotFound: {0}", editorLuaScriptPath));
+                    Debug.LogWarning(string.Format("[SettingModuleBuildHandler]DirectoryNotFound: {0}", AppConfig.ExportTsvPath));
                     return;
                 }
-                //var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
                 Debug.Log("[SettingModuleBuildHandler]Start copy settings...");
                 var luaCount = 0;
-                //var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath, compilePath);
-                editorLuaScriptPath = editorLuaScriptPath.Replace("\\", "/");
-                var toDir = "Assets/StreamingAssets/" + AppEngine.GetConfig("KEngine.Setting", "SettingResourcesPath"); // 文件夹名称获取
+
+                var toDir = "Assets/StreamingAssets/" + AppConfig.SettingResourcesPath; // 文件夹名称获取
 
                 // 所有的Lua脚本拷贝到StreamingAssets
-                var allFiles = Directory.GetFiles(editorLuaScriptPath, "*", SearchOption.AllDirectories);
+                var allFiles = Directory.GetFiles(AppConfig.ExportTsvPath, "*", SearchOption.AllDirectories);
                 foreach (var path in allFiles)
                 {
                     var cleanPath = path.Replace("\\", "/");
 
-                    var relativePath = cleanPath.Replace(editorLuaScriptPath + "/", "");
+                    var relativePath = cleanPath.Replace(AppConfig.ExportTsvPath + "/", "");
                     var toPath = Path.Combine(toDir, relativePath);
 
                     if (!Directory.Exists(Path.GetDirectoryName(toPath)))

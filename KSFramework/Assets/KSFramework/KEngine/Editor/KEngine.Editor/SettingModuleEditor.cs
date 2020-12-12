@@ -68,18 +68,7 @@ namespace KEngine.Editor
         /// </summary>
         public static CustomExtraStringDelegate CustomExtraString;
         public delegate string CustomExtraStringDelegate(TableCompileResult tableCompileResult);
-
-        /// <summary>
-        /// 编译出的后缀名, 可修改
-        /// </summary>
-        public static string SettingExtension
-        {
-            get
-            {
-                return AppEngine.GetConfig(KEngineDefaultConfigs.SettingExt);
-            }
-        }
-
+        
         /// <summary>
         /// 标记，是否正在打开提示配置变更对话框
         /// </summary>
@@ -87,8 +76,7 @@ namespace KEngine.Editor
 
         static SettingModuleEditor()
         {
-            var path = SettingSourcePath;
-            if (Directory.Exists(path))
+            if (Directory.Exists(AppConfig.SettingSourcePath))
             {
                 // when build app, ensure compile ALL settings
                 KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent -= CompileSettings;
@@ -98,7 +86,7 @@ namespace KEngine.Editor
                 KUnityEditorEventCatcher.OnWillPlayEvent += QuickCompileSettings;
 
                 // watch files, when changed, compile settings
-                new KDirectoryWatcher(path, (o, args) =>
+                new KDirectoryWatcher(AppConfig.SettingSourcePath, (o, args) =>
                 {
                     if (_isPopUpConfirm) return;
 
@@ -110,18 +98,11 @@ namespace KEngine.Editor
                         _isPopUpConfirm = false;
                     });
                 });
-                Debug.Log("[SettingModuleEditor]Watching directory: " + SettingSourcePath);
+                Debug.Log("[SettingModuleEditor]Watching directory: " + AppConfig.SettingSourcePath);
             }
         }
 
-        static string SettingSourcePath
-        {
-            get
-            {
-                var sourcePath = AppEngine.GetConfig("KEngine.Setting", "SettingSourcePath");
-                return sourcePath;
-            }
-        }
+  
 
         [MenuItem("KEngine/Settings/Force Compile Settings + Code")]
         public static void CompileSettings()
@@ -150,50 +131,34 @@ namespace KEngine.Editor
                 CustomCompileSettings();
                 return;
             }
-
-            var sourcePath = SettingSourcePath;
-            if (string.IsNullOrEmpty(sourcePath))
-            {
-                Log.Error("Need to KEngineConfig: SettingSourcePath");
-                return;
-            }
-
+            
             List<TableCompileResult> results = null;
-            var exportTsvPath = AppEngine.GetConfig("KEngine.Setting", "ExportTsvPath");
-            var settingCodeIgnorePattern = AppEngine.GetConfig("KEngine.Setting", "SettingCodeIgnorePattern", false);
-            var useLuaConfig = AppEngine.GetConfig("KEngine.Setting", "IsUseLuaConfig") == "1";
-            if (useLuaConfig)
+            if (AppConfig.IsUseLuaConfig)
             {
-                var exportLuaPath = AppEngine.GetConfig("KEngine.Setting", "ExportLuaPath");
-                if (string.IsNullOrEmpty(exportLuaPath))
-                {
-                    Log.Error("Need to KEngineConfig: ExportLuaPath");
-                    return;
-                }
                 Log.Info("Start Compile to lua");
                 var genParam = new GenParam()
                 {
-                    settingCodeIgnorePattern = settingCodeIgnorePattern,
-                    genCSharpClass = false, genCodeFilePath = null, forceAll = true, ExportLuaPath = exportLuaPath
+                    settingCodeIgnorePattern = AppConfig.SettingCodeIgnorePattern,
+                    genCSharpClass = false, genCodeFilePath = null, forceAll = true, ExportLuaPath = AppConfig.ExportLuaPath
                 };
-                var compilerParam = new CompilerParam() {CanExportTsv = false, ExportTsvPath = exportTsvPath, ExportLuaPath = exportLuaPath};
-                results = new BatchCompiler().CompileAll(sourcePath, exportLuaPath, genParam,compilerParam);     
+                var compilerParam = new CompilerParam() {CanExportTsv = false, ExportTsvPath = AppConfig.ExportTsvPath, ExportLuaPath = AppConfig.ExportLuaPath};
+                results = new BatchCompiler().CompileAll(AppConfig.SettingResourcesPath, AppConfig.ExportLuaPath, genParam,compilerParam);     
             }
             else
             {
-                if (string.IsNullOrEmpty(exportTsvPath))
+                if (string.IsNullOrEmpty(AppConfig.ExportTsvPath))
                 {
                     Log.Error("Need to KEngineConfig: ExportTsvPath");
                     return;
                 }
                 Log.Info("Start Compile to c#+tsv");
-                var exportCSPath = AppEngine.GetConfig("KEngine.Setting", "ExportCSharpPath");
+                
                 var template = force ? (forceTemplate ?? DefaultTemplate.GenCodeTemplateOneFile) : null; 
-                var genParam = new GenParam(){forceAll = force, genCSharpClass = true,genCodeFilePath = exportCSPath,
-                    genCodeTemplateString = template,changeExtension = SettingExtension,
-                    settingCodeIgnorePattern = settingCodeIgnorePattern,nameSpace = "AppSettings"};
-                var compilerParam = new CompilerParam() {CanExportTsv = true, ExportTsvPath = exportTsvPath, ExportLuaPath = null};
-                results = new BatchCompiler().CompileAll(sourcePath, exportTsvPath, genParam,compilerParam);
+                var genParam = new GenParam(){forceAll = force, genCSharpClass = true,genCodeFilePath = AppConfig.ExportCSharpPath,
+                    genCodeTemplateString = template,changeExtension = AppConfig.SettingExt,
+                    settingCodeIgnorePattern = AppConfig.SettingCodeIgnorePattern,nameSpace = "AppSettings"};
+                var compilerParam = new CompilerParam() {CanExportTsv = true, ExportTsvPath = AppConfig.ExportTsvPath, ExportLuaPath = null};
+                results = new BatchCompiler().CompileAll(AppConfig.SettingSourcePath, AppConfig.ExportTsvPath, genParam,compilerParam);
             }
             
             var sb = new StringBuilder();

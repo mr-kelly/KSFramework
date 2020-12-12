@@ -56,38 +56,14 @@ namespace KSFramework.Editor
             }
             return list;
         }
-
-        /// <summary>
-        /// 设置有多少种语言
-        /// </summary>
-        private static string[] I18NLanguages
-        {
-            get
-            {
-                var langs = AppEngine.GetConfig("KSFramework.I18N", "I18NLanguages");
-                return langs.Split(',');
-            }
-        }
-
-        /// <summary>
-        /// excel存放地址
-        /// </summary>
-        public static string SettingSourcePath
-        {
-            get
-            {
-                var settingSource = AppEngine.GetConfig("KEngine.Setting", "SettingSourcePath");
-                return settingSource;
-            }
-        }
-
+        
         [MenuItem("KEngine/I18N/Collect All")]
         public static void CollectAll()
         {
             // 如果没有，先确保创建新的
-            foreach (var lang in I18NLanguages)
+            foreach (var lang in AppConfig.I18NLanguages)
             {
-                var xlsPath = string.Format("{0}/I18N/{1}.xlsx", SettingSourcePath, lang);
+                var xlsPath = string.Format("{0}/I18N/{1}.xlsx", AppConfig.SettingSourcePath, lang);
                 var xlsDir = Path.GetDirectoryName(xlsPath);
                 if (!Directory.Exists(xlsDir))
                     Directory.CreateDirectory(xlsDir);
@@ -159,9 +135,9 @@ namespace KSFramework.Editor
         /// <returns></returns>
         private static bool WriteExcel(I18NItems theList)
         {
-            foreach (var lang in I18NLanguages)
+            foreach (var lang in AppConfig.I18NLanguages)
             {
-                var excelPath = string.Format("{0}/I18N/{1}.xlsx", SettingSourcePath, lang);
+                var excelPath = string.Format("{0}/I18N/{1}.xlsx", AppConfig.SettingSourcePath, lang);
 
                 var changedFile = false;
                 ExcelFile excelFile;

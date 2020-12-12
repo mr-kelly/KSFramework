@@ -91,8 +91,7 @@ namespace KEngine.UI
         public UIModule()
         {
             UiBridge = new GUIBridge();
-            var configUiBridge = AppEngine.GetConfig("KEngine.UI", "UIModuleBridge");
-            UiBridge.IsLuaBridge = !string.IsNullOrEmpty(configUiBridge) && configUiBridge.Contains("Lua");
+            UiBridge.IsLuaBridge = !string.IsNullOrEmpty(AppConfig.UIModuleBridge) && AppConfig.UIModuleBridge.Contains("Lua");
             UiBridge.InitBridge();
             CreateRoot();
         }

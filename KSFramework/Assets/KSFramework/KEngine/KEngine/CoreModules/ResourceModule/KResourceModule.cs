@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using DotLiquid.Tags;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -101,26 +102,20 @@ namespace KEngine
         {
             get { return GetBuildPlatformName(); }
         } // ex: IOS, Android, AndroidLD
+        
 
-        public static string FileProtocol
-        {
-            get { return GetFileProtocol(); }
-        } // for WWW...with file:///xxx
-
-        /// <summary>
-        /// Product Folder's Relative Path   -  Default: ../Product,   which means Assets/../Product
-        /// </summary>
-        public static string ProductRelPath
-        {
-            get { return KEngine.AppEngine.GetConfig(KEngineDefaultConfigs.ProductRelPath); }
-        }
-
+        private static string editorProductFullPath;
         /// <summary>
         /// Product Folder Full Path , Default: C:\xxxxx\xxxx\../Product
         /// </summary>
         public static string EditorProductFullPath
         {
-            get { return Path.GetFullPath(ProductRelPath); }
+            get
+            {
+                if(string.IsNullOrEmpty(editorProductFullPath))  
+                    editorProductFullPath =  Path.GetFullPath(AppConfig.ProductRelPath);
+                return editorProductFullPath;
+            }
         }
 
         /// <summary>
@@ -164,7 +159,7 @@ namespace KEngine
         /// <returns></returns>
         public static string GetAssetBundlePath(string path, params object[] formats)
         {
-            return string.Format(path + KEngine.AppEngine.GetConfig("KEngine", "AssetBundleExt"), formats);
+            return string.Format(path + AppConfig.AssetBundleExt, formats);
         }
 
         // 检查资源是否存在
@@ -222,7 +217,11 @@ namespace KEngine
              bool isLog = true)
         {
             if (string.IsNullOrEmpty(url))
+            {
                 Log.Error("尝试获取一个空的资源路径！");
+                fullPath = null;
+                return GetResourceFullPathType.Invalid;
+            }
 
             string docUrl;
             bool hasDocUrl = TryGetDocumentResourceUrl(url, withFileProtocol, out docUrl);
@@ -256,23 +255,14 @@ namespace KEngine
         }
 
         /// <summary>
-        /// 獲取app數據目錄，可寫，同Application.PersitentDataPath，但在windows平台時為了避免www類中文目錄無法讀取問題，單獨實現
+        /// 獲取app數據目錄，可寫，同Application.PersitentDataPath
         /// </summary>
         /// <returns></returns>
         public static string GetAppDataPath()
         {
-            // Windows 时使用特定的目录，避免中文User的存在 
-            // 去掉自定义PersistentDataPath, 2015/11/18， 务必要求Windows Users是英文
-            //if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsWebPlayer)
-            //{
-            //    string dataPath = Application.dataPath + "/../Library/UnityWinPersistentDataPath";
-            //    if (!Directory.Exists(dataPath))
-            //        Directory.CreateDirectory(dataPath);
-            //    return dataPath;
-            //}
-
             return Application.persistentDataPath;
         }
+        
         /// <summary>
         /// use AssetDatabase.LoadAssetAtPath insead of load asset bundle, editor only
         /// </summary>
@@ -280,10 +270,9 @@ namespace KEngine
         {
             get
             {
-                return Application.isEditor && AppEngine.GetConfig("KEngine", "IsEditorLoadAsset").ToInt32() != 0 ;
+                return Application.isEditor && AppConfig.IsEditorLoadAsset ;
             }
         }
-
 
         /// <summary>
         /// (not android ) only! Android资源不在目录！
@@ -502,7 +491,7 @@ namespace KEngine
             string fileProtocol = "file://";
             if (Application.platform == RuntimePlatform.WindowsEditor ||
                 Application.platform == RuntimePlatform.WindowsPlayer
-#if !UNITY_5_4_OR_NEWER
+#if UNITY_5 || UNITY_4
                 || Application.platform == RuntimePlatform.WindowsWebPlayer
 #endif
 )
@@ -510,12 +499,7 @@ namespace KEngine
 
             return fileProtocol;
         }
-
-        public static string BundlesDirName
-        {
-            get { return KEngine.AppEngine.GetConfig(KEngineDefaultConfigs.StreamingBundlesFolderName); }
-        }
-
+        
         /// <summary>
         /// Unity Editor load AssetBundle directly from the Asset Bundle Path,
         /// whth file:// protocol
@@ -524,7 +508,7 @@ namespace KEngine
         {
             get
             {
-                string editorAssetBundlePath = Path.GetFullPath(KEngine.AppEngine.GetConfig(KEngineDefaultConfigs.AssetBundleBuildRelPath)); // for editoronly
+                string editorAssetBundlePath = Path.GetFullPath(AppConfig.AssetBundleBuildRelPath); // for editoronly
 
                 return editorAssetBundlePath;
             }
@@ -622,8 +606,8 @@ namespace KEngine
         static void InitResourcePath()
         {
             string editorProductPath = EditorProductFullPath;
-            BundlesPathRelative = string.Format("{0}/{1}/", BundlesDirName, GetBuildPlatformName());
-            DocumentResourcesPath = FileProtocol + DocumentResourcesPathWithoutFileProtocol;
+            BundlesPathRelative = string.Format("{0}/{1}/", AppConfig.StreamingBundlesFolderName, GetBuildPlatformName());
+            DocumentResourcesPath = GetFileProtocol() + DocumentResourcesPathWithoutFileProtocol;
 
             switch (Application.platform)
             {

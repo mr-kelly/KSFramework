@@ -122,8 +122,12 @@ namespace KEngine
                     OnFinish(null);
                     yield break;
                 }
-
+#if UNITY_2018_1_OR_NEWER //TODO 换成WebRequst
+                //Bytes = _wwwLoader.Www.downloadHandler.data;
                 Bytes = _wwwLoader.Www.bytes;
+#else
+                Bytes = _wwwLoader.Www.bytes;
+#endif
 
             }
 

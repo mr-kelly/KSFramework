@@ -58,18 +58,17 @@ namespace KSFramework.Editor
                 _hasBeforeBuildApp = true;
                 // 这里是编译前, 对Lua进行编译处理
                 Debug.Log("[LuaModuleEditor]Start compile lua script...");
-                var luaPath = AppEngine.GetConfig("KSFramework.Lua", "LuaPath");
-                var ext = AppEngine.GetConfig("KEngine", "AssetBundleExt");
+             
 
                 var luaCount = 0;
-                var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath, luaPath);
+                var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath, AppConfig.LuaPath);
                 editorLuaScriptPath = editorLuaScriptPath.Replace("\\", "/");
                 if (!Directory.Exists(editorLuaScriptPath))
                 {
                     Debug.LogError("[LuaModuleEditor]lua script path not exist!");
                     return;
                 }
-                var toDir = "Assets/StreamingAssets/" + luaPath;
+                var toDir = "Assets/StreamingAssets/" + AppConfig.LuaPath;
 
                 // 所有的Lua脚本拷贝到StreamingAssets
                 foreach (var path in Directory.GetFiles(editorLuaScriptPath, "*", SearchOption.AllDirectories))
@@ -77,7 +76,7 @@ namespace KSFramework.Editor
                     var cleanPath = path.Replace("\\", "/");
                     
                     var relativePath = cleanPath.Replace(editorLuaScriptPath+"/", "");
-                    var toPath = Path.Combine(toDir, relativePath) + ext;
+                    var toPath = Path.Combine(toDir, relativePath) + AppConfig.AssetBundleExt;
 
                     if (!Directory.Exists(Path.GetDirectoryName(toPath)))
                         Directory.CreateDirectory(Path.GetDirectoryName(toPath));
