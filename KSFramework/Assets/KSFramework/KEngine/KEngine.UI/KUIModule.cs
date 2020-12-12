@@ -739,7 +739,7 @@ namespace KEngine.UI
                 KProfiler.BeginWatch("UI.OnOpen");
                 uiBase.OnOpen(args);
                 var profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-                if (AppConfig.IsLogAbLoadCost && profilerData != null)
+                if (AppConfig.IsSaveCostToFile && profilerData != null)
                     LogFileRecorder.WriteUILog(uiBase.name, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
 
                 if (OnOpenEvent != null)
@@ -753,7 +753,7 @@ namespace KEngine.UI
            KProfiler.BeginWatch("UI.Init");
             uiBase.OnInit();
             var profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.TemplateName,".OnInit"));
-            if (AppConfig.IsSaveAbLoadCost && profilerData != null)
+            if (AppConfig.IsSaveCostToFile && profilerData != null)
             {
                 LogFileRecorder.WriteUILog(uiState.TemplateName,LogFileRecorder.UIState.OnInit,profilerData.costTime);
             }

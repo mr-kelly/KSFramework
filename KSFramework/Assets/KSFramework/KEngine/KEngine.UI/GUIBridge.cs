@@ -88,10 +88,8 @@ namespace KEngine.UI
             var loader = AssetBundleLoader.Load(path);
             while (!loader.IsCompleted)
                 yield return null;
-            if (AppConfig.IsLogAbLoadCost)
-                Log.Info("{0} Load AB, cost:{1:0.000}s", loadState.TemplateName, Time.realtimeSinceStartup - beginTime );
-            if(AppConfig.IsSaveAbLoadCost) 
-                LogFileRecorder.WriteUILog(loadState.TemplateName, LogFileRecorder.UIState.LoadAB,Time.realtimeSinceStartup - beginTime);
+            if (AppConfig.IsLogAbLoadCost) Log.Info("{0} Load AB, cost:{1:0.000}s", loadState.TemplateName, Time.realtimeSinceStartup - beginTime);
+            if (AppConfig.IsSaveCostToFile) LogFileRecorder.WriteUILog(loadState.TemplateName, LogFileRecorder.UIState.LoadAB, Time.realtimeSinceStartup - beginTime);
             if (loader.Bundle == null)
             {
                 yield break;
@@ -106,7 +104,7 @@ namespace KEngine.UI
             if (AppConfig.IsLogAbLoadCost)
             {
                 var cost = Time.realtimeSinceStartup - beginTime;
-                Log.Info($"Load Asset from {0}, cost:{1:0.000} s", loadState.TemplateName, cost);
+                Log.Info($"Load Asset from {0}, cost:{1:0.###} s", loadState.TemplateName, cost);
                 LogFileRecorder.WriteUILog(loadState.TemplateName,LogFileRecorder.UIState.LoadAsset, cost);
          
             }

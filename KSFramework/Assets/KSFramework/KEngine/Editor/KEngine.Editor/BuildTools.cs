@@ -174,32 +174,38 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AssetBundle/Build All to All Platforms")]
         public static void BuildAllAssetBundlesToAllPlatforms()
         {
+            var buildTargets = new List<BuildTargetGroup>()
+            {
+                BuildTargetGroup.iOS,
+                BuildTargetGroup.Android,
+                BuildTargetGroup.Standalone,
+
+            };
             var platforms = new List<BuildTarget>()
             {
                 BuildTarget.iOS,
                 BuildTarget.Android,
+#if UNITY_STANDALONE_WIN
                 BuildTarget.StandaloneWindows,
-#if UNITY_2018_1_OR_NEWER
-                BuildTarget.StandaloneOSX,
 #else  
-               BuildTarget.StandaloneOSXIntel,
+                BuildTarget.StandaloneOSX,
 #endif
-               
             };
 
             // Build all support platforms asset bundle
-            var currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            platforms.Remove(currentBuildTarget);
+            var nowTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+            var nowPlatform = EditorUserBuildSettings.activeBuildTarget;
+            buildTargets.Remove(nowTargetGroup);
+            platforms.Remove(nowPlatform);
             BuildAllAssetBundles();
-
-            foreach (var platform in platforms)
+            for (int i = 0; i < platforms.Count; i++)
             {
-                if (platform != currentBuildTarget && EditorUserBuildSettings.SwitchActiveBuildTarget(platform))
+                if (EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargets[i],platforms[i]))
                     BuildAllAssetBundles();
             }
 
             // revert platform 
-            EditorUserBuildSettings.SwitchActiveBuildTarget(currentBuildTarget);
+            EditorUserBuildSettings.SwitchActiveBuildTarget(nowTargetGroup,nowPlatform);
         }
 
         [MenuItem("KEngine/AssetBundle/ReBuild All")]

@@ -208,8 +208,7 @@ namespace KEngine
                 }
 #endif
 
-                if(AppConfig.IsLogAbLoadCost)
-                    Log.Info("[Load] {0}, {1}, {2}s", "AssetFileBridge", path, (System.DateTime.Now - beginTime).TotalSeconds);
+                if(AppConfig.IsLogAbLoadCost)　Log.Info("[Finsh] Load {0}, {1}, {2}s", "AssetFileBridge", path, (System.DateTime.Now - beginTime).TotalSeconds);
 
                 if (getAsset == null)
                 {

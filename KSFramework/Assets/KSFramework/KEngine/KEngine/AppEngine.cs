@@ -371,7 +371,7 @@ namespace KEngine
             GameObject.DontDestroyOnLoad(canvasGameObj);
             _Frames = 0;
             _LastInterval = Time.realtimeSinceStartup; 
-            Log.Debug("create fps canvas");
+            Log.Info("create fps canvas");
 
 #endif
         }

@@ -32,7 +32,7 @@ namespace XLua
             }
 
             string traceback = LuaAPI.lua_tostring(L, -1);
-            s += "\n\n" + traceback.Replace("stack traceback:\n", "");
+            s +=  traceback.Replace("stack traceback:\n", "");
             LuaAPI.lua_pop(L, 1); /* pop result */
             try
             {

@@ -48,7 +48,6 @@ namespace KEngine
     {
         All = 0,
         Trace,
-        Debug,
         Info, // Info, default
         Warning,
         Error,
@@ -219,11 +218,6 @@ namespace KEngine
         {
             DoLog(log, args, LogLevel.Trace);
         }
-
-        public static void Debug(string log, params object[] args)
-        {
-            DoLog(log, args, LogLevel.Debug);
-        }
         
         public static void Info(string log, params object[] args)
         {
@@ -298,7 +292,7 @@ namespace KEngine
                 return;
             if (args != null)
                 szMsg = string.Format(szMsg, args);
-            szMsg = string.Format("[{0}] {1}(frame:{2},mem:{3:0.##}MB){4}\n\n=================================================================\n\n",
+            szMsg = string.Format("[{0}] {1}(frame:{2},mem:{3:0.##}MB){4}",
                 emLevel,DateTime.Now.ToString("HH:mm:ss.fff"), TotalFrame,GetMonoUseMemory(),szMsg);
 #if UNITY_EDITOR
             StackTrace stackTrace = new StackTrace(true);

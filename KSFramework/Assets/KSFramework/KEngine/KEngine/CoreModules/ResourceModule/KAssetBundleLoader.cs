@@ -130,16 +130,14 @@ namespace KEngine
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             PreLoadManifest();
 #endif
-
             base.Init(url);
-
             _loaderMode = (LoaderMode)args[0];
 
             if (NewAssetBundleLoaderEvent != null)
                 NewAssetBundleLoaderEvent(url);
 
             RelativeResourceUrl = url;
-            if(AppConfig.IsLogAbInfo) Log.Info("[Request] AssetBundle, {1}", RelativeResourceUrl);
+            if(AppConfig.IsLogAbLoadCost) Log.Info("[Start] Load AssetBundle, {0}", RelativeResourceUrl);
             KResourceModule.Instance.StartCoroutine(LoadAssetBundle(url));
         }
 
@@ -215,15 +213,8 @@ namespace KEngine
             }
             if (assetBundle == null)
                 Log.Error("assetBundle is NULL: {0}", RelativeResourceUrl);
-            if (AppConfig.IsLogAbLoadCost)
-            {
-                var str = string.Format("Load AssetBundle {0}, CostTime {1}s {2}", relativeUrl, Time.realtimeSinceStartup - beginTime,dependFrom);
-                Log.Info(str);
-            }
-            if (AppConfig.IsSaveAbLoadCost && !relativeUrl.StartsWith("ui/"))
-            {
-                LogFileRecorder.WriteLoadAbLog(relativeUrl, Time.realtimeSinceStartup - beginTime);
-            }
+            if (AppConfig.IsLogAbLoadCost) Log.Info("[Finish] Load AssetBundle {0}, CostTime {1}s {2}", relativeUrl, Time.realtimeSinceStartup - beginTime,dependFrom);
+            if (AppConfig.IsSaveCostToFile && !relativeUrl.StartsWith("ui/"))  LogFileRecorder.WriteLoadAbLog(relativeUrl, Time.realtimeSinceStartup - beginTime);
             OnFinish(assetBundle);
         }
 

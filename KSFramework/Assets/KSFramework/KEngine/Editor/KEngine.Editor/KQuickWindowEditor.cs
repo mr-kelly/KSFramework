@@ -180,7 +180,7 @@ public class KQuickWindowEditor : EditorWindow
             BuildTools.BuildAllAssetBundles();
         }
 
-        if (GUILayout.Button("全部删除并重新打包AB", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("删除全部AB并重新打包", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             BuildTools.ReBuildAllAssetBundles();
         }
@@ -282,13 +282,13 @@ public class KQuickWindowEditor : EditorWindow
         var fullPath = Path.GetFullPath(path);
         if (Directory.Exists(fullPath) == false)
         {
-            Log.Debug("{0} 目录不存在，尝试定位到父目录。", fullPath);
+            Log.Info("{0} 目录不存在，尝试定位到父目录。", fullPath);
 
             DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
             if (directoryInfo.Parent != null) fullPath = directoryInfo.Parent.FullName;
         }
 
-        Log.Debug("open: {0}", fullPath);
+        Log.Info("open: {0}", fullPath);
         System.Diagnostics.Process.Start("explorer.exe", fullPath);
     }
 }

@@ -22,9 +22,9 @@ public class AppConfig
     /// </summary>
     public static bool IsLogAbLoadCost = false;
     /// <summary>
-    /// 是否记录ab加载耗时到文件中
+    /// 是否记录到文件中，包括：UI的ab加载耗时，UI函数执行耗时
     /// </summary>
-    public static bool IsSaveAbLoadCost = true;
+    public static bool IsSaveCostToFile = false;
     /// <summary>
     /// 是否调试模式，可与Unity的Debug区分开
     /// </summary>

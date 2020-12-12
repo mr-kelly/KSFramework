@@ -53,7 +53,7 @@ namespace KEngine
         /// <summary>
         /// 类似WWW, IsFinished再判断是否有错误对吧
         /// </summary>
-        public bool IsError { get; private set; }
+        public virtual bool IsError { get; private set; }
 
         /// <summary>
         /// 异步过程返回的信息
@@ -219,8 +219,6 @@ namespace KEngine
             return loader as T;
         }
 
-      
-
         /// <summary>
         /// 复活
         /// </summary>
@@ -269,7 +267,7 @@ namespace KEngine
         }
 
         /// <summary>
-        /// 在IsFinisehd后悔执行的回调
+        /// 在IsFinisehd后会执行的回调
         /// </summary>
         /// <param name="callback"></param>
         public void AddCallback(LoaderDelgate callback)
@@ -316,9 +314,9 @@ namespace KEngine
         /// </summary>
         public virtual void Release()
         {
-            if (IsReadyDisposed && AppConfig.IsLogAbInfo)
+            if (IsReadyDisposed )
             {
-                Log.Warning("[{0}]Too many dipose! {1}, Count: {2}", GetType().Name, this.Url, RefCount);
+                Log.Warning("[{0}]repeat  dispose! {1}, Count: {2}", GetType().Name, this.Url, RefCount);
             }
 
             RefCount--;
@@ -353,15 +351,12 @@ namespace KEngine
         protected virtual void OnReadyDisposed()
         {
         }
-        //protected bool RealDisposed = false;
 
         /// <summary>
         /// Dispose是有引用检查的， DoDispose一般用于继承重写
         /// </summary>
         public void Dispose()
         {
-            //RealDisposed = true;
-
             if (DisposeEvent != null)
                 DisposeEvent();
 
