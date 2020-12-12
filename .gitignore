@@ -8,13 +8,19 @@
 /KSFramework/Assets/StreamingAssets/Lua
 /KSFramework/Assets/StreamingAssets/Setting
 /KSFramework/Assets/StreamingAssets/**/*.meta
+/KSFramework/Assets/XLua/Gen/*
 
+/KSFramework/Lua/*
+/KSFramework/LuaOut/*
 /KSFramework/Product/**/*.meta
 /KSFramework/Product/Apps/*
+/KSFramework/Product/sql/*
+/KSFramework/Product/Bundles/*
 
-/KSFramework/Assets/XLua/Gen/*
 /KSFramework/UnityAPI/
-/KSFramework/.idea/*
+
+/KSFramework/Product/Lua/.idea/vcs.xml
+
 #Others
 /AssetBundles-Browser
 
@@ -270,6 +276,7 @@ Temp
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+*/.idea/*
 */.idea/**/workspace.xml
 */.idea/**/tasks.xml
 */.idea/**/usage.statistics.xml
@@ -296,6 +303,24 @@ Temp
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
-# .idea/modules.xml
-# .idea/*.iml
-# .idea/modules
+*/.idea/modules.xml
+*/.idea/vcs.xml
+*/.idea/*.iml
+.*/idea/modules
+
+
+Tableml_GUI
+Tableml_GUI/*
+
+UpdateModule
+UpdateModule.meta
+UpdateModule/*
+
+LuaProfiler
+LuaProfiler.*
+LuaProfiler/*
+LuaDeepProfilerAssetSetting.*
+LuaDeepProfilerSetting.*
+LuaProfilerPrecompileSetting.asset
+LuaProfilerPrecompileSetting.asset.meta
+
