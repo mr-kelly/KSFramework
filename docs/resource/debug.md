@@ -1,5 +1,3 @@
-
-
 # 资源的调试监控
 
 在Unity Editor模式下，所有的XXXLoader加载类实例，都会伴随住一个GameObject的产生，而这个GameObject，只用于进行调试、内存信息查看：

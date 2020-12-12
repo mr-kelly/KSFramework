@@ -1,5 +1,7 @@
 本篇介绍一些常见的问题及解答
 
+## 常见问题
+
 ### 编辑器下无需打包资源
 
 在Editor下，无需打包AB资源即可运行，减少打包时间，提高工作效率。
@@ -114,7 +116,9 @@ Q：Lua如何打包？
 
 A：可以打包成zip，游戏启动时，进行解压
 
+Q：The AssetBundle xxx.ab' can't be loaded because another AssetBundle with the same files is already loaded.
 
+A：同名的ab(包括不同路径但名称相同)如果已加载没有释放，再调用加载Unity会报此错误且不会加载
 
 ### loadfromfile
 
@@ -148,17 +152,17 @@ LuaException: c# exception:This type must add to CSharpCallLua: System.Action<bo
 
 
 
-更多xlua相关的知识，可以查看xlua的官方文档
+更多xlua相关的知识，请查看xlua的官方文档
 
 ## 遇到报错
 
-> 问题：TargetException: Non-static field reqires a target 
->
-> 调用堆栈 KEngine.Log.Logger
->
-> 解决办法：游戏启动时，打开Unity的日志窗口(Console界面)，因为添加了双击日志跳转到Lua文件中
+### TargetException: Non-static field reqires a target 
 
-> 如果游戏启动报，资源加载的报错
+调用堆栈 KEngine.Log.Logger
+
+解决办法：游戏启动时，打开Unity的日志窗口(Console界面)，因为添加了双击日志跳转到Lua文件中
+
+### 启动游戏报资源加载的错误
 
 解决办法：
 
