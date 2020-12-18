@@ -94,7 +94,7 @@ namespace KEngine.Editor
                 CheckUIRule(windowAsset);
                 var uiPrefabPath = uiPrefabDir + "/" + windowAsset.name + ".prefab";
 #if UNITY_2018_1_OR_NEWER
-                var prefab = PrefabUtility.SaveAsPrefabAssetAndConnect( windowAsset.gameObject,uiPrefabPath,InteractionMode.UserAction);
+                var prefab = PrefabUtility.SaveAsPrefabAsset(windowAsset.gameObject,uiPrefabPath);
 #else
                 var prefab = PrefabUtility.CreatePrefab(uiPrefabPath, windowAsset.gameObject, ReplacePrefabOptions.Default);
 #endif
@@ -140,9 +140,7 @@ namespace KEngine.Editor
                 return;
             }
 #if UNITY_4
-
             var windowAssets = GetUIWIndoeAssetsFromCurrentScene();
-
             foreach(var windowAsset in windowAssets)
             {
                 BuildTools.BuildAssetBundle(windowAsset.gameObject, GetBuildRelPath(windowAsset.name));
