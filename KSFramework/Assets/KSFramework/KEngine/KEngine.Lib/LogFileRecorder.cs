@@ -143,12 +143,9 @@ namespace KEngine
                     Directory.CreateDirectory(filePath);
                 logWritter = new LogFileRecorder(filePath, FileMode.Append);
             }
-
-            var time = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
-            //Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError是没有堆栈，可以通过StackTrace加上堆栈 by qingqing.zhao test in unity2019.3.7
-            // logWritter.WriteLine(string.Format("[{0}][{1}]{2}\n{3}", time, type, condition,  !string.IsNullOrEmpty(stackTrace)?stackTrace :Environment.StackTrace));
-            //logWritter.WriteLine(string.Format("[{0}][{1}]{2}\n{3}", time, type, condition,  Environment.StackTrace ));
-            logWritter.WriteLine(string.Format("[{0}][{1}]{2}\n{3}", time, type, condition,  stackTrace));
+            
+            //NOTE System.Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError都是没有堆栈，可以通过StackTrace加上堆栈。 by qingqing.zhao test in unity2019.3.7
+            logWritter.WriteLine(string.Format("{0}\n{1}",  condition,  stackTrace));
         }
 
 
