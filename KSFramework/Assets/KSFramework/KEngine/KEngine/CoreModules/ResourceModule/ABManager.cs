@@ -57,8 +57,7 @@ public class ABManager
     /// <summary>
     /// 进行垃圾回收
     /// </summary>
-    internal static readonly Dictionary<AbstractResourceLoader, float> UnUsesLoaders =
-        new Dictionary<AbstractResourceLoader, float>();
+    internal static readonly Dictionary<AbstractResourceLoader, float> UnUsesLoaders =  new Dictionary<AbstractResourceLoader, float>();
 
     #endregion
 

@@ -920,7 +920,7 @@ namespace KEngine
             else
                 return from;
         }
-
+#if UNITY_5
         // 粒子特效比例缩放
         public static void ScaleParticleSystem(GameObject gameObj, float scale)
         {
@@ -938,7 +938,7 @@ namespace KEngine
                 gameObj.transform.localScale = new Vector3(scale, scale, 1);
             }
         }
-
+#endif
         //设置粒子系统的RenderQueue
         public static void SetParticleSystemRenderQueue(Transform parent, int renderQueue = 3900)
         {
