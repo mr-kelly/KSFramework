@@ -54,8 +54,8 @@ import("CSharpBinding")
 Billboard = import("configs/Billboard")
 print("Init.lua script finish!")
 --emmylua debug
-if Application.isEditor then
+--[[if Application.isEditor then
     package.cpath = package.cpath .. ';C:/Users/qing/AppData/Roaming/JetBrains/IdeaIC2020.1/plugins/intellij-emmylua/classes/debugger/emmy/windows/x64/?.dll'
     local dbg = require('emmy_core')
     dbg.tcpListen('localhost', 9966)
-end 
+end]]
