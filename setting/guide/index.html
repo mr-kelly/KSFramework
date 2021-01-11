@@ -315,9 +315,12 @@
 <p>为了方便开发，在打开Unity编辑器后KEngine会对所有的配置表源文件进行监测，当发现Excel文件有改动，Unity编辑器就会弹框请求进行配置表重新编译（执行<strong>Quick Compile Settings</strong>差异化编译）</p>
 <p><img alt="对Excel文件改动后，Unity会监测到变更，点击OK，就会重新编译" src="../../images/setting/guide-6.png" /></p>
 <p>不过，当修改配置表时并没有打开带有KEngine的Unity工程，就无法监测到配置表的变更，这时就需要手工执行菜单的配置表格编译了。</p>
-<h2 id="_7">配置表读取的代码生成</h2>
-<h3 id="ctsv">C#+Tsv读取配置文件</h3>
-<p>根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过EngineConfigs.txt这个INI文件进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。</p>
+<h2 id="_7">几种读取配置表的方式</h2>
+<h3 id="_8">切换配置项</h3>
+<p>在 AppConfigs.cs 中修改字段 IsUseLuaConfig = true/false 来进行切换。</p>
+<p>注：如果希望使用sqlite的话，我写了《<a href="https://www.cnblogs.com/zhaoqingqing/p/7440867.html">TableML-GUI篇(C# 编译/解析 Excel/CSV工具)</a>》，它是一个独立于Unity的配置表编译工具。</p>
+<h3 id="1ctsv">1.C#+Tsv读取配置文件</h3>
+<p>根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过AppConfigs.cs 进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。</p>
 <p>直接来看看配置表代码的调用方法——获取所有、获取某个、热重载：</p>
 <pre><code class="csharp">
 // 获取所有的配置项
@@ -335,7 +338,7 @@ GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 
 <p><img alt="生成代码的GameConfig.xlsx" src="../../images/setting/guide-7.png" /></p>
 <p>Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSettings.cs代码文件中。</p>
-<h3 id="lua">使用Lua做为配置表文件</h3>
+<h3 id="2lua">2.使用Lua做为配置表文件</h3>
 <p>新版本增加了把excel的内容生成到Lua文件中，在lua端做为一个table直接读取配置文件内容，就无需通过c#+tsv方式来读取。</p>
 <p>Lua文件中的前几行注解，是用于配合EmmyLua插件在IDEA下可实现代码提示功能，使用效果如下图：
 <img alt="生成代码的GameConfig.xlsx" src="../../images/setting/lua_code_hinting.png" /></p>
@@ -361,9 +364,9 @@ return {
 }
 </code></pre>
 
-<h3 id="_8">切换配置项</h3>
-<p>在EngineConfigs.txt 或 AppConfigs.txt 这个INI文件修改字段 IsUseLuaConfig = 0 的值来进行切换</p>
-<h3 id="_9">热重载</h3>
+<h3 id="3sqlite">3.使用sqlite做为配置文件</h3>
+<p>在tablemlGUI中支持把配置表数据编译到sqlite中，在lua端或C#中读取sqlite是件非常容易的事情。</p>
+<h2 id="_9">热重载</h2>
 <p>对策划来说，简单的修改Excel配置表后，往往需要重启游戏，来看修改的效果。</p>
 <p>KEngine配置表提供一种方法，可以在不重启游戏的前提下，重载配置表，来立即查看效果。</p>
 <p>生成的配置表代码中，会监测其加载过的编译后的配置文件，当配置文件发生变化，就会进行重载。</p>

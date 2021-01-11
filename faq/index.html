@@ -74,6 +74,26 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">常见问题及解答</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">编辑器下无需打包资源</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#apk">如何打包APK？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">如何更新仓库？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#oninit">OnInit会调用两次？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#c">配置表生成C#代码，如何热更？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build">build之后，运行报错</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#luabehaviour">LuaBehaviour</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">资源相关</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#loadfromfile">loadfromfile</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">其它热更新方案</a>
+    </li>
     </ul>
                     </li>
                 </ul>
@@ -262,7 +282,8 @@
             <div class="section">
               
                 <p>本篇介绍一些常见的问题及解答</p>
-<h3 id="_1">编辑器下无需打包资源</h3>
+<h2 id="_1">常见问题</h2>
+<h3 id="_2">编辑器下无需打包资源</h3>
 <p>在Editor下，无需打包AB资源即可运行，减少打包时间，提高工作效率。</p>
 <p>如果需要调试AB资源泄漏问题，请打包AB。</p>
 <h3 id="apk">如何打包APK？</h3>
@@ -272,7 +293,7 @@
 <li>打包期间会自动Link AB资源到<strong>StreamingAssets</strong>目录下</li>
 </ol>
 <p>注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。</p>
-<h3 id="_2">如何更新仓库？</h3>
+<h3 id="_3">如何更新仓库？</h3>
 <p>如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。</p>
 <p>原有目录如下：</p>
 <pre><code class="c#">KSFramework\Assets\KSFramework\KEngine
@@ -322,7 +343,7 @@ end
 return TestLuaBehaivour
 </code></pre>
 
-<h3 id="_3">资源相关</h3>
+<h3 id="_4">资源相关</h3>
 <p>Q：webstrom一直没有释放？</p>
 <p>A：资源是否没有打包成assetbundle</p>
 <p>Q：部分安卓机型报：local reference table overflow (max=512)</p>
@@ -337,9 +358,11 @@ return TestLuaBehaivour
 </ol>
 <p>Q：Lua如何打包？</p>
 <p>A：可以打包成zip，游戏启动时，进行解压</p>
+<p>Q：The AssetBundle xxx.ab' can't be loaded because another AssetBundle with the same files is already loaded.</p>
+<p>A：同名的ab(包括不同路径但名称相同)如果已加载没有释放，再调用加载Unity会报此错误且不会加载</p>
 <h3 id="loadfromfile">loadfromfile</h3>
 <p>lzma也可以loadfromfile</p>
-<h3 id="_4">其它热更新方案</h3>
+<h3 id="_5">其它热更新方案</h3>
 <p>理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。</p>
 <ul>
 <li><code>KSFramework/Modules/LuaModule/LuaBehaviour.cs</code>  </li>
@@ -357,14 +380,12 @@ return TestLuaBehaivour
 </code></pre>
 
 <p>解决办法：把Api Compatiblity Level从.NET Standard2.0改成.NET 4.x，这是因为.net standard不支持反射调用，原因可看：https://github.com/Tencent/xLua/issues/784#event-3628025061</p>
-<p>更多xlua相关的知识，可以查看xlua的官方文档</p>
-<h2 id="_5">遇到报错</h2>
-<blockquote>
-<p>问题：TargetException: Non-static field reqires a target </p>
+<p>更多xlua相关的知识，请查看xlua的官方文档</p>
+<h2 id="_6">遇到报错</h2>
+<h3 id="targetexception-non-static-field-reqires-a-target">TargetException: Non-static field reqires a target</h3>
 <p>调用堆栈 KEngine.Log.Logger</p>
 <p>解决办法：游戏启动时，打开Unity的日志窗口(Console界面)，因为添加了双击日志跳转到Lua文件中</p>
-<p>如果游戏启动报，资源加载的报错</p>
-</blockquote>
+<h3 id="_7">启动游戏报资源加载的错误</h3>
 <p>解决办法：</p>
 <ol>
 <li>重新生成Assetbundle，方法如下：点击菜单项 <strong>KEngine</strong> - <strong>AssetBundle</strong> - <strong>Bulld All</strong></li>
