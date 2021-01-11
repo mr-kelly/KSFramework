@@ -80,11 +80,17 @@ KEngine配置表编译的本质，其实就是——**把Excel文件转换成纯
 
 不过，当修改配置表时并没有打开带有KEngine的Unity工程，就无法监测到配置表的变更，这时就需要手工执行菜单的配置表格编译了。
 
-## 配置表读取的代码生成
+## 几种读取配置表的方式
 
-### C#+Tsv读取配置文件
+### 切换配置项
 
-根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过EngineConfigs.txt这个INI文件进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。
+在 AppConfigs.cs 中修改字段 IsUseLuaConfig = true/false 来进行切换。
+
+注：如果希望使用sqlite的话，我写了《[TableML-GUI篇(C# 编译/解析 Excel/CSV工具)](https://www.cnblogs.com/zhaoqingqing/p/7440867.html)》，它是一个独立于Unity的配置表编译工具。
+
+### 1.C#+Tsv读取配置文件
+
+根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过AppConfigs.cs 进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。
 
 直接来看看配置表代码的调用方法——获取所有、获取某个、热重载：
 ```csharp
@@ -105,7 +111,7 @@ GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 
 Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSettings.cs代码文件中。
 
-### 使用Lua做为配置表文件
+### 2.使用Lua做为配置表文件
 
 新版本增加了把excel的内容生成到Lua文件中，在lua端做为一个table直接读取配置文件内容，就无需通过c#+tsv方式来读取。
 
@@ -137,11 +143,13 @@ return {
 }
 ```
 
-### 切换配置项
+### 3.使用sqlite做为配置文件
 
-在EngineConfigs.txt 或 AppConfigs.txt 这个INI文件修改字段 IsUseLuaConfig = 0 的值来进行切换
+在tablemlGUI中支持把配置表数据编译到sqlite中，在lua端或C#中读取sqlite是件非常容易的事情。
 
-### 热重载
+
+
+## 热重载
 
 对策划来说，简单的修改Excel配置表后，往往需要重启游戏，来看修改的效果。
 
