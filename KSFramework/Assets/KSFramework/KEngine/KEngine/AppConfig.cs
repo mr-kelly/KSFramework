@@ -77,7 +77,7 @@ public class AppConfig
     //; config use lua  or c# + tsv
     public static bool IsUseLuaConfig = false;
     public const string SettingSourcePath = "Product/SettingSource";
-    public const string ExportLuaPath = "Lua/configs";
+    public const string ExportLuaPath = "Product/Lua/configs/";
     public const string ExportTsvPath = "Product/Setting";
     public const string ExportCSharpPath = "Assets/Code/AppSettings/";
 
