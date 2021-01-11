@@ -142,7 +142,7 @@ namespace KEngine.Editor
                     genCSharpClass = false, genCodeFilePath = null, forceAll = true, ExportLuaPath = AppConfig.ExportLuaPath
                 };
                 var compilerParam = new CompilerParam() {CanExportTsv = false, ExportTsvPath = AppConfig.ExportTsvPath, ExportLuaPath = AppConfig.ExportLuaPath};
-                results = new BatchCompiler().CompileAll(AppConfig.SettingResourcesPath, AppConfig.ExportLuaPath, genParam,compilerParam);     
+                results = new BatchCompiler().CompileAll(AppConfig.SettingSourcePath, AppConfig.ExportLuaPath, genParam,compilerParam);     
             }
             else
             {
