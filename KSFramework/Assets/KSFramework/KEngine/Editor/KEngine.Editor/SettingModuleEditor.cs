@@ -141,7 +141,7 @@ namespace KEngine.Editor
                     settingCodeIgnorePattern = AppConfig.SettingCodeIgnorePattern,
                     genCSharpClass = false, genCodeFilePath = null, forceAll = true, ExportLuaPath = AppConfig.ExportLuaPath
                 };
-                var compilerParam = new CompilerParam() {CanExportTsv = true, ExportTsvPath = AppConfig.ExportTsvPath, ExportLuaPath = AppConfig.ExportLuaPath};
+                var compilerParam = new CompilerParam() {CanExportTsv = false, ExportTsvPath = AppConfig.ExportTsvPath, ExportLuaPath = AppConfig.ExportLuaPath};
                 results = new BatchCompiler().CompileAll(AppConfig.SettingSourcePath, AppConfig.ExportLuaPath, genParam,compilerParam);     
             }
             else
