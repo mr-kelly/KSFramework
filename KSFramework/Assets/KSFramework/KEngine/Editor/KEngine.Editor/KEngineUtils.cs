@@ -92,7 +92,7 @@ namespace KEngine.Editor
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("== Addon ==");
+            /*EditorGUILayout.LabelField("== Addon ==");
             var isNgui = KDefineSymbolsHelper.HasDefineSymbol("NGUI");
             var newIsNgui = EditorGUILayout.Toggle("NGUI", isNgui);
             if (isNgui != newIsNgui)
@@ -105,35 +105,35 @@ namespace KEngine.Editor
                 {
                     KDefineSymbolsHelper.RemoveDefineSymbols("NGUI");
                 }
-            }
+            }*/
 
-            //EditorGUILayout.LabelField("== AppConfigs.txt ==");
-            //bool tabDirty = false;
-            // var configs = AppEngine.PreloadConfigs();
-            // foreach (var sectionData in configs.GetSections())
-            // {
-            //     EditorGUILayout.Space();
-            //     EditorGUILayout.LabelField("[" + sectionData.SectionName + "]");
-            //
-            //     foreach (var key in sectionData.Keys)
-            //     {
-            //         string value = key.Value;
-            //         EditorGUILayout.BeginHorizontal();
-            //         EditorGUILayout.LabelField(key.KeyName);
-            //         EditorGUILayout.LabelField(value);
-            //         EditorGUILayout.EndHorizontal();
-            //         //string newValue = EditorGUILayout.TextField(key.KeyName, value);
-            //         //if (value != newValue)
-            //         //{
-            //         //    tabDirty = true;
-            //         //}
-            //     }
-            // }
+            EditorGUILayout.LabelField("== Please Modify AppConfigs.cs ==");
+            /*bool tabDirty = false;
+             var configs = AppEngine.PreloadConfigs();
+             foreach (var sectionData in configs.GetSections())
+             {
+                 EditorGUILayout.Space();
+                 EditorGUILayout.LabelField("[" + sectionData.SectionName + "]");
+            
+                 foreach (var key in sectionData.Keys)
+                 {
+                     string value = key.Value;
+                     EditorGUILayout.BeginHorizontal();
+                     EditorGUILayout.LabelField(key.KeyName);
+                     EditorGUILayout.LabelField(value);
+                     EditorGUILayout.EndHorizontal();
+                     //string newValue = EditorGUILayout.TextField(key.KeyName, value);
+                     //if (value != newValue)
+                     //{
+                     //    tabDirty = true;
+                     //}
+                 }
+             }
 
-            //if (tabDirty)
-            //{
-            //    AssetDatabase.Refresh();
-            //}
+            if (tabDirty)
+            {
+                AssetDatabase.Refresh();
+            }*/
 
         }
     }
