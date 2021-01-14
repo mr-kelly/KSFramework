@@ -22,7 +22,8 @@
 /KSFramework/Product/Lua/.idea/vcs.xml
 
 #Others
-/AssetBundles-Browser
+*/*/AssetBundles-Browser*
+*/*/AssetBundles-Browser/*
 
 #Rider Debug dll files
 JetBrains*
@@ -324,3 +325,7 @@ LuaDeepProfilerSetting.*
 LuaProfilerPrecompileSetting.asset
 LuaProfilerPrecompileSetting.asset.meta
 
+/KSFramework/Product/Bundles/Android
+/KSFramework/Product/Bundles/iOS
+/KSFramework/Product/Bundles/MacOS
+/KSFramework/Product/Bundles/Windows
