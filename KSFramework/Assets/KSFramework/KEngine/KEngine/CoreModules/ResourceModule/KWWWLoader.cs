@@ -49,8 +49,9 @@ namespace KEngine
 
         public float BeginLoadTime;
         public float FinishLoadTime;
+#pragma warning disable 0618
         public WWW Www;
-
+#pragma warning restore 0618
         public int Size
         {
             get
@@ -114,7 +115,9 @@ namespace KEngine
             if(AppConfig.IsLogAbInfo)Log.Info("[Request] WWW, {1}", url);
 
             // 潜规则：不用LoadFromCache~它只能用在.assetBundle
+#pragma warning disable 0618
             Www = new WWW(url);
+#pragma warning restore 0618
             BeginLoadTime = Time.time;
             WWWLoadingCount++;
 
