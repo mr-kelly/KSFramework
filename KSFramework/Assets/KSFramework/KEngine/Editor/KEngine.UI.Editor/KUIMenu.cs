@@ -96,7 +96,7 @@ namespace KEngine.Editor
         }
 
 
-        [MenuItem(menu + "EmptyImage(接收点击)", false, 1001)]
+        [MenuItem(menu + "EmptyImage(空Image用于点击)", false, 1001)]
         public static void AddEmptyImage(MenuCommand menuCommand)
         {
             var go = CreateUIElementRoot("EmptyImage", menuCommand, s_ThickGUIElementSize);
