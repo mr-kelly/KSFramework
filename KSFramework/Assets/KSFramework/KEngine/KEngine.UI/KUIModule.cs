@@ -55,7 +55,8 @@ namespace KEngine.UI
             get { return _InstanceClass._Instance; }
         }
 
-       
+        public List<string> CommonAtlases = new List<string>(){"atlas_common"};
+        
         private int _loadingUICount = 0;
         /// <summary>
         /// 正在加载的UI统计
@@ -90,7 +91,7 @@ namespace KEngine.UI
         
         public UIModule()
         {
-            UiBridge = new GUIBridge();
+            UiBridge = new GUIBridge(); 
             UiBridge.IsLuaBridge = !string.IsNullOrEmpty(AppConfig.UIModuleBridge) && AppConfig.UIModuleBridge.Contains("Lua");
             UiBridge.InitBridge();
             CreateRoot();
@@ -219,7 +220,6 @@ namespace KEngine.UI
                 uiObj.name = uiState.TemplateName;
 
                 var uiBase = UiBridge.CreateUIController(uiObj, uiState.TemplateName);
-
                 if (uiState.UIWindow != null)
                 {
                     Log.Info("Destroy exist UI Window, maybe for reload");
@@ -228,7 +228,7 @@ namespace KEngine.UI
                 }
 
                 uiState.UIWindow = uiBase;
-
+                uiState.WindowAsset = uiObj.GetComponent<UIWindowAsset>();
                 uiBase.UIName = uiBase.UITemplateName = uiState.TemplateName;
 
                 UiBridge.UIObjectFilter(uiBase, uiObj);
@@ -313,6 +313,7 @@ namespace KEngine.UI
                 uiInstanceState.IsStaticUI = false;
                 uiInstanceState.IsLoading = true;
                 uiInstanceState.UIWindow = null;
+                uiInstanceState.WindowAsset = null;
                 uiInstanceState.OpenWhenFinish = true;
 				uiInstanceState.OpenArgs = args;
                 UIWindows[instanceName] = uiInstanceState;
@@ -356,6 +357,7 @@ namespace KEngine.UI
             uiBase.UIName = name;
 
             instanceUIState.UIWindow = uiBase;
+            instanceUIState.WindowAsset = uiObj.GetComponent<UIWindowAsset>();
 
             object[] originArgs = new object[_args.Length - 2]; // 去除前2个参数
             for (int i = 2; i < _args.Length; i++)
@@ -580,7 +582,6 @@ namespace KEngine.UI
                 uiObj.name = openState.TemplateName;
 
                 var uiBase = UiBridge.CreateUIController(uiObj, openState.TemplateName);
-
                 if (openState.UIWindow != null)
                 {
                     Log.Info("Destroy exist UI Window, maybe for reload");
@@ -589,7 +590,7 @@ namespace KEngine.UI
                 }
 
                 openState.UIWindow = uiBase;
-
+                openState.WindowAsset = uiObj.GetComponent<UIWindowAsset>();
                 uiBase.UIName = uiBase.UITemplateName = openState.TemplateName;
 
                 UiBridge.UIObjectFilter(uiBase, uiObj);
@@ -634,6 +635,11 @@ namespace KEngine.UI
                 Log.Info("{0} has been destroyed", uiName);
                 return;
             }
+
+            if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
+            {
+                //TODO 是否有必要移除SpriteAtlas
+            }
             if (destroyImmediate)
             {
                 UnityEngine.Object.DestroyImmediate(uiState.UIWindow.gameObject);
@@ -647,6 +653,7 @@ namespace KEngine.UI
             if (uiState.UIResourceLoader != null)
                 uiState.UIResourceLoader.Release();
             uiState.UIWindow = null;
+            uiState.WindowAsset = null;
 
             UIWindows.Remove(uiName);
         }
@@ -793,6 +800,7 @@ namespace KEngine.UI
         public string TemplateName;
         public string InstanceName;
         public UIController UIWindow;
+        public UIWindowAsset WindowAsset;
         public Type UIType;
         public bool IsLoading;
         public bool IsStaticUI; // 非复制出来的, 静态UI

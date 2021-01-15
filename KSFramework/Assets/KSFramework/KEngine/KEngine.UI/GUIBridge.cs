@@ -28,6 +28,7 @@ using System.Collections;
 using KSFramework;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.U2D;
 
 namespace KEngine.UI
 {
@@ -84,7 +85,7 @@ namespace KEngine.UI
         public IEnumerator LoadUIAsset(UILoadState loadState, UILoadRequest request)
         {
             float beginTime = Time.realtimeSinceStartup;
-            string path = string.Format("ui/{0}.prefab", loadState.TemplateName);
+            string path = string.Format("ui/{0}", loadState.TemplateName);
             var loader = AssetBundleLoader.Load(path);
             while (!loader.IsCompleted)
                 yield return null;
@@ -94,12 +95,35 @@ namespace KEngine.UI
             {
                 yield break;
             }
+      
 
             beginTime = Time.realtimeSinceStartup;
             var req = loader.Bundle.LoadAssetAsync<GameObject>(loadState.TemplateName);
             while (!req.isDone)
                 yield return null;
             request.Asset = GameObject.Instantiate(req.asset);
+            
+            //管理图集
+            GameObject go = req.asset as GameObject;
+            if (go)
+            {
+                var windowAsset = go.GetComponent<UIWindowAsset>();
+                if (windowAsset && !string.IsNullOrEmpty(windowAsset.atals_arr))
+                {
+                    string[] arr = windowAsset.atals_arr.Split(',');
+                    int sprite_count = 0;
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        string atlas_name = arr[i].ToLower();
+                        if (!UIModule.Instance.CommonAtlases.Contains(atlas_name)) sprite_count++;
+                        var atlas = loader.Bundle.LoadAsset<SpriteAtlas>(atlas_name);
+                        if (atlas != null) ABManager.SpriteAtlases[atlas_name] = atlas;
+                    }
+
+                    if (sprite_count >= 2) Log.LogError($"UI:{loadState.TemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                }
+            }
+            
             loadState.UIResourceLoader = loader;
             if (AppConfig.IsLogAbLoadCost)
             {

@@ -28,7 +28,7 @@ public class EditorLoadAssetTest : MonoBehaviour
             yield break;
         }
 
-        var path = "UI/Login.prefab";
+        var path = "UI/Login";
         loader_prefab = AssetBundleLoader.Load(path, (isOk, ab) =>
         {
             Log.Info("load complete");
@@ -93,7 +93,7 @@ public class EditorLoadAssetTest : MonoBehaviour
         
         if (GUILayout.Button("加载不存在的资源", GUILayout.MinWidth(100), GUILayout.MinHeight(60)))
         {
-            AssetBundleLoader.Load("aa/bb.ab");
+            AssetBundleLoader.Load("aa/bb");
         }
     }
 }

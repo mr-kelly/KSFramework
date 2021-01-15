@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2015 KEngine / Kelly <http://github.com/mr-kelly>, All rights reserved.
+﻿#region Copyright (c) 2015 KEngine / Kelly <http: //github.com/mr-kelly>, All rights reserved.
 
 // KEngine - Toolset and framework for Unity3D
 // ===================================
@@ -24,15 +24,19 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using KEngine.UI;
 using KUnityEditorTools;
 using UnityEditor;
+using UnityEditor.U2D;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
 using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 namespace KEngine.Editor
@@ -91,28 +95,84 @@ namespace KEngine.Editor
 
             foreach (var windowAsset in windowAssets)
             {
-                CheckUIRule(windowAsset);
+                windowAsset.IsUIEditor = false;
+                BeforeExportUIPrefab(windowAsset);
                 var uiPrefabPath = uiPrefabDir + "/" + windowAsset.name + ".prefab";
 #if UNITY_2018_1_OR_NEWER
-                var prefab = PrefabUtility.SaveAsPrefabAsset(windowAsset.gameObject,uiPrefabPath);
+                var prefab = PrefabUtility.SaveAsPrefabAsset(windowAsset.gameObject, uiPrefabPath);
 #else
                 var prefab = PrefabUtility.CreatePrefab(uiPrefabPath, windowAsset.gameObject, ReplacePrefabOptions.Default);
 #endif
-                
+
                 EditorUtility.SetDirty(prefab);
-                
+
                 //NOTE 有同学反馈在unity2019.3.4下这里会导致unity卡死(我在2019.3.7未遇到)，如出现问题可注释这行
                 AssetDatabase.ImportAsset(uiPrefabPath, ImportAssetOptions.ForceSynchronousImport);
                 Debug.Log("Create UIWindowAsset to prfab: " + uiPrefabPath);
             }
+
             AssetDatabase.SaveAssets();
         }
 
-        private static void CheckUIRule(UIWindowAsset asset)
+        /// <summary>
+        /// TODO 导出UI前的工作
+        ///     生成图集
+        ///     检查1个只能使用一个图集，Text不勾选bestFit，不使用空的Image接受事件
+        /// </summary>
+        /// <param name="asset"></param>
+        private static void BeforeExportUIPrefab(UIWindowAsset asset)
         {
-		 	//TODO 导出前检查UI，比如只能使用一个图集，Text不勾选bestFit，不使用空的Image接受事件
-            //var images = asset.GetComponentsInChildren<Image>(false);
+            /* 目录结构：
+             *     UIHello.unity
+             *     atlas
+             *         sprite1.png
+             *         ....
+             * 每个目录下的atlas存放用到的图片，atlas文件夹打到一个图集中
+             */
+            var scene = EditorSceneManager.GetActiveScene();
+            var src_path = scene.path.Replace(scene.name+".unity","").Replace(Application.dataPath,"Assets/") + "atlas";
+            var dst_path = "Assets/" + KEngineDef.ResourcesBuildDir + "/UI/";
+            CreateSpriteAtlas(src_path, dst_path, asset.name);
+            List<string> atlasNames = new List<string>();
+            var images = asset.GetComponentsInChildren<Image>(false);
+            foreach (Image image in images)
+            {
+                if (image.sprite != null)
+                {
+                    var atlasName = GetSpriteAtlasName(image);
+                    if (!string.IsNullOrEmpty(atlasName) && !atlasNames.Contains(atlasName))
+                    {
+                        atlasNames.Add(atlasName);
+                    }
+                }
+            }
 
+            asset.atals_arr = string.Join(",", atlasNames);
+        }
+
+        private static string GetSpriteAtlasName(Image img)
+        {
+            if (img == null || img.sprite == null)
+                return null;
+            string[] array = AssetDatabase.FindAssets("t:spriteatlas");
+            foreach (string guid in array)
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(assetPath);
+                //Get Packed sprites in atlas.
+                SerializedProperty spPackedSprites = new SerializedObject(atlas).FindProperty("m_PackedSprites");
+                var sprites = Enumerable.Range(0, spPackedSprites.arraySize)
+                    .Select(index => spPackedSprites.GetArrayElementAtIndex(index).objectReferenceValue)
+                    .OfType<Sprite>();
+
+                    if (sprites.Contains(img.sprite))
+                    {
+                        return atlas.name;
+                    }
+                
+            }
+
+            return null;
         }
 #endif
 
@@ -147,7 +207,6 @@ namespace KEngine.Editor
             }
 #else
             UISceneToPrefabs();
-            BuildTools.BuildAllAssetBundles();
 #endif
         }
 
@@ -176,6 +235,7 @@ namespace KEngine.Editor
                 Log.Error("Cannot export in playing mode! Please stop!");
                 return;
             }
+
             var uiPath = Application.dataPath + "/" + KEngineDef.ResourcesEditDir + "/UI";
             var uiScenes = Directory.GetFiles(uiPath, "*.unity", SearchOption.AllDirectories);
             foreach (string uiScene in uiScenes)
@@ -184,7 +244,6 @@ namespace KEngine.Editor
                 EditorSceneManager.OpenScene(uiScene);
                 KUGUIBuilder.UISceneToPrefabs();
             }
-            BuildTools.BuildAllAssetBundles();
         }
 
 
@@ -205,8 +264,9 @@ namespace KEngine.Editor
             {
                 uiName = "UI" + Path.GetRandomFileName();
             }
+
             GameObject uiObj = new GameObject(uiName);
-            uiObj.layer = (int)UnityLayerDef.UI;
+            uiObj.layer = (int) UnityLayerDef.UI;
             uiObj.AddComponent<UIWindowAsset>();
 
             var uiPanel = new GameObject("Image").AddComponent<Image>();
@@ -217,7 +277,7 @@ namespace KEngine.Editor
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             CanvasScaler canvasScaler = uiObj.AddComponent<CanvasScaler>();
             uiObj.AddComponent<GraphicRaycaster>();
-          
+
             canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             canvasScaler.referenceResolution = AppConfig.UIResolution;
             canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
@@ -230,7 +290,6 @@ namespace KEngine.Editor
 #if UNITY_4
                 evtSystemObj.AddComponent<TouchInputModule>();
 #endif
-
             }
 
             Camera camera;
@@ -238,20 +297,19 @@ namespace KEngine.Editor
             if (go == null)
             {
                 GameObject cameraObj = new GameObject("UICamera");
-                cameraObj.layer = (int)UnityLayerDef.UI;
+                cameraObj.layer = (int) UnityLayerDef.UI;
 
                 camera = cameraObj.AddComponent<Camera>();
                 camera.clearFlags = CameraClearFlags.Skybox;
                 camera.depth = 0;
                 camera.backgroundColor = Color.grey;
-                camera.cullingMask = 1 << (int)UnityLayerDef.UI;
+                camera.cullingMask = 1 << (int) UnityLayerDef.UI;
                 camera.orthographicSize = 1f;
                 camera.orthographic = true;
                 camera.nearClipPlane = 0.3f;
                 camera.farClipPlane = 1000f;
 
                 camera.gameObject.AddComponent<AudioListener>();
-
             }
             else
             {
@@ -279,5 +337,195 @@ namespace KEngine.Editor
             return "*.unity";
         }
 #endif
+
+        #region SpriteAtlas
+
+        //https://docs.unity3d.com/ScriptReference/U2D.SpriteAtlasExtensions.html
+        private static bool GetTagIfTexture(string Path, ref Dictionary<string, List<string>> dict)
+        {
+            Object[] data = AssetDatabase.LoadAllAssetsAtPath(Path);
+            foreach (Object o in data)
+            {
+                Texture2D s = o as Texture2D;
+                if (s != null)
+                {
+                    TextureImporter ti = AssetImporter.GetAtPath(Path) as TextureImporter;
+                    List<string> spritesWithTag;
+                    if (!dict.ContainsKey(Path))
+                    {
+                        spritesWithTag = new List<string>();
+                        dict[ti.spritePackingTag] = spritesWithTag;
+                    }
+                    else
+                    {
+                        spritesWithTag = dict[ti.spritePackingTag];
+                    }
+
+                    spritesWithTag.Add(Path);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static Texture2D GetTexture(string Path)
+        {
+            Object[] data = AssetDatabase.LoadAllAssetsAtPath(Path);
+            foreach (Object o in data)
+            {
+                Texture2D s = (Texture2D) o;
+                if (s != null)
+                    return s;
+            }
+
+            return null;
+        }
+
+        private static bool CacheSpriteAtlasSprites(string Path, ref SortedSet<string> SpritesInAtlas)
+        {
+            Object[] data = AssetDatabase.LoadAllAssetsAtPath(Path);
+            foreach (Object o in data)
+            {
+                SpriteAtlas sa = o as SpriteAtlas;
+                if (sa != null)
+                {
+                    Sprite[] sprites = new Sprite[sa.spriteCount];
+                    sa.GetSprites(sprites);
+
+                    foreach (Sprite sprite in sprites)
+                    {
+                        SpritesInAtlas.Add(AssetDatabase.GetAssetPath(sprite));
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        [MenuItem("Assets/Create SpriteAtlas for selected Sprites.")]
+        public static void CreateAtlasForSelectedSprites()
+        {
+            SpriteAtlas sa = new SpriteAtlas();
+            AssetDatabase.CreateAsset(sa, "Assets/sample.spriteatlas");
+            foreach (var obj in Selection.objects)
+            {
+                Object o = obj as Sprite;
+                if (o != null)
+                    SpriteAtlasExtensions.Add(sa, new Object[] {o});
+            }
+
+            AssetDatabase.SaveAssets();
+        }
+
+        //[MenuItem("Assets/SpriteAtlas Migrate")]
+        public static void SpriteAtlasMigrator()
+        {
+            List<string> TexturesList = new List<string>();
+            List<string> SpriteAtlasList = new List<string>();
+            Dictionary<string, List<string>> spriteTagMap = new Dictionary<string, List<string>>();
+            SortedSet<string> SpritesInAtlas = new SortedSet<string>();
+
+            foreach (string s in AssetDatabase.GetAllAssetPaths())
+            {
+                if (s.StartsWith("Packages") || s.StartsWith("ProjectSettings") || s.Contains("scene"))
+                    continue;
+                bool hasSprite = GetTagIfTexture(s, ref spriteTagMap);
+                if (hasSprite)
+                {
+                    TexturesList.Add(s);
+                }
+                else if (s.Contains("spriteatlas"))
+                {
+                    bool hasSpriteAtlas = CacheSpriteAtlasSprites(s, ref SpritesInAtlas);
+                    if (hasSpriteAtlas)
+                        SpriteAtlasList.Add(s);
+                }
+            }
+
+            foreach (KeyValuePair<string, List<string>> tag in spriteTagMap)
+            {
+                bool found = SpriteAtlasList.Contains(tag.Key);
+                if (!found)
+                {
+                    string atlasPath = "Assets/" + tag.Key + ".spriteatlas";
+                    SpriteAtlas sa = new SpriteAtlas();
+                    AssetDatabase.CreateAsset(sa, atlasPath);
+                    sa.name = tag.Key;
+                    List<string> ss = tag.Value;
+                    foreach (string s in ss)
+                    {
+                        Object o = GetTexture(s);
+                        SpriteAtlasExtensions.Add(sa, new Object[] {o});
+                    }
+
+                    AssetDatabase.SaveAssets();
+                }
+            }
+        }
+
+        [MenuItem("KEngine/UI(UGUI)/Export Common Atlas")]
+        public static void BuildCommonAtlas()
+        {
+            var assetPath = Application.dataPath + "/";
+            var dirs = Directory.GetDirectories(assetPath + KEngineDef.ResourcesEditDir + "/UI/", "atlas_*", SearchOption.TopDirectoryOnly);
+            foreach (string dir in dirs)
+            {
+                var arr = dir.Split('/');
+                var name = dir.Replace(assetPath, "");
+                CreateSpriteAtlas("Assets/" + name, "Assets/" + KEngineDef.ResourcesBuildDir + "/uiatlas/", arr[arr.Length - 1],false);
+            }
+        }
+
+        public static void CreateSpriteAtlas(string src_path, string dst_path, string atlas_name,bool includeInBuild = true)
+        {
+            if (string.IsNullOrEmpty(src_path) || string.IsNullOrEmpty(dst_path) || string.IsNullOrEmpty(atlas_name))
+            {
+                Log.LogError($"无法创建图集,路径为空. src_path={src_path} ,dst_path={dst_path} ,atlas_name={atlas_name}");
+                return;
+            }
+
+            if (!src_path.EndsWith("/")) src_path = src_path + "/";
+            var full_path = Path.GetFullPath(src_path);
+            if (!Directory.Exists(full_path))
+            {
+                Log.Info($"不创建图集,{src_path}下无atlas文件夹");
+                return;
+            }
+            var assets = Directory.GetFiles(full_path, "*.png"); //这里无法过滤两种类型 *.png|*.jpg
+            if (assets == null || assets.Length == 0)
+            {
+                Log.Info($"{src_path}下无图片，不生成图集");
+                return;
+            }
+
+            SpriteAtlas spriteAtlas = new SpriteAtlas();
+            if (!dst_path.EndsWith("/")) dst_path = dst_path + "/";
+            if (!Directory.Exists(dst_path)) Directory.CreateDirectory(dst_path);
+            AssetDatabase.CreateAsset(spriteAtlas, dst_path + atlas_name + ".spriteatlas");
+            foreach (var path in assets)
+            {
+                var t = src_path + Path.GetFileName(path);
+                var o = AssetDatabase.LoadAssetAtPath<Sprite>(t);
+                if (o != null)
+                    SpriteAtlasExtensions.Add(spriteAtlas, new Object[] {o});
+            }
+
+            //TODO 根据平台设置图集格式 //EditorUserBuildSettings.activeBuildTarget
+            var atlasSetting = spriteAtlas.GetPlatformSettings(KResourceModule.GetBuildPlatformName());
+            atlasSetting.maxTextureSize = 2048;
+            atlasSetting.textureCompression = TextureImporterCompression.Compressed;
+            atlasSetting.format = TextureImporterFormat.Automatic;
+            spriteAtlas.SetIncludeInBuild(includeInBuild);
+            spriteAtlas.SetPlatformSettings(atlasSetting);
+
+            SpriteAtlasUtility.PackAtlases(new SpriteAtlas[] {spriteAtlas}, EditorUserBuildSettings.activeBuildTarget, false);
+            AssetDatabase.SaveAssets();
+            Log.Info($"创建图集{spriteAtlas.name}完成，包含{spriteAtlas.spriteCount}个图片");
+        }
+
+        #endregion
     }
 }

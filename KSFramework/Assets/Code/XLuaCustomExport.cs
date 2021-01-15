@@ -169,7 +169,9 @@ public static class XLuaCustomExport
         typeof(Transform),
         typeof(RectTransform),
         typeof(Time),
+#pragma warning disable 0618
         typeof(WWW),
+#pragma warning restore 0618
         typeof(Rigidbody),
         typeof(CharacterController),
         typeof(PlayerPrefs),

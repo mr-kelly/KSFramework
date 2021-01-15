@@ -52,7 +52,7 @@ namespace KSFramework.Editor
                 var dirName = Path.GetFileName(atlasDir);
                 foreach (var imagePath in Directory.GetFiles(atlasDir, "*.*", SearchOption.AllDirectories))
                 {
-                    var texImpoter = TextureImporter.GetAtPath(imagePath) as TextureImporter;
+                    var texImpoter = UnityEditor.TextureImporter.GetAtPath(imagePath) as UnityEditor.TextureImporter;
                     if (texImpoter != null)
                     {
                         texImpoter.spriteImportMode = SpriteImportMode.Single;

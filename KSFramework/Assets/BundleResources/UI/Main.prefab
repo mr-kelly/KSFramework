@@ -344,6 +344,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StringArgument: 
   PanelType: 0
+  IsUIEditor: 0
+  atals_arr: 
 --- !u!223 &223642620256940896
 Canvas:
   m_ObjectHideFlags: 0

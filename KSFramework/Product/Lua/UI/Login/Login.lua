@@ -11,7 +11,7 @@ function UILogin.New(controller)
 end
 
 ---测试场景数组
-local scenes = { "Scene/Scene1001/Scene1001.unity", "Scene/Scene1002/Scene1002.unity" }
+local scenes = { "Scene/Scene1001/Scene1001", "Scene/Scene1002/Scene1002" }
 
 -- controller also pass to OnInit function
 function UILogin:OnInit(controller)

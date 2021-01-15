@@ -260,7 +260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 938311ed4b5a34590af2bad889d53090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StringArgument: 
   PanelType: 1
+  IsUIEditor: 0
+  atals_arr: 
 --- !u!223 &223986230031919290
 Canvas:
   m_ObjectHideFlags: 0

@@ -57,6 +57,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AssetBundle/Clear assetBundleName exclude BundleResources")]
         public static void ClearOtherAssetBundleNames()
         {
+            string dir = ResourcesBuildDir;
             // Check marked asset bundle whether real
             foreach (var assetGuid in AssetDatabase.FindAssets(""))
             {
@@ -67,7 +68,7 @@ namespace KEngine.Editor
                 {
                     continue;
                 }
-                if (!assetPath.StartsWith(ResourcesBuildDir))
+                if (!assetPath.StartsWith(dir))
                 {
                     assetImporter.assetBundleName = null;
                 }
@@ -83,6 +84,33 @@ namespace KEngine.Editor
         public static void MakeAssetBundleNames()
         {
             var dir = ResourcesBuildDir;
+            int dirLength = dir.Length;
+            // set BundleResources's all bundle name
+            var files = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
+            foreach (var filepath in files)
+            {
+                if (filepath.EndsWith(".meta")) continue;
+
+                var importer = AssetImporter.GetAtPath(filepath);
+                if (importer == null)
+                {
+                    Log.Error("Not found: {0}", filepath);
+                    continue;
+                }
+                
+                var bundleName = filepath.Substring(dirLength, filepath.Length - dirLength);
+                var file = new FileInfo(filepath);
+                bundleName = bundleName.Replace( file.Extension,"" );//去掉后缀，原因：abBrowser中无法识别abName带有多个.
+                importer.assetBundleName = bundleName + AppConfig.AssetBundleExt;
+            }
+
+            Log.Info("Make all asset name successs!");
+        }
+        
+        [MenuItem("KEngine/AssetBundle/Clear [BundleResources] AB Name")]
+        public static void ClearAssetBundleNames()
+        {
+            var dir = ResourcesBuildDir;
             
             // set BundleResources's all bundle name
             foreach (var filepath in Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories))
@@ -95,13 +123,12 @@ namespace KEngine.Editor
                     Log.Error("Not found: {0}", filepath);
                     continue;
                 }
-                var bundleName = filepath.Substring(dir.Length, filepath.Length - dir.Length);
-                importer.assetBundleName = bundleName + AppConfig.AssetBundleExt;
+                importer.assetBundleName = null;
             }
 
-            Log.Info("Make all asset name successs!");
+            Log.Info("Clear all asset name successs!");
         }
-
+        
         /// <summary>
         /// 清理冗余，即无此资源，却有AssetBundle的, Unity 5 only
         /// </summary>

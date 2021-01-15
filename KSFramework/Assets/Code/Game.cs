@@ -31,6 +31,7 @@ using System.Runtime.InteropServices;
 using KEngine;
 using KEngine.UI;
 using KSFramework;
+using UnityEngine.U2D;
 
 public class Game : KSGame
 {
@@ -70,19 +71,26 @@ public class Game : KSGame
         // {
         //     Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
         // }
-
+        AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
+        {
+            if (isOk && ab)
+            {
+                var atlas = ab.LoadAsset<SpriteAtlas>("atlas_common");
+                ABManager.SpriteAtlases["atlas_common"] = atlas;
+            }
+        });
         yield return null;
         
         UIModule.Instance.OpenWindow("Login", 888);
 
         // Test Load a scene in asset bundle
-        SceneLoader.Load("Scene/Scene1001/Scene1001.unity");
+        SceneLoader.Load("Scene/Scene1001/Scene1001");
         
         //预加载公告界面
-        UIModule.Instance.PreLoadUIWindow("Billboard");
+        // UIModule.Instance.PreLoadUIWindow("Billboard");
         //UIModule.Instance.OpenWindow("Billboard");
          // 测试Collect函数，立即回收所有资源
-        var path = "ui/UIRoleInfo.prefab";
+        var path = "ui/UIRoleInfo";
         var assetLoader = AssetBundleLoader.Load(path); 
         while (!assetLoader.IsCompleted)             
             yield return null;

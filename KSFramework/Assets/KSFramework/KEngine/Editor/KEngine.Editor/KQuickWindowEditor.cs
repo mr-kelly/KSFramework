@@ -170,6 +170,14 @@ public class KQuickWindowEditor : EditorWindow
         }
 
         GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("导出公共图集", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KUGUIBuilder.BuildCommonAtlas();
+        }
+        
+        GUILayout.EndHorizontal();
     }
 
     public void DrawAssetBundleUI()
@@ -196,7 +204,10 @@ public class KQuickWindowEditor : EditorWindow
         {
             BuildTools.MakeAssetBundleNames();
         }
-
+        if (GUILayout.Button("清空全部AB Name", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            BuildTools.ClearAssetBundleNames();
+        }
         if (GUILayout.Button("打开AB目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             var path = AppConfig.ProductRelPath + "/Bundles/" + KResourceModule.GetBuildPlatformName();

@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.U2D;
 using Object = UnityEngine.Object;
 
 namespace KEngine
@@ -362,7 +363,7 @@ namespace KEngine
         {
             if (_Instance != null)
                 Debuger.Assert(_Instance == this);
-            
+            SpriteAtlasManager.atlasRequested += ABManager.RequestAtlas;
             if (AppConfig.IsLogDeviceInfo)
             {
                 Log.Info("ResourceManager ApplicationPath: {0}", ApplicationPath);
@@ -377,6 +378,11 @@ namespace KEngine
         {
             //NOTE 在Unity2019中有渐近式GC，而此处不会调用GC.Collect，仅仅对已加载的ab进行检查是否需要Unload
             ABManager.CheckGcCollect();
+        }
+
+        private void OnDestroy()
+        {
+            SpriteAtlasManager.atlasRequested -= ABManager.RequestAtlas;
         }
 
         private static string _unityEditorEditorUserBuildSettingsActiveBuildTarget;
