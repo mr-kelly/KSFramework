@@ -139,8 +139,7 @@ namespace KEngine
         private void Awake()
         {
             IsDebugBuild = Debug.isDebugBuild;
-            //ShowFps = IsDebugBuild;
-
+            Application.targetFrameRate = 60;
             if (EngineInstance != null)
             {
                 Log.Error("Duplicated Instance Engine!!!");
@@ -291,19 +290,19 @@ namespace KEngine
             canvasGameObj.renderMode = RenderMode.ScreenSpaceOverlay;
             var fpsTextObj = new GameObject("FPSText").AddComponent<Text>();
             fpsTextObj.transform.SetParent(canvasGameObj.transform);
-            fpsTextObj.rectTransform.pivot = new Vector2(0, 1);
-            fpsTextObj.rectTransform.localPosition = Vector3.zero;
-            fpsTextObj.rectTransform.anchorMin = new Vector2(0, 1);
-            fpsTextObj.rectTransform.anchorMax = new Vector2(0, 1);
-            fpsTextObj.rectTransform.sizeDelta = new Vector2(300, 100);
+            var rectTransform = fpsTextObj.rectTransform;
+            //位置固定在左下角
+            rectTransform.pivot = new Vector2(0, 0);
+            rectTransform.anchoredPosition = new Vector3(2,-2,0);
+            rectTransform.anchorMin = new Vector2(0, 0);
+            rectTransform.anchorMax = new Vector2(0, 0);
+            rectTransform.sizeDelta = new Vector2(300, 20);
             var font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             fpsTextObj.font = font;
             CacheText = fpsTextObj;
             GameObject.DontDestroyOnLoad(canvasGameObj);
             _Frames = 0;
-            _LastInterval = Time.realtimeSinceStartup; 
-            Log.Info("create fps canvas");
-
+            _LastInterval = Time.realtimeSinceStartup;
 #endif
         }
 
@@ -318,19 +317,13 @@ namespace KEngine
                 
                 _cacheFPSStr = string.Format("FPS: {0}", (int)_FPS);
             }  
-            
+
             if (Time.frameCount % 30 == 0 || _cacheMemoryStr == null || _cacheFPSStr == null)
             {
-                _cacheMemoryStr = string.Format("Memory: {0:F3}KB",
-#if UNITY_5_5 || UNITY_2017_1_OR_NEWER
-					UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() / 1024f
-#else
-					UnityEngine.Profiler.GetMonoUsedSize() / 1024f
-#endif
-				);
+                _cacheMemoryStr = string.Format("(mem:{0:F1}MB)", Log.GetMonoUseMemory());
 #if USE_UGUI_FPS
                 if (CacheText == null) return;
-                CacheText.text = _cacheMemoryStr + "\n" + _cacheFPSStr;
+                CacheText.SetText(_cacheFPSStr  + " "+ _cacheMemoryStr);
 #endif
             }
 

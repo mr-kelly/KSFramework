@@ -134,7 +134,7 @@ namespace KSFramework
             }
             else
             {
-                Log.Warning("not find key {0}",key);
+                Log.Warning("not find key {0} in Cookie",key);
                 return null;
             }          
         }

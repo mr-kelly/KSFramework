@@ -354,11 +354,6 @@ namespace KEngine
         public static void LogToFile(string msg,params object[] args)
         {
             var szMsg = args != null && args.Length > 0 ? string.Format(msg, args) : msg;
-            if (!szMsg.EndsWith("\n"))
-            {
-                szMsg += "\n";
-            }
-         
             if (IsUnityEditor)
             {
                 DoLog(szMsg,  null,LogLevel.Info);
@@ -370,7 +365,7 @@ namespace KEngine
                 lock (fileStream)
                 {
                     StreamWriter writer = new StreamWriter(fileStream);
-                    writer.Write(szMsg);
+                    writer.WriteLine(szMsg);
                     writer.Flush();
                     writer.Close();
                 }

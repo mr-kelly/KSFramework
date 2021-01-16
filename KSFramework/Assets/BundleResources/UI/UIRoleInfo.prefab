@@ -520,8 +520,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 12, y: -214}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 19.7, y: -203}
+  m_SizeDelta: {x: 358.2, y: 52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3240166740591166478
 CanvasRenderer:
@@ -556,13 +556,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: This is Content
+  m_Text: "\u5F53\u6B64\u9762\u677F\u5173\u95ED\u65F6\uFF0C\n\u5B83\u5F15\u7528\u7684ab\u548CspriteAtlas\u90FD\u5C06\u91CA\u653E"
 --- !u!1 &3240166741264860535
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +639,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: This is Title
+  m_Text: "\u5173\u95ED\u5C31\u9500\u6BC1\u7684\u9762\u677F"
 --- !u!1 &5171673516718565092
 GameObject:
   m_ObjectHideFlags: 0

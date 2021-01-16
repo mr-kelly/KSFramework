@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_2019_3_7;UNITY_2019_3;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_STANDARD_2_0;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;xLua;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2019_3_7;UNITY_2019_3;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;xLua;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -58,11 +58,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AppSettings.cs" />
+     <Compile Include="Assets\Code\AppSettings\BaseSetting.cs" />
+     <Compile Include="Assets\Code\AppSettings\BillboardSetting.cs" />
+     <Compile Include="Assets\Code\AppSettings\EnUSSetting.cs" />
+     <Compile Include="Assets\Code\AppSettings\SettingsManager.cs" />
+     <Compile Include="Assets\Code\AppSettings\StringsTableSetting.cs" />
+     <Compile Include="Assets\Code\AppSettings\TSVSetting.cs" />
+     <Compile Include="Assets\Code\AppSettings\TestSetting.cs" />
+     <Compile Include="Assets\Code\AppSettings\ZhCNSetting.cs" />
      <Compile Include="Assets\Code\Game.cs" />
-     <Compile Include="Assets\Code\LoadSpriteDemo.cs" />
-     <Compile Include="Assets\Code\ReLoadTableDemo.cs" />
      <Compile Include="Assets\Code\XLuaCustomExport.cs" />
+     <Compile Include="Assets\KSFramework\Demo\EditorLoadAsset\EditorLoadAssetTest.cs" />
+     <Compile Include="Assets\KSFramework\Demo\FindDemo\FindDemo.cs" />
+     <Compile Include="Assets\KSFramework\Demo\LoadSpriteDemo.cs" />
+     <Compile Include="Assets\KSFramework\Demo\LuaBehaviour\TestLuaBehaviour.cs" />
+     <Compile Include="Assets\KSFramework\Demo\ReLoadTable\ReLoadTableDemo.cs" />
+     <Compile Include="Assets\KSFramework\Demo\XLuaRequire\XLuaRequireTest.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\AppVersion.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\Debuger.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\EngineConfigs.cs" />
@@ -71,33 +82,27 @@
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\KEngine.Table\TabFileWriter.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\KEngine.Table\TableFile.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\KEngine.Table\TableRow.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\LogFileRecorder.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\Logger.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.Lib\SettingModule\SettingModuleBase.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\IUIBridge.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\EmptyImage.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\FindEx.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\GUIBridge.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\KUIModule.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\UGUIBridge.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\UIController.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\UIDefs.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine.UI\UIWindowAsset.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine\AppConfig.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\AppEngine.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\ABManager.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KAbstractResourceLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KAssetBundleLoader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KAssetBundleParser.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KAssetFileLoader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KAudioLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KBytesLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KEngineAndroidPlugin.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KFontLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KHttpDownloader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KInstanceAssetLoader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KMaterialLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KResourceModule.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KSerializeMaterial.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KSerializeMaterialProperty.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KShaderLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KSpriteAtlasLoader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KSpriteLoader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KStaticAssetLoader.cs" />
-     <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KTextureLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\KWWWLoader.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\LoaderDebugers\KDebuggerObjectTool.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\CoreModules\ResourceModule\LoaderDebugers\KResourceLoadedAssetDebugger.cs" />
@@ -110,11 +115,14 @@
      <Compile Include="Assets\KSFramework\KEngine\KEngine\KEngineDef.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\KObject.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\UnityLayerDef.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine\UnityThreadDetect.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\GUIExtensions.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\IKTabReadble.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\KEngineExtensions.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\KProfiler.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\KTabFile.cs" />
      <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\KTool.cs" />
+     <Compile Include="Assets\KSFramework\KEngine\KEngine\Utils\RectTransformEx.cs" />
      <Compile Include="Assets\KSFramework\KSFrameworkInfo.cs" />
      <Compile Include="Assets\KSFramework\KSGame.cs" />
      <Compile Include="Assets\KSFramework\Modules\Cookie.cs" />
@@ -124,10 +132,28 @@
      <Compile Include="Assets\KSFramework\Modules\I18N\I18NModule.cs" />
      <Compile Include="Assets\KSFramework\Modules\LuaModule\LuaBehaviour.cs" />
      <Compile Include="Assets\KSFramework\Modules\LuaModule\LuaModule.cs" />
+     <Compile Include="Assets\KSFramework\Modules\LuaModule\XLuaCustom.cs" />
      <Compile Include="Assets\KSFramework\Modules\UI\LuaUIController.cs" />
-     <Compile Include="Assets\KSFramework\Modules\UI\UGUISLuaBridge.cs" />
      <Compile Include="Assets\KSFramework\Modules\UI\UILuaOutlet.cs" />
      <Compile Include="Assets\KSFramework\Modules\UI\UILuaOutletCollection.cs" />
+     <Compile Include="Assets\XLua\BuildInInit.cs" />
+     <Compile Include="Assets\XLua\Examples\01_Helloworld\Helloworld.cs" />
+     <Compile Include="Assets\XLua\Examples\02_U3DScripting\LuaBehaviour.cs" />
+     <Compile Include="Assets\XLua\Examples\04_LuaObjectOrented\InvokeLua.cs" />
+     <Compile Include="Assets\XLua\Examples\05_NoGc\NoGc.cs" />
+     <Compile Include="Assets\XLua\Examples\06_Coroutine\CoroutineTest.cs" />
+     <Compile Include="Assets\XLua\Examples\06_Coroutine\Coroutine_Runner.cs" />
+     <Compile Include="Assets\XLua\Examples\07_AsyncTest\AsyncTest.cs" />
+     <Compile Include="Assets\XLua\Examples\07_AsyncTest\MessageBox.cs" />
+     <Compile Include="Assets\XLua\Examples\08_Hotfix\HotfixTest.cs" />
+     <Compile Include="Assets\XLua\Examples\08_Hotfix\HotfixTest2.cs" />
+     <Compile Include="Assets\XLua\Examples\08_Hotfix\StatefullTest.cs" />
+     <Compile Include="Assets\XLua\Examples\09_GenericMethod\Foo.cs" />
+     <Compile Include="Assets\XLua\Examples\09_GenericMethod\GenericMethodExample.cs" />
+     <Compile Include="Assets\XLua\Examples\10_SignatureLoader\SignatureLoaderTest.cs" />
+     <Compile Include="Assets\XLua\Examples\11_RawObject\RawObjectTest.cs" />
+     <Compile Include="Assets\XLua\Examples\12_ReImplementInLua\ReImplementInLua.cs" />
+     <Compile Include="Assets\XLua\Examples\ExampleGenConfig.cs" />
      <Compile Include="Assets\XLua\Src\CodeEmit.cs" />
      <Compile Include="Assets\XLua\Src\CopyByValue.cs" />
      <Compile Include="Assets\XLua\Src\DelegateBridge.cs" />
@@ -151,13 +177,28 @@
      <Compile Include="Assets\XLua\Src\TemplateEngine\TemplateEngine.cs" />
      <Compile Include="Assets\XLua\Src\TypeExtensions.cs" />
      <Compile Include="Assets\XLua\Src\Utils.cs" />
+     <Compile Include="Assets\XLua\Tutorial\CSharpCallLua\CSCallLua.cs" />
+     <Compile Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\ByFile.cs" />
+     <Compile Include="Assets\XLua\Tutorial\LoadLuaScript\ByString\ByString.cs" />
+     <Compile Include="Assets\XLua\Tutorial\LoadLuaScript\Loader\CustomLoader.cs" />
+     <Compile Include="Assets\XLua\Tutorial\LuaCallCSharp\LuaCallCs.cs" />
+     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
+     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\coruntine_test.lua.txt" />
      <None Include="Assets\XLua\Resources\xlua\util.lua.txt" />
+     <None Include="Assets\KSFramework\KEngine\KEngine.Lib\TableMLCompiler\CsvHelper.xml" />
+     <None Include="Assets\KSFramework\KEngine\KEngine.Lib\TableMLCompiler\System.ValueTuple.xml" />
      <None Include="Assets\XLua\Resources\perf\profiler.lua.txt" />
      <None Include="Assets\KSFramework\KEngine\Resources\AppConfigs.txt" />
+     <None Include="Assets\XLua\Resources\protoc.lua.txt" />
      <None Include="Assets\XLua\Resources\perf\memory.lua.txt" />
      <None Include="Assets\KSFramework\KEngine\KEngine.Lib\TableMLCompiler\NPOI.xml" />
+     <None Include="Assets\XLua\Examples\03_UIEvent\ButtonInteraction.lua.txt" />
+     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
      <None Include="Assets\XLua\Resources\tdr\tdr.lua.txt" />
      <None Include="Assets\XLua\CHANGELOG.txt" />
+     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>E:/Code/KSFramework/KSFramework/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -184,6 +225,9 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>E:/Code/KSFramework/KSFramework/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.2D.Sprite.Editor">
+ <HintPath>E:/Code/KSFramework/KSFramework/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -368,8 +412,14 @@
  <Reference Include="TableML">
  <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableML/TableML.dll</HintPath>
  </Reference>
+ <Reference Include="CsvHelper">
+ <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/CsvHelper.dll</HintPath>
+ </Reference>
  <Reference Include="DotLiquid">
  <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/DotLiquid.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="NPOI">
  <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/NPOI.dll</HintPath>
@@ -382,6 +432,9 @@
  </Reference>
  <Reference Include="NPOI.OpenXmlFormats">
  <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/NPOI.OpenXmlFormats.dll</HintPath>
+ </Reference>
+ <Reference Include="System.ValueTuple">
+ <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/System.ValueTuple.dll</HintPath>
  </Reference>
  <Reference Include="TableMLCompiler">
  <HintPath>E:/Code/KSFramework/KSFramework/Assets/KSFramework/KEngine/KEngine.Lib/TableMLCompiler/TableMLCompiler.dll</HintPath>
