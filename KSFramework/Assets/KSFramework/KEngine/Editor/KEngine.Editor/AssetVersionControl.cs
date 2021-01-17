@@ -206,7 +206,7 @@ namespace KEngine.Editor
         public static string GetBuildVersionTab()
         {
             return Application.dataPath + "/../" + KEngineDef.ResourcesBuildInfosDir + "/ArtBuildResource_" +
-                   KResourceModule.BuildPlatformName + ".txt";
+                   KResourceModule.GetBuildPlatformName() + ".txt";
         }
 
         public static bool TryCheckFileBuild(string filePath)

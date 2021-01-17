@@ -135,7 +135,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AssetBundle/Clean Redundancies")]
         public static void CleanAssetBundlesRedundancies()
         {
-            var platformName = KResourceModule.BuildPlatformName;
+            var platformName = KResourceModule.GetBuildPlatformName();
             var outputPath = GetExportPath(EditorUserBuildSettings.activeBuildTarget);
             var srcList = new List<string>(Directory.GetFiles(ResourcesBuildDir, "*.*", SearchOption.AllDirectories));
             for (var i = srcList.Count - 1; i >= 0; i--)
@@ -306,7 +306,7 @@ namespace KEngine.Editor
             }
 
             string path = null;
-            var platformName = KResourceModule.BuildPlatformName;
+            var platformName = KResourceModule.GetBuildPlatformName();
             if (quality != KResourceQuality.Sd) // SD no need add
                 platformName += quality.ToString().ToUpper();
 

@@ -61,20 +61,29 @@ namespace KEngine
 
     public class KResourceModule : MonoBehaviour
     {
-        static KResourceModule()
+        /// <summary>
+        /// 用于GetResourceFullPath函数，返回的类型判断
+        /// </summary>
+        public enum GetResourceFullPathType
         {
-            InitResourcePath();
+            Invalid,
+            InApp,
+            InDocument,
         }
-
-        public delegate void AsyncLoadABAssetDelegate(Object asset, object[] args);
-
+        
         public static KResourceQuality Quality = KResourceQuality.Sd;
-
+        /// <summary>
+        /// 是否优先找下載的資源?還是app本身資源優先. 优先下载的资源，即采用热更新的资源
+        /// </summary>
+        public static KResourcePathPriorityType ResourcePathPriorityType =  KResourcePathPriorityType.PersistentDataPathPriority;
         public static float TextureScale
         {
             get { return 1f / (float)Quality; }
         }
+        public static bool LoadByQueue = false;
 
+        #region Init
+        
         private static KResourceModule _Instance;
 
         public static KResourceModule Instance
@@ -95,18 +104,77 @@ namespace KEngine
                 return _Instance;
             }
         }
-
-        public static bool LoadByQueue = false;
-
-        public static string BuildPlatformName
+        static KResourceModule()
         {
-            get { return GetBuildPlatformName(); }
-        } // ex: IOS, Android, AndroidLD
+            InitResourcePath();
+        }
         
+         /// <summary>
+        /// Initialize the path of AssetBundles store place ( Maybe in PersitentDataPath or StreamingAssetsPath )
+        /// </summary>
+        /// <returns></returns>
+        static void InitResourcePath()
+        {
+            string editorProductPath = EditorProductFullPath;
+            BundlesPathRelative = string.Format("{0}/{1}/", AppConfig.StreamingBundlesFolderName, GetBuildPlatformName());
+            string fileProtocol = GetFileProtocol();
+            DocumentResourcesPath = fileProtocol + DocumentResourcesPathWithoutFileProtocol;
+
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsEditor:
+                case RuntimePlatform.OSXEditor:
+                    {
+                        ApplicationPath = string.Format("{0}{1}", fileProtocol, editorProductPath);
+                        ProductPathWithProtocol = fileProtocol + EditorProductFullPath + "/";
+                        ProductPathWithoutFileProtocol = EditorProductFullPath + "/";
+                        // Resources folder
+                    }
+                    break;
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.OSXPlayer:
+                    {
+                        string path = Application.streamingAssetsPath.Replace('\\', '/');//Application.dataPath.Replace('\\', '/');
+                        ApplicationPath = string.Format("{0}{1}", fileProtocol, Application.dataPath);
+                        ProductPathWithProtocol = string.Format("{0}{1}/", fileProtocol, path);
+                        ProductPathWithoutFileProtocol = string.Format("{0}/", path);
+                        // Resources folder
+                    }
+                    break;
+                case RuntimePlatform.Android:
+                    {
+                        ApplicationPath = string.Concat("jar:", fileProtocol, Application.dataPath, "!/assets");
+                        ProductPathWithProtocol = string.Concat(ApplicationPath, "/");
+                        ProductPathWithoutFileProtocol = string.Concat(Application.dataPath,  "!/assets/");
+                        // 注意，StramingAsset在Android平台中，是在壓縮的apk里，不做文件檢查
+                        // Resources folder
+                    }
+                    break;
+                case RuntimePlatform.IPhonePlayer:
+                    {
+                        // MacOSX下，带空格的文件夹，空格字符需要转义成%20
+                        ApplicationPath = System.Uri.EscapeUriString(fileProtocol + Application.streamingAssetsPath); 
+
+                        ProductPathWithProtocol = string.Format("{0}/", ApplicationPath);
+                        // only iPhone need to Escape the fucking Url!!! other platform works without it!!! Keng Die!
+                        ProductPathWithoutFileProtocol = Application.streamingAssetsPath + "/";
+                        // Resources folder
+                    }
+                    break;
+                default:
+                    {
+                        Debuger.Assert(false);
+                    }
+                    break;
+            }
+        }
+        #endregion        
+
+        #region Path Def
 
         private static string editorProductFullPath;
         /// <summary>
-        /// Product Folder Full Path , Default: C:\xxxxx\xxxx\../Product
+        /// Product Folder Full Path , Default: C:\xxxxx\xxxx\Product
         /// </summary>
         public static string EditorProductFullPath
         {
@@ -119,8 +187,9 @@ namespace KEngine
         }
 
         /// <summary>
-        /// StreamingAssetsPath/Bundles/Android/ etc.
-        /// WWW的读取，是需要Protocol前缀的
+        /// WWW的读取需要Protocol前缀，比如：
+        ///     StreamingAssets/Bundles/Windows/ 
+        ///     StreamingAssets/Bundles/Android/
         /// </summary>
         public static string ProductPathWithProtocol { get; private set; }
 
@@ -132,7 +201,14 @@ namespace KEngine
         public static string BundlesPathRelative { get; private set; }
 
         public static string ApplicationPath { get; private set; }
-
+        /// <summary>
+        /// 获取app的数据目录，可写入
+        /// </summary>
+        public static string GetAppDataPath()
+        {
+            return Application.persistentDataPath;
+        }
+        
         public static string DocumentResourcesPathWithoutFileProtocol
         {
             get
@@ -142,17 +218,10 @@ namespace KEngine
         }
 
         public static string DocumentResourcesPath;
+        #endregion
 
         /// <summary>
-        /// 是否優先找下載的資源?還是app本身資源優先. 优先下载的资源，即采用热更新的资源
-        /// </summary>
-        public static KResourcePathPriorityType ResourcePathPriorityType =
-            KResourcePathPriorityType.PersistentDataPathPriority;
-
-        public static System.Func<string, string> CustomGetResourcesPath; // 自定义资源路径。。。
-
-        /// <summary>
-        /// 统一在字符串后加上ab文件的后缀, 取决于配置的AssetBundle后缀
+        /// 给路径加上ab文件的后缀, 取决于配置的AssetBundle后缀
         /// </summary>
         /// <param name="path"></param>
         /// <param name="formats"></param>
@@ -185,24 +254,14 @@ namespace KEngine
 
             return null;
         }
-
-        /// <summary>
-        /// 用于GetResourceFullPath函数，返回的类型判断
-        /// </summary>
-        public enum GetResourceFullPathType
-        {
-            Invalid,
-            InApp,
-            InDocument,
-        }
-
+        
         public static bool IsResourceExist(string url)
         {
             string fullPath;
             var hasDocUrl = TryGetDocumentResourceUrl(url, false, out fullPath);
-
+            if (hasDocUrl) return true;
             var hasInAppUrl = TryGetInAppStreamingUrl(url, false, out fullPath);
-            return hasDocUrl || hasInAppUrl;
+            return hasInAppUrl;
         }
 
         /// <summary>
@@ -213,8 +272,7 @@ namespace KEngine
         /// <param name="fullPath"></param>
         /// <param name="isLog"></param>
         /// <returns></returns>
-        public static GetResourceFullPathType GetResourceFullPath(string url, bool withFileProtocol, out string fullPath,
-             bool isLog = true)
+        public static GetResourceFullPathType GetResourceFullPath(string url, bool withFileProtocol, out string fullPath,bool isLog = true)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -225,22 +283,19 @@ namespace KEngine
 
             string docUrl;
             bool hasDocUrl = TryGetDocumentResourceUrl(url, withFileProtocol, out docUrl);
-
-            string inAppUrl;
-            bool hasInAppUrl  = TryGetInAppStreamingUrl(url, withFileProtocol, out inAppUrl);
-
             if (ResourcePathPriorityType == KResourcePathPriorityType.PersistentDataPathPriority) // 優先下載資源模式
             {
                 if (hasDocUrl)
                 {
                     if (Application.isEditor)
-                        Log.Warning("[Use PersistentDataPath] {0}", docUrl);
+                        Log.Info("[Use PersistentDataPath] {0}", docUrl);
                     fullPath = docUrl;
                     return GetResourceFullPathType.InDocument;
                 }
                 // 優先下載資源，但又沒有下載資源文件！使用本地資源目錄 
             }
-
+            string inAppUrl;
+            bool hasInAppUrl  = TryGetInAppStreamingUrl(url, withFileProtocol, out inAppUrl);
             if (!hasInAppUrl) // 连本地资源都没有，直接失败吧 ？？ 沒有本地資源但又遠程資源？竟然！!?
             {
                 if (isLog)
@@ -252,15 +307,6 @@ namespace KEngine
             fullPath = inAppUrl; // 直接使用本地資源！
 
             return GetResourceFullPathType.InApp;
-        }
-
-        /// <summary>
-        /// 獲取app數據目錄，可寫，同Application.PersitentDataPath
-        /// </summary>
-        /// <returns></returns>
-        public static string GetAppDataPath()
-        {
-            return Application.persistentDataPath;
         }
         
         /// <summary>
@@ -358,33 +404,7 @@ namespace KEngine
 
             return false;
         }
-
-        private void Awake()
-        {
-            if (_Instance != null)
-                Debuger.Assert(_Instance == this);
-            SpriteAtlasManager.atlasRequested += ABManager.RequestAtlas;
-            if (AppConfig.IsLogDeviceInfo)
-            {
-                Log.Info("ResourceManager ApplicationPath: {0}", ApplicationPath);
-                Log.Info("ResourceManager ProductPathWithProtocol: {0}", ProductPathWithProtocol);
-                Log.Info("ResourceManager ProductPathWithoutProtocol: {0}", ProductPathWithoutFileProtocol);
-                Log.Info("ResourceManager DocumentResourcesPath: {0}", DocumentResourcesPath);
-                Log.Info("================================================================================");
-            }
-        }
-
-        private void Update()
-        {
-            //NOTE 在Unity2019中有渐近式GC，而此处不会调用GC.Collect，仅仅对已加载的ab进行检查是否需要Unload
-            ABManager.CheckGcCollect();
-        }
-
-        private void OnDestroy()
-        {
-            SpriteAtlasManager.atlasRequested -= ABManager.RequestAtlas;
-        }
-
+        
         private static string _unityEditorEditorUserBuildSettingsActiveBuildTarget;
 
         /// <summary>
@@ -420,8 +440,8 @@ namespace KEngine
         }
 
         /// <summary>
-        /// Different platform's assetBundles is incompatible.
-        /// CosmosEngine put different platform's assetBundles in different folder.
+        /// Different platform's assetBundles is incompatible.// ex: IOS, Android, Windows
+        /// KEngine put different platform's assetBundles in different folder.
         /// Here, get Platform name that represent the AssetBundles Folder.
         /// </summary>
         /// <returns>Platform folder Name</returns>
@@ -514,34 +534,10 @@ namespace KEngine
             get
             {
                 string editorAssetBundlePath = Path.GetFullPath(AppConfig.AssetBundleBuildRelPath); // for editoronly
-
                 return editorAssetBundlePath;
             }
         }
 
-        /// <summary>
-        /// Load Async Asset Bundle
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="callback">cps style async</param>
-        /// <returns></returns>
-        public static AbstractResourceLoader LoadBundleAsync(string path, AssetFileLoader.AssetFileBridgeDelegate callback = null)
-        {
-            var request = AssetFileLoader.Load(path, callback);
-            return request;
-        }
-
-        /// <summary>
-        /// load asset bundle immediatly
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="callback"></param>
-        /// <returns></returns>
-        public static AbstractResourceLoader LoadBundle(string path, AssetFileLoader.AssetFileBridgeDelegate callback = null)
-        {
-            var request = AssetFileLoader.Load(path, callback, LoaderMode.Sync);
-            return request;
-        }
 
         /// <summary>
         /// check file exists of streamingAssets. On Android will use plugin to do that.
@@ -603,66 +599,6 @@ namespace KEngine
             }
             return bytes;
         }
-
-        /// <summary>
-        /// Initialize the path of AssetBundles store place ( Maybe in PersitentDataPath or StreamingAssetsPath )
-        /// </summary>
-        /// <returns></returns>
-        static void InitResourcePath()
-        {
-            string editorProductPath = EditorProductFullPath;
-            BundlesPathRelative = string.Format("{0}/{1}/", AppConfig.StreamingBundlesFolderName, GetBuildPlatformName());
-            DocumentResourcesPath = GetFileProtocol() + DocumentResourcesPathWithoutFileProtocol;
-
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXEditor:
-                    {
-                        ApplicationPath = string.Format("{0}{1}", GetFileProtocol(), editorProductPath);
-                        ProductPathWithProtocol = GetFileProtocol() + EditorProductFullPath + "/";
-                        ProductPathWithoutFileProtocol = EditorProductFullPath + "/";
-                        // Resources folder
-                    }
-                    break;
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.OSXPlayer:
-                    {
-                        string path = Application.streamingAssetsPath.Replace('\\', '/');//Application.dataPath.Replace('\\', '/');
-                        //                        path = path.Substring(0, path.LastIndexOf('/') + 1);
-                        ApplicationPath = string.Format("{0}{1}", GetFileProtocol(), Application.dataPath);
-                        ProductPathWithProtocol = string.Format("{0}{1}/", GetFileProtocol(), path);
-                        ProductPathWithoutFileProtocol = string.Format("{0}/", path);
-                        // Resources folder
-                    }
-                    break;
-                case RuntimePlatform.Android:
-                    {
-                        ApplicationPath = string.Concat("jar:", GetFileProtocol(), Application.dataPath, "!/assets");
-                        ProductPathWithProtocol = string.Concat(ApplicationPath, "/");
-                        ProductPathWithoutFileProtocol = string.Concat(Application.dataPath,  "!/assets/");
-                        // 注意，StramingAsset在Android平台中，是在壓縮的apk里，不做文件檢查
-                        // Resources folder
-                    }
-                    break;
-                case RuntimePlatform.IPhonePlayer:
-                    {
-                        // MacOSX下，带空格的文件夹，空格字符需要转义成%20
-                        ApplicationPath = System.Uri.EscapeUriString(GetFileProtocol() + Application.streamingAssetsPath); 
-
-                        ProductPathWithProtocol = string.Format("{0}/", ApplicationPath);
-                        // only iPhone need to Escape the fucking Url!!! other platform works without it!!! Keng Die!
-                        ProductPathWithoutFileProtocol = Application.streamingAssetsPath + "/";
-                        // Resources folder
-                    }
-                    break;
-                default:
-                    {
-                        Debuger.Assert(false);
-                    }
-                    break;
-            }
-        }
         
         /// <summary>
         /// Collect all KEngine's resource unused loaders
@@ -675,6 +611,36 @@ namespace KEngine
             Resources.UnloadUnusedAssets();
             System.GC.Collect();
         }
+
+        #region Unity函数
+
+        private void Awake()
+        {
+            if (_Instance != null)
+                Debuger.Assert(_Instance == this);
+            SpriteAtlasManager.atlasRequested += ABManager.RequestAtlas;
+            if (AppConfig.IsLogDeviceInfo)
+            {
+                Log.Info("ResourceManager ApplicationPath: {0}", ApplicationPath);
+                Log.Info("ResourceManager ProductPathWithProtocol: {0}", ProductPathWithProtocol);
+                Log.Info("ResourceManager ProductPathWithoutProtocol: {0}", ProductPathWithoutFileProtocol);
+                Log.Info("ResourceManager DocumentResourcesPath: {0}", DocumentResourcesPath);
+                Log.Info("================================================================================");
+            }
+        }
+
+        private void Update()
+        {
+            //NOTE 在Unity2019中有渐近式GC，而此处不会调用GC.Collect，仅仅对已加载的ab进行检查是否需要Unload
+            ABManager.CheckGcCollect();
+        }
+
+        private void OnDestroy()
+        {
+            SpriteAtlasManager.atlasRequested -= ABManager.RequestAtlas;
+        }
+
+        #endregion
     }
 
 }

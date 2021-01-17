@@ -114,7 +114,7 @@ namespace KEngine
             //var manifestPath = string.Format("{0}/{1}/{1}.manifest", KResourceModule.BundlesPathRelative,KResourceModule.BuildPlatformName);
             // _mainAssetBundle = AssetBundle.LoadFromFile(manifestPath);
             // _assetBundleManifest = _mainAssetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
-            KBytesLoader bytesLoader = KBytesLoader.Load(KResourceModule.BundlesPathRelative + KResourceModule.BuildPlatformName, LoaderMode.Sync);
+            KBytesLoader bytesLoader = KBytesLoader.Load(KResourceModule.BundlesPathRelative + KResourceModule.GetBuildPlatformName(), LoaderMode.Sync);
 
             _mainAssetBundle = AssetBundle.LoadFromMemory(bytesLoader.Bytes);//KResourceModule.LoadSyncFromStreamingAssets(mainAssetBundlePath));
             _assetBundleManifest = _mainAssetBundle.LoadAsset("AssetBundleManifest") as AssetBundleManifest;
