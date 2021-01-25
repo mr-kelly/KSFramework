@@ -32,9 +32,9 @@ function UIBillboard:OnOpen()
     rand = math.random(1, 3)
     --    Cookie.Set('UIBillboard.RandomNumber', rand)
     --end
-    --local billboardSetting = BillboardSettings.Get('Billboard' .. tostring(rand))
+    local billboardSetting = BillboardSettings.Get('Billboard' .. tostring(rand))
     ---@type Billboard
-    local billboardSetting = Billboard['Billboard1']
+    --local billboardSetting = Billboard['Billboard1']
     self.txtTitle.text = billboardSetting.Title
     self.txtContent.text = billboardSetting.Content
 
