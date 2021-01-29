@@ -52,51 +52,15 @@ namespace KEngine
             return newLoader;
         }
 
-        private string _fullUrl;
-
-        /// <summary>
-        /// Convenient method to load file sync auto.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public static byte[] LoadSync(string url)
-        {
-            string fullUrl;
-            var getResPathType = KResourceModule.GetResourceFullPath(url, false, out fullUrl);
-            if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
-            {
-                Log.Error("[HotBytesLoader]Error Path: {0}", url);
-                return null;
-            }
-
-            byte[] bytes;
-            if (getResPathType == KResourceModule.GetResourceFullPathType.InApp)
-            {
-                if (Application.isEditor) // Editor mode : 读取Product配置目录
-                {
-                    var loadSyncPath = Path.Combine(KResourceModule.ProductPathWithoutFileProtocol, url);
-                    bytes = KResourceModule.ReadAllBytes(loadSyncPath);
-                }
-                else // product mode: read streamingAssetsPath
-                {
-                    bytes = KResourceModule.LoadSyncFromStreamingAssets(url);
-                }
-            }
-            else
-            {
-                bytes = KResourceModule.ReadAllBytes(fullUrl);
-            }
-            return bytes;
-        }
-
         private IEnumerator CoLoad(string url)
         {
             if (_loaderMode == LoaderMode.Sync)
             {
-                Bytes = LoadSync(url);
+                Bytes = KResourceModule.LoadAssetsSync(url);
             }
             else
-            {
+            { 
+                string _fullUrl;
                 var getResPathType = KResourceModule.GetResourceFullPath(url, _loaderMode == LoaderMode.Async, out _fullUrl);
                 if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
                 {

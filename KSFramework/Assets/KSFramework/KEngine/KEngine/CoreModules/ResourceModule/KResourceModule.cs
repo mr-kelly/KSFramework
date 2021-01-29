@@ -40,24 +40,6 @@ namespace KEngine
         Ld = 4,
     }
 
-    /// <summary>
-    /// 资源路径优先级，优先使用
-    /// </summary>
-    public enum KResourcePathPriorityType
-    {
-        Invalid,
-
-        /// <summary>
-        /// 忽略PersitentDataPath, 优先寻找Resources或StreamingAssets路径 (取决于ResourcePathType)
-        /// </summary>
-        InAppPathPriority,
-
-        /// <summary>
-        /// 尝试在Persistent目錄尋找，找不到再去StreamingAssets,
-        /// 这一般用于进行热更新版本号判断后，设置成该属性
-        /// </summary>
-        PersistentDataPathPriority,
-    }
 
     public class KResourceModule : MonoBehaviour
     {
@@ -66,16 +48,22 @@ namespace KEngine
         /// </summary>
         public enum GetResourceFullPathType
         {
+            /// <summary>
+            /// 无资源
+            /// </summary>
             Invalid,
+            /// <summary>
+            /// 安装包内
+            /// </summary>
             InApp,
+            /// <summary>
+            /// 热更新目录
+            /// </summary>
             InDocument,
         }
         
         public static KResourceQuality Quality = KResourceQuality.Sd;
-        /// <summary>
-        /// 是否优先找下載的資源?還是app本身資源優先. 优先下载的资源，即采用热更新的资源
-        /// </summary>
-        public static KResourcePathPriorityType ResourcePathPriorityType =  KResourcePathPriorityType.PersistentDataPathPriority;
+   
         public static float TextureScale
         {
             get { return 1f / (float)Quality; }
@@ -117,7 +105,7 @@ namespace KEngine
         {
             string editorProductPath = EditorProductFullPath;
             BundlesPathRelative = string.Format("{0}/{1}/", AppConfig.StreamingBundlesFolderName, GetBuildPlatformName());
-            string fileProtocol = GetFileProtocol();
+            string fileProtocol = GetFileProtocol;
             DocumentResourcesPath = fileProtocol + DocumentResourcesPathWithoutFileProtocol;
 
             switch (Application.platform)
@@ -126,8 +114,8 @@ namespace KEngine
                 case RuntimePlatform.OSXEditor:
                     {
                         ApplicationPath = string.Format("{0}{1}", fileProtocol, editorProductPath);
-                        ProductPathWithProtocol = fileProtocol + EditorProductFullPath + "/";
-                        ProductPathWithoutFileProtocol = EditorProductFullPath + "/";
+                        ProductPathWithProtocol = fileProtocol + editorProductPath + "/";
+                        ProductPathWithoutFileProtocol = editorProductPath + "/";
                         // Resources folder
                     }
                     break;
@@ -208,7 +196,9 @@ namespace KEngine
         {
             return Application.persistentDataPath;
         }
-        
+        /// <summary>
+        /// Application.persistentDataPath
+        /// </summary>
         public static string DocumentResourcesPathWithoutFileProtocol
         {
             get
@@ -216,7 +206,9 @@ namespace KEngine
                 return string.Format("{0}/", GetAppDataPath()); // 各平台通用
             }
         }
-
+        /// <summary>
+        /// Application.persistentDataPath
+        /// </summary>
         public static string DocumentResourcesPath;
         #endregion
 
@@ -231,22 +223,14 @@ namespace KEngine
             return string.Format(path + AppConfig.AssetBundleExt, formats);
         }
 
-        // 检查资源是否存在
-        public static bool ContainsResourceUrl(string resourceUrl)
-        {
-            string fullPath;
-            return GetResourceFullPath(resourceUrl, false, out fullPath, false) != GetResourceFullPathType.Invalid;
-        }
-
         /// <summary>
-        /// 完整路径，www加载
+        /// 完整路径，优先级：热更目录->安装包
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="inAppPathType"></param>
         /// <param name="withFileProtocol">是否带有file://前缀</param>
         /// <param name="isLog"></param>
         /// <returns></returns>
-        public static string GetResourceFullPath(string url, bool withFileProtocol = true, bool isLog = true)
+        public static string GetResourceFullPath(string url, bool withFileProtocol , bool isLog = true)
         {
             string fullPath;
             if (GetResourceFullPath(url, withFileProtocol, out fullPath, isLog) != GetResourceFullPathType.Invalid)
@@ -255,24 +239,27 @@ namespace KEngine
             return null;
         }
         
-        public static bool IsResourceExist(string url)
+        /// <summary>
+        /// 资源是否存在
+        /// </summary>
+        /// <param name="url">相对路径</param>
+        /// <param name="raiseError">文件不存在打印Error</param>
+        /// <returns></returns>
+        public static bool IsResourceExist(string url, bool raiseError = true)
         {
-            string fullPath;
-            var hasDocUrl = TryGetDocumentResourceUrl(url, false, out fullPath);
-            if (hasDocUrl) return true;
-            var hasInAppUrl = TryGetInAppStreamingUrl(url, false, out fullPath);
-            return hasInAppUrl;
+            var pathType = GetResourceFullPath(url, false, out string fullPath,raiseError);
+            return pathType != GetResourceFullPathType.Invalid;
         }
 
         /// <summary>
-        /// 根据相对路径，获取到StreamingAssets完整路径，或Resources中的路径
+        /// 根据相对路径，获取到完整路径
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="url">相对路径</param>
         /// <param name="withFileProtocol"></param>
-        /// <param name="fullPath"></param>
-        /// <param name="isLog"></param>
+        /// <param name="fullPath">完整路径</param>
+        /// <param name="raiseError">文件不存在打印Error</param>
         /// <returns></returns>
-        public static GetResourceFullPathType GetResourceFullPath(string url, bool withFileProtocol, out string fullPath,bool isLog = true)
+        public static GetResourceFullPathType GetResourceFullPath(string url, bool withFileProtocol, out string fullPath,bool raiseError = true)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -283,23 +270,17 @@ namespace KEngine
 
             string docUrl;
             bool hasDocUrl = TryGetDocumentResourceUrl(url, withFileProtocol, out docUrl);
-            if (ResourcePathPriorityType == KResourcePathPriorityType.PersistentDataPathPriority) // 優先下載資源模式
+            if (hasDocUrl)
             {
-                if (hasDocUrl)
-                {
-                    if (Application.isEditor)
-                        Log.Info("[Use PersistentDataPath] {0}", docUrl);
-                    fullPath = docUrl;
-                    return GetResourceFullPathType.InDocument;
-                }
-                // 優先下載資源，但又沒有下載資源文件！使用本地資源目錄 
+                fullPath = docUrl;
+                return GetResourceFullPathType.InDocument;
             }
+            // 優先下載資源，但又沒有下載資源文件！使用本地資源目錄 
             string inAppUrl;
             bool hasInAppUrl  = TryGetInAppStreamingUrl(url, withFileProtocol, out inAppUrl);
             if (!hasInAppUrl) // 连本地资源都没有，直接失败吧 ？？ 沒有本地資源但又遠程資源？竟然！!?
             {
-                if (isLog)
-                    Log.Error("[Not Found] StreamingAssetsPath Url Resource: {0}", url);
+                if (raiseError) Log.Error($"[Not Found] StreamingAssetsPath Url Resource: {url} ,fullPath:{inAppUrl}");
                 fullPath = null;
                 return GetResourceFullPathType.Invalid;
             }
@@ -330,21 +311,25 @@ namespace KEngine
         /// <returns></returns>
         public static bool TryGetInAppStreamingUrl(string url, bool withFileProtocol, out string newUrl)
         {
-            if (withFileProtocol)
-                newUrl = ProductPathWithProtocol + url;
+            if (AppConfig.UseMobilePath)
+            {
+                newUrl = Path.GetFullPath(withFileProtocol ? GetFileProtocol : "" + Application.streamingAssetsPath + "/" + url);
+            }
             else
-                newUrl = ProductPathWithoutFileProtocol + url;
-
+            {
+                newUrl = Path.GetFullPath((withFileProtocol ? ProductPathWithProtocol : ProductPathWithoutFileProtocol) + url);
+            }
+            
             // 注意，StreamingAssetsPath在Android平台時，壓縮在apk里面，不要做文件檢查了
             if (!Application.isEditor && Application.platform == RuntimePlatform.Android)
             {
                 if (!KEngineAndroidPlugin.IsAssetExists(url))
                     return false;
             }
-            else
+            else if(Application.isEditor)
             {
                 // Editor, 非android运行，直接进行文件检查
-                if (!File.Exists(ProductPathWithoutFileProtocol + url))
+                if (!File.Exists(Path.GetFullPath(ProductPathWithoutFileProtocol+ url)))
                 {
                     return false;
                 }
@@ -392,17 +377,16 @@ namespace KEngine
         /// <returns></returns>
         public static bool TryGetDocumentResourceUrl(string url, bool withFileProtocol, out string newUrl)
         {
-            if (withFileProtocol)
-                newUrl = DocumentResourcesPath + url;
-            else
-                newUrl = DocumentResourcesPathWithoutFileProtocol + url;
-
-            if (File.Exists(DocumentResourcesPathWithoutFileProtocol + url))
+            if (AppConfig.UseMobilePath)
             {
-                return true;
+                newUrl = Path.GetFullPath((withFileProtocol ? DocumentResourcesPath :DocumentResourcesPathWithoutFileProtocol) + url);
+                return File.Exists(Path.GetFullPath(DocumentResourcesPathWithoutFileProtocol + url));
             }
-
-            return false;
+            else
+            {
+                newUrl = Path.GetFullPath((withFileProtocol ? ProductPathWithProtocol : ProductPathWithoutFileProtocol) + url);
+                return File.Exists(Path.GetFullPath(ProductPathWithoutFileProtocol + url));
+            }
         }
         
         private static string _unityEditorEditorUserBuildSettingsActiveBuildTarget;
@@ -511,20 +495,23 @@ namespace KEngine
         /// On Windows, file protocol has a strange rule that has one more slash
         /// </summary>
         /// <returns>string, file protocol string</returns>
-        public static string GetFileProtocol()
+        public static string GetFileProtocol
         {
-            string fileProtocol = "file://";
-            if (Application.platform == RuntimePlatform.WindowsEditor ||
-                Application.platform == RuntimePlatform.WindowsPlayer
+            get
+            {
+                string fileProtocol = "file://";
+                if (Application.platform == RuntimePlatform.WindowsEditor ||
+                    Application.platform == RuntimePlatform.WindowsPlayer
 #if UNITY_5 || UNITY_4
                 || Application.platform == RuntimePlatform.WindowsWebPlayer
 #endif
-)
-                fileProtocol = "file:///";
+                )
+                    fileProtocol = "file:///";
 
-            return fileProtocol;
+                return fileProtocol;
+            }
         }
-        
+
         /// <summary>
         /// Unity Editor load AssetBundle directly from the Asset Bundle Path,
         /// whth file:// protocol
@@ -537,54 +524,25 @@ namespace KEngine
                 return editorAssetBundlePath;
             }
         }
-
+        
 
         /// <summary>
-        /// check file exists of streamingAssets. On Android will use plugin to do that.
+        /// Load file. On Android will use plugin to do that.
         /// </summary>
         /// <param name="path">relative path,  when file is "file:///android_asset/test.txt", the pat is "test.txt"</param>
         /// <returns></returns>
-        public static bool IsStreamingAssetsExists(string path)
+        public static byte[] LoadAssetsSync(string path)
         {
-            if (Application.platform == RuntimePlatform.Android)
-                return KEngineAndroidPlugin.IsAssetExists(path);
-
-            var fullPath = Path.Combine(Application.streamingAssetsPath, path);
-            return File.Exists(fullPath);
-        }
-
-        /// <summary>
-        /// Load file from streamingAssets. On Android will use plugin to do that.
-        /// </summary>
-        /// <param name="path">relative path,  when file is "file:///android_asset/test.txt", the pat is "test.txt"</param>
-        /// <returns></returns>
-        public static byte[] LoadSyncFromStreamingAssets(string path)
-        {
-            if (!IsStreamingAssetsExists(path))
-                throw new Exception("Not exist StreamingAssets path: " + path);
+            string fullPath = GetResourceFullPath(path,false);
+            if (string.IsNullOrEmpty(fullPath))
+                return null;
 
             if (Application.platform == RuntimePlatform.Android)
-                return KEngineAndroidPlugin.GetAssetBytes(path);
-
-            var fullPath = Path.Combine(Application.streamingAssetsPath, path);
+                return KEngineAndroidPlugin.GetAssetBytes(fullPath);
+            
             return ReadAllBytes(fullPath);
         }
-
-        public static bool IsPersistentDataExist(string path)
-        {
-            var fullPath = Path.Combine(Application.persistentDataPath, path);
-            return File.Exists(fullPath);
-        }
-
-        public static byte[] LoadSyncFromPersistentDataPath(string path)
-        {
-            if (!IsPersistentDataExist(path))
-                throw new Exception("Not exist PersistentData path: " + path);
-
-            var fullPath = Path.Combine(Application.persistentDataPath, path);
-            return ReadAllBytes(fullPath);
-        }
-
+        
         /// <summary>
         /// 无视锁文件，直接读bytes
         /// </summary>

@@ -96,38 +96,32 @@ namespace KEngine.Modules
         }
 
         /// <summary>
-        /// Default load setting strategry,  editor load file, runtime resources.load
+        /// Default load setting strategry,
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
         public static byte[] DefaultLoadSetting(string path)
         {
-            //NOTE 在Editor下Reload 配置表失败
-#if UNITY_EDITOR
-            return LoadSettingFromFile(path);
-#else
-            byte[] fileContent;
-            var loader = KBytesLoader.Load(AppConfig.SettingResourcesPath + "/" + path, LoaderMode.Sync);
-            Debuger.Assert(!loader.IsError);
-            fileContent = loader.Bytes;
-            
-            loader.Release();
-            return fileContent;
-#endif
-        }
-
-        private static byte[] LoadSettingFromFile(string path)
-        {
-            var resPath = GetFileSystemPath(path);
-            var bytes = File.ReadAllBytes(resPath);
+            string fullUrl ;
+            var getResPathType = KResourceModule.GetResourceFullPath(GetTextFilePath(path), false, out fullUrl);
+            if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
+            {
+                Log.Error("can not find file: {0}", fullUrl);
+                return null;
+            }
+            var bytes = File.ReadAllBytes(fullUrl);
             bytes = SettingBytesFilter != null ? SettingBytesFilter(bytes) : bytes;
             return bytes;
         }
 
-        private static string GetFileSystemPath(string path)
+        /// <summary>
+        /// 获取配置表的路径，都在Settings目录下
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetTextFilePath(string path)
         {
-            var resPath = Path.Combine(AppConfig.ExportTsvPath, path);
-            return resPath;
+            return AppConfig.SettingResourcesPath + "/" + path;
         }
 
 #if UNITY_EDITOR
@@ -151,9 +145,9 @@ namespace KEngine.Modules
             if (_cacheWatchers == null)
                 _cacheWatchers = new Dictionary<string, FileSystemWatcher>();
             FileSystemWatcher watcher;
-            var dirPath = Path.GetDirectoryName(GetFileSystemPath(path));
+            var dirPath = Path.GetDirectoryName(KResourceModule.EditorProductFullPath + "/" + AppConfig.SettingResourcesPath + "/" + path);
             dirPath = dirPath.Replace("\\", "/");
-
+            //if(Application.isEditor) Log.Info($"watch:{path}\n{dirPath}");
             if (!Directory.Exists(dirPath))
             {
                 Log.Error("[WatchSetting] Not found Dir: {0}", dirPath);
@@ -178,32 +172,6 @@ namespace KEngine.Modules
             };
         }
 #endif
-        /// <summary>
-        /// Load from unity Resources folder
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        [Obsolete("LoadSettingFromStreamingAssets instead!")]
-        private static byte[] LoadSettingFromResources(string path)
-        {
-            var resPath = AppConfig.SettingResourcesPath + "/" + Path.ChangeExtension(path, null);
-            var fileContentAsset = Resources.Load(resPath) as TextAsset;
-            var bytes = SettingBytesFilter != null ? SettingBytesFilter(fileContentAsset.bytes) : fileContentAsset.bytes;
-            return bytes;
-        }
-		
-        /// <summary>
-        /// KEngine 3 后，增加同步loadStreamingAssets文件，统一只用StreamingAsset路径
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private static byte[] LoadSettingFromStreamingAssets(string path)
-        {
-            var resPath = AppConfig.SettingResourcesPath + "/" + path;
-            var bytes = KResourceModule.LoadSyncFromStreamingAssets(resPath);
-            bytes = SettingBytesFilter != null ? SettingBytesFilter(bytes) : bytes;
-            return bytes;
-        }
 
         /// <summary>
         /// whether or not using file system file, in unity editor mode only

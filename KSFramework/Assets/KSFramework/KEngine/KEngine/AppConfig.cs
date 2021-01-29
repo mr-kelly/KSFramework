@@ -38,6 +38,11 @@ public class AppConfig
     /// 是否创建AssetDebugger
     /// </summary>
     public static bool UseAssetDebugger = Application.isEditor;
+    /// <summary>
+    /// Editor下加载资源从磁盘的相对目录读取，手机上则是Application.persistentDataPath
+    /// </summary>
+    public static bool UseMobilePath  = !Application.isEditor;
+    
 
     #region AppConfig.txt中的内容
 
@@ -101,12 +106,31 @@ public class AppConfig
     /// <summary>
     /// 游戏共有多少种语言
     /// </summary>
-    public static string[] I18NLanguages = new string[] {"zh_CN", "en_US"};
-
+    public static string[] I18NLanguages = new string[] {"cn", "en"};
     /// <summary>
-    /// 当前的语言
+    /// 当前的语言ID
     /// </summary>
-    public const string I18N = "en_US";
+    public static string LangId = "";
+    
+    /// <summary>
+    /// 开发中的语言，此语言下所有的文件不需要加后缀，否则文件名后加: --语种
+    /// </summary>
+    public const string dev_lang = "cn";
+    private static string langFileFlag;
+    /// <summary>
+    /// 多语言加载文件的标识，比如不同地区读的语言包、图片，会在资源名后面加上此标识(eg: atlas.ab -> atlas--en.ab)
+    /// </summary>
+    public static string LangFileFlag
+    {
+        get
+        {
+            if (langFileFlag == null)
+            {
+                langFileFlag = (LangId == dev_lang || string.IsNullOrEmpty(LangId)) ? "" : "--" + LangId;
+            }
+            return langFileFlag;
+        }
+    }
 
     #endregion
 }
