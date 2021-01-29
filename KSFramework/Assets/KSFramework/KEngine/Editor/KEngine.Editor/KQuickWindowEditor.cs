@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.IO;
+using AppSettings;
 using KEngine;
 using KEngine.Editor;
 using KSFramework.Editor;
@@ -64,11 +65,11 @@ public class KQuickWindowEditor : EditorWindow
         EditorGUILayout.LabelField("== KEngine ==");
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("初始化AB资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("初始化资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             ResourcesSymbolLinkHelper.SymbolLinkResource();
         }
-        if (GUILayout.Button("删除AB资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("删除资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             ResourcesSymbolLinkHelper.RemoveSymbolLinkResource();
         }
@@ -83,8 +84,7 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("重载配置表", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            //TODO 仅仅是重载编译后的配置表
-            //SettingsManager.AllSettingsReload();
+            SettingsManager.AllSettingsReload();
         }
 
         GUILayout.EndHorizontal();

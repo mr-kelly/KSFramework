@@ -50,7 +50,7 @@ namespace KSFramework.Editor
         /// <summary>
         /// 完成Scene后，编译DLL后，未出APK前
         /// </summary>
-        [PostProcessScene]
+        //[PostProcessScene]
         private static void OnPostProcessScene()
         {
             if (!_hasBeforeBuildApp && !EditorApplication.isPlayingOrWillChangePlaymode)
@@ -68,7 +68,7 @@ namespace KSFramework.Editor
 
                 var toDir = "Assets/StreamingAssets/" + AppConfig.SettingResourcesPath; // 文件夹名称获取
 
-                // 所有的Lua脚本拷贝到StreamingAssets
+                //拷贝所有的tsv到StreamingAssets
                 var allFiles = Directory.GetFiles(AppConfig.ExportTsvPath, "*", SearchOption.AllDirectories);
                 foreach (var path in allFiles)
                 {

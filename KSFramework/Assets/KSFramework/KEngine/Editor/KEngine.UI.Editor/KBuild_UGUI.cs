@@ -63,6 +63,8 @@ namespace KEngine.Editor
             KUnityEditorEventCatcher.OnSaveSceneEvent += OnSaveScene;
             KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent -= OnBeforeBuildPlayerEvent;
             KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent += OnBeforeBuildPlayerEvent;
+            KUnityEditorEventCatcher.OnPostBuildPlayerEvent -= OnAfterBuildPlayerEvent;
+            KUnityEditorEventCatcher.OnPostBuildPlayerEvent += OnAfterBuildPlayerEvent;
         }
 
         private static void OnSaveScene()
@@ -180,13 +182,21 @@ namespace KEngine.Editor
         private static void OnBeforeBuildPlayerEvent()
         {
             // Auto Link resources when play!
-            if (!Directory.Exists(ResourcesSymbolLinkHelper.GetLinkPath()))
+            if (!Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
             {
-                Log.Warning("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetLinkPath());
+                Log.Warning("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetABLinkPath());
                 ResourcesSymbolLinkHelper.SymbolLinkResource();
             }
         }
-
+        
+        private static void OnAfterBuildPlayerEvent(BuildTarget buildTarget, string str)
+        {
+            /*if (Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
+            {
+                ResourcesSymbolLinkHelper.RemoveSymbolLinkResource();
+            }*/
+        }
+        
         private static void OnWillPlayEvent()
         {
         }

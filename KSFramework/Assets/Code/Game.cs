@@ -28,6 +28,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using AppSettings;
 using KEngine;
 using KEngine.UI;
 using KSFramework;
@@ -65,12 +66,13 @@ public class Game : KSGame
     /// <returns></returns>
     public override IEnumerator OnGameStart()
     {
+        Log.Info(I18N.Get("btn_billboard"));
         // Print AppConfigs
         // Log.Info("======================================= Read Settings from C# =================================");
-        // foreach (GameConfigSetting setting in GameConfigSettings.GetAll())
-        // {
-        //     Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Value));
-        // }
+        foreach (BillboardSetting setting in BillboardSettings.GetAll())
+        {
+            Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Title));
+        }
         AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
         {
             if (isOk && ab)

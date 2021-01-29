@@ -113,9 +113,10 @@ namespace KUnityEditorTools
                     preArg = "-c ";
                 }
                 Debug.Log("[ExecuteCommand]" + command);
-                var allOutput = new StringBuilder();
+                
                 using (var process = new Process())
                 {
+                    System.Console.InputEncoding = System.Text.Encoding.UTF8;
                     if (workingDirectory != null)
                         process.StartInfo.WorkingDirectory = workingDirectory;
                     process.StartInfo.FileName = cmd;
@@ -124,33 +125,41 @@ namespace KUnityEditorTools
                     process.StartInfo.CreateNoWindow = true;
                     process.StartInfo.RedirectStandardOutput = true;
                     process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.StandardOutputEncoding = Encoding.UTF8; //设置标准输出编码
+                    process.StartInfo.StandardErrorEncoding = Encoding.UTF8;
+                    process.OutputDataReceived += new DataReceivedEventHandler(OutputReceived);
+                    process.ErrorDataReceived += new DataReceivedEventHandler(ErrorReceived);
                     process.Start();
-
-                    while (true)
-                    {
-                        var line = process.StandardOutput.ReadLine();
-                        if (line == null)
-                            break;
-                        allOutput.AppendLine(line);
-                        EditorUtility.DisplayProgressBar("[ExecuteCommand] " + command, line, fProgress);
-                        fProgress += .001f;
-                    }
-
-                    var err = process.StandardError.ReadToEnd();
-                    if (!String.IsNullOrEmpty(err))
-                    {
-                        Debug.LogError(String.Format("[ExecuteCommand] {0}", err));
-                    }
+                    
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+    
                     process.WaitForExit();
                 }
-                Debug.Log("[ExecuteResult]" + allOutput);
             }
             finally
             {
                 EditorUtility.ClearProgressBar();
             }
         }
-
+        
+        private static void OutputReceived(object sender,DataReceivedEventArgs e)
+        {
+            Debug.Log(e.Data);
+        }
+        
+        private static void ErrorReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data!=null&&e.Data!=string.Empty)
+            {
+                Debug.LogError("Error::" + e.Data);
+            }
+        }
+        
+        private static void ExitReceived(object sender, EventArgs e)
+        {
+            //Debug.Log("Exit::"+e.ToString());
+        } 
         public delegate void EachDirectoryDelegate(string fileFullPath, string fileRelativePath);
 
         /// <summary>

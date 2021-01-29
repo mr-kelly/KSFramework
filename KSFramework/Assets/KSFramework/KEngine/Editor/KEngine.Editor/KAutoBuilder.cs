@@ -128,6 +128,7 @@ namespace KEngine.Editor
 #else
 			EditorUserBuildSettings.SwitchActiveBuildTarget(tag);
 #endif
+            //已监听Unity引擎的打包前事件：OnBeforeBuildPlayerEvent
             ParseArgs(ref opt, ref outputpath);
             string fullPath = System.IO.Path.Combine(AppConfig.ProductRelPath,outputpath);
             string fullDir = System.IO.Path.GetDirectoryName(fullPath);
@@ -246,16 +247,12 @@ namespace KEngine.Editor
 
     public class ResourcesSymbolLinkHelper
     {
-        public static string AssetBundlesLinkPath
-        {
-            get
-            {
-                // StreamingAssetsPath
-                return "Assets/StreamingAssets/" + AppConfig.StreamingBundlesFolderName;
-            }
-        }
-
-        public static string GetLinkPath()
+        public static string StreamingPath = "Assets/StreamingAssets/";
+        public static string AssetBundlesLinkPath = StreamingPath + AppConfig.StreamingBundlesFolderName;
+        public static string LuaLinkPath = StreamingPath + AppConfig.LuaPath + "/";
+        public static string SettingLinkPath = StreamingPath + AppConfig.SettingResourcesPath + "/";
+        
+        public static string GetABLinkPath()
         {
             if (!Directory.Exists(AssetBundlesLinkPath))
             {
@@ -267,31 +264,44 @@ namespace KEngine.Editor
 
         public static string GetResourceExportPath()
         {
-            var resourcePath = BuildTools.GetExportPath(EditorUserBuildSettings.activeBuildTarget,
-                KResourceModule.Quality);
+            var resourcePath = BuildTools.GetExportPath(EditorUserBuildSettings.activeBuildTarget, KResourceModule.Quality);
             return resourcePath;
         }
 
         [MenuItem("KEngine/Symbol Link Resources/Link Builded Resource -> StreamingAssets or Resources")]
         public static void SymbolLinkResource()
         {
-            KSymbolLinkHelper.DeleteAllLinks(ResourcesSymbolLinkHelper.AssetBundlesLinkPath);
-
+            KSymbolLinkHelper.DeleteAllLinks(AssetBundlesLinkPath);
             var exportPath = GetResourceExportPath();
-            var linkPath = GetLinkPath();
-
+            var linkPath = GetABLinkPath();
             KSymbolLinkHelper.SymbolLinkFolder(exportPath, linkPath);
+            //NOTE 特别无解，无法link这两个目录
+            /*KSymbolLinkHelper.DeleteAllLinks(LuaLinkPath);
+            exportPath = KResourceModule.ProductPathWithoutFileProtocol + AppConfig.LuaPath + "/";
+            if (!Directory.Exists(LuaLinkPath)) Directory.CreateDirectory(LuaLinkPath);
+            KSymbolLinkHelper.SymbolLinkFolder(exportPath, LuaLinkPath);
 
+            KSymbolLinkHelper.DeleteAllLinks(SettingLinkPath);
+            exportPath = KResourceModule.ProductPathWithoutFileProtocol + AppConfig.SettingResourcesPath + "/";
+            if (!Directory.Exists(SettingLinkPath)) Directory.CreateDirectory(SettingLinkPath);
+            KSymbolLinkHelper.SymbolLinkFolder(exportPath, SettingLinkPath);*/
+            Debug.Log("Add Symbol LinkPath.");
             AssetDatabase.Refresh();
         }
+        
 		[MenuItem("KEngine/Symbol Link Resources/Remove StreamingAssets or Resources links")]
 		public static void RemoveSymbolLinkResource()
 		{
 			KSymbolLinkHelper.DeleteAllLinks(ResourcesSymbolLinkHelper.AssetBundlesLinkPath);
-			Debug.Log ("Remove " + ResourcesSymbolLinkHelper.AssetBundlesLinkPath);
+            AssetDatabase.DeleteAsset(ResourcesSymbolLinkHelper.AssetBundlesLinkPath);
 
-			AssetDatabase.DeleteAsset(ResourcesSymbolLinkHelper.AssetBundlesLinkPath);
+            /*KSymbolLinkHelper.DeleteAllLinks(ResourcesSymbolLinkHelper.LuaLinkPath);
+            AssetDatabase.DeleteAsset(ResourcesSymbolLinkHelper.LuaLinkPath);
 
+            KSymbolLinkHelper.DeleteAllLinks(ResourcesSymbolLinkHelper.SettingLinkPath);
+            AssetDatabase.DeleteAsset(ResourcesSymbolLinkHelper.SettingLinkPath);*/
+            
+            Debug.Log ("Remove Symbol LinkPath.");
 			AssetDatabase.Refresh ();
 		}
     }

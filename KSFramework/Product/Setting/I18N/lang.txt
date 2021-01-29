@@ -1,0 +1,5 @@
+#格式：key=value
+btn_billboard=公告板
+btn_openui=打开界面
+btn_change_scene=切换场景
+text_loading=正在加载中...

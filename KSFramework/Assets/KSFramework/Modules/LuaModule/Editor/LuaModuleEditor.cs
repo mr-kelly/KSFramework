@@ -50,7 +50,7 @@ namespace KSFramework.Editor
         /// <summary>
         /// 这里可以进行DLL篡改, 这里PostProcessScene时，DLL已经被生成了
         /// </summary>
-        [PostProcessScene]
+        //[PostProcessScene]
         private static void OnPostProcessScene()
         {
             if (!_hasBeforeBuildApp && !EditorApplication.isPlayingOrWillChangePlaymode)
@@ -76,7 +76,7 @@ namespace KSFramework.Editor
                     var cleanPath = path.Replace("\\", "/");
                     
                     var relativePath = cleanPath.Replace(editorLuaScriptPath+"/", "");
-                    var toPath = Path.Combine(toDir, relativePath) + AppConfig.AssetBundleExt;
+                    var toPath = Path.Combine(toDir, relativePath);
 
                     if (!Directory.Exists(Path.GetDirectoryName(toPath)))
                         Directory.CreateDirectory(Path.GetDirectoryName(toPath));

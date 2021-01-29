@@ -49,7 +49,6 @@ namespace AppSettings
 						BillboardSettings._instance ,
 						EnUSSettings._instance ,
 						StringsTableSettings._instance ,
-						TestSettings._instance ,
 						TSVSettings._instance ,
 						ZhCNSettings._instance
 

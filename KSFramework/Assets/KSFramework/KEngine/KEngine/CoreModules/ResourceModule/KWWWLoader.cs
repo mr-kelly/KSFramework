@@ -144,11 +144,10 @@ namespace KEngine
                 {
                     // TODO: Android下的错误可能是因为文件不存在!
                 }
-
-                string fileProtocol = KResourceModule.GetFileProtocol();
-                if (url.StartsWith(fileProtocol))
+                
+                if (url.StartsWith(KResourceModule.GetFileProtocol))
                 {
-                    string fileRealPath = url.Replace(fileProtocol, "");
+                    string fileRealPath = url.Replace(KResourceModule.GetFileProtocol, "");
                     Log.Error("File {0} Exist State: {1}", fileRealPath, System.IO.File.Exists(fileRealPath));
                 }
                 Log.Error("[KWWWLoader:Error]{0} {1}", Www.error, url);

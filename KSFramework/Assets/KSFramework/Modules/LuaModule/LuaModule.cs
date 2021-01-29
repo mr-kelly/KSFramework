@@ -156,20 +156,12 @@ namespace KSFramework
             {
                 return null;
             }
-            Debuger.Assert(HasScript(scriptRelativePath), "Not exist Lua: " + scriptRelativePath);
-
             var scriptPath = GetScriptPath(scriptRelativePath);
-            byte[] script;
-            if (Log.IsUnityEditor)
+            if (!KResourceModule.IsResourceExist(scriptPath))
             {
-                script = File.ReadAllBytes(scriptPath);
+                return null;
             }
-            else
-            {
-                //TODO 热更新从PersistentDataPath路径读取
-                //script = KResourceModule.LoadSyncFromPersistentDataPath(scriptPath);
-                script = KResourceModule.LoadSyncFromStreamingAssets(scriptPath);
-            }
+            byte[] script =  KResourceModule.LoadAssetsSync(scriptPath);
             var ret = ExecuteScript(script, scriptRelativePath);
             return ret;
         }
@@ -181,19 +173,7 @@ namespace KSFramework
         /// <returns></returns>
         static string GetScriptPath(string scriptRelativePath)
         {
-            var relativePath = string.Format("{0}/{1}.lua", AppConfig.LuaPath, scriptRelativePath);
-
-            if (Log.IsUnityEditor)
-            {
-                var editorLuaScriptPath = Path.Combine(KResourceModule.EditorProductFullPath,relativePath);
-                return editorLuaScriptPath;
-            }
-            else
-            {
-                relativePath += AppConfig.AssetBundleExt;
-            }
-
-            return relativePath;
+            return string.Format("{0}/{1}.lua", AppConfig.LuaPath, scriptRelativePath);
         }
 
         /// <summary>
@@ -204,10 +184,7 @@ namespace KSFramework
         public bool HasScript(string scriptRelativePath)
         {
             var scriptPath = GetScriptPath(scriptRelativePath);
-            if (Log.IsUnityEditor)
-                return File.Exists(scriptPath);
-            else
-                return KResourceModule.IsStreamingAssetsExists(scriptPath);
+            return KResourceModule.IsResourceExist(scriptPath);
         }
 
         /// <summary>
