@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections;
 using KSFramework;
 using UnityEngine;
@@ -34,11 +35,6 @@ namespace KEngine.UI
 {
     public class GUIBridge
     {
-        /// <summary>
-        /// 使用Lua编写UI代码or原生C#
-        /// </summary>
-        public bool IsLuaBridge = false;
-
         public EventSystem EventSystem;
         private GameObject gameObject;
 
@@ -61,25 +57,18 @@ namespace KEngine.UI
         public UIController CreateUIController(GameObject uiObj, string uiTemplateName)
         {
             UIController uiBase = null;
-            if (IsLuaBridge)
-            {
-                uiBase = uiObj.AddComponent<LuaUIController>();
-            }
-            else
-            {
-#if UNITY_5 || UNITY_2017_1_OR_NEWER
-                uiBase = uiObj.AddComponent(System.Type.GetType("KUI" + uiTemplateName + ", Assembly-CSharp")) as UIController;
+#if xLua || SLUA
+            uiBase = new LuaUIController();
+#elif ILRuntime
+            uiBase = new ILRuntimeUIBase();
 #else
-                uiBase = uiObj.AddComponent("KUI" + uiTemplateName) as UIController;
+            var type = System.Type.GetType("UI" + uiTemplateName + ", Assembly-CSharp");
+            uiBase = Activator.CreateInstance(type) as UIController;
 #endif
-            }
-
             KEngine.Debuger.Assert(uiBase);
+            uiBase.gameObject = uiObj;
+            uiBase.UIName = uiBase.UITemplateName = uiTemplateName;
             return uiBase;
-        }
-
-        public void UIObjectFilter(UIController controller, GameObject uiObject)
-        {
         }
 
         public IEnumerator LoadUIAsset(UILoadState loadState, UILoadRequest request)

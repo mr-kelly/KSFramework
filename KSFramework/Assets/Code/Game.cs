@@ -45,8 +45,11 @@ public class Game : KSGame
         var modules = base.CreateModules();
 
         // TIP: Add Your Custom Module here
-        //modules.Add(new Module());
-
+#if xLua || SLUA
+        modules.Add(LuaModule.Instance)
+#elif ILRuntime
+        modules.Add(ILRuntimeModule.Instance);
+#endif
         return modules;
     }
 
@@ -102,4 +105,10 @@ public class Game : KSGame
         KResourceModule.Collect();
     }
 
+    private void OnApplicationQuit()
+    {
+#if ILRuntime
+        ILRuntimeModule.Instance.OnDestroy();
+#endif
+    }
 }

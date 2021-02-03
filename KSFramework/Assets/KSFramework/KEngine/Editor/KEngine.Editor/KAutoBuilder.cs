@@ -137,14 +137,15 @@ namespace KEngine.Editor
                 Directory.CreateDirectory(fullDir);
 
             Log.Info("Start Build Client {0} to: {1}", tag, Path.GetFullPath(fullPath));
-
-            //NOTE xlua在编辑器开发不生成代码，因为.NET Standard 2.0不支持emit会导致某些CSharpCallLua注册失败，所以需要改成.Net4.X，在打包时如果有需要再修改回
-            //NOTE xlua打包前生成Lua绑定代码
 #if xLua
-            //先clear，再gen，避免同一个class修改后，再gen会报错
+         	// NOTE xlua在编辑器开发模式不生成代码，因为.NET Standard 2.0不支持emit，会导致某些CSharpCallLua注册失败，Api要改成.Net4.X，在打包时如果有需要再修改回
+         	// 需要先clear，再gen，避免同一个class修改后，覆盖gen会报错
             XLua.DelegateBridge.Gen_Flag = true;
             CSObjectWrapEditor.Generator.ClearAll();
             CSObjectWrapEditor.Generator.GenAll();
+#elif ILRuntime
+            ILRuntimeEditor.GenerateCLRBindingByAnalysis();
+            ILRuntimeEditor.GenerateCrossbindAdapter();
 #endif
             var buildResult = BuildPipeline.BuildPlayer(GetScenePaths(), fullPath, tag, opt);
 #if xLua
@@ -264,7 +265,7 @@ namespace KEngine.Editor
 
         public static string GetResourceExportPath()
         {
-            var resourcePath = BuildTools.GetExportPath(EditorUserBuildSettings.activeBuildTarget, KResourceModule.Quality);
+            var resourcePath = BuildTools.GetExportPath(KResourceModule.Quality);
             return resourcePath;
         }
 

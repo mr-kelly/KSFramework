@@ -23,7 +23,10 @@ public class AppConfig
     /// 是否打印ab加载耗时
     /// </summary>
     public static bool IsLogAbLoadCost = false;
-
+    /// <summary>
+    /// 是否打印函数执行耗时
+    /// </summary>
+    public static bool IsLogFuncCost = false;
     /// <summary>
     /// 是否记录到文件中，包括：UI的ab加载耗时，UI函数执行耗时
     /// </summary>
@@ -92,12 +95,7 @@ public class AppConfig
 
     //; Ignore genereate code for these excel.
     public const string SettingCodeIgnorePattern = "(I18N/.*)|(StringsTable.*)";
-
-    /// <summary>
-    /// 支持C#/lua来编写UI代码，Lua中基类是LuaUIControl，C#是UIControl
-    /// </summary>
-    public const string UIModuleBridge = "LuaBridge";
-
+    
     /// <summary>
     /// UI设计的分辨率
     /// </summary>

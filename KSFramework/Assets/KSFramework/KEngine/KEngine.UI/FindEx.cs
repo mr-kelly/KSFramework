@@ -42,7 +42,7 @@ public static class FindEx
         return t;
     }
 
-    public static T FindChild<T>(this GameObject go, string id, bool check_visible = false, bool raise_error = true)
+    public static T FindChild<T>(this GameObject go, string id, bool check_visible = false, bool raise_error = true) where T : Component
     {
         var t = FindChild(go.transform, id, check_visible, raise_error);
         if (t)
@@ -71,6 +71,7 @@ public static class FindEx
 
             return null;
         }
+
         Transform transform = findTrans;
         if (string.IsNullOrEmpty(id))
             return null;
@@ -172,6 +173,4 @@ public static class FindEx
     }
 
     #endregion
-
-    
 }
