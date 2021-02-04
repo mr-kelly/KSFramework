@@ -452,13 +452,13 @@ namespace KEngine.UI
         //隐藏时打开，打开时隐藏
         public void ToggleWindow<T>(params object[] args)
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"KUI"
+            string uiName = typeof(T).Name.Remove(0, 2);
             ToggleWindow(uiName, args);
         }
         
         public void CloseWindow(Type t)
         {
-            CloseWindow(t.Name.Remove(0, 3)); // KUI remove
+            CloseWindow(t.Name.Remove(0, 2));
         }
 
         public void CloseWindow<T>()

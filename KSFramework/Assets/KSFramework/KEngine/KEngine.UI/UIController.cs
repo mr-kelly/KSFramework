@@ -77,7 +77,7 @@ namespace KEngine.UI
 
         public virtual void BeforeOpen(object[] onOpenArgs, Action doOpen)
         {
-            doOpen();
+            if (doOpen != null) doOpen();
         }
 
         public virtual void OnOpen(params object[] args)

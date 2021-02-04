@@ -1,6 +1,4 @@
-#Link Files
-/KSFramework/Assets/Plugins/Editor/KEngineEditor
-/KSFramework/Assets/Plugins/KEngine
+#ignore gen files
 /KSFramework/Assets/Plugins/Slua_Managed
 /KSFramework/Assets/SLua/LuaObject
 /KSFramework/Assets/UnityTestTools
@@ -9,6 +7,7 @@
 /KSFramework/Assets/StreamingAssets/Setting
 /KSFramework/Assets/StreamingAssets/**/*.meta
 /KSFramework/Assets/XLua/Gen/*
+/KSFramework/Assets/ILRuntimeBridge/Generated/*
 
 /KSFramework/Lua/*
 /KSFramework/LuaOut/*
@@ -24,6 +23,22 @@
 #Others
 */*/AssetBundles-Browser*
 */*/AssetBundles-Browser/*
+
+
+Tableml_GUI
+Tableml_GUI/*
+
+UpdateModule
+UpdateModule.meta
+UpdateModule/*
+
+LuaProfiler
+LuaProfiler.*
+LuaProfiler/*
+LuaDeepProfilerAssetSetting.*
+LuaDeepProfilerSetting.*
+LuaProfilerPrecompileSetting.asset
+LuaProfilerPrecompileSetting.asset.meta
 
 #Rider Debug dll files
 JetBrains*
@@ -308,24 +323,3 @@ Temp
 */.idea/vcs.xml
 */.idea/*.iml
 .*/idea/modules
-
-
-Tableml_GUI
-Tableml_GUI/*
-
-UpdateModule
-UpdateModule.meta
-UpdateModule/*
-
-LuaProfiler
-LuaProfiler.*
-LuaProfiler/*
-LuaDeepProfilerAssetSetting.*
-LuaDeepProfilerSetting.*
-LuaProfilerPrecompileSetting.asset
-LuaProfilerPrecompileSetting.asset.meta
-
-/KSFramework/Product/Bundles/Android
-/KSFramework/Product/Bundles/iOS
-/KSFramework/Product/Bundles/MacOS
-/KSFramework/Product/Bundles/Windows

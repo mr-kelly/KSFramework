@@ -715,9 +715,9 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: xLua
-    4: xLua
-    7: xLua
+    1: ILRuntime
+    4: ILRuntime
+    7: ILRuntime
   platformArchitecture:
     iPhone: 2
   scriptingBackend:
@@ -728,7 +728,7 @@ PlayerSettings:
   managedStrippingLevel: {}
   incrementalIl2cppBuild:
     iPhone: 1
-  allowUnsafeCode: 0
+  allowUnsafeCode: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
