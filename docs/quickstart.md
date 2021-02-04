@@ -1,3 +1,11 @@
+## 前言
+
+从github拉取代码下来之后，需要点击KEngine - Open Quick Window，在打开的窗口中，进行以下操作
+
+1. 点击生成ab
+2. 如果是ILRuntime分支，还需要点击生成dll，xlua/slua则无需
+
+注意：经过多个不同项目组之后，文档中的部分内容未及时更新，如遇到使用上的问题请先阅读源码。
 
 ## 看看Demo！
 
@@ -107,6 +115,8 @@ return UIBillboard
 好了，接下来，我们要为策划准备配置表了。
 
 ### 创建配置表
+
+**说明：新版本中增加了把配置表数据生成为lua文件，或者把配置表数据插入到sqlite中，均可以做到配置热重载。**
 
 打开Product/SettingSource目录，复制一份StringsTable.xlsx，并改名叫Billboard.xlsx吧
 
