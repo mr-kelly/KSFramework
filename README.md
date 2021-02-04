@@ -5,14 +5,13 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
-[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua)|[XLua](https://github.com/Tencent/xLua)+ **Framework** = KSFramework
+[**K**Engine](https://github.com/mr-kelly/KEngine) + [**S**Lua](https://github.com/mr-kelly/slua) | [XLua](https://github.com/Tencent/xLua) | [ILRuntime](https://github.com/Ourpalm/ILRuntime)+ **Framework** = KSFramework
 
-**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua/XLua 的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
+**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua/XLua/ILRuntime 的Unity3D Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
 
 ---------------------
 
 ### Sponsor
-
 
 [![KSFramework](Docs/vikadata.png)](https://vika.cn)
 
@@ -71,13 +70,14 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 
 ### Unity3D版本支持
 
-| Unity3D版本 | 支持情况 | 备注                                       |
-| ----------- | -------- | ------------------------------------------ |
-| Unity 4.X   | 支持     |                                            |
-| Unity 5.x   | 支持     | 部分版本API有差异，建议使用5.3.7及以上版本 |
-| Unity 2017  | 支持     |                                            |
-| Unity 2018  | 支持     | 2018.2.7f1已测试                           |
-| Unity 2019  | 支持     | 2019.3.7f1已测试                           |
+| Unity3D版本 | 支持情况 | 备注                                         |
+| ----------- | -------- | -------------------------------------------- |
+| Unity 4.X   | 支持     | 请使用KEngine                                |
+| Unity 5.x   | 支持     | 部分版本的API有差异，建议使用5.3.7及以上版本 |
+| Unity 2017  | 支持     |                                              |
+| Unity 2018  | 支持     | 2018.2.7f1已测试                             |
+| Unity 2019  | 支持     | 2019.3.7f1已测试                             |
+| Unity2020   | 支持     | Unity 2020.1.2f1已测试                       |
 
 ### 解决遇到的问题
 
@@ -85,9 +85,9 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 
 1. 重新生成Assetbundle，方法如下：点击菜单项 **KEngine** - **AssetBundle** - **Bulld All**
 
-2. 删除xlua或slua的生成代码，重新生成，生成的代码不同的Unity版本有差异
+2. 删除xLua、SLua、ILRuntime的生成代码，重新生成，生成的代码不同的Unity版本有差异
 
-3. 如果前两步不能解决问题，请上传报错信息，提issuse。
+3. 如果前两步不能解决问题，请上传报错信息到issuse。
 
 
 
