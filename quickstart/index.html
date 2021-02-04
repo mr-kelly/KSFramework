@@ -261,7 +261,14 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="demo">看看Demo！</h2>
+                <h2 id="_1">前言</h2>
+<p>从github拉取代码下来之后，需要点击KEngine - Open Quick Window，在打开的窗口中，进行以下操作</p>
+<ol>
+<li>点击生成ab</li>
+<li>如果是ILRuntime分支，还需要点击生成dll，xlua/slua则无需</li>
+</ol>
+<p>注意：经过多个不同项目组之后，文档中的部分内容未及时更新，如遇到使用上的问题请先阅读源码。</p>
+<h2 id="demo">看看Demo！</h2>
 <p>双击打开Assets/Game.unity场景，点击播放。</p>
 <p><img alt="开始Game.unity后的日志输出" src="../images/quickstart/quick-start-1.png" /></p>
 <blockquote>
@@ -362,7 +369,8 @@ return UIBillboard
 
 <p>这段lua中，创建了一个Table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。</p>
 <p>好了，接下来，我们要为策划准备配置表了。</p>
-<h3 id="_1">创建配置表</h3>
+<h3 id="_2">创建配置表</h3>
+<p><strong>说明：新版本中增加了把配置表数据生成为lua文件，或者把配置表数据插入到sqlite中，均可以做到配置热重载。</strong></p>
 <p>打开Product/SettingSource目录，复制一份StringsTable.xlsx，并改名叫Billboard.xlsx吧</p>
 <p><img alt="复制一份StringsTable.xlsx" src="../images/quickstart/quick-start-25.png" /></p>
 <blockquote>
@@ -399,7 +407,7 @@ return UIBillboard
 <p>运行播放Game.unity，我们的公告界面完成了</p>
 </blockquote>
 <p>公告界面完成了。我们创建了一个UI、写了C#和Lua代码加载它、然后创建了一张配置表，再从Lua读取配置表，设置UI的显示。</p>
-<h2 id="_2">玩玩热重载</h2>
+<h2 id="_3">玩玩热重载</h2>
 <h3 id="lua_1">热重载Lua</h3>
 <p>接着我们刚才运行的Game.unity。 我们尝试一下对Lua热重载：在不重启游戏的情况，快速重载Lua代码，方便程序调试。</p>
 <p><img alt="菜单KSFramework-&gt;UI-&gt;Reload+ReOpen：热重载Lua脚本，并重新打开目前处在打开状态的UI界面" src="../images/quickstart/quick-start-41.png" /></p>

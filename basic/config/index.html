@@ -264,6 +264,7 @@
                 <p>KSFramework中使用Ini格式的文件作为配置的基础。它有一个基础的ini+自定义的ini两个文件合并而成。</p>
 <p>基础的ini配置约定，在代码EngineConfigs.cs文件中可以查看。</p>
 <p>自定义的ini文件，放置在Assets/Resources/AppConfigs.txt中，或搜索<strong>AppConfigs.txt</strong></p>
+<p>NOTE：新版本中已经把配置项放在Appconfig.cs中，因为这些设置项不会经常改动，把它放在代码中减少读取配置。</p>
 <h2 id="_1">读取配置</h2>
 <p>在KSFramework初始化时，会把两个ini配置文件合并。要想获取到配置的值，只需简单的执行静态方法：</p>
 <pre><code class="ini">AppEngine.GetConfig(&quot;Section&quot;, &quot;ConfigKey&quot;)
@@ -293,9 +294,9 @@ UIModuleBridge = KSFramework.UGUIBridge ;使用C#编辑UI代码
 
 <h3 id="_3">多语言配置</h3>
 <pre><code class="ini">;当前要使用的语言
-I18N = en_US
+I18N = en
 ;如果没有配置I18N则取第1个为默认语言
-I18NLanguages = zh_CN,en_US
+I18NLanguages = cn,en
 </code></pre>
 
 <h3 id="lua">Lua源代码路径</h3>
