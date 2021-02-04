@@ -46,7 +46,7 @@ public class Game : KSGame
 
         // TIP: Add Your Custom Module here
 #if xLua || SLUA
-        modules.Add(LuaModule.Instance)
+        modules.Add(LuaModule.Instance);
 #elif ILRuntime
         modules.Add(ILRuntimeModule.Instance);
 #endif
