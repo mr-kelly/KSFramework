@@ -715,39 +715,38 @@ namespace KEngine.UI
 				return;
             }
 
-            uiBase.BeforeOpen(args, () =>
+            uiBase.BeforeOpen(args);
+            //TODO 播放界面出现动画
+            uiBase.gameObject.SetActiveX(true);
+            if (uiBase.Canvas)
             {
-                uiBase.gameObject.SetActiveX(true);
-                if (uiBase.Canvas)
+                uiBase.Canvas.enabled = true;
+                if (sortOrder >= int.MaxValue)
                 {
-                    uiBase.Canvas.enabled = true;
-                    if (sortOrder >= int.MaxValue)
-                    {
-                        sortOrder = 0;
-                    }
-
-                    uiBase.Canvas.sortingOrder = sortOrder++;
+                    sortOrder = 0;
                 }
 
-                KProfiler.BeginWatch("UI.OnOpen");
-                uiBase.OnOpen(args);
-                KWatchResult profilerData = null;
-                if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-                if (AppConfig.IsSaveCostToFile)
-                {
-                    if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-                    LogFileRecorder.WriteUILog(uiBase.UIName, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
-                }
+                uiBase.Canvas.sortingOrder = sortOrder++;
+            }
 
-                if (OnOpenEvent != null)
-                    OnOpenEvent(uiBase);
-            });
+            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.OnOpen");
+            uiBase.OnOpen(args);
+            KWatchResult profilerData = null;
+            if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+            if (AppConfig.IsSaveCostToFile)
+            {
+                if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+                LogFileRecorder.WriteUILog(uiBase.UIName, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
+            }
+
+            if (OnOpenEvent != null)
+                OnOpenEvent(uiBase);
         }
 
 
         private void InitWindow(UILoadState uiState, UIController uiBase, bool open, params object[] args)
         {
-           KProfiler.BeginWatch("UI.Init");
+            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.Init");
             uiBase.OnInit();
             KWatchResult profilerData = null;
             if(AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.InstanceName,".OnInit"));
@@ -798,7 +797,17 @@ namespace KEngine.UI
         public bool IsLoading;
         public bool IsStaticUI; // 非复制出来的, 静态UI
 
-        public bool OpenWhenFinish;
+        private bool openWhenFinish;
+        public bool OpenWhenFinish
+        {
+            get { return openWhenFinish; }
+            set
+            {
+                // ReSharper disable once RedundantCheckBeforeAssignment
+                if (openWhenFinish != value)
+                    openWhenFinish = value;
+            }
+        }
         public object[] OpenArgs;
 
         internal Queue<Action<UIController, object[]>> CallbacksWhenFinish;
