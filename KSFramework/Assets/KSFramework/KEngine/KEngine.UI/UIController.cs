@@ -73,6 +73,7 @@ namespace KEngine.UI
 
         public virtual void OnInit()
         {
+            
         }
 
         public virtual void BeforeOpen(object[] onOpenArgs)
@@ -82,6 +83,7 @@ namespace KEngine.UI
 
         public virtual void OnOpen(params object[] args)
         {
+            Log.Info($"hello OnOpen {UIName}");
         }
 
         public virtual void OnClose()

@@ -10,8 +10,24 @@ using KSFramework;
 /// </summary>
 public class UIMain : ILRuntimeUIBase
 {
+    public override void OnInit()
+    {
+       
+    }
+
+    public override void BeforeOpen(object[] onOpenArgs)
+    {
+      
+    }
+
     public override void OnOpen(params object[] args)
     {
-
+       
     }
+
+    public override void OnClose()
+    {
+      
+    }
+    
 }

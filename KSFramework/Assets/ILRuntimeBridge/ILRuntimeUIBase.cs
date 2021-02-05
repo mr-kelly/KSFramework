@@ -29,10 +29,6 @@ namespace KSFramework
         
         public override void OnInit()
         {
-            if (string.IsNullOrEmpty(UITemplateName))
-            {
-                return;
-            }
             base.OnInit();
             instance = ILRuntimeModule.Instance.appdomain.Instantiate<ILRuntimeUIBase>($"UI{UITemplateName}");//NOTE 如果有Namespace需要加上
             Debuger.Assert(instance != null,$"{UIName} is null");
@@ -45,7 +41,7 @@ namespace KSFramework
         {
             base.BeforeOpen(onOpenArgs);
             Debuger.Assert(instance != null,$"{UIName} is null");
-            instance.BeforeOpen(onOpenArgs);//TODO 重复调用
+            instance.BeforeOpen(onOpenArgs);
         }
         
         public override void OnOpen(params object[] args)
