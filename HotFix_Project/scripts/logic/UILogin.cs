@@ -23,7 +23,7 @@ public class UILogin : ILRuntimeUIBase
         UIClickLister.Get(gameObject.FindChild<Button>("btnSwithUI"), OnClick);
     }
 
-    public override void BeforeOpen(object[] onOpenArgs, Action doOpen)
+    public override void BeforeOpen(object[] onOpenArgs)
     {
     }
 

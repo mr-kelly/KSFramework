@@ -22,7 +22,7 @@ public class UIBillboard : ILRuntimeUIBase
         btn_close.onClick.AddListener(OnClick);
     }
 
-    public override void BeforeOpen(object[] onOpenArgs, Action doOpen)
+    public override void BeforeOpen(object[] onOpenArgs)
     {
         
     }
