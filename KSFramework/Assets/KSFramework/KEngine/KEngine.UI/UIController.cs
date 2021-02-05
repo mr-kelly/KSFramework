@@ -44,12 +44,12 @@ namespace KEngine.UI
         /// <summary>
         /// Set from KUIModule, Resource Name
         /// </summary>
-        public string UITemplateName = "";
+        public string UITemplateName;
 
         /// <summary>
         /// Set from KUIModule, InstanceName
         /// </summary>
-        public string UIName = "";
+        public string UIName;
 
 
         public GameObject gameObject;//NOTE 无法为属性，在ILRuntime中get失败，而字段则可以
@@ -75,9 +75,9 @@ namespace KEngine.UI
         {
         }
 
-        public virtual void BeforeOpen(object[] onOpenArgs, Action doOpen)
+        public virtual void BeforeOpen(object[] onOpenArgs)
         {
-            if (doOpen != null) doOpen();
+        
         }
 
         public virtual void OnOpen(params object[] args)

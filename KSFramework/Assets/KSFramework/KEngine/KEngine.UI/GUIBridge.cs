@@ -67,6 +67,7 @@ namespace KEngine.UI
 #endif
             KEngine.Debuger.Assert(uiBase);
             uiBase.gameObject = uiObj;
+            uiBase.transform = uiObj.transform;
             uiBase.UIName = uiBase.UITemplateName = uiTemplateName;
             return uiBase;
         }

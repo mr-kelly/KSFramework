@@ -41,11 +41,11 @@ namespace KSFramework
             instance.OnInit();
         }
 
-        public override void BeforeOpen(object[] onOpenArgs, Action doOpen)
+        public override void BeforeOpen(object[] onOpenArgs)
         {
-            base.BeforeOpen(onOpenArgs, doOpen);
+            base.BeforeOpen(onOpenArgs);
             Debuger.Assert(instance != null,$"{UIName} is null");
-            instance.BeforeOpen(onOpenArgs,doOpen);//TODO 重复调用
+            instance.BeforeOpen(onOpenArgs);//TODO 重复调用
         }
         
         public override void OnOpen(params object[] args)
