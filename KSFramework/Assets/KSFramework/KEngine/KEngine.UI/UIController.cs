@@ -34,23 +34,26 @@ namespace KEngine.UI
 
     /// <summary>
     /// Abstract class of all UI Script
-    ///     如果需要FindChild使用FindEx中的扩展方法，可以忽略节点层级且性能好
+    ///     如果需要FindChild请使用FindEx中的扩展方法，可以忽略节点层级且性能好
     ///     NOTE: in xlua' lua script can't call C# [Obsolete] method
     /// </summary>
-    public class UIController : KBehaviour
+    public class UIController 
     {
-        // TODO 默认情况下脚本和UI资源名是一样的，但也有例外：多个脚本对应同个UI界面资源
+        // TODO 默认情况下脚本和UI资源名是一样的，后续支持：多个脚本对应同一个UI界面资源
 
         /// <summary>
         /// Set from KUIModule, Resource Name
         /// </summary>
-        public string UITemplateName = "";
+        public string UITemplateName;
 
         /// <summary>
         /// Set from KUIModule, InstanceName
         /// </summary>
-        public string UIName = "";
+        public string UIName;
 
+
+        public GameObject gameObject;//NOTE 无法为属性，在ILRuntime中get失败，而字段则可以
+        public Transform transform;
         private Canvas _canvas;
         /// <summary>
         /// 除HUD外，每个界面都有一个Canvas
@@ -59,7 +62,7 @@ namespace KEngine.UI
         {
             get
             {
-                if (_canvas == null)
+                if (_canvas == null && gameObject)
                 {
                     _canvas = gameObject.GetComponent<Canvas>();
                 }
@@ -72,9 +75,9 @@ namespace KEngine.UI
         {
         }
 
-        public virtual void BeforeOpen(object[] onOpenArgs, Action doOpen)
+        public virtual void BeforeOpen(object[] onOpenArgs)
         {
-            doOpen();
+        
         }
 
         public virtual void OnOpen(params object[] args)
@@ -103,10 +106,10 @@ namespace KEngine.UI
             UIModule.Instance.CallUI<T>(callback);
         }
 
-        protected override void OnDestroy()
+        public virtual void OnDestroy()
         {
-            base.OnDestroy();
-            /*if(AppEngine.EngineInstance.UseDevFunc)*/ ClearHeapValues();
+            //if(AppEngine.EngineInstance.UseDevFunc) 
+			ClearHeapValues();
         }
 
         /// <summary>
@@ -125,6 +128,42 @@ namespace KEngine.UI
                     field.SetValue(this,null);    
                 }
             }
+        }
+
+        public virtual void DisPlay(bool visiable)
+        {
+            if (visiable)
+            {
+                UIModule.Instance.OpenWindow(UIName);
+            }
+            else
+            {
+                UIModule.Instance.CloseWindow(UIName);
+            }
+        }
+        
+        public T FindChild<T>(string uri)
+        {
+            return FindChild<T>( uri, null, true);
+        }
+        
+        public T FindChild<T>(string uri, Transform findTrans)
+        {
+            return FindChild<T>( uri, findTrans);
+        }
+        
+        public T FindChild<T>( string uri, Transform findTrans, bool raise_error)
+        {
+            if (findTrans == null)
+                findTrans = transform;
+
+            Transform trans = findTrans.FindChildX(uri,false,raise_error);
+            if (trans == null)
+            {
+                return default(T);
+            }
+
+            return trans.GetComponent<T>();
         }
     }
 

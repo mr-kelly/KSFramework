@@ -107,7 +107,7 @@ namespace KEngine.Editor
 #endif
 
                 EditorUtility.SetDirty(prefab);
-
+                windowAsset.IsUIEditor = true;
                 //NOTE 有同学反馈在unity2019.3.4下这里会导致unity卡死(我在2019.3.7未遇到)，如出现问题可注释这行
                 AssetDatabase.ImportAsset(uiPrefabPath, ImportAssetOptions.ForceSynchronousImport);
                 Debug.Log("Create UIWindowAsset to prfab: " + uiPrefabPath);
@@ -119,7 +119,7 @@ namespace KEngine.Editor
         /// <summary>
         /// TODO 导出UI前的工作
         ///     生成图集
-        ///     检查1个只能使用一个图集，Text不勾选bestFit，不使用空的Image接受事件
+        ///     检查只能使用一个图集，Text不勾选bestFit，不使用空的Image接受事件
         /// </summary>
         /// <param name="asset"></param>
         private static void BeforeExportUIPrefab(UIWindowAsset asset)
@@ -129,7 +129,7 @@ namespace KEngine.Editor
              *     atlas
              *         sprite1.png
              *         ....
-             * 每个目录下的atlas存放用到的图片，atlas文件夹打到一个图集中
+             * 每个目录下的atlas中存放当前界面用到的图片，atlas文件夹所有图打到一个图集中
              */
             var scene = EditorSceneManager.GetActiveScene();
             var src_path = scene.path.Replace(scene.name+".unity","").Replace(Application.dataPath,"Assets/") + "atlas";

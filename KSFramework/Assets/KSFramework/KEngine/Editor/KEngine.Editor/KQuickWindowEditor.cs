@@ -40,7 +40,11 @@ public class KQuickWindowEditor : EditorWindow
         scrollPos = GUI.BeginScrollView(new Rect(10, 10, position.width, position.height), scrollPos, new Rect(0, 0, 360, 1000));
         DrawKEngineInit();
         GUILayout.Space(20);
-
+        
+#if ILRuntime
+        DrawILRuntime();
+        GUILayout.Space(20);
+#endif        
         DrawHotReLoadUI();
         GUILayout.Space(20);
 
@@ -101,7 +105,7 @@ public class KQuickWindowEditor : EditorWindow
         }
 
         GUILayout.EndHorizontal();
-
+#if xLua || SLUA
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("重载所有UI的Lua代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
@@ -125,6 +129,7 @@ public class KQuickWindowEditor : EditorWindow
         }
 
         GUILayout.EndHorizontal();
+#endif
         GUILayout.Space(10);
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("UI名字:", GUILayout.Width(40));
@@ -138,6 +143,42 @@ public class KQuickWindowEditor : EditorWindow
         //GUILayout.Space(10);
     }
 
+    public void DrawILRuntime()
+    {
+#if ILRuntime
+        GUILayout.BeginHorizontal("HelpBox");
+        EditorGUILayout.LabelField("== ILRuntime ==");
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("生成Dll", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+           ILRuntimeEditor.GenDll();
+        }
+
+        if (GUILayout.Button("打包dll为ab", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            ILRuntimeEditor.BuildDllToAb();
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("生成CLR绑定", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            ILRuntimeEditor.GenerateCLRBindingByAnalysis();
+        }
+
+        if (GUILayout.Button("生成适配器", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            ILRuntimeEditor.GenerateCrossbindAdapter();
+        }
+        if (GUILayout.Button("删除生成代码", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            ILRuntimeEditor.ClearGenCode();
+        }
+        GUILayout.EndHorizontal();
+#endif
+    }
+
     public void DrawKEngineUI()
     {
         GUILayout.BeginHorizontal("HelpBox");
@@ -149,12 +190,12 @@ public class KQuickWindowEditor : EditorWindow
         {
             KUGUIBuilder.CreateNewUI();
         }
-
+#if xLua || SLUA
         if (GUILayout.Button("为当前UI创建Lua脚本", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             KSFrameworkEditor.AutoMakeUILuaScripts();
         }
-
+#endif
         GUILayout.EndHorizontal();
 
 

@@ -136,7 +136,7 @@ namespace KEngine.Editor
         public static void CleanAssetBundlesRedundancies()
         {
             var platformName = KResourceModule.GetBuildPlatformName();
-            var outputPath = GetExportPath(EditorUserBuildSettings.activeBuildTarget);
+            var outputPath = GetExportPath();
             var srcList = new List<string>(Directory.GetFiles(ResourcesBuildDir, "*.*", SearchOption.AllDirectories));
             for (var i = srcList.Count - 1; i >= 0; i--)
             {
@@ -237,7 +237,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AssetBundle/ReBuild All")]
         public static void ReBuildAllAssetBundles()
         {
-            var outputPath = GetExportPath(EditorUserBuildSettings.activeBuildTarget);
+            var outputPath = GetExportPath();
             Directory.Delete(outputPath, true);
 
             Debug.Log("Delete folder: " + outputPath);
@@ -254,7 +254,7 @@ namespace KEngine.Editor
                 return;
             }
             MakeAssetBundleNames();
-            var outputPath = GetExportPath(EditorUserBuildSettings.activeBuildTarget);
+            var outputPath = GetExportPath();
             KProfiler.BeginWatch("BuildAB");
             Log.Info("AsseBundle start build to: {0}", outputPath);
             //压缩算法不建议用Lzma，要用LZ4 . Lzma读全部的buffer Lz4一个一个block读取，只读取4字节
@@ -274,7 +274,7 @@ namespace KEngine.Editor
         /// <returns></returns>
         public static string MakeSureExportPath(string path, BuildTarget buildTarget, KResourceQuality quality)
         {
-            path = BuildTools.GetExportPath(buildTarget, quality) + path;
+            path = BuildTools.GetExportPath(quality) + path;
 
             path = path.Replace("\\", "/");
 
@@ -289,10 +289,9 @@ namespace KEngine.Editor
         /// <summary>
         /// Extra Flag ->   ex:  Android/  AndroidSD/  AndroidHD/
         /// </summary>
-        /// <param name="platfrom"></param>
         /// <param name="quality"></param>
         /// <returns></returns>
-        public static string GetExportPath(BuildTarget platfrom, KResourceQuality quality = KResourceQuality.Sd)
+        public static string GetExportPath(KResourceQuality quality = KResourceQuality.Sd)
         {
             string basePath = Path.GetFullPath(AppConfig.AssetBundleBuildRelPath);
             if (File.Exists(basePath))

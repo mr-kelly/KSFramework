@@ -91,8 +91,7 @@ namespace KEngine.UI
         
         public UIModule()
         {
-            UiBridge = new GUIBridge(); 
-            UiBridge.IsLuaBridge = !string.IsNullOrEmpty(AppConfig.UIModuleBridge) && AppConfig.UIModuleBridge.Contains("Lua");
+            UiBridge = new GUIBridge();
             UiBridge.InitBridge();
             CreateRoot();
         }
@@ -210,8 +209,7 @@ namespace KEngine.UI
                 
                 uiObj.transform.localRotation = Quaternion.identity;
                 uiObj.transform.localScale = Vector3.one;
-                // 具体加载逻辑结束...这段应该放到Bridge里
-
+                
                 var canvas = uiObj.GetComponent<Canvas>();
                 if (canvas)
                     canvas.enabled = false;
@@ -223,18 +221,14 @@ namespace KEngine.UI
                 if (uiState.UIWindow != null)
                 {
                     Log.Info("Destroy exist UI Window, maybe for reload");
-                    GameObject.Destroy(uiState.UIWindow.CachedGameObject);
+                    GameObject.Destroy(uiState.UIWindow.gameObject);
                     uiState.UIWindow = null;
                 }
 
                 uiState.UIWindow = uiBase;
                 uiState.WindowAsset = uiObj.GetComponent<UIWindowAsset>();
-                uiBase.UIName = uiBase.UITemplateName = uiState.TemplateName;
-
-                UiBridge.UIObjectFilter(uiBase, uiObj);
 
                 uiState.IsLoading = false; // Load完
-                
                 uiState.OnUIWindowLoadedCallbacks(uiState, uiBase);
 
                 if (uiState.OpenWhenFinish)
@@ -344,18 +338,12 @@ namespace KEngine.UI
             string name = (string)_args[1];
 
             GameObject uiObj = (GameObject)UnityEngine.Object.Instantiate(_ui.gameObject);
-
             uiObj.name = name;
-
-            UiBridge.UIObjectFilter(_ui, uiObj);
 
             UILoadState instanceUIState = UIWindows[name];
             instanceUIState.IsLoading = false;
 
-            UIController uiBase = uiObj.GetComponent<UIController>();
-            uiBase.UITemplateName = template;
-            uiBase.UIName = name;
-
+            UIController uiBase = UiBridge.CreateUIController(uiObj,template);
             instanceUIState.UIWindow = uiBase;
             instanceUIState.WindowAsset = uiObj.GetComponent<UIWindowAsset>();
 
@@ -390,7 +378,7 @@ namespace KEngine.UI
             }
             else
             {
-                uiState.UIWindow.SetActive(false);
+                uiState.UIWindow.gameObject.SetActiveX(false);
             }
             uiState.UIWindow.OnClose();
 
@@ -451,7 +439,7 @@ namespace KEngine.UI
         //[Obsolete("Use string ui name instead for more flexible!")]
         public UILoadState OpenWindow(Type type, params object[] args)
         {
-            string uiName = type.Name.Remove(0, 3); // 去掉"KUI"
+            string uiName = type.Name.Remove(0, 2); // 去掉"UI",ILRuntime传过来的type为：ILRuntimeAdapter.UIControllerAdapter+Adapter
             return OpenWindow(uiName, args);
         }
         
@@ -464,13 +452,13 @@ namespace KEngine.UI
         //隐藏时打开，打开时隐藏
         public void ToggleWindow<T>(params object[] args)
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"KUI"
+            string uiName = typeof(T).Name.Remove(0, 2);
             ToggleWindow(uiName, args);
         }
         
         public void CloseWindow(Type t)
         {
-            CloseWindow(t.Name.Remove(0, 3)); // KUI remove
+            CloseWindow(t.Name.Remove(0, 2));
         }
 
         public void CloseWindow<T>()
@@ -585,15 +573,12 @@ namespace KEngine.UI
                 if (openState.UIWindow != null)
                 {
                     Log.Info("Destroy exist UI Window, maybe for reload");
-                    GameObject.Destroy(openState.UIWindow.CachedGameObject);
+                    GameObject.Destroy(openState.UIWindow.gameObject);
                     openState.UIWindow = null;
                 }
 
                 openState.UIWindow = uiBase;
                 openState.WindowAsset = uiObj.GetComponent<UIWindowAsset>();
-                uiBase.UIName = uiBase.UITemplateName = openState.TemplateName;
-
-                UiBridge.UIObjectFilter(uiBase, uiObj);
 
                 openState.IsLoading = false; // Load完
                 openState.isOnInit = true;
@@ -636,10 +621,11 @@ namespace KEngine.UI
                 return;
             }
 
-            if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
+            //if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
             {
-                //TODO 是否有必要移除SpriteAtlas
+                //NOTE 按照约定SpriteAtlas和UI在同一个ab中，无需处理
             }
+            uiState.UIWindow.OnDestroy();
             if (destroyImmediate)
             {
                 UnityEngine.Object.DestroyImmediate(uiState.UIWindow.gameObject);
@@ -729,39 +715,45 @@ namespace KEngine.UI
 				return;
             }
 
-            uiBase.BeforeOpen(args, () =>
+            uiBase.BeforeOpen(args);
+            //TODO 播放界面出现动画
+            uiBase.gameObject.SetActiveX(true);
+            if (uiBase.Canvas)
             {
-                uiBase.gameObject.SetActiveX(true);
-                if (uiBase.Canvas)
+                uiBase.Canvas.enabled = true;
+                if (sortOrder >= int.MaxValue)
                 {
-                    uiBase.Canvas.enabled = true;
-                    if (sortOrder >= int.MaxValue)
-                    {
-                        sortOrder = 0;
-                    }
-                    uiBase.Canvas.sortingOrder = sortOrder++;
+                    sortOrder = 0;
                 }
 
-                KProfiler.BeginWatch("UI.OnOpen");
-                uiBase.OnOpen(args);
-                var profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-                if (AppConfig.IsSaveCostToFile && profilerData != null)
-                    LogFileRecorder.WriteUILog(uiBase.name, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
+                uiBase.Canvas.sortingOrder = sortOrder++;
+            }
 
-                if (OnOpenEvent != null)
-                    OnOpenEvent(uiBase);
-            });
+            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.OnOpen");
+            uiBase.OnOpen(args);
+            KWatchResult profilerData = null;
+            if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+            if (AppConfig.IsSaveCostToFile)
+            {
+                if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+                LogFileRecorder.WriteUILog(uiBase.UIName, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
+            }
+
+            if (OnOpenEvent != null)
+                OnOpenEvent(uiBase);
         }
 
 
         private void InitWindow(UILoadState uiState, UIController uiBase, bool open, params object[] args)
         {
-           KProfiler.BeginWatch("UI.Init");
+            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.Init");
             uiBase.OnInit();
-            var profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.TemplateName,".OnInit"));
-            if (AppConfig.IsSaveCostToFile && profilerData != null)
+            KWatchResult profilerData = null;
+            if(AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.InstanceName,".OnInit"));
+            if (AppConfig.IsSaveCostToFile)
             {
-                LogFileRecorder.WriteUILog(uiState.TemplateName,LogFileRecorder.UIState.OnInit,profilerData.costTime);
+                if(profilerData == null) profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.InstanceName,".OnInit"));
+                LogFileRecorder.WriteUILog(uiState.InstanceName,LogFileRecorder.UIState.OnInit,profilerData.costTime);
             }
             if (OnInitEvent != null)
                 OnInitEvent(uiBase);
@@ -783,7 +775,7 @@ namespace KEngine.UI
                         uiBase.Canvas.enabled = false;
                     else
                     {
-                        uiBase.SetActive(false);
+                        uiBase.gameObject.SetActiveX(false);
                     }
                 }
             }
@@ -805,7 +797,17 @@ namespace KEngine.UI
         public bool IsLoading;
         public bool IsStaticUI; // 非复制出来的, 静态UI
 
-        public bool OpenWhenFinish;
+        private bool openWhenFinish;
+        public bool OpenWhenFinish
+        {
+            get { return openWhenFinish; }
+            set
+            {
+                // ReSharper disable once RedundantCheckBeforeAssignment
+                if (openWhenFinish != value)
+                    openWhenFinish = value;
+            }
+        }
         public object[] OpenArgs;
 
         internal Queue<Action<UIController, object[]>> CallbacksWhenFinish;

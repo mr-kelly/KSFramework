@@ -67,7 +67,6 @@ Shorcuts:
 #else
                 EditorApplication.OpenScene(lastScene);
 #endif
-
             }
             else
             {
@@ -94,7 +93,8 @@ Shorcuts:
             EditorApplication.OpenScene(mainScene);
 #endif
         }
-
+#if xLua || SLUA
+        
         [MenuItem("KEngine/UI(UGUI)/Auto Make UI Lua Scripts(Current Scene)")]
         public static void AutoMakeUILuaScripts()
         {
@@ -210,7 +210,7 @@ return $UI_NAME
             if (UIModule.Instance.UIWindows.TryGetValue(uiName, out state))
             {
                 var luaController = state.UIWindow as LuaUIController;
-                if (luaController)
+                if (luaController!=null)
                 {
                     luaController.ClearLuaTableCache(true);
                     luaController.OnInit();
@@ -223,6 +223,44 @@ return $UI_NAME
             }
         }
         
+        /// <summary>
+        /// 找到所有的LuaUIController进行Reload
+        /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
+        /// </summary>
+        [MenuItem("KEngine/UI(UGUI)/Reload Lua + ReOpen UI #%&r")]
+        public static void ReloadAllUI()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Log.LogError("Reload UI only when your editor is playing!");
+                return;
+            }
+            foreach (var kv in UIModule.Instance.UIWindows)
+            {
+                ReloadUI(kv.Key);
+            }
+        }
+
+        public static void ReloadUI(string uiName)
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Log.LogError("Reload UI only when your editor is playing!");
+                return;
+            }
+
+            UILoadState state;
+            if (UIModule.Instance.UIWindows.TryGetValue(uiName, out state))
+            {
+                ReloadUIAB(uiName);
+                ReloadUIScript(uiName);
+            }
+            else
+            {
+                Log.Info("UI:{0} 未打开过，无需处理",uiName);
+            }
+        }
+#endif     
         [MenuItem("KEngine/UI(UGUI)/Reload Lua + Reload UI AssetBundle")]
         public static void ReloadAllUIAB()
         {
@@ -252,55 +290,25 @@ return $UI_NAME
                 var inOpenState = UIModule.Instance.IsOpen(uiName);
                 if (inOpenState)
                     UIModule.Instance.CloseWindow(uiName);
+#if xLua || SLUA
                 var luaController = state.UIWindow as LuaUIController;
                 if (luaController != null)
                 {
                     luaController.ClearLuaTableCache(true);
                 }
-
                 UIModule.Instance.ReloadWindow(uiName, (args, err) =>
                 {
                     if (inOpenState)
                         UIModule.Instance.OpenWindow(uiName, luaController.LastOnOpenArgs);
                 });
-            }
-            else
-            {
-                Log.Info("UI:{0} 未打开过，无需处理",uiName);
-            }
-        }
-        
-        /// <summary>
-        /// 找到所有的LuaUIController被进行Reload
-        /// 如果Reload时，UI正在打开，将对其进行关闭，并再次打开，来立刻看到效果
-        /// </summary>
-        [MenuItem("KEngine/UI(UGUI)/Reload Lua + ReOpen UI #%&r")]
-        public static void ReloadAllUI()
-        {
-            if (!EditorApplication.isPlaying)
-            {
-                Log.LogError("Reload UI only when your editor is playing!");
-                return;
-            }
-            foreach (var kv in UIModule.Instance.UIWindows)
-            {
-                    ReloadUI(kv.Key);
-            }
-        }
-        
-        public static void ReloadUI(string uiName)
-        {
-            if (!EditorApplication.isPlaying)
-            {
-                Log.LogError("Reload UI only when your editor is playing!");
-                return;
-            }
+#elif ILRuntime
+                UIModule.Instance.ReloadWindow(uiName, (args, err) =>
+                {
+                    if (inOpenState)
+                        UIModule.Instance.OpenWindow(uiName, (state.UIWindow as ILRuntimeUIBase)?.LastOnOpenArgs);
+                });
+#endif
 
-            UILoadState state;
-            if (UIModule.Instance.UIWindows.TryGetValue(uiName, out state))
-            {
-                ReloadUIAB(uiName);
-                ReloadUIScript(uiName);
             }
             else
             {

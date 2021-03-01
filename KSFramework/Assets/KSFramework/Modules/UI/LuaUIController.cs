@@ -90,7 +90,7 @@ namespace KSFramework
             }
         }
 		
-        protected override void OnDestroy()
+        public override void OnDestroy()
         {
             base.OnDestroy();
             if (_luaTable != null)
@@ -119,10 +119,8 @@ namespace KSFramework
             }
 
             var relPath = UILuaPath;
-
-            var luaModule = KSGame.Instance.LuaModule;
             object scriptResult;
-            if (!luaModule.TryImport(relPath, out scriptResult))
+            if (!LuaModule.Instance.TryImport(relPath, out scriptResult))
             {
                 if (showWarn)
                     Log.LogWarning("Import UI Lua Script failed: {0}", relPath);
@@ -223,7 +221,7 @@ namespace KSFramework
                 };
 
 
-                UILuaOutletCollection outletCollection = this.GetComponent<UILuaOutletCollection>();
+                UILuaOutletCollection outletCollection = gameObject.GetComponent<UILuaOutletCollection>();
                 if (outletCollection)
                 {
                     if (outletCollection.UILuaOutlets != null && outletCollection.UILuaOutlets.Length > 0)
@@ -240,7 +238,7 @@ namespace KSFramework
                 }
                 else
                 {
-                    var outlet = this.GetComponent<UILuaOutlet>();
+                    var outlet = gameObject.GetComponent<UILuaOutlet>();
                     if (outlet != null)
                     {
                         fun(outlet);
@@ -332,9 +330,7 @@ namespace KSFramework
         public void ClearLuaTableCache(bool show_log = false)
         {
             _luaTable = null;
-
-            var luaModule = KSGame.Instance.LuaModule;
-            luaModule.ClearCache(UILuaPath);
+            LuaModule.Instance.ClearCache(UILuaPath);
             if(Application.isEditor && show_log) Log.Info("Reload Lua: {0}", UILuaPath);
         }
 
