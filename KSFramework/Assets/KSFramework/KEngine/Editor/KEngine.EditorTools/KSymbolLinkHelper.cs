@@ -71,10 +71,12 @@ namespace KUnityEditorTools
         {
             if (Directory.Exists(assetBundlesLinkPath))
             {
-                foreach (var dirPath in Directory.GetDirectories(assetBundlesLinkPath))
+                var dirs = Directory.GetDirectories(assetBundlesLinkPath);
+                foreach (var dirPath in dirs)
                 {
                     DeleteLink(dirPath);
                 }
+                DeleteLink(assetBundlesLinkPath);
             }
 
         }
