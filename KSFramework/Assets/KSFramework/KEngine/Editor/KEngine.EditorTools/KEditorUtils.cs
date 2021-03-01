@@ -85,6 +85,8 @@ namespace KUnityEditorTools
             method.Invoke(new object(), null);
         }
 
+        #region 批处理程序
+        
         /// <summary>
         /// 执行批处理命令
         /// </summary>
@@ -134,7 +136,7 @@ namespace KUnityEditorTools
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
     
-                    process.WaitForExit();
+                    process.WaitForExit();//NOTE CMD执行中会卡住Unity主线程，如果无响应需要结束进程
                 }
             }
             finally
@@ -159,7 +161,21 @@ namespace KUnityEditorTools
         private static void ExitReceived(object sender, EventArgs e)
         {
             //Debug.Log("Exit::"+e.ToString());
-        } 
+        }
+
+        public static void ExecuteFile(string filePath)
+        {
+            Debug.Log("[ExecuteFile]" + filePath);
+
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = filePath;
+                process.Start();
+            }
+        }
+        
+        #endregion
+        
         public delegate void EachDirectoryDelegate(string fileFullPath, string fileRelativePath);
 
         /// <summary>

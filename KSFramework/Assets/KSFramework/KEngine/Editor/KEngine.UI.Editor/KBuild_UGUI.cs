@@ -184,17 +184,17 @@ namespace KEngine.Editor
             // Auto Link resources when play!
             if (!Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
             {
-                Log.Warning("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetABLinkPath());
+                Log.Info("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetABLinkPath());
                 ResourcesSymbolLinkHelper.SymbolLinkResource();
             }
         }
         
         private static void OnAfterBuildPlayerEvent(BuildTarget buildTarget, string str)
         {
-            /*if (Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
+            if (Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
             {
                 ResourcesSymbolLinkHelper.RemoveSymbolLinkResource();
-            }*/
+            }
         }
         
         private static void OnWillPlayEvent()
