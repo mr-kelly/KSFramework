@@ -71,5 +71,5 @@
 
 1. 双击生成filelist-xxx.bat，生成filelist
 2. 双击gen_hotfix_res，制作更新资源包
-3. 双击hfs，启动hfs(可一直启动不关闭)
+3. 双击hfs，启动hfs(可一直运行不关闭)，拖动cdn目录到hfs中
 4. 运行游戏即可更新资源
