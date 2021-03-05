@@ -79,8 +79,8 @@ namespace KEngine.Editor
             if (Directory.Exists(AppConfig.SettingSourcePath))
             {
                 // when build app, ensure compile ALL settings
-                KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent -= CompileSettings;
-                KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent += CompileSettings;
+                KUnityEditorEventCatcher.OnBeforeBuildAppEvent -= CompileSettings;
+                KUnityEditorEventCatcher.OnBeforeBuildAppEvent += CompileSettings;
                 // when play editor, ensure compile settings
                 KUnityEditorEventCatcher.OnWillPlayEvent -= QuickCompileSettings;
                 KUnityEditorEventCatcher.OnWillPlayEvent += QuickCompileSettings;

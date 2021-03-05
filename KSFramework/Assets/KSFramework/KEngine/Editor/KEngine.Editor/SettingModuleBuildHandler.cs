@@ -27,6 +27,7 @@ using System;
 using UnityEngine;
 using System.IO;
 using KEngine;
+using KUnityEditorTools;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
@@ -35,6 +36,7 @@ namespace KSFramework.Editor
     /// <summary>
     /// Build App阶段，进行处理的钩子
     /// </summary>
+    [InitializeOnLoad]
     public class SettingModuleBuildHandler
     {
         /// <summary>
@@ -46,6 +48,13 @@ namespace KSFramework.Editor
         /// 复制文件事件, 可以进行加密行为
         /// </summary>
         public static Action<string> OnCopyFile;
+
+        static SettingModuleBuildHandler()
+        {
+            //目前是通过link方式，且没有加密配置表，所以不copy
+            // KUnityEditorEventCatcher.OnBeforeBuildAppEvent -= OnPostProcessScene; 
+            // KUnityEditorEventCatcher.OnBeforeBuildAppEvent += OnPostProcessScene;
+        }
 
         /// <summary>
         /// 完成Scene后，编译DLL后，未出APK前

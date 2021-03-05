@@ -61,8 +61,8 @@ namespace KEngine.Editor
             KUnityEditorEventCatcher.OnWillPlayEvent += OnWillPlayEvent;
             KUnityEditorEventCatcher.OnSaveSceneEvent -= OnSaveScene;
             KUnityEditorEventCatcher.OnSaveSceneEvent += OnSaveScene;
-            KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent -= OnBeforeBuildPlayerEvent;
-            KUnityEditorEventCatcher.OnBeforeBuildPlayerEvent += OnBeforeBuildPlayerEvent;
+            KUnityEditorEventCatcher.OnBeforeBuildAppEvent -= OnBeforeBuildPlayerEvent;
+            KUnityEditorEventCatcher.OnBeforeBuildAppEvent += OnBeforeBuildPlayerEvent;
             KUnityEditorEventCatcher.OnPostBuildPlayerEvent -= OnAfterBuildPlayerEvent;
             KUnityEditorEventCatcher.OnPostBuildPlayerEvent += OnAfterBuildPlayerEvent;
         }
@@ -181,7 +181,7 @@ namespace KEngine.Editor
 
         private static void OnBeforeBuildPlayerEvent()
         {
-            // Auto Link resources when play!
+            // Auto Link resources when play! //NOTE 打包ab时不link资源，在Editor可以从磁盘中直接读取
             if (!Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
             {
                 Log.Warning("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetABLinkPath());

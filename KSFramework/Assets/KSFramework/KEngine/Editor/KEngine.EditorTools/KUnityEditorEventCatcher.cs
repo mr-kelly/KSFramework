@@ -12,6 +12,8 @@ using System;
 using KEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using UnityEditor.Build;
+using UnityEngine;
 
 namespace KUnityEditorTools
 {
@@ -107,8 +109,15 @@ namespace KUnityEditorTools
 
         /// <summary>
         /// 编译前事件，比较特殊的处理，配合了PostBuildProcess和PostBuildScene
+        /// 可以触发的条件：
+        ///     build ab(如果ab未发生改变则不会触发)
+        ///     build app
         /// </summary>
         public static Action OnBeforeBuildPlayerEvent;
+        /// <summary>
+        /// before build app事件，只有执行build app才会触发
+        /// </summary>
+        public static Action OnBeforeBuildAppEvent;
 
 
         /// <summary>
@@ -164,18 +173,13 @@ namespace KUnityEditorTools
             EditorApplication.playmodeStateChanged -= OnPlayModeStateChanged;
             EditorApplication.playmodeStateChanged += OnPlayModeStateChanged;
 #endif
-
-
-
-
             if (OnLockingAssembly != null)
             {
                 EditorApplication.LockReloadAssemblies();
                 OnLockingAssembly();
                 EditorApplication.UnlockReloadAssemblies();
             }
-
-
+            
             IsInited = true;
         }
 
@@ -188,12 +192,14 @@ namespace KUnityEditorTools
         [PostProcessScene]
         private static void OnProcessScene()
         {
+            
             if (!_beforeBuildFlag && !EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 _beforeBuildFlag = true;
 
                 if (OnBeforeBuildPlayerEvent != null)
                     OnBeforeBuildPlayerEvent();
+                UnityEngine.Debug.Log("OnBeforeBuildPlayerEvent");
             }
         }
         /// <summary>
@@ -207,7 +213,7 @@ namespace KUnityEditorTools
                 OnPostBuildPlayerEvent(target, pathToBuiltProject);
             }
 
-            UnityEngine.Debug.Log(string.Format("Success build ({0}) : {1}", target, pathToBuiltProject));
+            UnityEngine.Debug.Log(string.Format("Success Build ({0}) : {1}", target, pathToBuiltProject));
         }
 
         /// <summary>
@@ -264,10 +270,11 @@ namespace KUnityEditorTools
         {
             CheckComplie();
         }
-
+        
+        // 检查编译中，立刻暂停游戏
         static void CheckComplie()
         {
-            //NOTE 在Unity2019中设置为Recompile After Finished Playing，修改代码后继续运行比较稳定，所以修改代码后不停止播放 // 检查编译中，立刻暂停游戏！
+            //NOTE 在Unity2019中设置为Recompile After Finished Playing，修改代码后继续运行比较稳定，所以修改代码后不停止播放 
             /*if (EditorApplication.isCompiling)
             {
                 if (EditorApplication.isPlaying)
@@ -296,4 +303,18 @@ namespace KUnityEditorTools
             return paths;
         }
     }
+    
+     
+    //支持5.6及其以上版本
+    class KBuildProcessor : IPreprocessBuild
+    {
+        public int callbackOrder { get { return 0; } } //越小优先级越高
+        public void OnPreprocessBuild(BuildTarget target, string path)
+        {
+            Debug.Log("Before Build App");
+            KUnityEditorEventCatcher.OnBeforeBuildAppEvent?.Invoke();
+        }
+    }
+    
+
 }

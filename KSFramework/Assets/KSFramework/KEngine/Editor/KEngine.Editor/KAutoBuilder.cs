@@ -173,14 +173,14 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/WindowsX86 Dev")] 
         public static void PerformWinBuild()
         {
-            PerformBuild("Apps/Win_Dev/KSFramework_Dev.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows,
+            PerformBuild("Apps/Windows_Dev/KSFramework_Dev.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows,
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
         [MenuItem("KEngine/AutoBuilder/WindowsX86")]
         public static void PerformWinReleaseBuild()
         {
-        	PerformBuild("Apps/Win/KSFramework.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
+        	PerformBuild("Apps/Windows/KSFramework.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
         }
 
         [MenuItem("KEngine/AutoBuilder/iOS")]
