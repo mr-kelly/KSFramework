@@ -26,7 +26,7 @@ public static class FindEx
     /// <param name="id">要查找的节点名字</param>
     /// <param name="check_visible">是否只查找gameobject.active=true的节点</param>
     /// <param name="raise_error">当查找失败时是否打印Error</param>
-    public static Transform FindChild(this GameObject go, string id, bool check_visible = false, bool raise_error = true)
+    public static GameObject FindChild(this GameObject go, string id, bool check_visible = false, bool raise_error = true)
     {
         if (!go)
         {
@@ -39,7 +39,8 @@ public static class FindEx
         }
 
         var t = FindChild(go.transform, id, check_visible, raise_error);
-        return t;
+        if (t) return t.gameObject;
+        return null;
     }
 
     public static T FindChild<T>(this GameObject go, string id, bool check_visible = false, bool raise_error = true) where T : Component
