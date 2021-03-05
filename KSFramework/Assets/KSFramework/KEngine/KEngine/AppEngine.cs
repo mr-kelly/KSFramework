@@ -121,7 +121,7 @@ namespace KEngine
         public static bool IsApplicationQuit = false;
         public static bool IsApplicationFocus = true;
         public static bool IsAppPlaying = false;
-        
+        public static Action UpdateEvent;
         /// <summary>
         /// Engine entry.... all begins from here
         /// </summary>
@@ -241,6 +241,8 @@ namespace KEngine
                     RenderWatcher = new FpsWatcher(0.95f);
                 RenderWatcher.OnUIUpdate();
             }
+
+            UpdateEvent.Invoke();
         }
 
         private void FixedUpdate()
