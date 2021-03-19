@@ -56,7 +56,7 @@ namespace KEngine
             loader.SetDescEvent += (newDesc) =>
             {
                 if (loader.RefCount > 0)
-                    newHelpGameObject.name = getName();
+                    newHelpGameObject.SetName(getName());
             };
 
 

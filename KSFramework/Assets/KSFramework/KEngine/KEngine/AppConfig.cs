@@ -42,11 +42,16 @@ public class AppConfig
     /// </summary>
     public static bool UseAssetDebugger = Application.isEditor;
     /// <summary>
-    /// Editor下加载资源从磁盘的相对目录读取，手机上则是Application.persistentDataPath
+    /// Editor下加载资源从磁盘的相对目录读取，真机上则是Application.persistentDataPath
     /// </summary>
-    public static bool UseMobilePath  = !Application.isEditor;
-    
+    public static bool UseAppPath  = !Application.isEditor;
+    /// <summary>
+    /// cdn资源地址，正式项目通过服务器下发
+    /// </summary>
+    public static string resUrl = "http://127.0.0.1:7888/cdn/";
 
+    public static bool IsDownloadRes = true;
+    
     #region AppConfig.txt中的内容
 
     //TODO 制作一个edit工具，可在运行时修改值，
@@ -131,4 +136,9 @@ public class AppConfig
     }
 
     #endregion
+
+    public AppConfig()
+    {
+        
+    }
 }

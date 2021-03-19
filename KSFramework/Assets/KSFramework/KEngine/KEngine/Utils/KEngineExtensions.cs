@@ -164,6 +164,11 @@ public static class KGameObjectExtensions
     {
         if(go && go.activeSelf!=visible) go.SetActive(visible);
     }
+    
+    public static void SetName(this GameObject go, string name)
+    {
+        if (go && go.name != name) go.name = name;
+    }
 
 }
 

@@ -218,19 +218,21 @@ namespace KEngine
         /// <param name="path"></param>
         /// <param name="formats"></param>
         /// <returns></returns>
-        public static string GetAssetBundlePath(string path, params object[] formats)
+        public static string GetAbFullPath(string path)
         {
-            return string.Format(path + AppConfig.AssetBundleExt, formats);
+            if (!path.EndsWith(AppConfig.AssetBundleExt)) path = path + AppConfig.AssetBundleExt;
+            return GetResourceFullPath(BundlesPathRelative + path, false);
         }
 
         /// <summary>
         /// 完整路径，优先级：热更目录->安装包
+        /// 根路径：Product
         /// </summary>
         /// <param name="url"></param>
         /// <param name="withFileProtocol">是否带有file://前缀</param>
         /// <param name="isLog"></param>
         /// <returns></returns>
-        public static string GetResourceFullPath(string url, bool withFileProtocol , bool isLog = true)
+        public static string GetResourceFullPath(string url, bool withFileProtocol = false, bool isLog = true)
         {
             string fullPath;
             if (GetResourceFullPath(url, withFileProtocol, out fullPath, isLog) != GetResourceFullPathType.Invalid)
@@ -311,7 +313,7 @@ namespace KEngine
         /// <returns></returns>
         public static bool TryGetInAppStreamingUrl(string url, bool withFileProtocol, out string newUrl)
         {
-            if (AppConfig.UseMobilePath)
+            if (AppConfig.UseAppPath)
             {
                 newUrl = Path.GetFullPath(withFileProtocol ? GetFileProtocol : "" + Application.streamingAssetsPath + "/" + url);
             }
@@ -377,7 +379,7 @@ namespace KEngine
         /// <returns></returns>
         public static bool TryGetDocumentResourceUrl(string url, bool withFileProtocol, out string newUrl)
         {
-            if (AppConfig.UseMobilePath)
+            if (AppConfig.UseAppPath)
             {
                 newUrl = Path.GetFullPath((withFileProtocol ? DocumentResourcesPath :DocumentResourcesPathWithoutFileProtocol) + url);
                 return File.Exists(Path.GetFullPath(DocumentResourcesPathWithoutFileProtocol + url));

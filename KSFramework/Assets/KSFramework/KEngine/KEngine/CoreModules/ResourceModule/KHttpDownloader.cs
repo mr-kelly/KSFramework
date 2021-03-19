@@ -37,20 +37,17 @@ namespace KEngine
     /// 
     /// TODO: 线程的回调Callback有点难看，以后弄个KHttpDownloader2（本类稳定就不改本类）
     /// </summary>
-    public class KHttpDownloader : MonoBehaviour, IDisposable
+    public class KHttpDownloader :  IDisposable
     {
         private string _saveFullPath;
 
         public string SaveFullPath
         {
             get { return _saveFullPath; }
+            private set { _saveFullPath = value; }
         }
 
         public string Url { get; private set; }
-//        private string ToPath;
-
-        //CWWWLoader WWWLoader;
-
         private float TIME_OUT_DEF;
 
         private bool FinishedFlag = false;
@@ -71,9 +68,7 @@ namespace KEngine
         private bool UseCache;
         private int ExpireDays = 1; // 过期时间, 默认1天
 
-        //public WWW Www { get { return WWWLoader.Www; } }
         public float Progress = 0; // 進度
-        //public float Speed { get { return WWWLoader.LoadSpeed; } } // 速度
         public int TotalSize = int.MaxValue; // 下载的整个大小，在获取到Response后，会设置这个值
 
         private KHttpDownloader()
@@ -93,9 +88,9 @@ namespace KEngine
         public static KHttpDownloader Load(string fullUrl, string saveFullPath, bool useContinue = false,
             bool useCache = false, int expireDays = 1, int timeout = 5)
         {
-            var downloader = new GameObject("HttpDownloader+" + fullUrl).AddComponent<KHttpDownloader>();
+            var downloader = new KHttpDownloader();
             downloader.Init(fullUrl, saveFullPath, useContinue, useCache, expireDays, timeout);
-            DontDestroyOnLoad(downloader.gameObject);
+
             return downloader;
         }
 
@@ -108,13 +103,12 @@ namespace KEngine
             int expireDays = 1, int timeout = 10)
         {
             Url = fullUrl;
-//            ToPath = saveFullPath;
-            _saveFullPath = saveFullPath;
+            SaveFullPath = saveFullPath;
             UseCache = useCache;
             _useContinue = useContinue;
             ExpireDays = expireDays;
             TIME_OUT_DEF = timeout; // 默认10秒延遲
-            StartCoroutine(StartDownload(fullUrl));
+            Game.Instance.StartCoroutine(StartDownload(fullUrl));
         }
 
         public static KHttpDownloader Load(string fullUrl, string saveFullPath, int expireDays, int timeout = 5)
@@ -125,22 +119,22 @@ namespace KEngine
         private IEnumerator StartDownload(string fullUrl)
         {
 //            float startTime = Time.time;
-            if (UseCache && File.Exists(_saveFullPath))
+            if (UseCache && File.Exists(SaveFullPath))
             {
-                var lastWriteTime = File.GetLastWriteTimeUtc(_saveFullPath);
-                Debug.Log(string.Format("缓存文件: {0}, 最后修改时间: {1}", _saveFullPath, lastWriteTime));
+                var lastWriteTime = File.GetLastWriteTimeUtc(SaveFullPath);
+                Debug.Log(string.Format("缓存文件: {0}, 最后修改时间: {1}", SaveFullPath, lastWriteTime));
                 var deltaDays = (DateTime.Now - lastWriteTime).TotalDays;
                 // 文件未过期
                 if (deltaDays < ExpireDays)
                 {
-                    Debug.Log(string.Format("缓存文件未过期 {0}", _saveFullPath));
+                    Debug.Log(string.Format("缓存文件未过期 {0}", SaveFullPath));
                     FinishedFlag = true;
                     ErrorFlag = false;
                     yield break;
                 }
             }
 
-            string dir = Path.GetDirectoryName(_saveFullPath);
+            string dir = Path.GetDirectoryName(SaveFullPath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
@@ -216,12 +210,12 @@ namespace KEngine
             //CDebug.Assert(!IsError);
             if (!IsFinished || IsError)
                 throw new Exception("GetDatas: Error");
-            return System.IO.File.ReadAllBytes(_saveFullPath);
+            return System.IO.File.ReadAllBytes(SaveFullPath);
         }
 
         public string TmpDownloadPath
         {
-            get { return _saveFullPath + ".download"; }
+            get { return SaveFullPath + ".download"; }
         }
 
         private void ThreadableResumeDownload(string url, Action<int, int> stepCallback, Action errorCallback,
@@ -299,11 +293,11 @@ namespace KEngine
                 //CDebug.LogConsole_MultiThread("下载完成: {0}", url);
                 Console.WriteLine("下载完成: {0}", url);
 
-                if (File.Exists(_saveFullPath))
+                if (File.Exists(SaveFullPath))
                 {
-                    File.Delete(_saveFullPath);
+                    File.Delete(SaveFullPath);
                 }
-                File.Move(TmpDownloadPath, _saveFullPath);
+                File.Move(TmpDownloadPath, SaveFullPath);
             }
             catch (Exception ex)
             {
@@ -344,7 +338,7 @@ namespace KEngine
 
         public void Dispose()
         {
-            GameObject.Destroy(gameObject);
+            
         }
     }
 }

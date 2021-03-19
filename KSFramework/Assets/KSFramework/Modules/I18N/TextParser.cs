@@ -31,7 +31,7 @@ namespace KSFramework
                         if (index > 0)
                         {
                             var key = newLine.Substring(0, index);
-                            var value = newLine.Substring(index + 1);
+                            var value = newLine.Substring(index + 1).Trim();
                             dict[key] = value;
                         }
                     }
