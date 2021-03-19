@@ -50,7 +50,6 @@ namespace KEngine
     /// </summary>
     public class AppEngine : MonoBehaviour
     {
-        public static bool IsDebugBuild { get; private set; } // cache Debug.isDebugBuild for multi thread
 #if !DEBUG_DISABLE
         public bool ShowFps = true; //show fps
 #else
@@ -58,7 +57,7 @@ namespace KEngine
 #endif
         public bool UseDevFunc = true;
         /// <summary>
-        /// To Display FPS in the Debug Mode (Debug.isDebugBuild is true)
+        /// To Display FPS in the Debug Mode (AppConfig.IsDebugBuild is true)
         /// </summary>
         public static FpsWatcher RenderWatcher { get; set; } // 帧数监听器
 
@@ -138,7 +137,6 @@ namespace KEngine
 
         private void Awake()
         {
-            IsDebugBuild = Debug.isDebugBuild;
             Application.targetFrameRate = 60;
             if (EngineInstance != null)
             {
@@ -160,10 +158,9 @@ namespace KEngine
 
         private void Init()
         {
-            IsRootUser = KTool.HasWriteAccessToFolder(Application.dataPath); // Root User运行时，能穿越沙盒写DataPath, 以此为依据
-
             if (AppConfig.IsLogDeviceInfo)
             {
+                IsRootUser = KTool.HasWriteAccessToFolder(Application.dataPath); // Root User运行时，能穿越沙盒写DataPath, 以此为依据
                 Log.Info("====================================================================================");
                 Log.Info("Application.platform = {0}", Application.platform);
                 Log.Info("Application.dataPath = {0} , WritePermission: {1}", Application.dataPath, IsRootUser);
@@ -214,13 +211,13 @@ namespace KEngine
             var startMem = 0f;
             foreach (IModuleInitable initModule in modules)
             {
-                if (Debug.isDebugBuild)
+                if (AppConfig.IsDebugBuild)
                 {
                     startInitTime = Time.time;
                     startMem = GC.GetTotalMemory(false);
                 }
                 yield return StartCoroutine(initModule.Init());
-                if (Debug.isDebugBuild)
+                if (AppConfig.IsDebugBuild)
                 {
                     var nowMem = GC.GetTotalMemory(false);
                     Log.Info("Init Module: #{0}# Time:{1}, DiffMem:{2}, NowMem:{3}", initModule.GetType().FullName,
@@ -242,7 +239,7 @@ namespace KEngine
                 RenderWatcher.OnUIUpdate();
             }
 
-            UpdateEvent.Invoke();
+            UpdateEvent?.Invoke();
         }
 
         private void FixedUpdate()

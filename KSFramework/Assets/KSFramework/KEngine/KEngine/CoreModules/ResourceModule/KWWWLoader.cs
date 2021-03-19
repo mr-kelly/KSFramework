@@ -75,7 +75,11 @@ namespace KEngine
         }
 
         //public int DownloadedSize { get { return Www != null ? Www.bytesDownloaded : 0; } }
-
+        public override bool IsError
+        {
+            get { return Www!=null && !string.IsNullOrEmpty(Www.error); }
+        }
+        
         /// <summary>
         /// Use this to directly load WWW by Callback or Coroutine, pass a full URL.
         /// A wrapper of Unity's WWW class.

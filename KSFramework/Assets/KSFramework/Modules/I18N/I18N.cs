@@ -40,7 +40,7 @@ namespace KSFramework
     /// </summary>
     public class I18N
     {
-        private static  Dictionary<string, string> Strs = new Dictionary<string, string>(); // 翻译字符串集合
+        private static  Dictionary<string, string> Strs = new Dictionary<string, string>();
         
         /// <summary>
         /// 是否已经初始化完成
@@ -76,24 +76,24 @@ namespace KSFramework
         
  
         /// <summary>
-        /// 翻译字符串
+        /// 从语言包中读取字符串
         /// </summary>
         /// <param name="str"></param>
-        /// <returns></returns>
-        public static string Get(string str, string _default = null)
+        public static string Get(string str, params object[] args)
         {
-            if (string.IsNullOrWhiteSpace(str)) return _default;
+            if (string.IsNullOrWhiteSpace(str)) return null;
 
             if (!_isInited) Init();
 
             string value;
-            if (Strs.TryGetValue(str, out value) && !string.IsNullOrEmpty(value))
+            if (Strs.TryGetValue(str, out value))
             {
+                if (args != null && !string.IsNullOrEmpty(value)) return String.Format(value, args);
                 return value;
             }
 
             Log.LogError($"not find lang_id {str}");
-            return !string.IsNullOrEmpty(_default) ? _default : $"none {value}";
+            return $"lang_id:{str}";
         }
 
      

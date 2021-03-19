@@ -43,7 +43,7 @@ public class ABManager
                 Application.platform == RuntimePlatform.OSXEditor)
                 return 1f;
 
-            return Debug.isDebugBuild ? 5f : 10f;*/
+            return AppConfig.IsDebugBuild ? 5f : 10f;*/
             return 0.1f;
         }
     }
