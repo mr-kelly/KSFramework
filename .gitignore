@@ -323,3 +323,6 @@ Temp
 */.idea/vcs.xml
 */.idea/*.iml
 .*/idea/modules
+/build_tools/cdn/*
+/build_tools/hfs.exe
+/build_tools/filelist.txt.bak

@@ -44,7 +44,7 @@ public class AppConfig
     /// <summary>
     /// Editor下加载资源从磁盘的相对目录读取，真机上则是Application.persistentDataPath
     /// </summary>
-    public static bool UseAppPath  = !Application.isEditor;
+    public static bool UseAppPath;
     /// <summary>
     /// cdn资源地址，正式项目通过服务器下发
     /// </summary>
@@ -137,8 +137,15 @@ public class AppConfig
 
     #endregion
 
-    public AppConfig()
+    static AppConfig()
     {
-        
+        if (IsDownloadRes)
+        {
+            UseAppPath = true;
+        }
+        else
+        {
+            UseAppPath = !Application.isEditor;
+        }
     }
 }
