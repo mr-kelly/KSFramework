@@ -159,7 +159,15 @@ namespace KEngine
         #endregion        
 
         #region Path Def
-
+        /**路径说明
+         * Editor下模拟下载资源：
+         *     AppData:C:\xxx\xxx\Appdata
+         *     StreamAsset:C:\KSFramrwork\Product
+         * 真机：
+         *     AppData:Android\data\com.xxx.xxx\
+         *     StreamAsset:apk内
+         */
+        
         private static string editorProductFullPath;
         /// <summary>
         /// Product Folder Full Path , Default: C:\xxxxx\xxxx\Product
@@ -230,12 +238,12 @@ namespace KEngine
         /// </summary>
         /// <param name="url"></param>
         /// <param name="withFileProtocol">是否带有file://前缀</param>
-        /// <param name="isLog"></param>
+        /// <param name="raiseError"></param>
         /// <returns></returns>
-        public static string GetResourceFullPath(string url, bool withFileProtocol = false, bool isLog = true)
+        public static string GetResourceFullPath(string url, bool withFileProtocol = false, bool raiseError = true)
         {
             string fullPath;
-            if (GetResourceFullPath(url, withFileProtocol, out fullPath, isLog) != GetResourceFullPathType.Invalid)
+            if (GetResourceFullPath(url, withFileProtocol, out fullPath, raiseError) != GetResourceFullPathType.Invalid)
                 return fullPath;
 
             return null;
@@ -255,6 +263,7 @@ namespace KEngine
 
         /// <summary>
         /// 根据相对路径，获取到完整路径
+        /// 根路径：Product
         /// </summary>
         /// <param name="url">相对路径</param>
         /// <param name="withFileProtocol"></param>
@@ -304,7 +313,6 @@ namespace KEngine
         }
 
         /// <summary>
-        /// (not android ) only! Android资源不在目录！
         /// Editor返回文件系统目录，运行时返回StreamingAssets目录
         /// </summary>
         /// <param name="url"></param>
@@ -313,7 +321,7 @@ namespace KEngine
         /// <returns></returns>
         public static bool TryGetInAppStreamingUrl(string url, bool withFileProtocol, out string newUrl)
         {
-            if (AppConfig.UseAppPath)
+            if (AppConfig.UseAppPath && !Application.isEditor)
             {
                 newUrl = Path.GetFullPath(withFileProtocol ? GetFileProtocol : "" + Application.streamingAssetsPath + "/" + url);
             }
@@ -371,7 +379,7 @@ namespace KEngine
         }
 
         /// <summary>
-        /// 可被WWW读取的Resource路径
+        /// 可读写的目录
         /// </summary>
         /// <param name="url"></param>
         /// <param name="withFileProtocol">是否带有file://前缀</param>

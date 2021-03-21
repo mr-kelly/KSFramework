@@ -92,7 +92,7 @@ namespace KSFramework
                 return value;
             }
 
-            Log.LogError($"not find lang_id {str}");
+            Log.LogError($"not find lang_id:{str}");
             return $"lang_id:{str}";
         }
 
