@@ -202,7 +202,7 @@ namespace KEngine
         /// </summary>
         public static string GetAppDataPath()
         {
-            return Application.persistentDataPath;
+            return Application.persistentDataPath+"/";
         }
         /// <summary>
         /// Application.persistentDataPath

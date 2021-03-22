@@ -219,7 +219,7 @@ namespace KEngine.Editor
             return PerformBuild(path,BuildTargetGroup.Android, BuildTarget.Android, opt);
         }
 
-        [MenuItem("KEngine/Clear PC PersistentDataPath")]
+        [MenuItem("KEngine/Clear PC PersistentDataPath",false,99)]
         public static void ClearPersistentDataPath()
         {
             foreach (string dir in Directory.GetDirectories(KResourceModule.GetAppDataPath()))
@@ -232,7 +232,7 @@ namespace KEngine.Editor
             }
         }
 
-        [MenuItem("KEngine/Open PC PersistentDataPath Folder")]
+        [MenuItem("KEngine/Open PC PersistentDataPath Folder",false,98)]
         public static void OpenPersistentDataPath()
         {
             System.Diagnostics.Process.Start(KResourceModule.GetAppDataPath());
@@ -280,7 +280,7 @@ namespace KEngine.Editor
             var exportPath = GetResourceExportPath();
             var linkPath = GetABLinkPath();
             KSymbolLinkHelper.SymbolLinkFolder(exportPath, linkPath);
-            //NOTE 特别无解，同步下无法link这两个目录，使用协程处理后目录内容是空，如果2018及以下版本无EditorCoroutine使用脚本进行link
+            //NOTE 特别无解，无法同步link这两个目录，使用协程处理后目录内容是空，如果2018及以下版本无EditorCoroutine使用脚本进行link
             /*Log.Info("Add Symbol Link Assetbundle.");
             ins = new object();
             EditorCoroutineUtility.StartCoroutine(LinkLua(), ins);
@@ -294,6 +294,11 @@ namespace KEngine.Editor
                 linkFile = Application.dataPath + "/../AssetLink.bat";
             }
             KEditorUtils.ExecuteFile(linkFile);
+            
+            var dstPath = Application.streamingAssetsPath + $"/{AppConfig.VersionTxtName}";
+            if (File.Exists(dstPath)) File.Delete(dstPath);
+            File.Copy(AppConfig.VersionTextPath, dstPath);
+            Log.Info("拷贝version.txt完成");
             AssetDatabase.Refresh();
         }
 
@@ -323,7 +328,8 @@ namespace KEngine.Editor
             
             KSymbolLinkHelper.DeleteAllLinks(LuaLinkPath);
             KSymbolLinkHelper.DeleteAllLinks(SettingLinkPath);
-
+            var dstPath = Application.streamingAssetsPath + $"/{AppConfig.VersionTxtName}";
+            if (File.Exists(dstPath)) File.Delete(dstPath);
             Debug.Log ("Remove Symbol LinkPath.");
 			AssetDatabase.Refresh();
         }

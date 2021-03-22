@@ -1,8 +1,10 @@
 """
 Author: zhaoqingqing(569032731@qq.com)
 Date: 2019/11/23 19:26
-Desc: 遍历当前目录下的所有文件生成filelist,格式：
-        filepath,版本号,文件大小
+Desc: 1.遍历当前目录下的所有文件生成filelist
+        格式：filepath,版本号,文件大小
+      2.生成version.txt到Product目录
+
      在python3.7.4+win10下测试通过
 """
 
@@ -12,6 +14,7 @@ import os
 import shutil
 import sys
 import time
+import gen_hotfix_res
 
 filelist_name = 'filelist.txt'
 version_name = 'version.txt'
@@ -103,32 +106,19 @@ def makeFileLists(dir, save_path):
             sw.close()
             print("filelist有更新，生成完成")
 
-#TODO 优化情况：删除全部资源重新打包时原filelist也被删除，导致版本号变化
-def genVersion(fname, name_list):
-    f = open(fname, "w")
-    for name in name_list:
-        name = dir + "" + name
-        if os.path.exists(name):
-            version = str(int(os.path.getmtime(name)))
-            bname = os.path.basename(name)
-            line = "{0}={1}{2}".format(bname, version, "\n")
-            f.write(line)
-        else:
-            print("genVersion路径不存在", name)
-    f.close()
-    print("version更新完成")
-
 
 if __name__ == "__main__":
     try:
         print("参数列表：", str(sys.argv))
         # 未传入参数则使用脚本所在路径
-        dst_path = sys.argv[0]
-        #dst_path = r"E:\Code\KSFramework\KSFramework\Product\Bundles\Windows\\"
+        # dst_path = sys.argv[0]
+        dst_path = r"E:\Code\KSFramework\KSFramework\Product\Bundles\Windows\\"
         bak_path = sys.argv[0]
-        if (len(sys.argv) >= 2):
+        platform = "Windows"
+        if (len(sys.argv) >= 3):
             dst_path = sys.argv[1]
             bak_path = sys.argv[2]
+            platform = sys.argv[3]
         dir = os.path.abspath(os.path.dirname(dst_path)) + "\\"
         bak_dir = os.path.abspath(os.path.dirname(bak_path)) + "\\"
         bak_filelist = bak_dir + filelist_name + '.bak'
@@ -138,7 +128,13 @@ if __name__ == "__main__":
 
         print("要生成filelist的目录为：", dir)
         makeFileLists(dir, dir + filelist_name)
-        genVersion(dir + version_name, [filelist_name])
+
+        # 生成version.txt
+        product_dir = dir + '../../'
+        gen_hotfix_res.zip_dir(product_dir + "Lua", product_dir + "lua.zip", True)
+        gen_hotfix_res.zip_dir(product_dir + "Setting", product_dir + "setting.zip", True)
+        ver_list = [product_dir + "lua.zip", product_dir + "setting.zip", dir + filelist_name]
+        gen_hotfix_res.genVersion(product_dir + platform + "-" + version_name,  ver_list)
     except Exception as ex:
         print
         'Exception:\r\n'

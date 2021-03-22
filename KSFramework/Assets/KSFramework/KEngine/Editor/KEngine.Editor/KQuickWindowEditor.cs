@@ -4,6 +4,7 @@ using AppSettings;
 using KEngine;
 using KEngine.Editor;
 using KSFramework.Editor;
+using KUnityEditorTools;
 using UnityEditor;
 
 public class KQuickWindowEditor : EditorWindow
@@ -271,7 +272,37 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal("HelpBox");
         EditorGUILayout.LabelField("== 生成安装包 ==");
         GUILayout.EndHorizontal();
-
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            var path = AppConfig.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
+            OpenFolder(path);
+        }
+        if (GUILayout.Button("下载更新调试", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            if (!File.Exists(AppConfig.VersionTextPath))
+            {
+                var pyPath = Path.GetDirectoryName(Path.GetFullPath(Application.dataPath + "/../../build_tools/"));
+                var platform = KResourceModule.GetBuildPlatformName();
+                //执行bat
+                var path = $"{pyPath}/生成filelist-{platform}.bat";
+                KEditorUtils.ExecuteCommand(path);
+                //执行py传的参数有些错误
+                // var abPath = KResourceModule.ProductPathWithoutFileProtocol+"/Bundles/"+platform;
+                // BuildTools.ExecutePyFile(pyPath + "/gen_filelist.py",$"{pyPath} {abPath} {platform}");
+            }
+            if (!File.Exists(AppConfig.VersionTextPath))
+            {
+                Log.LogError($"未生成filelist，请再试一次或手动执行py脚本");
+                return;
+            }
+            var dstPath = KResourceModule.GetAppDataPath() + "/" + AppConfig.VersionTxtName;
+            if(File.Exists(dstPath)) File.Delete(dstPath);
+            File.Copy(AppConfig.VersionTextPath,dstPath);
+            Log.Info($"文件拷贝成功，{AppConfig.VersionTextPath}->{dstPath}");
+        }
+        GUILayout.EndHorizontal();
+        
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("打PC版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
@@ -298,14 +329,7 @@ public class KQuickWindowEditor : EditorWindow
 
         GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
-        {
-            var path = AppConfig.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
-            OpenFolder(path);
-        }
 
-        GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
 
