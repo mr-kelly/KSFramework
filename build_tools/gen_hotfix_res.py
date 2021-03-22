@@ -14,12 +14,14 @@ import sys
 import zipfile
 import gen_filelist
 
+filelist_name = 'filelist.txt'
 version_name = 'version.txt'
 
-def zip_dir(dirname, zipfilename,backup):
+
+def zip_dir(dirname, zipfilename, backup):
     if os.path.exists(zipfilename):
-        if backup :
-            shutil.copyfile(zipfilename, zipfilename+'.bak')
+        if backup:
+            shutil.copyfile(zipfilename, zipfilename + '.bak')
         os.remove(zipfilename)
 
     filelist = []
@@ -39,47 +41,52 @@ def zip_dir(dirname, zipfilename,backup):
         zf.write(tar, arcname)
     zf.close()
 
+
 def genVersion(fname, name_list):
     f = open(fname, "w")
     for name in name_list:
         if os.path.exists(name):
-            version = gen_filelist.GetFileMd5(name)
-            size = str(os.path.getsize(name));
             bname = os.path.basename(name)
-            line = "{0},{1},{2}{3}".format(bname, version, size,"\n")
+            version = gen_filelist.GetFileMd5(name)
+            size = str(os.path.getsize(name))
+            line = "{0},{1},{2}{3}".format(bname, version, size, "\n")
             f.write(line)
         else:
             print("genVersion路径不存在", name)
     f.close()
     print("version更新完成")
 
+
 if __name__ == "__main__":
     try:
-        start_path = sys.argv[0]
-        #start_path = r'E:\Code\KSFramework\build_tools'
-        if (len(sys.argv) >= 2):
+        # start_path = sys.argv[0]
+        start_path = r'E:\Code\KSFramework\build_tools\\'
+        platform = "Windows"
+        if (len(sys.argv) >= 3):
             start_path = sys.argv[1]
-        dst_root = start_path + "\cdn\\"
-        src_path = start_path + r'\..\KSFramework\Product\\'
+            platform = sys.argv[2]
+        dir = os.path.abspath(os.path.dirname(start_path))
+        dst_root = dir + "\cdn\\"
+        src_path = dir + r'\..\KSFramework\Product\\'
         if not os.path.exists(dst_root):
             os.makedirs(dst_root)
             print("not exist path,create", dst_root)
-        print(dst_root,src_path)
+        # print(dst_root,src_path)
 
-        #压缩为zip，经测试对同一目录多次zip，md5相同(文件未改变的情况)
-        zip_dir(src_path + 'Lua', dst_root + 'lua.zip',True)
-        zip_dir(src_path + 'Setting', dst_root + 'setting.zip',True)
+        # 压缩为zip，经测试对同一目录多次zip，md5相同(文件未改变的情况)
+        zip_dir(src_path + 'Lua', dst_root + 'lua.zip', True)
+        zip_dir(src_path + 'Setting', dst_root + 'setting.zip', True)
         print("生成zip文件完成")
 
-        src_ab = src_path + '\Bundles\\'
-        dst_ab = dst_root + 'Bundles\\'
+        src_ab = src_path + 'Bundles\\' + platform
+        dst_ab = dst_root + 'Bundles\\' + platform
         if os.path.exists(dst_ab):
             shutil.rmtree(dst_ab)
             print("exist path,delete", dst_ab)
         shutil.copytree(src_ab, dst_ab)
         print("同步ab文件{0}->{1} 完成".format(src_ab, dst_ab))
-
-        genVersion(dst_root+version_name,[dst_root+"lua.zip",dst_root+'setting.zip',dst_ab + 'Windows\\filelist.txt'])
+        ver_list = [dst_root + "lua.zip", dst_root + 'setting.zip', dst_ab + '\\filelist.txt']
+        genVersion(dst_root + platform + "-" + version_name, ver_list)
     except Exception as ex:
         print
         'Exception:\r\n'

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -628,7 +629,36 @@ namespace KEngine.Editor
                 }
             }
         }
+        
+        /// <summary>
+        /// windows下获取python的安装路径
+        /// </summary>
+        public static string getPythonPath()
+        {
+            string environment = Environment.GetEnvironmentVariable("Path");
+            string[] paths = environment.Split(';');
+            foreach (string path in paths)
+            {
+                bool foundMatch = false;
+                try
+                {
+                    foundMatch = Regex.IsMatch(path, @"\\Python\d{0,2}\-{0,1}\d{0,2}", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                }
+                catch (ArgumentException ex)
+                {
+                    Log.LogError(ex.Message);
+                }
 
+                //var pathWithOutSlash = path.TrimEnd(new char[] {'\\'});
+                if (foundMatch && File.Exists(path + "python.exe"))
+                {
+                    return path + "python.exe";
+                }
+            }
+
+            return null;
+        }
+        
         public static bool IsWin32
         {
             get
@@ -639,20 +669,27 @@ namespace KEngine.Editor
         }
 
         // 执行Python文件！获取返回值
-        public static string ExecutePyFile(string pyFileFullPath, string arguments)
+        public static string ExecutePyFile(string pyFileFullPath, string arguments,bool useSetupPath = true)
         {
             string pythonExe = null;
             if (IsWin32)
             {
-                var guids = AssetDatabase.FindAssets("py");
-                foreach (var guid in guids)
+                if (useSetupPath)
                 {
-                    var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-
-                    if (Path.GetFileName(assetPath) == "py.exe")
+                    pythonExe = getPythonPath();
+                }
+                else
+                {
+                    var guids = AssetDatabase.FindAssets("py");
+                    foreach (var guid in guids)
                     {
-                        pythonExe = assetPath; // Python地址
-                        break;
+                        var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+                        if (Path.GetFileName(assetPath) == "py.exe")
+                        {
+                            pythonExe = assetPath; // Python地址
+                            break;
+                        }
                     }
                 }
             }
@@ -673,9 +710,6 @@ namespace KEngine.Editor
             {
                 process.StartInfo.FileName = pythonExe;
                 process.StartInfo.Arguments = pyFileFullPath + " " + arguments;
-                //process.StartInfo.UseShellExecute = false;
-                ////process.StartInfo.CreateNoWindow = true;
-                //process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;

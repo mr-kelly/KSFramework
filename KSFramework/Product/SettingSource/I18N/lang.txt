@@ -1,4 +1,14 @@
 #格式：key=value
+#下载和更新
+common_title_tips=提示
+download_msg=本次更新资源{0}，是否继续下载?\r\n\r\n\r\n建议在wifi下下载
+download_speed=正在下载资源{0}，速度{1}，请保持网络通畅
+
+#常用词
+common_ok=确定
+common_cancel=取消
+
+#游戏内容
 btn_billboard=公告板
 btn_openui=打开界面
 btn_change_scene=切换场景

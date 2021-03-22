@@ -169,7 +169,7 @@ namespace KEngine
                     //#if !UNITY_IPHONE  // TODO: 新的异步机制去暂停，Iphone 64不支持
                     //                downloadThread.Abort();
                     //#endif
-                    Debug.LogError(string.Format("[KHttpDownloader]下载线程超时！: {0}", fullUrl));
+                    Debug.LogError(string.Format("[KHttpDownloader]下载线程超时{0}s！: {1}",MaxTime, fullUrl));
                     isThreadError = true;
                     break;
                 }

@@ -1325,6 +1325,33 @@ namespace KEngine
 
             return objList;
         }
+        
+        /// <summary>
+        /// 文件大小格式化显示成KB，MB,GB
+        /// </summary>
+        /// <param name="size">字节</param>
+        public static String FormatFileSize(long size) {
+            int GB = 1024 * 1024 * 1024;
+            int MB = 1024 * 1024;
+            int KB = 1024;
+            
+            if (size / GB >= 1)
+            {
+                return Math.Round(size / (float)GB, 2) + "GB";
+            }
+            
+            if (size / MB >= 1)
+            {
+                return Math.Round(size / (float)MB, 2) + "MB";
+            }
+
+            if (size / KB >= 1)
+            {
+                return Math.Round(size / (float)KB, 2) + "KB";
+            }
+
+            return size + "B";
+        }
     }
 
     public class XMemoryParser<T>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using KEngine;
 using UnityEngine;
 
 /// <summary>
@@ -51,7 +52,15 @@ public class AppConfig
     public static string resUrl = "http://127.0.0.1:7888/cdn/";
 
     public static bool IsDownloadRes = true;
-    
+
+    public static string VersionTextPath
+    {
+        get { return AppConfig.ProductRelPath + "/" + KResourceModule.GetBuildPlatformName() + "-version.txt"; }
+    }
+    public static string VersionTxtName
+    {
+        get { return KResourceModule.GetBuildPlatformName() + "-version.txt"; }
+    }
     #region AppConfig.txt中的内容
 
     //TODO 制作一个edit工具，可在运行时修改值，

@@ -326,3 +326,5 @@ Temp
 /build_tools/cdn/*
 /build_tools/hfs.exe
 /build_tools/filelist.txt.bak
+/build_tools/__pycache__
+/BC4Key.txt
