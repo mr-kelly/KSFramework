@@ -64,6 +64,7 @@ namespace KEngine
             get { return ErrorFlag; }
         }
 
+        private bool _isLog; // 是否显示下载过程中的日志
         private bool _useContinue; // 是否断点续传
         private bool UseCache;
         private int ExpireDays = 1; // 过期时间, 默认1天
@@ -77,30 +78,30 @@ namespace KEngine
 
 
         /// <summary>
-        /// 
+        /// 开始下载
         /// </summary>
-        /// <param name="fullUrl"></param>
+        /// <param name="fullUrl">网络上的url</param>
         /// <param name="saveFullPath">完整的保存路径！</param>
         /// <param name="useContinue">是否断点续传</param>
         /// <param name="useCache">如果存在则不下载了！</param>
         /// <param name="expireDays"></param>
         /// <param name="timeout"></param>
         public static KHttpDownloader Load(string fullUrl, string saveFullPath, bool useContinue = false,
-            bool useCache = false, int expireDays = 1, int timeout = 5)
+            bool useCache = false, int expireDays = 1, int timeout = 5,bool isLog = false)
         {
             var downloader = new KHttpDownloader();
-            downloader.Init(fullUrl, saveFullPath, useContinue, useCache, expireDays, timeout);
+            downloader.Init(fullUrl, saveFullPath, useContinue, useCache, expireDays, timeout,isLog);
 
             return downloader;
         }
 
         public static string GetFullSavePath(string relativePath)
         {
-            return Application.persistentDataPath + "/" + relativePath;
+            return KResourceModule.GetAppDataPath() + "/" + relativePath;
         }
 
         private void Init(string fullUrl, string saveFullPath, bool useContinue, bool useCache = false,
-            int expireDays = 1, int timeout = 10)
+            int expireDays = 1, int timeout = 10,bool isLog = false)
         {
             Url = fullUrl;
             SaveFullPath = saveFullPath;
@@ -108,6 +109,7 @@ namespace KEngine
             _useContinue = useContinue;
             ExpireDays = expireDays;
             TIME_OUT_DEF = timeout; // 默认10秒延遲
+            _isLog = isLog;
             Game.Instance.StartCoroutine(StartDownload(fullUrl));
         }
 
@@ -118,7 +120,6 @@ namespace KEngine
 
         private IEnumerator StartDownload(string fullUrl)
         {
-//            float startTime = Time.time;
             if (UseCache && File.Exists(SaveFullPath))
             {
                 var lastWriteTime = File.GetLastWriteTimeUtc(SaveFullPath);
@@ -127,7 +128,7 @@ namespace KEngine
                 // 文件未过期
                 if (deltaDays < ExpireDays)
                 {
-                    Debug.Log(string.Format("缓存文件未过期 {0}", SaveFullPath));
+                    Debug.Log(string.Format("缓存文件未过期 {0}，跳过下载", SaveFullPath));
                     FinishedFlag = true;
                     ErrorFlag = false;
                     yield break;
@@ -158,13 +159,11 @@ namespace KEngine
                     isThreadStart = true;
                 }, () => { isThreadFinish = true; });
             });
-
-            var timeCounter = 0f;
-            var MaxTime = TIME_OUT_DEF;
+            //NOTE 先下载一段数据再保存，这样会导致进度条不平滑所以要做个插值
+            var MaxTime = Time.time + TIME_OUT_DEF;
             while (!isThreadFinish && !isThreadError)
             {
-                timeCounter += Time.deltaTime;
-                if (timeCounter > MaxTime && !isThreadStart)
+                if (Time.time > MaxTime && !isThreadStart)
                 {
                     //#if !UNITY_IPHONE  // TODO: 新的异步机制去暂停，Iphone 64不支持
                     //                downloadThread.Abort();
@@ -174,6 +173,7 @@ namespace KEngine
                     break;
                 }
                 Progress = (downloadSize/(float) totalSize);
+                //if(_isLog) Log.Info($"Progress2222222 Progress:{Progress} ,downloadSize:{downloadSize} ,totalSize:{totalSize}");
                 yield return null;
             }
 
@@ -218,10 +218,8 @@ namespace KEngine
             get { return SaveFullPath + ".download"; }
         }
 
-        private void ThreadableResumeDownload(string url, Action<int, int> stepCallback, Action errorCallback,
-            Action successCallback)
+        private void ThreadableResumeDownload(string url, Action<int, int> stepCallback, Action errorCallback,Action successCallback)
         {
-            //string tmpFullPath = TmpDownloadPath; //根据实际情况设置 
             System.IO.FileStream downloadFileStream;
             //打开上次下载的文件或新建文件 
             long lStartPos = 0;
@@ -232,8 +230,7 @@ namespace KEngine
                 lStartPos = downloadFileStream.Length;
                 downloadFileStream.Seek(lStartPos, System.IO.SeekOrigin.Current); //移动文件流中的当前指针 
 
-                Console.WriteLine("Resume.... from {0}", lStartPos);
-                //CDebug.LogConsole_MultiThread("Resume.... from {0}", lStartPos);
+                if(_isLog) Log.LogConsole_MultiThread("Resume.... from {0}", lStartPos);
             }
             else
             {
@@ -247,16 +244,14 @@ namespace KEngine
                 request = (System.Net.HttpWebRequest) System.Net.WebRequest.Create(url);
                 if (lStartPos > 0)
                     request.AddRange((int) lStartPos); //设置Range值
-
-                Console.WriteLine("Getting Response : {0}", url);
-                //CDebug.LogConsole_MultiThread("Getting Response : {0}", url);
+                
+                if(_isLog) Log.LogConsole_MultiThread("Getting Response : {0}", url);
 
                 //向服务器请求，获得服务器回应数据流 
                 using (var response = request.GetResponse()) // TODO: Async Timeout
                 {
                     TotalSize = (int) response.ContentLength;
-                    //CDebug.LogConsole_MultiThread("Getted Response : {0}", url);
-                    Console.WriteLine("Getted Response : {0}", url);
+                    if(_isLog) Log.LogConsole_MultiThread("Getted Response : {0}", url);
                     if (IsFinished)
                     {
                         throw new Exception(string.Format("Get Response ok, but is finished , maybe timeout! : {0}", url));
@@ -264,11 +259,9 @@ namespace KEngine
                     else
                     {
                         var totalSize = TotalSize;
-
                         using (var ns = response.GetResponseStream())
                         {
-                            //CDebug.LogConsole_MultiThread("Start Stream: {0}", url);
-                            Console.WriteLine("Start Stream: {0}", url);
+                            if(_isLog) Log.LogConsole_MultiThread("Start Stream: {0}", url);
 
                             int downSize = (int) lStartPos;
                             int chunkSize = 10240;
@@ -280,6 +273,7 @@ namespace KEngine
                                     throw new Exception("When Reading Web stream but Downloder Finished!");
                                 downloadFileStream.Write(nbytes, 0, nReadSize);
                                 downSize += nReadSize;
+                                //if(_isLog) Log.Info($"Progress11111111 nReadSize:{nReadSize} ,downloadSize:{downSize} ,totalSize:{totalSize}");
                                 stepCallback(totalSize, downSize);
                             }
                             stepCallback(totalSize, totalSize);
@@ -290,8 +284,7 @@ namespace KEngine
                     }
                 }
 
-                //CDebug.LogConsole_MultiThread("下载完成: {0}", url);
-                Console.WriteLine("下载完成: {0}", url);
+                if(_isLog) Log.LogConsole_MultiThread("下载完成: {0}", url);
 
                 if (File.Exists(SaveFullPath))
                 {
@@ -301,8 +294,7 @@ namespace KEngine
             }
             catch (Exception ex)
             {
-                //CDebug.LogConsole_MultiThread("下载过程中出现错误:" + ex.ToString());
-                Console.WriteLine("下载过程中出现错误:" + ex.ToString());
+                if(_isLog) Log.LogConsole_MultiThread("下载过程中出现错误:" + ex.ToString());
 
                 downloadFileStream.Close();
 
@@ -316,29 +308,22 @@ namespace KEngine
                 }
                 catch (Exception e)
                 {
-                    //CDebug.LogConsole_MultiThread(e.Message);
-                    Console.WriteLine(e.Message);
+                    if(_isLog) Log.LogConsole_MultiThread("删除临时下载文件出错:"+e.Message);
                 }
 
                 errorCallback();
             }
             successCallback();
         }
-
-        private void OnDestroy()
+        
+        public void Dispose()
         {
             if (!FinishedFlag)
             {
                 FinishedFlag = true;
                 ErrorFlag = true;
-                //CDebug.LogError("[HttpDownloader]Not finish but destroy: {0}", Url);
-                Console.WriteLine(string.Format("[HttpDownloader]Not finish but destroy: {0}", Url));
+                Log.LogError(string.Format("[HttpDownloader]Not finish but Dispose: {0}", Url));
             }
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

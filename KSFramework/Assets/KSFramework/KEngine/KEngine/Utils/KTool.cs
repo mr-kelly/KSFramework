@@ -34,6 +34,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using KEngine;
+using UnityEditor;
 using UnityEngine;
 
 namespace KEngine
@@ -513,7 +514,7 @@ namespace KEngine
                 ts.Days == 0 ? "" : ts.Days + "天",
                 ts.Hours == 0 ? "" : ts.Hours + "小时",
                 ts.Minutes == 0 ? "" : ts.Minutes + "分钟",
-                ts.Seconds == 0 ? "" : ts.Seconds + "秒");
+                ts.Seconds < 0 ? "0秒" : ts.Seconds + "秒");
 
             return timeStr;
         }
@@ -660,6 +661,24 @@ namespace KEngine
             return number.ToString();
         }
 
+        public static float GetPercent(float lhs,float rhs)
+        {
+            if (Math.Abs(lhs) < 0.0000001f || Math.Abs(rhs) < 0.0000001f) return 0;
+            return lhs / rhs;
+        }
+        
+        public static float GetPercent(long lhs,long rhs)
+        {
+            if (Math.Abs(lhs) < 0.0000001f || Math.Abs(rhs) < 0.0000001f) return 0;
+            return (float)lhs / (float)rhs;
+        }
+        
+        public static float GetPercent(int lhs,int rhs)
+        {
+            if (Math.Abs(lhs) < 0.0000001f || Math.Abs(rhs) < 0.0000001f) return 0;
+            return (float)lhs / (float)rhs;
+        }
+        
         // 仅用于捕获
         public static string[] Match(string find, string pattern)
         {
@@ -1263,7 +1282,34 @@ namespace KEngine
         {
             return num.ToString("##" + sp + "###", System.Globalization.CultureInfo.InvariantCulture);
         }
-
+        
+        /// <summary>
+        /// 取本机主机ip
+        /// </summary>
+        /// <returns></returns>
+        public static string GetLocalIP()
+        {
+            try
+            {
+                string HostName = Dns.GetHostName(); //得到主机名
+                IPHostEntry IpEntry = Dns.GetHostEntry(HostName);
+                for (int i = 0; i < IpEntry.AddressList.Length; i++)
+                {
+                    //从IP地址列表中筛选出IPv4类型的IP地址
+                    //AddressFamily.InterNetwork表示此IP为IPv4,AddressFamily.InterNetworkV6表示此地址为IPv6类型
+                    if (IpEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        return IpEntry.AddressList[i].ToString();
+                    }
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        
         /// <summary>
         /// Get IPAdress from IpHostEntry,  配合GetIpAddress
         /// </summary>
@@ -1352,8 +1398,21 @@ namespace KEngine
 
             return size + "B";
         }
+        
+        public static void ExitGame()
+        {
+            if (Application.isEditor)
+            {
+                Log.Info("编辑器下不处理退出游戏");
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
     }
-
+    
+    
     public class XMemoryParser<T>
     {
         private readonly int MaxCount;

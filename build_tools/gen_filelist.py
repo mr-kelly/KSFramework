@@ -22,8 +22,6 @@ dst_path = ""  # 目标路径
 
 
 def isIgnore(name):
-    # if name.find("/")<0:
-    #     return True
     if name.endswith(".py"):
         return True
     if name.endswith(".bat"):
@@ -111,7 +109,6 @@ if __name__ == "__main__":
     try:
         print("参数列表：", str(sys.argv))
         # 未传入参数则使用脚本所在路径
-        # dst_path = sys.argv[0]
         dst_path = r"E:\Code\KSFramework\KSFramework\Product\Bundles\Windows\\"
         bak_path = sys.argv[0]
         platform = "Windows"
@@ -129,12 +126,14 @@ if __name__ == "__main__":
         print("要生成filelist的目录为：", dir)
         makeFileLists(dir, dir + filelist_name)
 
-        # 生成version.txt
+        # 生成version.txt 1.生成zip 2.写入version.txt 3.删除zip
         product_dir = dir + '../../'
-        gen_hotfix_res.zip_dir(product_dir + "Lua", product_dir + "lua.zip", True)
-        gen_hotfix_res.zip_dir(product_dir + "Setting", product_dir + "setting.zip", True)
+        gen_hotfix_res.zip_dir(product_dir + "Lua", product_dir + "lua.zip", False)
+        gen_hotfix_res.zip_dir(product_dir + "Setting", product_dir + "setting.zip", False)
         ver_list = [product_dir + "lua.zip", product_dir + "setting.zip", dir + filelist_name]
-        gen_hotfix_res.genVersion(product_dir + platform + "-" + version_name,  ver_list)
+        gen_hotfix_res.genVersion(product_dir + platform + "-" + version_name, ver_list)
+        os.remove(product_dir + "lua.zip")
+        os.remove(product_dir + "setting.zip")
     except Exception as ex:
         print
         'Exception:\r\n'

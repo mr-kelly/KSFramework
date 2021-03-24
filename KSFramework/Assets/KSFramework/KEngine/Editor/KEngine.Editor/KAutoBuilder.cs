@@ -130,7 +130,12 @@ namespace KEngine.Editor
 #else
 			EditorUserBuildSettings.SwitchActiveBuildTarget(tag);
 #endif
-            //已监听Unity引擎的打包前事件：OnBeforeBuildPlayerEvent
+            if(AppConfig.IsDownloadRes && !File.Exists(AppConfig.VersionTextPath))
+            {
+                Log.LogError("打包失败，可下载更新的包，需要先生成vresion.txt");
+                return null;
+            }
+            //OnBeforeBuildPlayerEvent Unity引擎的打包前事件
             ParseArgs(ref opt, ref outputpath);
             string fullPath = System.IO.Path.Combine(AppConfig.ProductRelPath,outputpath);
             string fullDir = System.IO.Path.GetDirectoryName(fullPath);
@@ -295,9 +300,8 @@ namespace KEngine.Editor
             }
             KEditorUtils.ExecuteFile(linkFile);
             
-            var dstPath = Application.streamingAssetsPath + $"/{AppConfig.VersionTxtName}";
-            if (File.Exists(dstPath)) File.Delete(dstPath);
-            File.Copy(AppConfig.VersionTextPath, dstPath);
+            if (File.Exists(AppConfig.VersionTextStreamPath)) File.Delete(AppConfig.VersionTextStreamPath);
+            File.Copy(AppConfig.VersionTextPath, AppConfig.VersionTextStreamPath);
             Log.Info("拷贝version.txt完成");
             AssetDatabase.Refresh();
         }

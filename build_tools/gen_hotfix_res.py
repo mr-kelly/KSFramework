@@ -10,12 +10,30 @@ Desc:发布热更新资源到cdn
 # coding=utf-8
 import os
 import shutil
+from shutil import copytree, ignore_patterns
 import sys
 import zipfile
 import gen_filelist
 
 filelist_name = 'filelist.txt'
 version_name = 'version.txt'
+
+
+def isIgnore(name):
+    if name.endswith(".py"):
+        return True
+    if name.endswith(".bat"):
+        return True
+    if name.endswith(".py"):
+        return True
+    if name.endswith(".meta"):
+        return True
+    bname = os.path.basename(name)
+    if bname.find(".") < 0:
+        return True
+    if bname.startswith("."):
+        return True
+    return False
 
 
 def zip_dir(dirname, zipfilename, backup):
@@ -26,13 +44,15 @@ def zip_dir(dirname, zipfilename, backup):
 
     filelist = []
     if os.path.isfile(dirname):
-        filelist.append(dirname)
+        if not isIgnore(dirname):
+            filelist.append(dirname)
     else:
         for root, dirs, files in os.walk(dirname):
             for dir in dirs:
                 filelist.append(os.path.join(root, dir))
             for name in files:
-                filelist.append(os.path.join(root, name))
+                if not isIgnore(name):
+                    filelist.append(os.path.join(root, name))
 
     zf = zipfile.ZipFile(zipfilename, "w", zipfile.zlib.DEFLATED)
     for tar in filelist:
@@ -83,7 +103,7 @@ if __name__ == "__main__":
         if os.path.exists(dst_ab):
             shutil.rmtree(dst_ab)
             print("exist path,delete", dst_ab)
-        shutil.copytree(src_ab, dst_ab)
+        shutil.copytree(src_ab, dst_ab, ignore=ignore_patterns('*.meta', '*.py', '*.bat'))
         print("同步ab文件{0}->{1} 完成".format(src_ab, dst_ab))
         ver_list = [dst_root + "lua.zip", dst_root + 'setting.zip', dst_ab + '\\filelist.txt']
         genVersion(dst_root + platform + "-" + version_name, ver_list)

@@ -49,7 +49,8 @@ public class AppConfig
     /// <summary>
     /// cdn资源地址，正式项目通过服务器下发
     /// </summary>
-    public static string resUrl = "http://127.0.0.1:7888/cdn/";
+    public static string resUrl = "http://127.0.0.1:8080/cdn/";
+    // public static string resUrl = "http://192.168.190.112:8080/cdn/";
 
     public static bool IsDownloadRes = true;
 
@@ -57,9 +58,20 @@ public class AppConfig
     {
         get { return AppConfig.ProductRelPath + "/" + KResourceModule.GetBuildPlatformName() + "-version.txt"; }
     }
+    public static string VersionTextStreamPath
+    {
+        get { return Application.streamingAssetsPath + $"/{AppConfig.VersionTxtName}"; }
+    }
     public static string VersionTxtName
     {
         get { return KResourceModule.GetBuildPlatformName() + "-version.txt"; }
+    }
+    /// <summary>
+    /// filelist.txt的相对路径
+    /// </summary>
+    public static string FilelistName
+    {
+        get { return $"Bundles\\{KResourceModule.GetBuildPlatformName()}\\filelist.txt"; }
     }
     #region AppConfig.txt中的内容
 
