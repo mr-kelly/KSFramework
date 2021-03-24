@@ -1,12 +1,20 @@
 #格式：key=value
 #下载和更新
-common_title_tips=提示
-download_msg=本次更新资源{0}，是否继续下载?\r\n\r\n\r\n建议在wifi下下载
-download_speed=正在下载资源{0}，速度{1}，请保持网络通畅
+download_title_tips=资源更新
+download_check=正在检查资源更新，请稍后......
+download_msg=本次更新资源{0}，是否继续下载?\r\n\r\n\r\n建议在wifi环境中下载
+download_speed=正在下载资源{0} 速度{1}KB/s，预计剩余{2}
+download_unpackzip=正在解压资源，此过程不消耗流量
+download_verify=正在检验资源，请您耐心等待......
+download_error=资源更新失败\r\n错误代码：{0}
 
 #常用词
 common_ok=确定
 common_cancel=取消
+common_exit=退出
+common_ignore=忽略
+common_skip=跳过
+common_title_tips=提示
 
 #游戏内容
 btn_billboard=公告板

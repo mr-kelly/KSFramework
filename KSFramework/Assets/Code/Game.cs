@@ -59,8 +59,35 @@ public class Game : KSGame
     /// <returns></returns>
     public override IEnumerator OnBeforeInit()
     {
-        // Do Nothing
-        yield break;
+        if (AppConfig.IsDownloadRes)
+        {
+            var loader = AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
+            {
+                if (isOk && ab)
+                {
+                    var atlas = ab.LoadAsset<SpriteAtlas>("atlas_common");
+                    ABManager.SpriteAtlases["atlas_common"] = atlas;
+                }
+            });
+            while (!loader.IsCompleted)
+            {
+                yield return null;
+            }
+            yield return  StartCoroutine(DownloadManager.Instance.CheckDownload());
+            if (DownloadManager.Instance.ErrorType != UpdateErrorType.None)
+            {
+                UIMsgBoxInfo info = new UIMsgBoxInfo().GetDefalut(I18N.Get("download_error", DownloadManager.Instance.ErrorType), null,I18N.Get("common_ignore"), I18N.Get("common_exit"));
+                info.OkCallback = () => { DownloadManager.Instance.DownloadFinish = true;};
+                info.CancelCallback = KTool.ExitGame;
+                var panel = UIModule.Instance.GetOrCreateUI<KUIMsgBox>();
+                panel.info = info;
+                panel.DisPlay(true);
+            }
+        }
+        else
+        {
+            DownloadManager.Instance.DownloadFinish = true;
+        }
     }
 
     /// <summary>
@@ -69,6 +96,11 @@ public class Game : KSGame
     /// <returns></returns>
     public override IEnumerator OnGameStart()
     {
+        WaitForSeconds wait  = new WaitForSeconds(1);
+        while (DownloadManager.Instance.DownloadFinish == false)
+        {
+            yield return wait;
+        }
         Log.Info(I18N.Get("btn_billboard"));
         // Print AppConfigs
         // Log.Info("======================================= Read Settings from C# =================================");

@@ -121,6 +121,9 @@ namespace KEngine
         public static bool IsApplicationFocus = true;
         public static bool IsAppPlaying = false;
         public static Action UpdateEvent;
+        public static Action UpdatePer300msEvent;
+        public static Action UpdatePer1sEvent;
+        
         /// <summary>
         /// Engine entry.... all begins from here
         /// </summary>
@@ -226,6 +229,7 @@ namespace KEngine
             }
         }
 
+        private float time_update_per1s,time_update_per300ms;
 #if USE_UGUI_FPS
         protected virtual void Update()
 #else
@@ -240,6 +244,17 @@ namespace KEngine
             }
 
             UpdateEvent?.Invoke();
+            float time = Time.time;
+            if (time > time_update_per1s)
+            {
+                time_update_per1s = time + 1.0f;
+                UpdatePer1sEvent?.Invoke();
+            }
+            if (time > time_update_per300ms)
+            {
+                time_update_per300ms = time + 0.3f;
+                UpdatePer300msEvent?.Invoke();
+            }
         }
 
         private void FixedUpdate()

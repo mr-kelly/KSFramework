@@ -71,21 +71,37 @@ namespace KEngine.UI
             }
         }
 
+        private bool isVisiable;
+        /// <summary>
+        /// 是否显示，对于一些外部调用，如果未显示，则不调用
+        /// </summary>
+        public bool IsVisiable
+        {
+            get { return isVisiable; }
+            set { isVisiable = value; }
+        }
+        /// <summary>
+        /// 放在主工程，不热更的UI，目前有特殊处理
+        /// </summary>
+        public bool IsGameBaseUI = false;
+        
         public virtual void OnInit()
         {
         }
 
         public virtual void BeforeOpen(object[] onOpenArgs)
         {
-        
+            
         }
 
         public virtual void OnOpen(params object[] args)
         {
+            IsVisiable = true;
         }
 
         public virtual void OnClose()
         {
+            IsVisiable = false;
         }
         
         /// <summary>
@@ -110,6 +126,7 @@ namespace KEngine.UI
         {
             //if(AppEngine.EngineInstance.UseDevFunc) 
 			ClearHeapValues();
+            if (this.IsGameBaseUI) UIModule.Instance.dict.Remove(this.GetType());
         }
 
         /// <summary>
@@ -132,13 +149,30 @@ namespace KEngine.UI
 
         public virtual void DisPlay(bool visiable)
         {
-            if (visiable)
+            if (IsGameBaseUI)
             {
-                UIModule.Instance.OpenWindow(UIName);
+                if (visiable)
+                {
+                    gameObject.SetActiveX(true);
+                    Canvas.enabled = true;
+                    OnOpen();
+                }
+                else
+                {
+                    Canvas.enabled = false;
+                    OnClose();
+                }
             }
             else
             {
-                UIModule.Instance.CloseWindow(UIName);
+                if (visiable)
+                {
+                    UIModule.Instance.OpenWindow(UIName);
+                }
+                else
+                {
+                    UIModule.Instance.CloseWindow(UIName);
+                }
             }
         }
         

@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using KEngine;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 namespace KEngine.UI
@@ -359,14 +360,14 @@ namespace KEngine.UI
             UILoadState uiState;
             if (!UIWindows.TryGetValue(uiName, out uiState))
             {
-                if (Debug.isDebugBuild)
+                if (AppConfig.IsDebugBuild)
                     Log.Warning("[CloseWindow]没有加载的UIWindow: {0}", uiName);
                 return; // 未开始Load
             }
 
             if (uiState.IsLoading) // Loading中
             {
-                if (Debug.isDebugBuild)
+                if (AppConfig.IsDebugBuild)
                     Log.Info("[CloseWindow]IsLoading的{0}", uiName);
                 uiState.OpenWhenFinish = false;
                 return;
@@ -782,6 +783,65 @@ namespace KEngine.UI
 
             uiState.OnUIWindowLoadedCallbacks(uiState, uiBase);
         }
+        
+        #region TODO新的UI打开方式
+        
+        public Dictionary<Type,UIController> dict = new Dictionary<Type,UIController>();
+        
+        public  T GetOrCreateUI<T>() where T : UIController, new()
+        {
+            var type = typeof(T);
+            UIController uiBase = null;
+            dict.TryGetValue(type, out uiBase);
+            if (uiBase != null)
+                return uiBase as T;
+            uiBase = new T();
+            uiBase.IsGameBaseUI = true;
+            dict.Add(type,uiBase);
+            var res_path = KResourceModule.GetAbFullPath($"ui/{uiBase.UITemplateName.ToLower()}");
+            var assetBundle = AssetBundle.LoadFromFile(res_path);
+            var  t= assetBundle.LoadAsset<GameObject>(uiBase.UITemplateName);
+            GameObject uiObj = GameObject.Instantiate(t);
+            
+            //TODO 管理图集
+            if (uiObj)
+            {
+                var windowAsset = uiObj.GetComponent<UIWindowAsset>();
+                if (windowAsset && !string.IsNullOrEmpty(windowAsset.atals_arr))
+                {
+                    string[] arr = windowAsset.atals_arr.Split(',');
+                    int sprite_count = 0;
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        string atlas_name = arr[i].ToLower();
+                        if (!UIModule.Instance.CommonAtlases.Contains(atlas_name))
+                        {
+                            sprite_count++;
+                            var atlas = assetBundle.LoadAsset<SpriteAtlas>(atlas_name);
+                            if (atlas != null) ABManager.SpriteAtlases[atlas_name] = atlas;
+                        }
+                    }
+
+                    if (sprite_count >= 2) Log.LogError($"UI:{uiBase.UITemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                }
+            }
+            assetBundle.Unload(false);
+            uiBase.gameObject = uiObj;
+            uiBase.transform = uiObj.transform;
+            uiBase.UIName = uiBase.UITemplateName;
+            uiBase.OnInit();
+            return uiBase as T;
+        }
+        
+        public  T GetExistUI<T>() where T : UIController, new()
+        {
+            var type = typeof(T);
+            UIController uiBase = null;
+            if(dict.TryGetValue(type, out uiBase))
+                return uiBase as T;
+            return null;
+        }
+        #endregion
     }
 
     /// <summary>
@@ -869,5 +929,5 @@ namespace KEngine.UI
             }
         }
     }
-
+    
 }
