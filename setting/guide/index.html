@@ -322,7 +322,7 @@
 <h3 id="1ctsv">1.C#+Tsv读取配置文件</h3>
 <p>根据Excel配置表的头部信息，KEngine会在Unity的Assets根目录（可通过AppConfigs.cs 进行配置）生成一个AppSettings.cs文件。这个文件包含了所有的配置表的读取代码。</p>
 <p>直接来看看配置表代码的调用方法——获取所有、获取某个、热重载：</p>
-<pre><code class="csharp">
+<pre><code class="language-csharp">
 // 获取所有的配置项
 foreach (GameConfigSetting config in GameConfigSettings.GetAll()) // Get all Configs
 {
@@ -335,7 +335,6 @@ var testConfig = GameConfigSettings.Get(&quot;Test&quot;); // Get by key
 // 热重载
 GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 </code></pre>
-
 <p><img alt="生成代码的GameConfig.xlsx" src="../../images/setting/guide-7.png" /></p>
 <p>Excel表GameConfig.xlsx，会生成一个类GameConfigSettings，放置在AppSettings.cs代码文件中。</p>
 <h3 id="2lua">2.使用Lua做为配置表文件</h3>
@@ -344,7 +343,7 @@ GameConfigSettings.GetInstance().ReloadAll(); // Reload while settings recompile
 <img alt="生成代码的GameConfig.xlsx" src="../../images/setting/lua_code_hinting.png" /></p>
 <p>关于如何使用EmmyLua来编写Lua，可参考我的文章《<a href="https://www.cnblogs.com/zhaoqingqing/p/8296753.html">在Lua中提示UnityEngine.dll的方法</a>》和《<a href="https://www.cnblogs.com/zhaoqingqing/p/9121991.html">在Unity中对Lua进行调试</a>》</p>
 <p>生成的配置文件格式如下：</p>
-<pre><code class="lua">---auto generate by tools
+<pre><code class="language-lua">---auto generate by tools
 ---@class Billboard
 ---@field public Id string ID Column/编号/主键
 ---@field public Title string 公告标题
@@ -363,7 +362,6 @@ return {
 }
 }
 </code></pre>
-
 <h3 id="3sqlite">3.使用sqlite做为配置文件</h3>
 <p>在tablemlGUI中支持把配置表数据编译到sqlite中，在lua端或C#中读取sqlite是件非常容易的事情。</p>
 <h2 id="_9">热重载</h2>

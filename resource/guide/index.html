@@ -284,7 +284,7 @@
 <p>因而KEngine中分别对Unity中的StreamingAssetsPath、PersistentDataPath等做了封装，开发人员无需为资源放在什么目录进行烦恼了（详见ResourceModule中的InitResourcePath方法），并且，内置了支持热更新。</p>
 <h2 id="asset-bundle">举例：加载一个Asset Bundle的路径选择</h2>
 <p>假设现在要加载一个UI资源"Login"：</p>
-<pre><code class="csharp">        public IEnumerator LoadUIAsset(CUILoadState loadState, UILoadRequest request)
+<pre><code class="language-csharp">        public IEnumerator LoadUIAsset(CUILoadState loadState, UILoadRequest request)
         {
             string path = &quot;ui/login.prefab.bytes&quot;;
             var assetLoader = KStaticAssetLoader.Load(path);
@@ -294,7 +294,6 @@
             request.Asset = assetLoader.TheAsset;  // Asset 是GameObject
         }
 </code></pre>
-
 <p>这个StaticAssetLoader，做了什么操作？假设我们在Android平台
 - 获知ui/login.prefab.bytes这个路径
 - 寻找热更新资源，尝试加载PersistentAssetsPath/Bundles/Android/ui/logins.prefabs.bytes
@@ -305,7 +304,7 @@
 <h2 id="_4">简单加载</h2>
 <p>使用ResourceModule中的LoadBundle、LoadBundleAsync接口，可以实现类似于Unity的Resources.Load、Resources.LoadAsync的效用。</p>
 <p>要注意的是，LoadBundle、LoadBundleAsync接口，起始地址是加载StreamingAssets/Bundles/Win32或StreamingAssets/Bundles/Android这种平台相关的路径。</p>
-<pre><code class="csharp">// 同步加载，返回加载器，加载器中有加载的资源
+<pre><code class="language-csharp">// 同步加载，返回加载器，加载器中有加载的资源
 var reqeust = ResourceModule.LoadBundle(&quot;ui/login.prefab.bytes&quot;)
 Debug.Log(request.Asset != null); // true
 
@@ -313,14 +312,13 @@ Debug.Log(request.Asset != null); // true
 var request = ResourceModule.LoadBundleAsync(&quot;ui/login.prefab.bytes&quot;, (isOk, asset, args)=&gt;{});
 Debug.Log(request.Asset == null); // true
 </code></pre>
-
 <h2 id="loader">Loader加载器</h2>
 <p>KEngine中定义了各种类型的资源加载器，提供更为方便的加载、调试功能，来避免一些使用上的。坑</p>
 <h3 id="gameobject">加载GameObject</h3>
 <p>最常用的Loader有两个：
 - StaticAsset：每次调用Load，使用同一份GameObject引用
 - InstanceAsset：每次调用Load，都会拷贝出一份GameObject</p>
-<pre><code class="csharp">       // 协程风格
+<pre><code class="language-csharp">       // 协程风格
         public IEnumerator LoadUIAsset(UILoadRequest request)
         {
             string path = string.Format(&quot;ui/login.prefab.bytes&quot;));
@@ -331,8 +329,7 @@ Debug.Log(request.Asset == null); // true
             request.Asset = assetLoader.TheAsset;  // Asset 是GameObject
         }
 </code></pre>
-
-<pre><code class="csharp">       // CPS回调风格
+<pre><code class="language-csharp">       // CPS回调风格
         public void LoadUIAsset(UILoadRequest request)
         {
             string path = string.Format(&quot;ui/login.prefab.bytes&quot;));
@@ -341,12 +338,11 @@ Debug.Log(request.Asset == null); // true
             });
         }
 </code></pre>
-
 <h3 id="_5">资源的释放</h3>
 <p>KEngine中的资源释放，跟Unity的资源释放明显区别是：Unity中提供Resources.UnloadUnusedAssets接口，来自动释放无用的资源的。而KEngine中资源释放采用纯手动的方式。  </p>
 <p>这主要是因为躺过Unity自动释放资源的很多坑： 经常会遇到“missing”的资源引用吧？因此选择了手动释放机制。</p>
 <p>所有XXXLoader，都有一个接口Loader.Release()，举例：</p>
-<pre><code class="csharp">            string path = string.Format(&quot;ui/login.prefab.bytes&quot;));
+<pre><code class="language-csharp">            string path = string.Format(&quot;ui/login.prefab.bytes&quot;));
             var assetLoader = KStaticAssetLoader.Load(path);  // 引用计数1
             while (!assetLoader.IsCompleted)
                 yield return null;
@@ -357,7 +353,6 @@ Debug.Log(request.Asset == null); // true
             assetLoader2.Release(); // 释放，减小引用计数  // 引用计数1
             assetLoader.Release(); // 引用计数0，正式删掉缓存的资源
 </code></pre>
-
 <p>手工释放的资源存在引用计数，只有当引用计数为0，Loader才会触发回收，并且连同加载过的AssetBundle彻底消灭，节省内存。</p>
 <p>引用计数为0的资源，并不会立刻进行回收，它会进入垃圾回收队列。详细可参详<a href="gc">KEngine资源垃圾回收一节</a></p>
 <h3 id="loader_1">其它Loader</h3>

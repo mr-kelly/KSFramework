@@ -273,22 +273,19 @@
 <h2 id="luaoutlet">LuaOutlet 拖拽绑定控件</h2>
 <p>在KSFramework中，可以在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx进行引用，</p>
 <p>比如：self.txtTips，就指向txtTips这个Object，类型为UnityEngine.UI.Text</p>
-<pre><code class="lua">self.txtTips.text = &quot;这是给文本赋值&quot;
+<pre><code class="language-lua">self.txtTips.text = &quot;这是给文本赋值&quot;
 </code></pre>
-
 <p><img alt="" src="../../images/ui/luaoutlet.png" /></p>
 <p>每组包含三个变量：</p>
-<pre><code class="lua">Name：在Lua代码访问的变量名
+<pre><code class="language-lua">Name：在Lua代码访问的变量名
 Object：指向Unity的Object
 ComponentType：Unity中的type，下拉列表可选择你需要的Type
 </code></pre>
-
 <h2 id="_1">在代码里引用拖拽的控件</h2>
 <p>在Editor中对控件绑定之后，在UI代码可以直接使用self.xxx进行引用，比如：</p>
-<pre><code class="Lua">self.txtTitle = &quot;标题文字&quot;
+<pre><code class="language-Lua">self.txtTitle = &quot;标题文字&quot;
 self.btnLogin.onClick:RemoveAllListeners()
 </code></pre>
-
 <p>txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，压入self作用域中。</p>
 <p>实现代码可查看：<strong>LuaUIController.SetOutlet</strong></p>
 <h2 id="_2">可视化查找引用丢失</h2>

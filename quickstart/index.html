@@ -330,10 +330,9 @@
 <p>编辑Assets/Code/Game.cs</p>
 </blockquote>
 <p>在OnFinishInitModules函数的末端，加上这样的一句：</p>
-<pre><code class="csharp">// 开始加载我们的公告界面！
+<pre><code class="language-csharp">// 开始加载我们的公告界面！
 UIModule.Instance.OpenWindow(&quot;Billboard&quot;);
 </code></pre>
-
 <p>完成。 打开场景Assets/Game.unity，点击播放按钮：</p>
 <p><img alt="我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧" src="../images/quickstart/quick-start-19.png" /></p>
 <blockquote>
@@ -348,7 +347,7 @@ UIModule.Instance.OpenWindow(&quot;Billboard&quot;);
 <blockquote>
 <p>写一段Lua代码：UIBillboard的执行逻辑</p>
 </blockquote>
-<pre><code class="lua">local UIBase = import(&quot;KSFramework/UIBase&quot;)
+<pre><code class="language-lua">local UIBase = import(&quot;KSFramework/UIBase&quot;)
 
 local UIBillboard = {}
 extends(UIBillboard, UIBase)
@@ -366,7 +365,6 @@ end
 
 return UIBillboard
 </code></pre>
-
 <p>这段lua中，创建了一个Table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。</p>
 <p>好了，接下来，我们要为策划准备配置表了。</p>
 <h3 id="_2">创建配置表</h3>

@@ -267,7 +267,7 @@
 <p>UI默认有三个函数，<strong>OnInit</strong> ，<strong>OnOpen</strong>，<strong>OnClose</strong>，并没有使用Unity的Start</p>
 <h2 id="ui_1">UI的打开、关闭、调用都是异步的</h2>
 <p>类似资源模块，UI模块是接口，大部分异步的， 主要采用CPS异步回调的风格。常用接口：</p>
-<pre><code class="csharp">
+<pre><code class="language-csharp">
 // 异步打开UI，向UI控制器的OnOpen函数传入3个参数, 分别是1,2,3
 UIModule.Instance.OpenWindow(&quot;ExampleUI&quot;, 1, 2, 3)
 
@@ -277,7 +277,6 @@ UIModule.Instance.OpenDynamicWindow(&quot;ExampleUI&quot;, &quot;ExampleUI-Clone
 // 同步关闭UI,
 UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
 </code></pre>
-
 <p>UIModule暴露的外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。</p>
 <h2 id="openwindow">OpenWindow</h2>
 <p>异步打开UI</p>
@@ -285,12 +284,11 @@ UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
 <p>异步打开UI，与普通OpenWindow不一样的是，这是拷贝一个UI进行打开。对一些重复性的UI，比如角色血条，有重要作用</p>
 <h2 id="ui_2">获取并调用UI控制器内部方法</h2>
 <p>要获取一个UI并执行其内部方法，也是通过异步的方法来获取：</p>
-<pre><code class="csharp">UIModule.Instance.CallUI(&quot;ExampleUI&quot;, (uiController) =&gt;{
+<pre><code class="language-csharp">UIModule.Instance.CallUI(&quot;ExampleUI&quot;, (uiController) =&gt;{
     // 异步获取到UI控制器，带有异步加载的过程，完成后，回调方法。
     uiController.DoSomething();
 });
 </code></pre>
-
 <p>当一个UI已经加载过，CallUI方法将会同步进入回调。</p>
               
             </div>

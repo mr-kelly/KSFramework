@@ -263,25 +263,22 @@
               
                 <p>为xlua集成了lua的常见的第三方库，来源自xlua作者的repo：https://github.com/chexiongsheng/build_xlua_with_libs</p>
 <p>使用方法：在lua中使用require导入，然后使用</p>
-<pre><code class="lua">json = require('rapidjson')
+<pre><code class="language-lua">json = require('rapidjson')
 local lua_table = {
     a = &quot;hello&quot;,
     b = &quot;ksframework&quot;,
     c = 2020 }
 local json_str = json.encode(lua_table)
 </code></pre>
-
 <p>目前集成了这些库</p>
 <h2 id="lua-protobuf">lua-protobuf</h2>
 <p>https://github.com/starwing/lua-protobuf</p>
 <p>ps：如果需要用pbc的，可以修改编译参数指定改为用pbc，以window 64位为例，打开make_win64_lua53.bat，找到这行：</p>
-<pre><code class="bash">cmake -G &quot;Visual Studio 14 2015 Win64&quot; ..
+<pre><code class="language-bash">cmake -G &quot;Visual Studio 14 2015 Win64&quot; ..
 </code></pre>
-
 <p>修改为</p>
-<pre><code class="bash">cmake -DPBC=ON -G &quot;Visual Studio 14 2015 Win64&quot; ..
+<pre><code class="language-bash">cmake -DPBC=ON -G &quot;Visual Studio 14 2015 Win64&quot; ..
 </code></pre>
-
 <h2 id="luasocket">LuaSocket</h2>
 <p>xLua默认集成库。</p>
 <h2 id="rapidjson">RapidJson</h2>

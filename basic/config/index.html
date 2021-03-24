@@ -267,41 +267,36 @@
 <p>NOTE：新版本中已经把配置项放在Appconfig.cs中，因为这些设置项不会经常改动，把它放在代码中减少读取配置。</p>
 <h2 id="_1">读取配置</h2>
 <p>在KSFramework初始化时，会把两个ini配置文件合并。要想获取到配置的值，只需简单的执行静态方法：</p>
-<pre><code class="ini">AppEngine.GetConfig(&quot;Section&quot;, &quot;ConfigKey&quot;)
+<pre><code class="language-ini">AppEngine.GetConfig(&quot;Section&quot;, &quot;ConfigKey&quot;)
 </code></pre>
-
 <p>你可以放入自己的自定义参数并读取。</p>
 <h2 id="_2">配置项讲解</h2>
 <h3 id="assetbundlek">Assetbundle文件格式(默认.k)</h3>
 <p>如果需要修改打包后ab的文件格式，则修改配置：</p>
-<pre><code class="ini">AssetBundleExt = .k
+<pre><code class="language-ini">AssetBundleExt = .k
 或
 AssetBundleExt = .ab
 </code></pre>
-
 <h3 id="iseditorloadasset">IsEditorLoadAsset</h3>
-<pre><code class="ini">IsEditorLoadAsset = 0 ;编辑器也加载ab
+<pre><code class="language-ini">IsEditorLoadAsset = 0 ;编辑器也加载ab
 或
 IsEditorLoadAsset = 1  ;编辑器通过AssetDataBase加载资源
 </code></pre>
-
 <h3 id="luacui">使用Lua还是纯C#编写UI代码</h3>
 <p>每个界面对应一个相同名字的脚本，UGUISLuaBridge会加载lua脚本，UGUIBridge会绑定同名脚本</p>
-<pre><code class="ini">UIModuleBridge = KSFramework.UGUISLuaBridge ;使用lua编写UI代码
+<pre><code class="language-ini">UIModuleBridge = KSFramework.UGUISLuaBridge ;使用lua编写UI代码
 或
 UIModuleBridge = KSFramework.UGUIBridge ;使用C#编辑UI代码
 </code></pre>
-
 <h3 id="_3">多语言配置</h3>
-<pre><code class="ini">;当前要使用的语言
+<pre><code class="language-ini">;当前要使用的语言
 I18N = en
 ;如果没有配置I18N则取第1个为默认语言
 I18NLanguages = cn,en
 </code></pre>
-
 <h3 id="lua">Lua源代码路径</h3>
 <p>相对于Product目录的相对路径，默认是放在Product/Lua下</p>
-<pre><code class="ini">LuaPath = Lua
+<pre><code class="language-ini">LuaPath = Lua
 </code></pre>
               
             </div>

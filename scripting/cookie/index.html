@@ -271,13 +271,12 @@
 <p>查看章节：<a href="../advanced/script-reload">利用Cookie脚本重载</a></p>
 <h2 id="cookie_1">使用Cookie</h2>
 <p>Cookie的实现本质，是一个C#端的key-value存取模块：</p>
-<pre><code class="Lua">
+<pre><code class="language-Lua">
 Cookie.Set('TestString', 'hi i am cookie')
 
 print(Cookie.Get('TestString'))
 -- output: hi i am cookie
 </code></pre>
-
 <p>当Lua代码进行重载，C#层的Cookie的完整键值数据都会完整保留。</p>
               
             </div>

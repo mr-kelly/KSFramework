@@ -265,7 +265,7 @@
 <p>但是无规矩往往不成方圆，用得好的人如神仙，用不好的人却只能吐槽语言本身。KSFramework中强烈建议，使用文件模块化来组织脚本。</p>
 <p>所谓模块化的Lua脚本，是指，尽可能将每一个Lua脚本文件视为一个模块。这将是实现热重载的一个重点</p>
 <p>你可能在你的项目中见过如下代码：</p>
-<pre><code class="lua">// init.lua文件。一个典型的非模块化脚本示例
+<pre><code class="language-lua">// init.lua文件。一个典型的非模块化脚本示例
 
 require('game')
 require('skillmanager')
@@ -280,11 +280,10 @@ start_game();
 
 
 </code></pre>
-
 <p>以上是一个典型的非模块Lua代码示例，问题来了：start_game()函数究竟在哪个文件里？我们无从可知。
 而且，这样的非模块化脚本require的过程，是一个初始化的过程，会导入了大量的全局作用域的变量，这种写法往往在文件的require过程中就大量的执行了各种行为。</p>
 <p>模块化的脚本，类似如下：</p>
-<pre><code class="lua">// init.lua文件
+<pre><code class="language-lua">// init.lua文件
 local game = require('game')
 game.start_game();
 
@@ -301,7 +300,6 @@ end
 return game
 
 </code></pre>
-
 <p>每一个Lua文件，都尽可能不执行具体的行为，而是返回一个函数、返回值、或返回Table，由外部来决定它的行为。</p>
 <p>其实这跟面向对象编程是一样的，比如C#、Java中需要定义class。在定义class的时候进行静态构造器执行功能是不常用的。</p>
 <h2 id="_1">模块化与热重载</h2>

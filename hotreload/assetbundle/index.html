@@ -268,7 +268,7 @@
 <p><img alt="" src="../../images/hotreload/assetbundle-1.png" /></p>
 <p>您可以通过菜单来控制正在打开的UI进行重载Asset Bundle。</p>
 <p>这主要是通过以下代码实现的：</p>
-<pre><code class="csharp">// UIModule.cs
+<pre><code class="language-csharp">// UIModule.cs
 private IEnumerator LoadUIAssetBundle(string name, CUILoadState openState, KCallback callback = null)
 {
     if (openState.UIResourceLoader != null)
@@ -283,7 +283,6 @@ private IEnumerator LoadUIAssetBundle(string name, CUILoadState openState, KCall
     // ..............................
 }
 </code></pre>
-
 <p>如前面<a href="../resource/gc">资源垃圾回收机制</a>所说，资源是不会立刻被释放的，有间隔时间；但你依然可以调用ResourceLoader.Release(true)函数来强制立即进行垃圾回收、释放资源。这有点像Unity的GameObject.DestroyImmediate()函数。</p>
 <p>在UI的加载中使用了StaticAssetLoader，它引用变0后，链式反应，让其依赖的AssetFileLoader-&gt;HotBytesLoader-&gt;WWWLoader的引用计数分别减1。</p>
 <p>当WWWLoader的引用计数为0，它将会把加载的AssetBundle从内存中释放。</p>

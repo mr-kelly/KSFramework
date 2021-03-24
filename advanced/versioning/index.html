@@ -299,7 +299,7 @@
 <h2 id="type">版本号中的Type</h2>
 <p>KSFramework中AppVersion的版本号，Type被单独的列了出来。因为Type在实际项目开发中有着重要的作用。实际开发中，我们经常希望制作出不同类型的版本，如开发版，面向内部人员，带有调试信息；测试版，提供测试指令，面向测试人员；正式版，面向终端用户，去掉一切调试、测试信息。</p>
 <p>有了Type字段后，在项目开发中，只需要判断一下Type字段，作出功能的区分，如：</p>
-<pre><code class="csharp">if (version.VersionType == &quot;Alpha&quot;)
+<pre><code class="language-csharp">if (version.VersionType == &quot;Alpha&quot;)
 {
     // Do some development job
 }

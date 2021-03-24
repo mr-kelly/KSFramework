@@ -198,10 +198,6 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">资源包更新</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_2">文件修改时间不可靠</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#md5">使用md5做为唯一标识</a>
-    </li>
     </ul>
                     </li>
                 </ul>
@@ -265,18 +261,20 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，之前并没有提供资源包更新的具体功能。</p>
+                <h2 id="_1">前言</h2>
+<p>在KSFramework中，之前并没有提供资源包更新的具体功能。</p>
 <p>因资源包更新同时还涉及到资源文件服务器的整合、资源包的制作这些耦合的功能。</p>
 <p>您可以参考作者的另一个项目，<a href="https://github.com/mr-kelly/resources_packer">resources_packer</a>提供资源差异包的制作功能。</p>
 <p>要实现更新的机制非常之多，最常见的更新莫过于启动时进行更新。但是基于KSFramework热重载的特性，建议可以更多的考虑运行时静默的下载更新，静默重载。</p>
-<p>经过几个项目的迭代之后，也有一些朋友问我能不能给KSFramrwork加入下载资源的功能，现在我决定加入这项功能。</p>
-<h2 id="_1">文件唯一标识</h2>
-<h3 id="_2">文件修改时间不可靠</h3>
-<p>我遇到有的项目是手动管理的文件依赖，采用文件修改时间做为唯一标识，因为在打包ab时，如果资源没有变化则不会打包，ab的修改时间就不会变化。</p>
+<p>在经过几个项目的迭代之后，也有一些朋友问我能不能给KSFramrwork加入下载资源的功能，现在我决定加入这项功能。</p>
+<p>注意：制作更新包所使用的脚本为python，所以需要在你的机器上安装python3</p>
+<h2 id="_2">文件唯一标识</h2>
+<h3 id="_3">文件修改时间不可靠</h3>
+<p>我遇到有的项目是手动管理ab依赖，采用文件修改时间做为唯一标识，因为在打包ab时，如果资源没有变化则不会打包，ab的修改时间就不会变化，可以设置svn操作时不修改文件的时间《<a href="https://www.cnblogs.com/zhaoqingqing/p/14545483.html">svn把文件日期设置为最后提交的时间</a>》。</p>
 <p>但是使用unity自动管理依赖的话，在同一台机器上且不删除Library目录的情况下，对同一资源重复打包，文件的修改时间也不会变化，但如果更换机器或删除Library则会变化。在我们多个实际项目中，都是会有一台稳定的打包机，打包工作在打包机上执行。但如果删除ab重新打包则修改时间会变化</p>
 <h3 id="md5">使用md5做为唯一标识</h3>
 <p>把ab删除后，重新打包，md5不会变化</p>
-<h2 id="_3">制作差异补丁</h2>
+<h2 id="_4">制作差异补丁</h2>
 <h2 id="ab">ab资源</h2>
 <p>按照ab划分粒度不要太细的原则，在实际项目中ab文件不会出现太多小文件，所以采用下载单个ab的方式</p>
 <p>用法：</p>
@@ -291,11 +289,16 @@
 <p>不制作差异补丁，直接下载单个文件，我们有个ILRuntime热更新的项目就是这么干的，这样简单省事，但是会碰到CDN下载小文件速度非常慢的问题，而如果是Lua的话会有非常多的小文件，不建议这么干。</p>
 <p>方案三</p>
 <p>有个简单的做法，把全部的lua文件打包一个zip，每次都完整下载，我们有一个mmo项目，全部lua源代码是10MB，压缩成zip之后只有3MB，这个大小是可以接受的，同理配置表文件也可以这样处理</p>
-<h2 id="_4">资源冗余</h2>
+<h2 id="_5">资源冗余</h2>
 <p>在开发期删除一个设置了abName的prefab，再重新打包ab，ab目录中不会删除这个prefab，自动和手动管理依赖都会存在这个问题。在我们项目中会定期进行删除全部资源，然后全部重新导出一遍资源，以此来清除无用资源。</p>
-<h2 id="_5">下载更新资源</h2>
-<p>目前是在游戏启动时，进行下载资源</p>
-<h2 id="_6">使用说明</h2>
+<h2 id="_6">下载更新资源和演示</h2>
+<p>目前是在游戏启动时(下载功能放在不可热更层)，进行下载资源</p>
+<p>TODO 增加下载完整包的功能</p>
+<h3 id="_7">提示更新</h3>
+<p><img alt="download_check" src="../../images/advanced/download_check.png" /></p>
+<h3 id="_8">显示更新进度</h3>
+<p><img alt="download_res" src="../../images/advanced/download_res.png" /></p>
+<h2 id="_9">使用说明</h2>
 <p>从git上拉取KSFramrwork之后打开build_tools目录</p>
 <ol>
 <li>双击生成filelist-xxx.bat，生成filelist</li>
@@ -303,6 +306,9 @@
 <li>双击hfs，启动hfs(可一直运行不关闭)，拖动cdn目录到hfs中</li>
 <li>运行游戏即可更新资源</li>
 </ol>
+<p>更加详细的详细请查阅《README.md》</p>
+<h2 id="_10">可能存在的问题</h2>
+<p>下载过程中退出游戏，下次启动，是否会继续上次下载的进度/解压zip</p>
               
             </div>
           </div>

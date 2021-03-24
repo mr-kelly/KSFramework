@@ -271,7 +271,7 @@
 <p>KEngine中的配置表模块采用惰式加载，即在第一次使用，才会进行真正的加载。这也意味着，一个程序启动的速度，与配置表的加载完整的脱离关系。</p>
 <p>当然了，如果在启动阶段，依然因为各种原因，大量的使用了配置表，重复了大量的加载，依然是会占据启动速度的。</p>
 <h2 id="_2">强制其显示初始化</h2>
-<pre><code class="csharp">
+<pre><code class="language-csharp">
 // 预热GameConfig表
 GameConfigSettings.GetInstance(),
 
@@ -279,7 +279,6 @@ GameConfigSettings.GetInstance(),
 SettingsManager.AllSettingsReload();
 
 </code></pre>
-
 <p>实际开发过程中，我就是想针对某些表，先初始化，再进游戏？
 根据<strong>第一次使用时进行初始化</strong>的原则，强制在初始化阶段进行一次调用，就可以触发初始化加载。</p>
               

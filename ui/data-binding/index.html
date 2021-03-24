@@ -266,7 +266,7 @@
 <p>数据绑定技术在ASP.net、Angular JS、Cocoa Touch等等Web、UI开发中非常的普遍存在。</p>
 <h2 id="_1">数据绑定的实现代码</h2>
 <p>因为Unity UGUI的存在，实现数据绑定，主要从我们的代码脚本着手。其本质，是设置Setter——当变量被改变时，触发连带的函数。</p>
-<pre><code class="Lua">-- 绑定变量TestNumber, 当数值改变时，设置UI的文字
+<pre><code class="language-Lua">-- 绑定变量TestNumber, 当数值改变时，设置UI的文字
 Cookie.AddSetListener('TestNumber', function(setValue)
     uiText.text = setValue
 end)

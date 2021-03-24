@@ -263,7 +263,7 @@
               
                 <h2 id="_1">自定义解析</h2>
 <p>分析配置表模块自动生成的代码，会发现，所有的XXXSettings类都使用partial修饰的。因此你可以扩展partial类来实现自己的字符串解析。</p>
-<pre><code class="csharp">
+<pre><code class="language-csharp">
     public partial class GameConfigSetting
     {
         public int IntValue {
@@ -277,13 +277,12 @@
         }
     }
 </code></pre>
-
 <p>如上示例，为GameConfigSetting配置项增加一个IntValue的Getter，自动将读取到的Value字符串，强制解析成数字整形。</p>
 <h2 id="_2">扩展列的类型</h2>
 <p>配置表模块在编译时，把Excel转化成TSV，并根据Excel的头部信息，生成对应的代码； 比如源码库中的Test.xlsx Excel文件，两个列头，Id和Value，其下的列头信息标注其分别是string和I18N。 这是对这两个列的类型声明。</p>
 <p><img alt="列Id注明是string类型，列Value注明是I18N类型" src="../../images/setting/custom-1.png" /></p>
 <p>在生成代码的时候，会把其类型作为代码的一部分，写入到代码中：</p>
-<pre><code class="csharp">
+<pre><code class="language-csharp">
     /// &lt;summary&gt;
     /// Auto Generate for Tab File: &quot;Test.bytes&quot;
     /// Singleton class for less memory use
@@ -325,17 +324,15 @@
         }
 
 </code></pre>
-
 <p>其中，生成的代码，总结生成的核心是：</p>
-<pre><code class="csharp">// string                   // string
+<pre><code class="language-csharp">// string                   // string
 string Id = row.Get_string(row.Values[0], &quot;&quot;);
 // I18N                      // I18N
 I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
 </code></pre>
-
 <p>代码中，会引用I18N类、Get_I18N方法。
 默认情况，KEngine的TableRowParser提供了string、int、bool等常见类型的解析方法，而像I18N这样的一个类，则是通过C#的扩展功能，扩展KEngine中的TableRow类型，来自定义解析配置表读取的方法。</p>
-<pre><code class="csharp">// 定义类
+<pre><code class="language-csharp">// 定义类
 public class I18N
 {
     public I18N(str) {}
@@ -351,9 +348,8 @@ public static class I18NExtensions
     }
 }
 </code></pre>
-
 <p>这样做之后，配置表自动生成的代码就能正确的按照你自定义的方法进行解析了：</p>
-<pre><code class="csharp">I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
+<pre><code class="language-csharp">I18N Value = row.Get_I18N(row.Values[1], &quot;&quot;);
 </code></pre>
               
             </div>
