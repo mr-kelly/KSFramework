@@ -130,6 +130,7 @@ namespace KEngine
         public static AppEngine New(GameObject gameObjectToAttach, IAppEntry entry, IList<IModuleInitable> modules)
         {
             Debuger.Assert(gameObjectToAttach != null && modules != null);
+            AppConfig.Init();
             AppEngine appEngine = gameObjectToAttach.AddComponent<AppEngine>();
             appEngine._isNewByStatic = true;
             appEngine.GameModules = modules;

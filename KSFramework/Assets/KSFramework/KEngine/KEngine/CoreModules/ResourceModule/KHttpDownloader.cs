@@ -94,12 +94,7 @@ namespace KEngine
 
             return downloader;
         }
-
-        public static string GetFullSavePath(string relativePath)
-        {
-            return KResourceModule.GetAppDataPath() + "/" + relativePath;
-        }
-
+        
         private void Init(string fullUrl, string saveFullPath, bool useContinue, bool useCache = false,
             int expireDays = 1, int timeout = 10,bool isLog = false)
         {

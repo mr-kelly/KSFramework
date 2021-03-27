@@ -162,6 +162,7 @@ namespace KSFramework
                 return null;
             }
             byte[] script =  KResourceModule.LoadAssetsSync(scriptPath);
+            Debuger.Assert(script!=null,$"ExecuteScript error,script byte null,path:{scriptPath}");
             var ret = ExecuteScript(script, scriptRelativePath);
             return ret;
         }

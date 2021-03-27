@@ -73,7 +73,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         needUnpackSetting = false;
     }
 
-    private bool CheckVersion(string verName, bool needDownload = true)
+    private bool CompareVersion(string verName, bool needDownload = true)
     {
         remoteVersion.TryGetValue(verName, out FileList remote_ver);
         localVersion.TryGetValue(verName, out FileList local_ver);
@@ -81,7 +81,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         Log.LogToFile($"{verName}版本是否相同:{isSame} ,远程版本号:{remote_ver?.md5} ,本地版本号:{local_ver?.md5}");
         if (isSame == false)
         {
-            var realPath = KResourceModule.GetAppDataPath() + "/" + verName;
+            var realPath = KResourceModule.AppDataPath + verName;
             if (File.Exists(realPath) && remote_ver != null && KTool.MD5_File(realPath) == remote_ver.md5)
             {
                 Log.LogToFile($"文件存在:{verName}，且md5一致，跳过下载");
@@ -105,6 +105,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         loadingPanel.SetProgress(I18N.Get("download_check"));
         loadingPanel.DisPlay(true);
         string url = AppConfig.resUrl + AppConfig.VersionTxtName;
+        Log.LogToFile($"读取远程version.txt:{url}");
         var loader = KWWWLoader.Load(url);
         while (!loader.IsCompleted)
         {
@@ -123,6 +124,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         }
 
         url = KResourceModule.GetResourceFullPath(AppConfig.VersionTxtName, false);
+        Log.LogToFile($"读取本地version.txt:{url}");
         loader = KWWWLoader.Load(url);
         while (!loader.IsCompleted)
         {
@@ -141,9 +143,9 @@ public class DownloadManager : KSingleton<DownloadManager>
 
         loader.Dispose();
         loader = null;
-        CheckVersion("lua.zip");
-        CheckVersion("setting.zip");
-        bool filelistSame = CheckVersion("filelist.txt", false);
+        CompareVersion("lua.zip");
+        CompareVersion("setting.zip");
+        bool filelistSame = CompareVersion("filelist.txt", false);
         if (filelistSame == false)
         {
             //对比ab列表
@@ -222,7 +224,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         var loadingPanel = UIModule.Instance.GetOrCreateUI<LoadingPanel>();
         loadingPanel.DisPlay(true);
 
-        var appDataPath = KResourceModule.GetAppDataPath();
+        var appDataPath = KResourceModule.AppDataPath;
         //TODO 是否所有资源都下载成功
         var total = downloadFiles.Count;
         for (int i = 0; i < total; i++)
@@ -354,7 +356,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         }
 
         string abDirName = AppConfig.StreamingBundlesFolderName + "/" + KResourceModule.GetBuildPlatformName() + "/";
-        var savePath = KResourceModule.GetAppDataPath() + "/" + abDirName;
+        var savePath = KResourceModule.AppDataPath + abDirName;
         using (StringReader reader = new StringReader(remote))
         {
             while (true)

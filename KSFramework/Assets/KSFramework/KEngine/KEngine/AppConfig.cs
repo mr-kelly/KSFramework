@@ -8,6 +8,7 @@ using UnityEngine;
 /// Date：2020/12/4 
 /// Desc：app常量配置
 /// </summary>
+
 public class AppConfig
 {
     /// <summary>
@@ -43,24 +44,20 @@ public class AppConfig
     /// </summary>
     public static bool UseAssetDebugger = Application.isEditor;
     /// <summary>
-    /// Editor下加载资源从磁盘的相对目录读取，真机上则是Application.persistentDataPath
+    /// 仅对Editor有效，Editor下加载资源默认从磁盘的相对目录读取，如果需要从Aplication.streamingAssets则设置为true
     /// </summary>
-    public static bool UseAppPath;
+    public static bool ReadStreamFromEditor;
     /// <summary>
     /// cdn资源地址，正式项目通过服务器下发
     /// </summary>
-    public static string resUrl = "http://127.0.0.1:8080/cdn/";
-    // public static string resUrl = "http://192.168.190.112:8080/cdn/";
+     public static string resUrl = "http://127.0.0.1:8080/cdn/";
+    //public static string resUrl = "http://192.168.190.112:8080/cdn/";
 
     public static bool IsDownloadRes = true;
 
     public static string VersionTextPath
     {
-        get { return AppConfig.ProductRelPath + "/" + KResourceModule.GetBuildPlatformName() + "-version.txt"; }
-    }
-    public static string VersionTextStreamPath
-    {
-        get { return Application.streamingAssetsPath + $"/{AppConfig.VersionTxtName}"; }
+        get { return KResourceModule.AppBasePath + "/" + VersionTxtName; }
     }
     public static string VersionTxtName
     {
@@ -158,15 +155,8 @@ public class AppConfig
 
     #endregion
 
-    static AppConfig()
+    public static void  Init()
     {
-        if (IsDownloadRes)
-        {
-            UseAppPath = true;
-        }
-        else
-        {
-            UseAppPath = !Application.isEditor;
-        }
+        IsLogDeviceInfo = !Application.isEditor;
     }
 }
