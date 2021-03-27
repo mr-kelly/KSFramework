@@ -227,11 +227,11 @@ namespace KEngine.Editor
         [MenuItem("KEngine/Clear PC PersistentDataPath",false,99)]
         public static void ClearPersistentDataPath()
         {
-            foreach (string dir in Directory.GetDirectories(KResourceModule.GetAppDataPath()))
+            foreach (string dir in Directory.GetDirectories(KResourceModule.AppDataPath))
             {
                 Directory.Delete(dir, true);
             }
-            foreach (string file in Directory.GetFiles(KResourceModule.GetAppDataPath()))
+            foreach (string file in Directory.GetFiles(KResourceModule.AppDataPath))
             {
                 File.Delete(file);
             }
@@ -240,7 +240,7 @@ namespace KEngine.Editor
         [MenuItem("KEngine/Open PC PersistentDataPath Folder",false,98)]
         public static void OpenPersistentDataPath()
         {
-            System.Diagnostics.Process.Start(KResourceModule.GetAppDataPath());
+            System.Diagnostics.Process.Start(KResourceModule.AppDataPath);
         }
 
         [MenuItem("KEngine/Clear Prefs")]
@@ -299,9 +299,9 @@ namespace KEngine.Editor
                 linkFile = Application.dataPath + "/../AssetLink.bat";
             }
             KEditorUtils.ExecuteFile(linkFile);
-            
-            if (File.Exists(AppConfig.VersionTextStreamPath)) File.Delete(AppConfig.VersionTextStreamPath);
-            File.Copy(AppConfig.VersionTextPath, AppConfig.VersionTextStreamPath);
+            var  dstPath = Application.streamingAssetsPath + "/" + AppConfig.VersionTxtName;
+            if (File.Exists(dstPath)) File.Delete(dstPath);
+            File.Copy(AppConfig.VersionTextPath, dstPath);
             Log.Info("拷贝version.txt完成");
             AssetDatabase.Refresh();
         }
@@ -310,7 +310,7 @@ namespace KEngine.Editor
         {
             KSymbolLinkHelper.DeleteAllLinks(LuaLinkPath);
             yield return new WaitForSeconds(1.0f);
-            var exportPath = KResourceModule.ProductPathWithoutFileProtocol + AppConfig.LuaPath + "/";
+            var exportPath = KResourceModule.AppBasePath + AppConfig.LuaPath + "/";
             if (!Directory.Exists(LuaLinkPath)) Directory.CreateDirectory(LuaLinkPath);
             KSymbolLinkHelper.SymbolLinkFolder(exportPath, LuaLinkPath);
         }
@@ -319,7 +319,7 @@ namespace KEngine.Editor
         {
             KSymbolLinkHelper.DeleteAllLinks(SettingLinkPath);
             yield return new WaitForSeconds(1.0f);
-           var exportPath = KResourceModule.ProductPathWithoutFileProtocol + AppConfig.SettingResourcesPath + "/";
+           var exportPath = KResourceModule.AppBasePath + AppConfig.SettingResourcesPath + "/";
             if (!Directory.Exists(SettingLinkPath)) Directory.CreateDirectory(SettingLinkPath);
             KSymbolLinkHelper.SymbolLinkFolder(exportPath, SettingLinkPath);
         }

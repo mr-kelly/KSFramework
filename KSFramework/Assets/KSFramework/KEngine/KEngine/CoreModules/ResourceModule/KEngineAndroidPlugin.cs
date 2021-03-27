@@ -108,9 +108,9 @@ namespace KEngine
         }
 
         /// <summary>
-        /// Call from java get asset file bytes
+        /// Call from java get asset file bytes(相对路径)
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">相对路径</param>
         /// <returns></returns>
         public static byte[] GetAssetBytes(string path)
         {

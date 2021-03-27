@@ -311,7 +311,7 @@ public class KQuickWindowEditor : EditorWindow
                 Log.LogError($"未生成filelist，请再试一次或手动执行py脚本");
                 return;
             }
-            var dstPath = KResourceModule.GetAppDataPath() + "/" + AppConfig.VersionTxtName;
+            var dstPath = KResourceModule.AppDataPath + AppConfig.VersionTxtName;
             if(File.Exists(dstPath)) File.Delete(dstPath);
             File.Copy(AppConfig.VersionTextPath,dstPath);
             Log.Info($"文件拷贝成功，{AppConfig.VersionTextPath}->{dstPath}");

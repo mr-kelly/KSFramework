@@ -31,7 +31,6 @@ using UnityEngine;
 
 namespace KEngine
 {
-
     /// <summary>
     /// 读取字节，调用WWW, 会自动识别Product/Bundles/Platform目录和StreamingAssets路径
     /// </summary>
@@ -45,13 +44,21 @@ namespace KEngine
         private KWWWLoader _wwwLoader;
 
         private LoaderMode _loaderMode;
-
+        
         public static KBytesLoader Load(string path, LoaderMode loaderMode)
         {
             var newLoader = AutoNew<KBytesLoader>(path, null, false, loaderMode);
             return newLoader;
         }
+        
+        public override void Init(string url, params object[] args)
+        {
+            base.Init(url, args);
 
+            _loaderMode = (LoaderMode)args[0];
+            KResourceModule.Instance.StartCoroutine(CoLoad(url));
+        }
+        
         private IEnumerator CoLoad(string url)
         {
             if (_loaderMode == LoaderMode.Sync)
@@ -59,7 +66,7 @@ namespace KEngine
                 Bytes = KResourceModule.LoadAssetsSync(url);
             }
             else
-            { 
+            {
                 string _fullUrl;
                 var getResPathType = KResourceModule.GetResourceFullPath(url, _loaderMode == LoaderMode.Async, out _fullUrl);
                 if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
@@ -68,7 +75,6 @@ namespace KEngine
                     OnFinish(null);
                     yield break;
                 }
-
                 _wwwLoader = KWWWLoader.Load(_fullUrl);
                 while (!_wwwLoader.IsCompleted)
                 {
@@ -78,10 +84,6 @@ namespace KEngine
 
                 if (!_wwwLoader.IsSuccess)
                 {
-                    //if (AssetBundlerLoaderErrorEvent != null)
-                    //{
-                    //    AssetBundlerLoaderErrorEvent(this);
-                    //}
                     Log.Error("[HotBytesLoader]Error Load WWW: {0}", url);
                     OnFinish(null);
                     yield break;
@@ -92,7 +94,6 @@ namespace KEngine
 #else
                 Bytes = _wwwLoader.Www.bytes;
 #endif
-
             }
 
             OnFinish(Bytes);
@@ -106,16 +107,6 @@ namespace KEngine
                 _wwwLoader.Release();
             }
         }
-
-        public override void Init(string url, params object[] args)
-        {
-            base.Init(url, args);
-
-            _loaderMode = (LoaderMode)args[0];
-            KResourceModule.Instance.StartCoroutine(CoLoad(url));
-
-        }
-
     }
 
 }
