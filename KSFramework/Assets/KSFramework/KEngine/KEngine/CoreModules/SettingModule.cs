@@ -38,19 +38,6 @@ namespace KEngine.Modules
     /// </summary>
     public class SettingModule : SettingModuleBase
     {
-        public delegate byte[] LoadSettingFuncDelegate(string filePath);
-        public delegate byte[] SettingBytesFilterDelegate(byte[] bytes);
-
-        /// <summary>
-        /// Filter the loaded bytes, which settings file may be encrypted, so you can manipulate the bytes
-        /// </summary>
-        public static SettingBytesFilterDelegate SettingBytesFilter;
-
-        /// <summary>
-        /// Override the default load file strategy
-        /// </summary>
-        public static LoadSettingFuncDelegate CustomLoadSetting;
-
         private static readonly bool IsEditor;
         static SettingModule()
         {
@@ -63,9 +50,8 @@ namespace KEngine.Modules
         internal SettingModule()
         {
         }
-
-       
-
+        
+        
         /// <summary>
         /// Singleton
         /// </summary>
@@ -91,35 +77,16 @@ namespace KEngine.Modules
         /// <returns></returns>
         protected override string LoadSetting(string path)
         {
-            byte[] fileContent = CustomLoadSetting != null ? CustomLoadSetting(path) : DefaultLoadSetting(path);
+            byte[] fileContent = KResourceModule.LoadAssetsSync(GetSettingFilePath(path));
             return Encoding.UTF8.GetString(fileContent);
         }
-
-        /// <summary>
-        /// Default load setting strategry,
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static byte[] DefaultLoadSetting(string path)
-        {
-            string fullUrl ;
-            var getResPathType = KResourceModule.GetResourceFullPath(GetTextFilePath(path), false, out fullUrl);
-            if (getResPathType == KResourceModule.GetResourceFullPathType.Invalid)
-            {
-                Log.Error("can not find file: {0}", fullUrl);
-                return null;
-            }
-            var bytes = File.ReadAllBytes(fullUrl);
-            bytes = SettingBytesFilter != null ? SettingBytesFilter(bytes) : bytes;
-            return bytes;
-        }
-
+        
         /// <summary>
         /// 获取配置表的路径，都在Settings目录下
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string GetTextFilePath(string path)
+        public static string GetSettingFilePath(string path)
         {
             return AppConfig.SettingResourcesPath + "/" + path;
         }

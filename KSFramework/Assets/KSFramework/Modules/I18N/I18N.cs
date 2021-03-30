@@ -57,7 +57,7 @@ namespace KSFramework
             Strs.Clear();
             //读取语言包
             var lang_file = $"I18N/lang{AppConfig.LangFileFlag}.txt";
-            var bytes = SettingModule.DefaultLoadSetting(lang_file);
+            var bytes = KResourceModule.LoadAssetsSync(SettingModule.GetSettingFilePath(lang_file));
             var fileContent = Encoding.UTF8.GetString(bytes);
             TextParser.ParseText(fileContent,Strs);
 
