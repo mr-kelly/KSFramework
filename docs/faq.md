@@ -16,6 +16,19 @@
 
 注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。
 
+### 从StreamingAssets目录同步读取文件
+
+对于其它的文件，请使用`KResourceModule.LoadAssetsSync`，针对安卓平台有做特殊处理，源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java
+
+如果是ab，请获取完整路径后使用
+
+```
+var res_path = KResourceModule.GetAbFullPath($"ui/{uiBase.UITemplateName.ToLower()}");
+var assetBundle = AssetBundle.LoadFromFile(res_path);
+```
+
+
+
 ### 如何更新仓库？
 
 如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。
