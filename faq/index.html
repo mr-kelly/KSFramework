@@ -78,6 +78,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#apk">如何打包APK？</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#streamingassets">从StreamingAssets目录同步读取文件</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#_3">如何更新仓库？</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#oninit">OnInit会调用两次？</a>
@@ -293,6 +295,12 @@
 <li>打包期间会自动Link AB资源到<strong>StreamingAssets</strong>目录下</li>
 </ol>
 <p>注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。</p>
+<h3 id="streamingassets">从StreamingAssets目录同步读取文件</h3>
+<p>对于其它的文件，请使用<code>KResourceModule.LoadAssetsSync</code>，针对安卓平台有做特殊处理，源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java</p>
+<p>如果是ab，请获取完整路径后使用</p>
+<pre><code>var res_path = KResourceModule.GetAbFullPath($&quot;ui/{uiBase.UITemplateName.ToLower()}&quot;);
+var assetBundle = AssetBundle.LoadFromFile(res_path);
+</code></pre>
 <h3 id="_3">如何更新仓库？</h3>
 <p>如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。</p>
 <p>原有目录如下：</p>
