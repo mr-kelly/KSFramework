@@ -176,19 +176,14 @@ namespace KEngine
 #endif
             if (AppConfig.IsLogAbLoadCost) beginTime = Time.realtimeSinceStartup;
             
-            string _fullUrl;
-            var pathType =  KResourceModule.GetResourceFullPath(KResourceModule.BundlesPathRelative + relativeUrl, false, out _fullUrl);
+            string _fullUrl =  KResourceModule.GetAbFullPath(relativeUrl);
              
-            if (pathType == KResourceModule.GetResourceFullPathType.Invalid)
+            if (string.IsNullOrEmpty(_fullUrl))
             {
                 OnFinish(null);
                 yield break;
             }
-            if(Application.platform == RuntimePlatform.Android && pathType == KResourceModule.GetResourceFullPathType.InApp)
-            {
-                _fullUrl = "jar:file://" + _fullUrl;
-            }
-            
+      
             AssetBundle assetBundle = null;
             if (_loaderMode == LoaderMode.Sync)
             {
