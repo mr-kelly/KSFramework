@@ -79,6 +79,8 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 | Unity 2019  | 支持     | 2019.3.7f1已测试                             |
 | Unity2020   | 支持     | Unity 2020.1.2f1已测试                       |
 
+如果是Unity 4.x建议使用KEngine
+
 ### 解决遇到的问题
 
 下载后，如果运行出错，或者使用其它版本的Unity打开无法运行，尝试以下方法：
@@ -93,27 +95,21 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 
 KSFramework常见问题解答篇：https://mr-kelly.github.io/KSFramework/faq/
 
-如果发现框架中存在的问题，欢迎pull 到仓库中，或提issuse。
+如果发现框架中存在的问题或有改进的地方，欢迎pull requests到仓库中，或提issuse。
 
-## 教程
+## 教程和文档
 
 - 常见问题解答：https://mr-kelly.github.io/KSFramework/faq/
-
-- [**KSFramework: Unity3D开发辅助框架快速入门**](http://www.jianshu.com/p/ccb491ed4260)
-- [KEngine策划指南: 配置表格的编辑与编译](http://www.jianshu.com/p/ead1a148b504)
-- [KEngine: 资源的打包、加载、调试监控](http://www.jianshu.com/p/ce3b5d0bdf8c)
-- [KSFramework常见问题：Lua脚本热重载，内存状态数据会不会丢失？](http://www.jianshu.com/p/eebd5cfce87f)
-- [KSFramework常见问题：Excel如何进行SVN协作、差异比较？](http://www.jianshu.com/p/2ea5468e9d5b)
-- [KEngine配置表：扩展表格解析类型](http://www.jianshu.com/p/722c5856166f)
-- [KEngine:配置表的条件编译](http://www.jianshu.com/p/cb7ddfab23ba)
-
-## 文档
-
-- [【查看完整文档】](https://mr-kelly.github.io/KSFramework/)
+- [查看完整文档](https://mr-kelly.github.io/KSFramework/)
 - [功能特性](https://mr-kelly.github.io/KSFramework/overview/features/)
 - [策划指南：配置表的使用](https://mr-kelly.github.io/KSFramework/setting/guide/)
+- [**KSFramework: Unity3D开发辅助框架快速入门**](https://mr-kelly.github.io/KSFramework/quickstart/)
+- [KEngine策划指南: 配置表格的编辑与编译](https://mr-kelly.github.io/KSFramework/setting/guide/)
+- [KEngine: 资源的打包、加载、调试监控](https://mr-kelly.github.io/KSFramework/resource/guide/)
+- [KSFramework常见问题：Lua脚本热重载，内存状态数据会不会丢失？](https://mr-kelly.github.io/KSFramework/advanced/script-reload/)
+- [KSFramework常见问题：Excel如何进行SVN协作、差异比较？](https://mr-kelly.github.io/KSFramework/advanced/excel-diff/)
 
-...
+
 
 ## 结构组成
 
@@ -124,8 +120,8 @@ KSFramework常见问题解答篇：https://mr-kelly.github.io/KSFramework/faq/
 ## 涉及第三方库
 
 - [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua), master分支已切换为默认使用xLua
-- [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua) 较少维护
-- [ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新](https://github.com/Ourpalm/ILRuntime) , 待续
+- [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua)  在slua分支
+- [ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新](https://github.com/Ourpalm/ILRuntime) ,在ILRuntime分支
 - [KEngine:AssetBundle打包加载框架](https://github.com/mr-kelly/KEngine)
   - [ini-parser:Ini配置文件解析器，支持多文件合并](https://github.com/rickyah/ini-parser)
   - [Premake:VS工程生成](https://github.com/premake/premake-core)
