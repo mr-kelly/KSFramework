@@ -81,7 +81,7 @@ namespace KEngine
         public static AssetBundleLoader Load(string url, CAssetBundleLoaderDelegate callback = null,
             LoaderMode loaderMode = LoaderMode.Async)
         {
-            if(!url.EndsWith(AppConfig.AssetBundleExt))
+            if(!KResourceModule.IsEditorLoadAsset && !url.EndsWith(AppConfig.AssetBundleExt))
                 url = url + AppConfig.AssetBundleExt;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             url = url.ToLower();
@@ -125,6 +125,14 @@ namespace KEngine
 
         public override void Init(string url, params object[] args)
         {
+#if UNITY_EDITOR
+            if (KResourceModule.IsEditorLoadAsset)
+            {
+                base.Init(url);
+                LoadInEditor(url);
+                return;
+            }
+#endif
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             PreLoadManifest();
 #endif
@@ -259,10 +267,9 @@ namespace KEngine
         {
             if (Application.isEditor)
             {
-                if (Url.Contains("Arial"))
+                if (Url != null && Url.Contains("Arial"))
                 {
                     Log.Error("要释放Arial字体！！错啦！！builtinextra:{0}", Url);
-                    //UnityEditor.EditorApplication.isPaused = true;
                 }
             }
 
@@ -277,6 +284,18 @@ namespace KEngine
             if (_loadedAssets == null)
                 _loadedAssets = new List<Object>();
             _loadedAssets.Add(getAsset);
+        }
+
+        private void LoadInEditor(string path)
+        {
+#if UNITY_EDITOR
+            Object getAsset = UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/" + KEngineDef.ResourcesBuildDir + "/" + path + ".prefab", typeof(UnityEngine.Object));
+           if (getAsset == null)
+           {
+               Log.Error("Asset is NULL(from {0} Folder): {1}", KEngineDef.ResourcesBuildDir, path);
+           }
+           OnFinish(getAsset);
+#endif
         }
     }
 

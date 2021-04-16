@@ -364,7 +364,7 @@ namespace KEngine
             {
                 var type = GetType();
                 var typeDict = ABManager.GetTypeDict(type);
-                //if (Url != null) // TODO: 以后去掉
+                if (Url != null) 
                 {
                     var bRemove = typeDict.Remove(Url);
                     if (!bRemove)

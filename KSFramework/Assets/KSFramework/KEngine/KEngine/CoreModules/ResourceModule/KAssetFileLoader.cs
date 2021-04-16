@@ -72,22 +72,6 @@ namespace KEngine
             return AutoNew<AssetFileLoader>(path, realcallback, false, loaderMode);
         }
 
-        /// <summary>
-        /// Check Bundles/[Platform]/xxxx.kk exists?
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public static bool IsBundleResourceExist(string url)
-        {
-            if (KResourceModule.IsEditorLoadAsset)
-            {
-                var editorPath = "Assets/" + KEngineDef.ResourcesBuildDir + "/" + url;
-                var hasEditorUrl = File.Exists(editorPath);
-                if (hasEditorUrl) return true;
-            }
-
-            return KResourceModule.IsResourceExist(KResourceModule.BundlesPathRelative  + url.ToLower() + AppConfig.AssetBundleExt);
-        }
         public override void Init(string url, params object[] args)
         {
             var loaderMode = (LoaderMode)args[0];
@@ -98,14 +82,11 @@ namespace KEngine
 
         private IEnumerator _Init(string path, LoaderMode loaderMode)
         {
-
-
             Object getAsset = null;
-
-			if (KResourceModule.IsEditorLoadAsset) 
+            if (KResourceModule.IsEditorLoadAsset) 
 			{
 #if UNITY_EDITOR
-				if (path.EndsWith(".unity"))
+                if (path.EndsWith(".unity") || path.StartsWith("Scene/"))
 				{
 					// scene
 					getAsset = KResourceModule.Instance;
@@ -119,11 +100,8 @@ namespace KEngine
 						Log.Error("Asset is NULL(from {0} Folder): {1}", KEngineDef.ResourcesBuildDir, path);
 					}
 				}
-#else
-				Log.Error("`IsEditorLoadAsset` is Unity Editor only");
-
 #endif
-			}
+            }
             else if (!AppConfig.IsLoadAssetBundle)
             {
                 string extension = Path.GetExtension(path);
