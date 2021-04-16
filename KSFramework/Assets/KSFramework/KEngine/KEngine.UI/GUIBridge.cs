@@ -87,6 +87,7 @@ namespace KEngine.UI
                 var windowAsset = go.GetComponent<UIWindowAsset>();
                 if (windowAsset)
                 {
+                    //TODO unity2019.3.7f1 图片已设置上去了，但无法显示，勾选atlas中的Include In Build就可以正常显示，但打包AB时需要强制去掉勾选
                     windowAsset.IsUIEditor = true;
                     windowAsset.InitEvent();//监听atlasRequested事件
                     if (!string.IsNullOrEmpty(windowAsset.atals_arr))
