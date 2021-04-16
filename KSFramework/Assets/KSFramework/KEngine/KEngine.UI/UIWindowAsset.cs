@@ -30,7 +30,6 @@ using UnityEngine;
 using UnityEngine.U2D;
 #if UNITY_EDITOR
 using UnityEditor;
-
 #endif
 
 namespace KEngine.UI
@@ -52,8 +51,9 @@ namespace KEngine.UI
         public PanelType PanelType = PanelType.NormalUI;
         public bool IsUIEditor = true;
         public string atals_arr = "";
+        
 #if UNITY_EDITOR
-        private void Awake()
+        public void InitEvent()
         {
             if (IsUIEditor)
             {
@@ -61,6 +61,11 @@ namespace KEngine.UI
             }
         }
 
+        void Awake()
+        {
+            InitEvent();
+        }
+        
         private void OnDestroy()
         {
             if (IsUIEditor)

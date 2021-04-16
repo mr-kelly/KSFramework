@@ -893,8 +893,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StringArgument: 
   PanelType: 1
-  IsUIEditor: 0
-  atals_arr: 
+  IsUIEditor: 1
+  atals_arr: atlas_common
 --- !u!114 &987455125
 MonoBehaviour:
   m_ObjectHideFlags: 0

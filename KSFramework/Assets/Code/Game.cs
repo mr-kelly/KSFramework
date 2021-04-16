@@ -108,6 +108,8 @@ public class Game : KSGame
         {
             Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Title));
         }
+        
+        //加载公共图集
         AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
         {
             if (isOk && ab)

@@ -89,7 +89,6 @@ namespace KEngine
                         resMgr = new GameObject("_ResourceModule_");
                         GameObject.DontDestroyOnLoad(resMgr);
                     }
-
                     _Instance = resMgr.AddComponent<KResourceModule>();
                 }
 
@@ -289,6 +288,13 @@ namespace KEngine
         /// <returns></returns>
         public static bool IsResourceExist(string url, bool raiseError = true)
         {
+#if UNITY_EDITOR
+            if (KResourceModule.IsEditorLoadAsset && !url.EndsWith(".lua") && !url.EndsWith(AppConfig.SettingExt) && !url.EndsWith(".txt"))
+            {
+                var editorPath = "Assets/" + KEngineDef.ResourcesBuildDir + "/" + url;
+                return File.Exists(editorPath);
+            }
+#endif
             var pathType = GetResourceFullPath(url, false, out string fullPath, raiseError);
             return pathType != GetResourceFullPathType.Invalid;
         }

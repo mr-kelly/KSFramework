@@ -79,41 +79,72 @@ namespace KEngine.UI
             var loader = AssetBundleLoader.Load(path);
             while (!loader.IsCompleted)
                 yield return null;
-            if (AppConfig.IsLogAbLoadCost) Log.Info("{0} Load AB, cost:{1:0.000}s", loadState.TemplateName, Time.realtimeSinceStartup - beginTime);
-            if (AppConfig.IsSaveCostToFile) LogFileRecorder.WriteUILog(loadState.TemplateName, LogFileRecorder.UIState.LoadAB, Time.realtimeSinceStartup - beginTime);
-            if (loader.Bundle == null)
+#if UNITY_EDITOR
+            if (KResourceModule.IsEditorLoadAsset)
             {
-                yield break;
-            }
-      
-
-            beginTime = Time.realtimeSinceStartup;
-            var req = loader.Bundle.LoadAssetAsync<GameObject>(loadState.TemplateName);
-            while (!req.isDone)
-                yield return null;
-            request.Asset = GameObject.Instantiate(req.asset);
-            
-            //管理图集
-            GameObject go = req.asset as GameObject;
-            if (go)
-            {
+                var go = GameObject.Instantiate(loader.ResultObject as GameObject);
+                request.Asset = go;
                 var windowAsset = go.GetComponent<UIWindowAsset>();
-                if (windowAsset && !string.IsNullOrEmpty(windowAsset.atals_arr))
+                if (windowAsset)
                 {
-                    string[] arr = windowAsset.atals_arr.Split(',');
-                    int sprite_count = 0;
-                    for (int i = 0; i < arr.Length; i++)
+                    windowAsset.IsUIEditor = true;
+                    windowAsset.InitEvent();//监听atlasRequested事件
+                    if (!string.IsNullOrEmpty(windowAsset.atals_arr))
                     {
-                        string atlas_name = arr[i].ToLower();
-                        if (!UIModule.Instance.CommonAtlases.Contains(atlas_name)) sprite_count++;
-                        var atlas = loader.Bundle.LoadAsset<SpriteAtlas>(atlas_name);
-                        if (atlas != null) ABManager.SpriteAtlases[atlas_name] = atlas;
-                    }
+                        string[] arr = windowAsset.atals_arr.Split(',');
+                        int sprite_count = 0;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            string atlas_name = arr[i].ToLower();
+                            if (!UIModule.Instance.CommonAtlases.Contains(atlas_name)) sprite_count++;
+                        }
 
-                    if (sprite_count >= 2) Log.LogError($"UI:{loadState.TemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                        if (sprite_count >= 2)
+                            Log.LogError($"UI:{loadState.TemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                    }
                 }
             }
-            
+            else
+#endif            
+            {
+                if (AppConfig.IsLogAbLoadCost)
+                    Log.Info("{0} Load AB, cost:{1:0.000}s", loadState.TemplateName,Time.realtimeSinceStartup - beginTime);
+                if (AppConfig.IsSaveCostToFile)
+                    LogFileRecorder.WriteUILog(loadState.TemplateName, LogFileRecorder.UIState.LoadAB,Time.realtimeSinceStartup - beginTime);
+                if (loader.Bundle == null)
+                {
+                    yield break;
+                }
+                
+                beginTime = Time.realtimeSinceStartup;
+                var req = loader.Bundle.LoadAssetAsync<GameObject>(loadState.TemplateName);
+                while (!req.isDone)
+                    yield return null;
+                request.Asset = GameObject.Instantiate(req.asset);
+
+                //管理图集
+                var go = req.asset as GameObject;
+                if (go)
+                {
+                    var windowAsset = go.GetComponent<UIWindowAsset>();
+                    if (windowAsset && !string.IsNullOrEmpty(windowAsset.atals_arr))
+                    {
+                        string[] arr = windowAsset.atals_arr.Split(',');
+                        int sprite_count = 0;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            string atlas_name = arr[i].ToLower();
+                            if (!UIModule.Instance.CommonAtlases.Contains(atlas_name)) sprite_count++;
+                            var atlas = loader.Bundle.LoadAsset<SpriteAtlas>(atlas_name);
+                            if (atlas != null) ABManager.SpriteAtlases[atlas_name] = atlas;
+                        }
+
+                        if (sprite_count >= 2)
+                            Log.LogError($"UI:{loadState.TemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                    }
+                }
+            }
+
             loadState.UIResourceLoader = loader;
             if (AppConfig.IsLogAbLoadCost)
             {
