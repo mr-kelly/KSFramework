@@ -1,21 +1,4 @@
-
-KSFramework中使用Ini格式的文件作为配置的基础。它有一个基础的ini+自定义的ini两个文件合并而成。
-
-基础的ini配置约定，在代码EngineConfigs.cs文件中可以查看。
-
-自定义的ini文件，放置在Assets/Resources/AppConfigs.txt中，或搜索**AppConfigs.txt**
-
-NOTE：新版本中已经把配置项放在Appconfig.cs中，因为这些设置项不会经常改动，把它放在代码中减少读取配置。
-
-## 读取配置
-
-在KSFramework初始化时，会把两个ini配置文件合并。要想获取到配置的值，只需简单的执行静态方法：
-
-```ini
-AppEngine.GetConfig("Section", "ConfigKey")
-```
-
-你可以放入自己的自定义参数并读取。
+新版本中已经把配置项放在Appconfig.cs中，因为这些设置项不会经常改动，把它放在代码中减少读取配置的时间。
 
 ## 配置项讲解
 
@@ -31,6 +14,8 @@ AssetBundleExt = .ab
 
 ### IsEditorLoadAsset
 
+编辑器开发环境下无需打包，修改后直接加载
+
 ```ini
 IsEditorLoadAsset = 0 ;编辑器也加载ab
 或
@@ -41,12 +26,23 @@ IsEditorLoadAsset = 1  ;编辑器通过AssetDataBase加载资源
 
 ### 使用Lua还是纯C#编写UI代码
 
-每个界面对应一个相同名字的脚本，UGUISLuaBridge会加载lua脚本，UGUIBridge会绑定同名脚本
+每个界面对应一个相同名字的脚本，如果是xlua或slua则会加载lua脚本，而ILRuntime则会从hotfix.dll中加载cs脚本。
 
-```ini
-UIModuleBridge = KSFramework.UGUISLuaBridge ;使用lua编写UI代码
-或
-UIModuleBridge = KSFramework.UGUIBridge ;使用C#编辑UI代码
+PS.如果想在xlua或slua中使用c#来编写UI功能，请在`GUIBridge.CreateUIControlle`修改下实现方法，大概代码如下：
+
+```c#
+        public UIController CreateUIController(GameObject uiObj, string uiTemplateName)
+        {
+            UIController uiBase = null;
+#if xLua || SLUA
+            uiBase = new LuaUIController();
+#elif ILRuntime
+            uiBase = new ILRuntimeUIBase();
+#else
+            var type = System.Type.GetType("UI" + uiTemplateName + ", Assembly-CSharp");
+            uiBase = Activator.CreateInstance(type) as UIController;
+#endif
+        }
 ```
 
 
@@ -55,9 +51,7 @@ UIModuleBridge = KSFramework.UGUIBridge ;使用C#编辑UI代码
 
 ```ini
 ;当前要使用的语言
-I18N = en
-;如果没有配置I18N则取第1个为默认语言
-I18NLanguages = cn,en
+LangId = en
 ```
 
 
@@ -70,3 +64,6 @@ I18NLanguages = cn,en
 LuaPath = Lua
 ```
 
+## 计划
+
+TODO 通过Appconfig.txt来重载Appconfig.cs中的数据
