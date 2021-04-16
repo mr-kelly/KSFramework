@@ -96,6 +96,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#plugins">为什么都放在Plugins中？</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">资源目录约定</a>
+    </li>
     </ul>
                     </li>
                 </ul>
@@ -283,7 +285,7 @@
 <h2 id="plugins">为什么都放在Plugins中？</h2>
 <p>脚本的修改，会触发Unity的重新编译。一般的项目逻辑，都在非Plugins目录进行的，随着项目的发展，非Plugins目录的代码越来越多，编译越来越慢。把代码放进Plugins目录，可以节约一定的编译时间，改善开发效率。</p>
 <p>注：对于unity2018及更新的版本中可以对不同的目录设置Assemly。</p>
-<h1 id="_2">资源目录约定</h1>
+<h2 id="_2">资源目录约定</h2>
 <ul>
 <li><strong>Assets/BundleEdting</strong>: 一些编辑性的、需要配合编译过程的美术资源。比如UI场景，放置在这里，保存是，自动导出Prefab到Assets/BundleResources/UI目录</li>
 <li><strong>Assets/BundleResources:</strong> Asset Bundle全自动化导出的关键，KSFramework的AssetBundle打包，按照这个目录的结构，完整导出。</li>
