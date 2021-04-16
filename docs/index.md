@@ -3,7 +3,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/lt34ynvl3lac62ln/branch/master?svg=true)](https://ci.appveyor.com/project/mr-kelly/ksframework/branch/master)
 
-**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua的Unity 5 Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
+**[KSFramework](https://github.com/mr-kelly/KSFramework)是一个整合KEngine、SLua、xLua、ILRuntime的Unity  Asset Bundle开发框架，并为程序、美术、策划、运营提供辅助工具集。**
 
 --------------------------
 

@@ -28,7 +28,7 @@
 
 - KEngine中的Setting模块的使用
 - KEngine中的UI的资源加载
-- SLua脚本引擎与UI的联合
+- SLua/XLua脚本引擎与UI的联合
 
 接下来，将模仿这个Demo，创建/加载一个新的UI界面、创建/读取一个新的配置表格。
 
@@ -67,10 +67,9 @@
 好了，Billboard界面创建好了，也导出成了AssetBundle。
 接下来，我们通过代码打开界面。
 
-![编辑Assets/Code/Game.cs](images/quickstart/quick-start-17.png)
 > 编辑Assets/Code/Game.cs
 
-在OnFinishInitModules函数的末端，加上这样的一句：
+在OnGameStart函数的末端，加上这样的一句：
 ```csharp
 // 开始加载我们的公告界面！
 UIModule.Instance.OpenWindow("Billboard");
@@ -141,6 +140,8 @@ Excel表修改如下：
 
 ![因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码](images/quickstart/quick-start-35.png)
 > 因为我们要在Lua使用BillboardSettings读取配置表，这里需要**重新生成一下SLua的静态代码**
+>
+> 如果是xLua在编辑器下可以不生成Wrap代码，如果是使用lua来保存配置表数据(tableml有提供此功能)，热重载配置还在计划中
 
 
 ![接下来修改Lua代码，随机读取一条公告，并设置Content、Title](images/quickstart/quick-start-37.png)
