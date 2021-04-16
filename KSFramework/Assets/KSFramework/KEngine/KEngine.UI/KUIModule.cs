@@ -787,7 +787,11 @@ namespace KEngine.UI
         #region TODO新的UI打开方式
         
         public Dictionary<Type,UIController> dict = new Dictionary<Type,UIController>();
-        
+        /// <summary>
+        /// 目前用在非热更部分，lua中请使用OpenWindow
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public  T GetOrCreateUI<T>() where T : UIController, new()
         {
             var type = typeof(T);
