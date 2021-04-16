@@ -288,7 +288,7 @@
 <ul>
 <li>KEngine中的Setting模块的使用</li>
 <li>KEngine中的UI的资源加载</li>
-<li>SLua脚本引擎与UI的联合</li>
+<li>SLua/XLua脚本引擎与UI的联合</li>
 </ul>
 <p>接下来，将模仿这个Demo，创建/加载一个新的UI界面、创建/读取一个新的配置表格。</p>
 <h2 id="billboard">尝试做一个公告界面Billboard</h2>
@@ -325,11 +325,10 @@
 <h3 id="ui_1">加载UI界面</h3>
 <p>好了，Billboard界面创建好了，也导出成了AssetBundle。
 接下来，我们通过代码打开界面。</p>
-<p><img alt="编辑Assets/Code/Game.cs" src="../images/quickstart/quick-start-17.png" /></p>
 <blockquote>
 <p>编辑Assets/Code/Game.cs</p>
 </blockquote>
-<p>在OnFinishInitModules函数的末端，加上这样的一句：</p>
+<p>在OnGameStart函数的末端，加上这样的一句：</p>
 <pre><code class="language-csharp">// 开始加载我们的公告界面！
 UIModule.Instance.OpenWindow(&quot;Billboard&quot;);
 </code></pre>
@@ -395,6 +394,7 @@ return UIBillboard
 <p><img alt="因为我们要在Lua使用BillboardSettings读取配置表，这里需要重新生成一下SLua的静态代码" src="../images/quickstart/quick-start-35.png" /></p>
 <blockquote>
 <p>因为我们要在Lua使用BillboardSettings读取配置表，这里需要<strong>重新生成一下SLua的静态代码</strong></p>
+<p>如果是xLua在编辑器下可以不生成Wrap代码，如果是使用lua来保存配置表数据(tableml有提供此功能)，热重载配置还在计划中</p>
 </blockquote>
 <p><img alt="接下来修改Lua代码，随机读取一条公告，并设置Content、Title" src="../images/quickstart/quick-start-37.png" /></p>
 <blockquote>

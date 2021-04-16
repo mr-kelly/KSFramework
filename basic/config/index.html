@@ -82,6 +82,16 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Ini配置文件</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#assetbundlek">Assetbundle文件格式(默认.k)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#iseditorloadasset">IsEditorLoadAsset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#luacui">使用Lua还是纯C#编写UI代码</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">多语言配置</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#lua">Lua源代码路径</a>
+    </li>
     </ul>
                     </li>
                 </ul>
@@ -261,16 +271,8 @@
           <div role="main">
             <div class="section">
               
-                <p>KSFramework中使用Ini格式的文件作为配置的基础。它有一个基础的ini+自定义的ini两个文件合并而成。</p>
-<p>基础的ini配置约定，在代码EngineConfigs.cs文件中可以查看。</p>
-<p>自定义的ini文件，放置在Assets/Resources/AppConfigs.txt中，或搜索<strong>AppConfigs.txt</strong></p>
-<p>NOTE：新版本中已经把配置项放在Appconfig.cs中，因为这些设置项不会经常改动，把它放在代码中减少读取配置。</p>
-<h2 id="_1">读取配置</h2>
-<p>在KSFramework初始化时，会把两个ini配置文件合并。要想获取到配置的值，只需简单的执行静态方法：</p>
-<pre><code class="language-ini">AppEngine.GetConfig(&quot;Section&quot;, &quot;ConfigKey&quot;)
-</code></pre>
-<p>你可以放入自己的自定义参数并读取。</p>
-<h2 id="_2">配置项讲解</h2>
+                <p>新版本中已经把配置项放在Appconfig.cs中，因为这些设置项不会经常改动，把它放在代码中减少读取配置的时间。</p>
+<h2 id="_1">配置项讲解</h2>
 <h3 id="assetbundlek">Assetbundle文件格式(默认.k)</h3>
 <p>如果需要修改打包后ab的文件格式，则修改配置：</p>
 <pre><code class="language-ini">AssetBundleExt = .k
@@ -278,26 +280,37 @@
 AssetBundleExt = .ab
 </code></pre>
 <h3 id="iseditorloadasset">IsEditorLoadAsset</h3>
+<p>编辑器开发环境下无需打包，修改后直接加载</p>
 <pre><code class="language-ini">IsEditorLoadAsset = 0 ;编辑器也加载ab
 或
 IsEditorLoadAsset = 1  ;编辑器通过AssetDataBase加载资源
 </code></pre>
 <h3 id="luacui">使用Lua还是纯C#编写UI代码</h3>
-<p>每个界面对应一个相同名字的脚本，UGUISLuaBridge会加载lua脚本，UGUIBridge会绑定同名脚本</p>
-<pre><code class="language-ini">UIModuleBridge = KSFramework.UGUISLuaBridge ;使用lua编写UI代码
-或
-UIModuleBridge = KSFramework.UGUIBridge ;使用C#编辑UI代码
+<p>每个界面对应一个相同名字的脚本，如果是xlua或slua则会加载lua脚本，而ILRuntime则会从hotfix.dll中加载cs脚本。</p>
+<p>PS.如果想在xlua或slua中使用c#来编写UI功能，请在<code>GUIBridge.CreateUIControlle</code>修改下实现方法，大概代码如下：</p>
+<pre><code class="language-c#">        public UIController CreateUIController(GameObject uiObj, string uiTemplateName)
+        {
+            UIController uiBase = null;
+#if xLua || SLUA
+            uiBase = new LuaUIController();
+#elif ILRuntime
+            uiBase = new ILRuntimeUIBase();
+#else
+            var type = System.Type.GetType(&quot;UI&quot; + uiTemplateName + &quot;, Assembly-CSharp&quot;);
+            uiBase = Activator.CreateInstance(type) as UIController;
+#endif
+        }
 </code></pre>
-<h3 id="_3">多语言配置</h3>
+<h3 id="_2">多语言配置</h3>
 <pre><code class="language-ini">;当前要使用的语言
-I18N = en
-;如果没有配置I18N则取第1个为默认语言
-I18NLanguages = cn,en
+LangId = en
 </code></pre>
 <h3 id="lua">Lua源代码路径</h3>
 <p>相对于Product目录的相对路径，默认是放在Product/Lua下</p>
 <pre><code class="language-ini">LuaPath = Lua
 </code></pre>
+<h2 id="_3">计划</h2>
+<p>TODO 通过Appconfig.txt来重载Appconfig.cs中的数据</p>
               
             </div>
           </div>
