@@ -14,7 +14,7 @@ nav:
     - "工程打包方法": build-project.md
       
     - "Ini配置文件": basic/config.md
-    - "文件目录结构": basic/file-structure.md
+    - "目录结构和约定规范": basic/file-structure.md
       
     - "策划指南：配置表的使用": setting/guide.md
     - "配置表的条件编译": setting/condition-compile.md
