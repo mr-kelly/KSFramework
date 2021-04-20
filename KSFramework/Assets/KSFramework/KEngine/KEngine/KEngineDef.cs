@@ -42,5 +42,12 @@ namespace KEngine
         public const string ResourcesBuildInfosDir = "ResourcesBuildInfos";
 
         public const string RedundaciesDir = "_Redundancies_";
+
+        public const string UIPath = ResourcesEditDir + "/UI/";
+        public const string AudioPath = ResourcesEditDir + "/Sounds/";
+        public const string EffectPath = ResourcesEditDir + "/Effect/";
+        public const string ShaderPath = ResourcesEditDir + "/Shader/";
+        public const string ShaderabName = "shader/shader" + AppConfig.AssetBundleExt;
+        public const string CharacterPath = ResourcesEditDir + "/Character/";
     }
 }
