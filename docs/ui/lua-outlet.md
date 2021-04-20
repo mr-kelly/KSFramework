@@ -15,9 +15,9 @@
 
 ## LuaOutlet 拖拽绑定控件
 
-在KSFramework中，可以在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx进行引用，
+在KSFramework中，可以在Editor中点击+号拖拽gameobject到Object栏进行绑定控件，然后在UI代码中使用self.xxx就可以访问这个控件了，
 
-比如：self.txtTips，就指向txtTips这个Object，类型为UnityEngine.UI.Text
+比如：self.txtTips，就指向txtTips这个gameobject，类型为UnityEngine.UI.Text
 
 ```lua
 self.txtTips.text = "这是给文本赋值"
@@ -30,7 +30,7 @@ self.txtTips.text = "这是给文本赋值"
 每组包含三个变量：
 
 ```lua
-Name：在Lua代码访问的变量名
+Name：在Lua代码访问这个对象的变量名
 Object：指向Unity的Object
 ComponentType：Unity中的type，下拉列表可选择你需要的Type
 ```

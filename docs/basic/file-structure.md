@@ -82,24 +82,25 @@ BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngi
 
 ## 角色/NPC/怪物资源
 
-每个角色一个文件夹，同时角色包含几个子文件夹，并且把prefab放到BundleResources目录下
+所有的角色资源放在BundleEditing/Character/下，每个角色一个文件夹，一个角色中包含几个子文件夹，并且把制作好的prefab放到BundleResources目录下
 
 <pre>
 	-职业A/
 		-mesh/
 		-anim/
 		-tex/
-		-把prefab放到BundleResources下，如果有共用资源也放到BundleResources目录下
+		-xx.prefab放到BundleResources下，如果有共用资源也放到BundleResources目录下
 	-职业B/
 	-怪物或BOSS/
 	-....
 </pre>
 
+
 对于大多数单个的npc，怪物等，可以将贴图，材质，动作，Mesh打包到一个ab中(只对prefab设置abName即可)
 
 ## 特效资源
 
-建议将单个effect打包一个ab，如果effect中包含的贴图和材质在多个prefab中用到，则把这些共用的放在Assets/BundleResources/Effect/common下
+所有的特效资源放在BundleEditing/Effect/下，建议将单个effect打包一个ab，如果effect中包含的贴图和材质在多个prefab中用到，则把这些共用的放在Assets/BundleResources/Effect/common下
 
 <pre>
     -character/(所有的角色特效,包括战斗特效、武器上的特效)
@@ -114,16 +115,21 @@ BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngi
     -ui/(ui特效资源)
     -common/(公共资源)
 </pre>
-
 ## Shader资源
 
-通常游戏的做法都是把全部的shader打包到一个ab中，并在游戏启动时进行预热。
+KSFramework中建议把所有的shader放在BundleEditing/Shader下，在打包时会把整个目录的shader打包到一个ab中，这样就不会有shader冗余。
 
-TODO：shader这里做特殊处理，不把shader放进BundleResources下，而在BundleEdting下
+TODO 计划：在游戏启动时进行shader预热
+
+如果需要自定义规则：`BaseImporter.cs OnPostprocessAssets`
 
 ## 声音资源
 
-如果所有的ui点击音效加起来不超过3MB，则可以打包到一个ab中。如果是某个界面特有的音效可以和界面打包到一个ab中，每个场景的背景音乐单独一个ab包
+KSFramework中建议把所有的声音放在BundleEditing/Sounds下，然后在打包时除BGM目录外，其它每个子目录中的声音文件会打包到一个ab中
+
+如果是某个界面特有的音效可以和界面打包到一个ab中，BGM(背景音乐)目录下的音频会每个单独打成一个ab包
+
+如果需要自定义规则：`BaseImporter.cs OnPreprocessAudio`
 
 ## AB粒度划分
 
