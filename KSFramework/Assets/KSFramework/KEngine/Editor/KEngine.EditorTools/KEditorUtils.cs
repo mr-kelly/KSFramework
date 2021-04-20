@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace KUnityEditorTools
@@ -206,7 +207,17 @@ namespace KUnityEditorTools
         {
             return path.Replace("\\", "/");
         }
-
+        
+        /// <summary>
+        /// 获取相对于Assets的路径，并将路径分隔符从\转换为/
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static  string GetRelativeAssetsPath(string path)
+        {
+            return "Assets" + Path.GetFullPath(path).Replace(Path.GetFullPath(Application.dataPath), "").Replace('\\', '/');
+        }
+        
         /// <summary>
         /// 在指定目录中搜寻字符串并返回匹配}
         /// </summary>

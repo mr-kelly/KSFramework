@@ -47,7 +47,6 @@ public static class XLuaCustomExport
     [CSharpCallLua]
     public static List<Type> CSharpCallLuaList = new List<Type>()
     {
-//        typeof(Action<EventX>),
         typeof(UnityAction<int, GameObject>),
         typeof(UnityAction<int, Transform>),
         typeof(AssetBundleLoader.CAssetBundleLoaderDelegate),
@@ -73,7 +72,6 @@ public static class XLuaCustomExport
         typeof(Dropdown.DropdownEvent),
         typeof(System.Action<GameObject>),
         typeof(UnityEngine.Events.UnityAction<Vector2>),
-        //typeof(KEngine.TextureLoader.CTextureLoaderDelegate),
         typeof(Action<PointerEventData>),
 //        typeof(UnityEvent<Vector2>),
         //typeof(TweenCallback),
@@ -281,7 +279,7 @@ public static class XLuaCustomExport
                 new List<string>(){"System.IO.DirectoryInfo", "Create", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"UnityEngine.MonoBehaviour", "runInEditMode"},
 #if UNITY_2018_1_OR_NEWER
-                       new List<string>(){ "UnityEngine.QualitySettings", "streamingMipmapsRenderersPerFrame"},
+                new List<string>(){ "UnityEngine.QualitySettings", "streamingMipmapsRenderersPerFrame"},
 #endif
     };
 
@@ -294,11 +292,10 @@ public static class XLuaCustomExport
     }
 
     #region 其它库的注册
-
+    /*
     /// <summary>
     /// dotween的扩展方法在lua中调用
     /// </summary>
-    /*
   [LuaCallCSharp]
   [ReflectionUse]
   public static List<Type> dotween_lua_call_cs_list = new List<Type>()
