@@ -6,7 +6,7 @@
 
 ### 在windows下搭建wiki本地预览不成熟
 
-gollum：https://github.com/gollum/gollum
+gollum：[https://github.com/gollum/gollum](https://github.com/gollum/gollum)
 
 A simple, Git-powered wiki with a sweet API and local frontend.
 
