@@ -291,42 +291,41 @@
 <h3 id="apk">如何打包APK？</h3>
 <ol>
 <li>点击菜单栏 <strong>KEngine</strong> - <strong>AutoBuilder</strong> - <strong>Android</strong>/<strong>iOS</strong>/<strong>Windows</strong></li>
-<li>Unity会执行生成安装包，放在<strong>Product/Apps/Android/</strong>KSFramework.apk <code>[根据平台区分目录]</code></li>
+<li>随后等待Unity执行生成安装包，放在<strong>Product/Apps/Android/</strong>KSFramework.apk <code>[根据平台区分目录]</code></li>
 <li>打包期间会自动Link AB资源到<strong>StreamingAssets</strong>目录下</li>
 </ol>
-<p>注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。</p>
+<p>注：如果是xlua，打包前内部会自动生成代码打包成功后会删除生成的代码。其它热更新方案，请参考框架使用说明。</p>
 <h3 id="streamingassets">从StreamingAssets目录同步读取文件</h3>
-<p>对于其它的文件，请使用<code>KResourceModule.LoadAssetsSync</code>，针对安卓平台有做特殊处理，源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java</p>
-<p>如果是ab，请获取完整路径后使用</p>
-<pre><code>var res_path = KResourceModule.GetAbFullPath($&quot;ui/{uiBase.UITemplateName.ToLower()}&quot;);
-var assetBundle = AssetBundle.LoadFromFile(res_path);
+<p>对于其它的文件，请使用<code>KResourceModule.LoadAssetsSync</code>，针对安卓平台有做特殊处理，java源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java</p>
+<p>如果是加载ab，请使用这个接口</p>
+<pre><code class="language-c#">var assetBundle = AssetBundleLoader.Load(ab的相对路径);
 </code></pre>
 <h3 id="_3">如何更新仓库？</h3>
 <p>如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。</p>
-<p>原有目录如下：</p>
+<p>KSFramework中xlua的lib是从作者的仓库中拉取的(加入了一些常用lua库)：https://github.com/chexiongsheng/build_xlua_with_libs </p>
+<p>目录结构如下：</p>
 <pre><code class="language-c#">KSFramework\Assets\KSFramework\KEngine
 KSFramework\Assets\xLua
 KSFramework\Assets\slua
 </code></pre>
 <h3 id="oninit">OnInit会调用两次？</h3>
-<p>默认OnInit在Onit会被调用两次，设计用于热重载。</p>
-<p>在OnOpen中也会调用一次OnInit，用于热重载之后，对数据进行初始化。</p>
+<p>如果OnInit被调用两次，它是设计用于热重载后，在OnOpen中重新调用一次OnInit。</p>
 <p>如果你不希望被调用两次，在<strong>LuaUIController.OnOpen</strong>中注释掉这两行</p>
-<pre><code class="language-c#">//if (!CheckInitScript())       //去掉热重载，因此只需要在OnInit中加入这步检查
+<pre><code class="language-c#">//if (!CheckInitScript())
 //    return;
 </code></pre>
 <h3 id="c">配置表生成C#代码，如何热更？</h3>
 <p>可以把数据表生成Lua代码，或在lua中读取tsv，或把数据表保存到数据库，等等方式。</p>
 <blockquote>
-<p>在KSFramework中的Appconfig.txt中修改 IsUseLuaConfig = 1，就会把配置表生成lua代码</p>
+<p>在KSFramework中的Appconfig.cs中修改 IsUseLuaConfig = 1，就会把配置表生成lua代码</p>
 </blockquote>
 <p>更新于2020年-11月，tableml支持把数据表的内容生成为lua代码，目前在lua中读取配置表有这几种方式：</p>
-<ol>
+<ul>
 <li>数据表转为lua代码</li>
 <li>仅生成数据表的字段做为lua文件，用于代码提示，把数据内容保存到sqlite中</li>
 <li>数据表转为csv，在lua中解析csv</li>
 <li>不需要热更的代码，通过c#读取配置</li>
-</ol>
+</ul>
 <p>可以参考我的这篇文章《<a href="https://www.cnblogs.com/zhaoqingqing/p/7440867.html">TableML-GUI篇(C# 编译/解析 Excel/CSV工具)</a>》 ，把数据表保存到sqlite</p>
 <h3 id="build">build之后，运行报错</h3>
 <p>请检查是否有生成xlua/slua代码，根据具体的报错日志进行排查。</p>
@@ -375,8 +374,15 @@ return TestLuaBehaivour
 </ul>
 <p>更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/</p>
 <h2 id="xlua">xlua相关</h2>
+<h3 id="lua">lua调试</h3>
+<p>在我们的项目中是通过<a href="https://github.com/EmmyLua/IntelliJ-EmmyLua">emmylua</a>+idea来调试lua，如果是mac os无法调试请参考：<a href="https://github.com/Tencent/xLua/issues/725">dynamic libraries not enabled; check your Lua installation #725</a></p>
+<p>KSFramework中xlua的lib是从作者的仓库中拉取的(加入了一些常用lua库)：https://github.com/chexiongsheng/build_xlua_with_libs </p>
+<p>在KSFramework中，请把emmylua需要的调试代码写在Init.lua的底部</p>
+<p><a href="https://github.com/EmmyLua/IntelliJ-EmmyLua/issues/275">从Lua调试切换为C#调试时,Unity会报错~ #275</a></p>
+<h3 id="1">问题1</h3>
 <p>提示：code has not been genrate, may be not work in phone!</p>
 <p>这是因为xlua通过 DelegateBridge.Gen_Flag 来判断是否生成代码，但我们在打包过程中，先生成代码，然后删除生成后的代码，并没有设置此flag，但功能是正常的。</p>
+<h3 id="2">问题2</h3>
 <p>在Unity2019下xlua下调用切换场景(SceneLoader.Load)遇到报错：</p>
 <pre><code class="language-shell">LuaException: c# exception:This type must add to CSharpCallLua: System.Action&lt;bool&gt;,stack:  at XLua.ObjectTranslator.CreateDelegateBridge (System.IntPtr L, System.Type delegateType, System.Int32 idx) [0x001a8] in E:\Code\KSFramework\KSFramework\Assets\XLua\Src\ObjectTranslator.cs:546 
   at XLua.ObjectCasters+&lt;&gt;c__DisplayClass23_0.&lt;genCaster&gt;b__1 (System.IntPtr L, System.Int32 idx, System.Object target) [0x0002f] in E:\Code\KSFramework\KSFramework\Assets\XLua\Src\ObjectCasters.cs:442 

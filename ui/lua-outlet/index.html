@@ -271,13 +271,13 @@
 <p>在当前UI中，不允许出现相同的Name，否则Name用红色提示，因为用Name做的key</p>
 <p>当Object为空时(未赋值)，用红色进行提示</p>
 <h2 id="luaoutlet">LuaOutlet 拖拽绑定控件</h2>
-<p>在KSFramework中，可以在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx进行引用，</p>
-<p>比如：self.txtTips，就指向txtTips这个Object，类型为UnityEngine.UI.Text</p>
+<p>在KSFramework中，可以在Editor中点击+号拖拽gameobject到Object栏进行绑定控件，然后在UI代码中使用self.xxx就可以访问这个控件了，</p>
+<p>比如：self.txtTips，就指向txtTips这个gameobject，类型为UnityEngine.UI.Text</p>
 <pre><code class="language-lua">self.txtTips.text = &quot;这是给文本赋值&quot;
 </code></pre>
 <p><img alt="" src="../../images/ui/luaoutlet.png" /></p>
 <p>每组包含三个变量：</p>
-<pre><code class="language-lua">Name：在Lua代码访问的变量名
+<pre><code class="language-lua">Name：在Lua代码访问这个对象的变量名
 Object：指向Unity的Object
 ComponentType：Unity中的type，下拉列表可选择你需要的Type
 </code></pre>
