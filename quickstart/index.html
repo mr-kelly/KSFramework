@@ -212,7 +212,7 @@
                 <h2 id="_1">前言</h2>
 <p>从github拉取代码下来之后，需要点击KEngine - Open Quick Window，在打开的窗口中，进行以下操作</p>
 <ol>
-<li>点击生成ab</li>
+<li>点击 打包ab</li>
 <li>如果是ILRuntime分支，还需要点击生成dll，xlua/slua则无需</li>
 </ol>
 <p>注意：经过多个不同项目组之后，文档中的部分内容未及时更新，如遇到使用上的问题请先阅读源码。</p>
@@ -268,7 +268,9 @@
 </blockquote>
 <p><img alt="导出——打包AssetBundle，快捷键Ctrl+Alt+E" src="../images/quickstart/quick-start-15.png" /></p>
 <blockquote>
-<p>导出——打包AssetBundle，快捷键Ctrl+Alt+E</p>
+<ol>
+<li>UI - Export Current UI (会把当前场景导出为一个prefab)     2. 点击 AssetBundle - Build All 打包AssetBundle</li>
+</ol>
 </blockquote>
 <h3 id="ui_1">加载UI界面</h3>
 <p>好了，Billboard界面创建好了，也导出成了AssetBundle。
@@ -296,7 +298,7 @@ UIModule.Instance.OpenWindow(&quot;Billboard&quot;);
 </blockquote>
 <p><img alt="写一段Lua代码：UIBillboard的执行逻辑" src="../images/quickstart/quick-start-23.png" /></p>
 <blockquote>
-<p>写一段Lua代码：UIBillboard的执行逻辑</p>
+<p>写一段Lua代码：UIBillboard的执行逻辑（关于绑定控件，<a href="../ui/ui-bind-vs-outlet/">KSFramework提供两种方式</a>)</p>
 </blockquote>
 <pre><code class="language-lua">local UIBase = import(&quot;KSFramework/UIBase&quot;)
 
