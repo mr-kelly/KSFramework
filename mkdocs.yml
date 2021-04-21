@@ -29,9 +29,9 @@ nav:
     - "Editor下无需打包": resource/edit_mode.md
       
     - "UI模块使用指南": ui/guide.md
+    - "两种UI控件绑定方式": ui/ui-bind-vs-outlet.md
     - "手工代码绑定控件": ui/ui-binding.md
     - "拖拽绑定控件": ui/lua-outlet.md
-    - "两种绑定方式对比": ui/ui-bind-vs-outlet.md
     - "单向数据绑定": ui/data-binding.md
       
     - "Lua内置函数列表": scripting/functions.md

@@ -1,50 +1,45 @@
-
-
-在KSFramework中，提供两种方式进行控件绑定：
-
-1. 通过代码手工实现控件的绑定
-2. 通过拖拽的方式绑定(LuaOutlet)
-
-本篇讲解通过拖拽实现控件的绑定
-
 拖拽绑定控件有以下几个规则：
 
-在当前UI中，不允许出现相同的Name，否则Name用红色提示，因为用Name做的key
+- 需要手动在UI编辑器中拖拽UI控件，而无需手写FindChild代码就可以使用
+- 在同一个UI中不允许出现相同的Name(即不能有相同名字的变量)，否则Name会出现红色提示
+- 当Object为空时(未赋值或丢失)，会出现红色提示
 
-当Object为空时(未赋值)，用红色进行提示
 
 ## LuaOutlet 拖拽绑定控件
 
-在KSFramework中，可以在Editor中点击+号拖拽gameobject到Object栏进行绑定控件，然后在UI代码中使用self.xxx就可以访问这个控件了，
+在KSFramework中，拖拽绑定控件的步骤如下：
 
-比如：self.txtTips，就指向txtTips这个gameobject，类型为UnityEngine.UI.Text
+1. 打开UI界面，选中UI的根节点，查看Inspect面板，它上面绑定了LuaOutlet脚本
+2. 如果是新界面则点击Add New outlet，如果已有控件则点击+号，创建一个新变量
+3. 拖拽要绑定的控件到Object处，在Component处下拉选择你的控件类型
+4. 在UI代码中使用self.变量名就可以访问这个控件了，而无需写FindChild
 
-```lua
-self.txtTips.text = "这是给文本赋值"
-```
-
-
-
-![](../images/ui/luaoutlet.png)
-
-每组包含三个变量：
+每个变量都有三个内容：
 
 ```lua
-Name：在Lua代码访问这个对象的变量名
-Object：指向Unity的Object
-ComponentType：Unity中的type，下拉列表可选择你需要的Type
+Name：在Lua代码中访问这个对象的变量名
+Object：控件指向Unity的Object
+ComponentType：控件的类型，比如它是按钮还是文本，还是输入框
 ```
+创建一个变量
+
+![创建一个变量](../images/ui/luaoutlet.png)
+
+拖动控件给变量赋值和选择类型
+
+![给变量赋值和选择类型](../images/ui/add_object.png)
+
 
 ## 在代码里引用拖拽的控件
 
-在Editor中对控件绑定之后，在UI代码可以直接使用self.xxx进行引用，比如：
+在Editor中绑定控件之后，在UI代码里可以直接self.xxx使用这个控件了，比如：
 
 ```Lua
 self.txtTitle = "标题文字"
-self.btnLogin.onClick:RemoveAllListeners()
+self.btnLogin.onClick:AddListener()
 ```
 
-txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，压入self作用域中。
+拖拽绑定的变量框架在界面初始化时会自动对进行赋值，调用luaTable.Set，压入self作用域中。
 
 实现代码可查看：**LuaUIController.SetOutlet**
 
@@ -58,6 +53,12 @@ txtTitle和btnLogin 是在OnInit中对变量进行赋值，调用luaTable.Set，
 
 ## 多个outlet
 
-当UI界面比较复杂时，如果全部的控件都绑定在一个outlet，那么后续的维护成本大，不易查找到指定的控件。，我建议是界面的*每个块级元素*使用一个outlet，或者以某个功能点划分，或者以区域划分(顶部，中部，左侧，右侧)，每个界面由多个outlet组成一个LuaOutletCollection
+当UI界面比较复杂时，如果全部的控件都绑定在一个outlet，那么后续的维护成本会增加，不易查找到指定的控件，根据实际项目我们有以下建议：
+
+- 界面的*每个块级元素*使用一个outlet
+- 每个功能点一个outlet
+- 每个区域一个outlet(顶部，中部，左侧，右侧)
+
+在界面的根节点增加UILuaOutletCollection，并把当前界面中用到的outlet拖到这里来
 
 ![luaoutlet-collection](../images/ui/luaoutlet-collection.png)
