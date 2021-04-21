@@ -2,7 +2,7 @@
 
 从github拉取代码下来之后，需要点击KEngine - Open Quick Window，在打开的窗口中，进行以下操作
 
-1. 点击生成ab
+1. 点击 打包ab
 2. 如果是ILRuntime分支，还需要点击生成dll，xlua/slua则无需
 
 注意：经过多个不同项目组之后，文档中的部分内容未及时更新，如遇到使用上的问题请先阅读源码。
@@ -60,7 +60,7 @@
 
 
 ![导出——打包AssetBundle，快捷键Ctrl+Alt+E](images/quickstart/quick-start-15.png)
-> 导出——打包AssetBundle，快捷键Ctrl+Alt+E
+> 1. UI - Export Current UI (会把当前场景导出为一个prefab)  	2. 点击 AssetBundle - Build All 打包AssetBundle
 
 ### 加载UI界面
 
@@ -92,7 +92,7 @@ UIModule.Instance.OpenWindow("Billboard");
 
 
 ![写一段Lua代码：UIBillboard的执行逻辑](images/quickstart/quick-start-23.png)
-> 写一段Lua代码：UIBillboard的执行逻辑
+> 写一段Lua代码：UIBillboard的执行逻辑（关于绑定控件，[KSFramework提供两种方式](ui/ui-bind-vs-outlet.md))
 
 ```lua
 local UIBase = import("KSFramework/UIBase")

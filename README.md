@@ -39,49 +39,24 @@
 
 安装python环境，安装python的pip(python3自带)，如果是python2或没有pip可参考《[使用Mkdocs构建你的项目文档](https://www.cnblogs.com/zhaoqingqing/p/7501062.html)》
 
-通过pip安装mkdocs，新版本的mkdocs去掉原来的多级目录支持，同时也支持到了新版本
+通过pip安装mkdocs，新版本的mkdocs(1.1.2)的多级目录和旧版本(1.0.4)有区别，yml的配置支持到了新版本
 
 ```python
 pip install mkdocs
 ```
 
-mkdocs文档： https://www.mkdocs.org/
+mkdocs文档： [https://www.mkdocs.org/user-guide/writing-your-docs/](https://www.mkdocs.org/user-guide/writing-your-docs/)
 
-（中文文档目前有些过时） https://markdown-docs-zh.readthedocs.io/zh_CN/latest/
-
-### 旧版本mkdocs?
-
-新版本的mkdocs去掉自定义左侧目录的功能(把多篇文章放在一大类下)，新旧配置格式差异对比
-
-| mkdocs版本 | 单篇文档的格式                          |
-| ---------- | --------------------------------------- |
-| 1.0.4      | - [index.md, "简介", "KSFramework介绍"] |
-| 1.1.2      | - "KSFramework介绍": index.md           |
-
-安装旧版本的mkdocs
-
-```python
-pip install mkdocs==1.0.4
-```
-
-如果安装失败，使用这个历史版本
-
-> pip install --no-index --find-links=/your_offline_packages/ package_name
-
-```
-pip install --no-index --find-links=/mkdocs-1.0.4-py2.py3-none-any.whl/ mkdocs
-```
-
-PS：在我的电脑上安装回旧版本的mkdocs后，依然无法使用旧版配置生成html，所以格式改成了新版本的格式
+中文文档(内容有些过时） [https://markdown-docs-zh.readthedocs.io/zh_CN/latest/](https://markdown-docs-zh.readthedocs.io/zh_CN/latest/)
 
 
 
-### 编写新文档
+### 编写新文档步骤
 
-1. 添加新的md文件，编写内容，按照目录规范把md文件放到指定目录下
-2. **mkdocs.yml** 配置新加的md文件到此，配置目录结构
-3. **server.bat** 开启本地服务器：在本地预览网站的生成效果 ，地址：http://127.0.0.1:8000
-4. **deploy.bat** 把生成后的网站推送到github，会推送到默认的分支。
+1. 创建新的md文件，编写内容，按照目录规范把md文件放到指定目录下
+2. 在**mkdocs.yml** 中配置新加的md文件，并放在指定的层级下
+3. 运行**server.bat** 开启本地服务器：在本地预览网站的生成效果 ，地址：http://127.0.0.1:8000
+4. 本地预览没问题之后，运行**deploy.bat** 把生成后的网站推送到github，外网就会是最新的文档。
 
 
 
