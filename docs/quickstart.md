@@ -83,8 +83,12 @@ UIModule.Instance.OpenWindow("Billboard");
 
 ### 创建Lua脚本
 
-![在目录Product/Lua/UI中新建一个lua文件](images/quickstart/quick-start-21.png)
-> 在目录Product/Lua/UI中新建一个lua文件
+有两种方式自动创建带模版的lua脚本 
+
+- 方法1.  KEngine -  Open Quick Window - 为当前UI创建UI脚本
+- 方法2. KEngine -  UI - Auto Make UI Lua Scripts
+
+> 在目录Product/Lua/UI中就创建好了一个lua文件
 
 
 ![写一段Lua代码：UIBillboard的执行逻辑](images/quickstart/quick-start-23.png)
@@ -109,7 +113,7 @@ end
 
 return UIBillboard
 ```
-这段lua中，创建了一个Table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。
+这段lua中，创建了一个table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。
 
 好了，接下来，我们要为策划准备配置表了。
 
