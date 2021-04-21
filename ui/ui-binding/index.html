@@ -131,24 +131,18 @@
                     <li class="toctree-l1"><a class="reference internal" href="../guide/">UI模块使用指南</a>
                     </li>
                 </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../ui-bind-vs-outlet/">两种UI控件绑定方式</a>
+                    </li>
+                </ul>
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">手工代码绑定控件</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_2">控件的拖拉，更多是程序操作</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_3">控件太多，分不清具体</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_4">引用丢失的情况</a>
-    </li>
     </ul>
                     </li>
                 </ul>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../lua-outlet/">拖拽绑定控件</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../ui-bind-vs-outlet/">两种绑定方式对比</a>
                     </li>
                 </ul>
                 <ul>
@@ -267,26 +261,15 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，提供两种方式进行控件绑定：</p>
-<ol>
-<li>通过代码手工实现控件的绑定</li>
-<li>通过拖拽的方式绑定(LuaOutlet)</li>
-</ol>
-<p>本篇讲解通过代码手工实现控件的绑定</p>
-<pre><code class="language-Lua">-- Type and Path
-local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
+                <h2 id="_1">手动绑定控件的步骤</h2>
+<p>通过指定控件的类型和相对路径，即可获取到指定的控件，示例代码：</p>
+<pre><code class="language-Lua">--Path
+local button = self:GetUIButton('path1/path2/button')
+--实现代码在UIBase.lua
 </code></pre>
-<p>通过指定控件的类型和相对路径，即可获取到指定的控件。</p>
-<h1 id="_1">为什么不用拖拽的方式绑定？</h1>
-<p><img alt="" src="../../images/ui/ui-editor-binding.png" /></p>
-<p>另一种方法，控件的绑定，是可以像通过编辑器的拖拉来实现。即在Unity编辑器中，拖拽控件到右边的Inspector，可视化的向脚本赋值。之所以采用代码手工实现，是出于几点考虑：</p>
-<h2 id="_2">控件的拖拉，更多是程序操作</h2>
-<p>用拖拽的方式，最初的设计估计是可视化编辑。</p>
-<p>但是到了最后，由于使用哪一些控件，只有程序自己是最清楚的，更多的是程序同学自己做拖拽，起不到可视化的作用。</p>
-<h2 id="_3">控件太多，分不清具体</h2>
+<p>代码手工实现，是出于几点考虑：</p>
+<p>拖拽的方式，最初的设计是可视化编辑，但是到了最后，由于使用哪一些控件，只有程序自己是最清楚的，而界面拼接一般是由美术或策划完成的，会有一些沟通成本。</p>
 <p>当一个UI中拖拽的控件很多（比如100个），编辑器边栏密密麻麻的布满控件。而且这些控件都是以变量名称存在的，正常人根本无法区分，具体的变量对应什么控件。 反而直接码到代码里，添加注释，更加的清晰。</p>
-<h2 id="_4">引用丢失的情况</h2>
-<p>当UI中拖拽绑定控件，如果这个控件后来因UI的结构修改而被删除了，这个变量就变成了Null。 程序对变量的访问就会引发NullReferenceException。 这种问题出现的时候，非常的不好查。</p>
               
             </div>
           </div>
@@ -297,7 +280,7 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
         <a href="../lua-outlet/" class="btn btn-neutral float-right" title="拖拽绑定控件">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../guide/" class="btn btn-neutral" title="UI模块使用指南"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ui-bind-vs-outlet/" class="btn btn-neutral" title="两种UI控件绑定方式"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -323,7 +306,7 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../ui-bind-vs-outlet/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../lua-outlet/" style="color: #fcfcfc">Next &raquo;</a></span>

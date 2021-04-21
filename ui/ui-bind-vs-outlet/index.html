@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>两种绑定方式对比 - KSFramework Documentation</title>
+  <title>两种UI控件绑定方式 - KSFramework Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u4e24\u79cd\u7ed1\u5b9a\u65b9\u5f0f\u5bf9\u6bd4";
+    var mkdocs_page_name = "\u4e24\u79cdUI\u63a7\u4ef6\u7ed1\u5b9a\u65b9\u5f0f";
     var mkdocs_page_input_path = "ui\\ui-bind-vs-outlet.md";
     var mkdocs_page_url = null;
   </script>
@@ -131,18 +131,18 @@
                     <li class="toctree-l1"><a class="reference internal" href="../guide/">UI模块使用指南</a>
                     </li>
                 </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">两种UI控件绑定方式</a>
+    <ul class="current">
+    </ul>
+                    </li>
+                </ul>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../ui-binding/">手工代码绑定控件</a>
                     </li>
                 </ul>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../lua-outlet/">拖拽绑定控件</a>
-                    </li>
-                </ul>
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">两种绑定方式对比</a>
-    <ul class="current">
-    </ul>
                     </li>
                 </ul>
                 <ul>
@@ -250,7 +250,7 @@
     
       
     
-    <li>两种绑定方式对比</li>
+    <li>两种UI控件绑定方式</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -261,30 +261,41 @@
           <div role="main">
             <div class="section">
               
-                <p>在KSFramework中，提供两种方式进行控件绑定：</p>
+                <h2 id="_1">两种方式对比</h2>
+<p>在KSFramework中，提供两种方式进行控件绑定：</p>
 <ol>
-<li>通过代码手工实现控件的绑定</li>
-<li>通过拖拽的方式绑定(LuaOutlet)</li>
+<li>在代码里写FindChild查找控件，进行绑定</li>
+<li>在编辑UI时，拖拽控件进行绑定(LuaOutlet)</li>
 </ol>
-<p>本篇对这两种绑定方式进行对比。</p>
-<h2 id="_1">手工代码绑定</h2>
-<p>技术同学在代码中完成控件绑定，而不需要去手动拖拽。</p>
-<pre><code class="language-lua">-- Type and Path
-local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
+<p>在KSFramework的demo中两种绑定方式都有，大家可以根据项目情况进行选择，本篇对这两种绑定方式进行对比。</p>
+<p>代码绑定</p>
+<ul>
+<li>​  优点：无须打开UI，在代码中FindChild</li>
+<li>​ 缺点：FindChild路径过深会有性能消耗</li>
+</ul>
+<p>拖拽绑定</p>
+<ul>
+<li>​ 优点： 1. 没有FindChild消耗  2.可视化查看引用是否丢失</li>
+<li>​ 缺点：手动拖拽控件</li>
+</ul>
+<p>如果是从代码的可读性来讲，那么工程师喜欢使用代码手工实现控件绑定。</p>
+<p>如果对于策划或美术同学的可视化操作来讲，那么策划师和设计师喜欢拖拽实现控件绑定。</p>
+<h2 id="_2">手工代码绑定</h2>
+<p>技术同学在代码中完成控件绑定，而不需要在UI中手动拖拽，但注意路径不要过深，深的节点可以先找到一个父节点，再找子节点</p>
+<pre><code class="language-lua">--Path
+local button = self:GetUIButton('path1/path2/button')
+--实现代码在UIBase.lua
 </code></pre>
-<h2 id="luaoutlet">LuaOutlet 拖拽绑定控件</h2>
-<p>在KSFramework中，可以在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx进行引用，</p>
+<h2 id="_3">拖拽绑定控件</h2>
+<p>在Editor中编辑UI的时候拖拽绑定控件，然后在UI代码中使用self.xxx就可以访问控件了</p>
 <p>比如：self.txtTips，就指向txtTips这个Object，类型为UnityEngine.UI.Text</p>
 <pre><code class="language-lua">self.txtTips.text = &quot;这是给文本赋值&quot;
 </code></pre>
 <p><img alt="" src="../../images/ui/luaoutlet.png" /></p>
-<h3 id="_2">可视化查找引用丢失</h3>
-<p>在代码中通过路径查找控件，而如果这个控件后来因于UI的结构修改而被删除了，或者美术、策划调整了UI层级结构，这个路径就找不到对应的控件，从而变量变成了Null， 程序对变量的访问就会引发NullReferenceException。 如果经常出现这种问题的话，让技术同学去检查路径是一种浪费不必要的时间。</p>
-<p>而outlet则提供可视化的方法，在Inspect面板会<strong>以红色标识丢失的引用，和具有同名的变量</strong>。</p>
+<h3 id="_4">可视化查找引用丢失</h3>
+<p>在代码中通过路径查找控件，而如果这个控件后来因于UI的结构修改而被删除了，或者美术、策划调整了UI层级结构，这个路径就找不到对应的控件，变量就变成了Null， 程序对变量的访问就会引发NullReferenceException。 如果经常出现这种问题的话，让技术同学去检查路径会浪费不必要的时间。</p>
+<p>而outlet则提供可视化的方法，在Inspect面板会<strong>以红色标识丢失的引用，同时会出提示同名的变量</strong>。</p>
 <p><img alt="outlet-error" src="../../images/ui/outlet-error.png" /></p>
-<h2 id="_3">总结</h2>
-<p>如果是从代码的可读性来讲，那么工程师喜欢使用代码手工实现控件绑定。</p>
-<p>如果对于策划或美术同学的可视化操作来讲，那么策划师和设计师喜欢拖拽实现控件绑定。</p>
               
             </div>
           </div>
@@ -292,10 +303,10 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../data-binding/" class="btn btn-neutral float-right" title="单向数据绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../ui-binding/" class="btn btn-neutral float-right" title="手工代码绑定控件">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../lua-outlet/" class="btn btn-neutral" title="拖拽绑定控件"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../guide/" class="btn btn-neutral" title="UI模块使用指南"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -321,10 +332,10 @@ local button = self:GetControl('UnityEngine.UI.Button', 'path1/path2/button')
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../lua-outlet/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../data-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../ui-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
