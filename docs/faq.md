@@ -11,20 +11,19 @@
 ### 如何打包APK？
 
 1. 点击菜单栏 **KEngine** - **AutoBuilder** - **Android**/**iOS**/**Windows**
-2. Unity会执行生成安装包，放在**Product/Apps/Android/**KSFramework.apk `[根据平台区分目录]`
+2. 随后等待Unity执行生成安装包，放在**Product/Apps/Android/**KSFramework.apk `[根据平台区分目录]`
 3. 打包期间会自动Link AB资源到**StreamingAssets**目录下
 
-注：如果是xlua，打包前请先生成代码。其它热更新方案，请参考框架使用说明。
+注：如果是xlua，打包前内部会自动生成代码打包成功后会删除生成的代码。其它热更新方案，请参考框架使用说明。
 
 ### 从StreamingAssets目录同步读取文件
 
-对于其它的文件，请使用`KResourceModule.LoadAssetsSync`，针对安卓平台有做特殊处理，源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java
+对于其它的文件，请使用`KResourceModule.LoadAssetsSync`，针对安卓平台有做特殊处理，java源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java
 
-如果是ab，请获取完整路径后使用
+如果是加载ab，请使用这个接口
 
-```
-var res_path = KResourceModule.GetAbFullPath($"ui/{uiBase.UITemplateName.ToLower()}");
-var assetBundle = AssetBundle.LoadFromFile(res_path);
+```c#
+var assetBundle = AssetBundleLoader.Load(ab的相对路径);
 ```
 
 
@@ -33,7 +32,9 @@ var assetBundle = AssetBundle.LoadFromFile(res_path);
 
 如果需要单独更新KEngine或者xlua/slua，可以手动删除原有目录，再拷贝新的目录过去。
 
-原有目录如下：
+KSFramework中xlua的lib是从作者的仓库中拉取的(加入了一些常用lua库)：https://github.com/chexiongsheng/build_xlua_with_libs 
+
+目录结构如下：
 
 ```c#
 KSFramework\Assets\KSFramework\KEngine
@@ -43,14 +44,12 @@ KSFramework\Assets\slua
 
 ### OnInit会调用两次？
 
-默认OnInit在Onit会被调用两次，设计用于热重载。
-
-在OnOpen中也会调用一次OnInit，用于热重载之后，对数据进行初始化。
+如果OnInit被调用两次，它是设计用于热重载后，在OnOpen中重新调用一次OnInit。
 
 如果你不希望被调用两次，在**LuaUIController.OnOpen**中注释掉这两行
 
 ```c#
-//if (!CheckInitScript())       //去掉热重载，因此只需要在OnInit中加入这步检查
+//if (!CheckInitScript())
 //    return;
 ```
 
@@ -58,14 +57,14 @@ KSFramework\Assets\slua
 
 可以把数据表生成Lua代码，或在lua中读取tsv，或把数据表保存到数据库，等等方式。
 
->  在KSFramework中的Appconfig.txt中修改 IsUseLuaConfig = 1，就会把配置表生成lua代码
+>  在KSFramework中的Appconfig.cs中修改 IsUseLuaConfig = 1，就会把配置表生成lua代码
 
 更新于2020年-11月，tableml支持把数据表的内容生成为lua代码，目前在lua中读取配置表有这几种方式：
 
-1. 数据表转为lua代码
-2. 仅生成数据表的字段做为lua文件，用于代码提示，把数据内容保存到sqlite中
-3. 数据表转为csv，在lua中解析csv
-4. 不需要热更的代码，通过c#读取配置
+- 数据表转为lua代码
+- 仅生成数据表的字段做为lua文件，用于代码提示，把数据内容保存到sqlite中
+- 数据表转为csv，在lua中解析csv
+- 不需要热更的代码，通过c#读取配置
 
 可以参考我的这篇文章《[TableML-GUI篇(C# 编译/解析 Excel/CSV工具)](https://www.cnblogs.com/zhaoqingqing/p/7440867.html)》 ，把数据表保存到sqlite
 
@@ -148,9 +147,23 @@ lzma也可以loadfromfile
 
 ## xlua相关
 
+### lua调试
+
+在我们的项目中是通过[emmylua](https://github.com/EmmyLua/IntelliJ-EmmyLua)+idea来调试lua，如果是mac os无法调试请参考：[dynamic libraries not enabled; check your Lua installation #725](https://github.com/Tencent/xLua/issues/725)
+
+KSFramework中xlua的lib是从作者的仓库中拉取的(加入了一些常用lua库)：https://github.com/chexiongsheng/build_xlua_with_libs 
+
+在KSFramework中，请把emmylua需要的调试代码写在Init.lua的底部
+
+ [从Lua调试切换为C#调试时,Unity会报错~ #275](https://github.com/EmmyLua/IntelliJ-EmmyLua/issues/275)
+
+### 问题1
+
 提示：code has not been genrate, may be not work in phone!
 
 这是因为xlua通过 DelegateBridge.Gen_Flag 来判断是否生成代码，但我们在打包过程中，先生成代码，然后删除生成后的代码，并没有设置此flag，但功能是正常的。
+
+### 问题2
 
 在Unity2019下xlua下调用切换场景(SceneLoader.Load)遇到报错：
 
