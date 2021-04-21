@@ -338,9 +338,13 @@ UIModule.Instance.OpenWindow(&quot;Billboard&quot;);
 <p>我们的UI通过AssetBundle打开了，弹出提示找不到UI Lua脚本，接下来我们创建Lua脚本吧。</p>
 </blockquote>
 <h3 id="lua">创建Lua脚本</h3>
-<p><img alt="在目录Product/Lua/UI中新建一个lua文件" src="../images/quickstart/quick-start-21.png" /></p>
+<p>有两种方式自动创建带模版的lua脚本 </p>
+<ul>
+<li>方法1.  KEngine -  Open Quick Window - 为当前UI创建UI脚本</li>
+<li>方法2. KEngine -  UI - Auto Make UI Lua Scripts</li>
+</ul>
 <blockquote>
-<p>在目录Product/Lua/UI中新建一个lua文件</p>
+<p>在目录Product/Lua/UI中就创建好了一个lua文件</p>
 </blockquote>
 <p><img alt="写一段Lua代码：UIBillboard的执行逻辑" src="../images/quickstart/quick-start-23.png" /></p>
 <blockquote>
@@ -364,7 +368,7 @@ end
 
 return UIBillboard
 </code></pre>
-<p>这段lua中，创建了一个Table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。</p>
+<p>这段lua中，创建了一个table叫UIBillboard，这个table必须有OnInit(controller)函数。它通过代码设置了UI中的文字。</p>
 <p>好了，接下来，我们要为策划准备配置表了。</p>
 <h3 id="_2">创建配置表</h3>
 <p><strong>说明：新版本中增加了把配置表数据生成为lua文件，或者把配置表数据插入到sqlite中，均可以做到配置热重载。</strong></p>
