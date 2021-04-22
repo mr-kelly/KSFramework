@@ -1,4 +1,4 @@
-﻿#region Copyright(c) Kingsoft Xishanju 
+﻿#region Copyright(c) Kingsoft Xishanju
 
 // Company: Kingsoft Xishanju
 // Filename: KDefineSymbolsHelper.cs
@@ -9,7 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
+using KEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace KUnityEditorTools
 {
@@ -25,10 +27,8 @@ namespace KUnityEditorTools
         /// <returns></returns>
         public static bool HasDefineSymbol(string symbol)
         {
-            var symbolStrs =
-                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
-            var symbols =
-                new List<string>(symbolStrs.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
+            var symbolStrs = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            var symbols = new List<string>(symbolStrs.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
             return symbols.Contains(symbol);
         }
 
@@ -38,11 +38,16 @@ namespace KUnityEditorTools
         /// <param name="symbol"></param>
         public static void RemoveDefineSymbols(string symbol)
         {
-            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof (BuildTargetGroup)))
+            if (string.IsNullOrEmpty(symbol))
+            {
+                if (Application.isEditor) Log.LogError("cant add null");
+                return;
+            }
+
+            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup)))
             {
                 string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
-                List<string> symbols =
-                    new List<string>(symbolStr.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
+                List<string> symbols = new List<string>(symbolStr.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
                 if (symbols.Contains(symbol))
                     symbols.Remove(symbol);
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(";", symbols.ToArray()));
@@ -55,16 +60,56 @@ namespace KUnityEditorTools
         /// <param name="symbol">宏</param>
         public static void AddDefineSymbols(string symbol)
         {
-            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof (BuildTargetGroup)))
+            if (string.IsNullOrEmpty(symbol))
+            {
+                if (Application.isEditor) Log.LogError("cant add null");
+                return;
+            }
+
+            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup)))
             {
                 string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
-                List<string> symbols =
-                    new List<string>(symbolStr.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
+                List<string> symbols = new List<string>(symbolStr.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
                 if (!symbols.Contains(symbol))
                 {
                     symbols.Add(symbol);
                     PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(";", symbols.ToArray()));
                 }
+            }
+        }
+
+        public static void AddDefineSymbols(string[] symbol)
+        {
+            if (symbol == null)
+            {
+                if (Application.isEditor) Log.LogError("cant add null");
+                return;
+            }
+
+            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup)))
+            {
+                string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
+                List<string> symbols = new List<string>(symbolStr.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries));
+                foreach (string t in symbol)
+                {
+                    if (!symbols.Contains(t))
+                        symbols.Add(t);
+                }
+
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(";", symbols.ToArray()));
+            }
+        }
+
+        /// <summary>
+        /// 设置为只有指定宏
+        /// </summary>
+        /// <param name="symbols"></param>
+        public static void SetDefineSymbols(string[] symbols)
+        {
+            string define = symbols == null ? "" : string.Join(";", symbols);
+            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup)))
+            {
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(target, define);
             }
         }
     }

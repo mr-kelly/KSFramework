@@ -177,6 +177,21 @@ public class KQuickWindowEditor : EditorWindow
             ILRuntimeEditor.ClearGenCode();
         }
         GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("开启调试", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KDefineSymbolsHelper.AddDefineSymbols(new string[]{"ILRuntime","DEBUG"});
+        }
+
+        if (GUILayout.Button("默认设置", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KDefineSymbolsHelper.AddDefineSymbols(new string[]{"ILRuntime"});
+        }
+        if (GUILayout.Button("最佳性能", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KDefineSymbolsHelper.AddDefineSymbols(new string[]{"ILRuntime","DISABLE_ILRUNTIME_DEBUG"});
+        }
+        GUILayout.EndHorizontal();
 #endif
     }
 
