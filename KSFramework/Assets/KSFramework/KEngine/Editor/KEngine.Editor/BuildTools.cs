@@ -579,56 +579,6 @@ namespace KEngine.Editor
                 CopyFolder(subDir.FullName, dPath + "/" + subDir.Name);
             }
         }
-
-        /// <summary>
-        /// 是否有指定宏呢
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <returns></returns>
-        public static bool HasDefineSymbol(string symbol)
-        {
-            string symbolStrs =
-                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
-            List<string> symbols =
-                new List<string>(symbolStrs.Split(new char[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
-            return symbols.Contains(symbol);
-        }
-
-        /// <summary>
-        /// 移除指定宏
-        /// </summary>
-        /// <param name="symbol"></param>
-        public static void RemoveDefineSymbols(string symbol)
-        {
-            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup)))
-            {
-                string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
-                List<string> symbols =
-                    new List<string>(symbolStr.Split(new char[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
-                if (symbols.Contains(symbol))
-                    symbols.Remove(symbol);
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(";", symbols.ToArray()));
-            }
-        }
-
-        /// <summary>
-        /// 添加指定宏（不重复）
-        /// </summary>
-        /// <param name="symbol"></param>
-        public static void AddDefineSymbols(string symbol)
-        {
-            foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup)))
-            {
-                string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
-                List<string> symbols =
-                    new List<string>(symbolStr.Split(new char[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
-                if (!symbols.Contains(symbol))
-                {
-                    symbols.Add(symbol);
-                    PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(";", symbols.ToArray()));
-                }
-            }
-        }
         
         /// <summary>
         /// windows下获取python的安装路径
@@ -731,59 +681,6 @@ namespace KEngine.Editor
                 return allOutput;
             }
         }
-
-        /* TODO: CFolderSyncTool
-            public static void DeleteLink(string linkPath)
-            {
-                var os = Environment.OSVersion;
-                if (os.ToString().Contains("Windows"))
-                {
-                    CFolderSyncTool.ExecuteCommand(string.Format("rmdir \"{0}\"", linkPath));
-                }
-                else if (os.ToString().Contains("Unix"))
-                {
-                    CFolderSyncTool.ExecuteCommand(string.Format("rm -Rf \"{0}\"", linkPath));
-                }
-                else
-                {
-                    Log.Error("[SymbolLinkFolder]Error on OS: {0}", os.ToString());
-                }
-            }
-
-            public static void SymbolLinkFolder(string srcFolderPath, string targetPath)
-            {
-                var os = Environment.OSVersion;
-                if (os.ToString().Contains("Windows"))
-                {
-                    CFolderSyncTool.ExecuteCommand(string.Format("mklink /J \"{0}\" \"{1}\"", targetPath, srcFolderPath));
-                }
-                else if (os.ToString().Contains("Unix"))
-                {
-                    var fullPath = Path.GetFullPath(targetPath);
-                    if (fullPath.EndsWith("/"))
-                    {
-                        fullPath = fullPath.Substring(0, fullPath.Length - 1);
-                        fullPath = Path.GetDirectoryName(fullPath);
-                    }
-                    CFolderSyncTool.ExecuteCommand(string.Format("ln -s {0} {1}", Path.GetFullPath(srcFolderPath), fullPath));
-                }
-                else
-                {
-                    Log.Error("[SymbolLinkFolder]Error on OS: {0}", os.ToString());
-                }
-            }
-            */
-
-        //[Obsolete("Please use KAssetVersionControl")]
-        //public static bool CheckNeedBuildWithMeta(params string[] assetPath)
-        //{
-        //    return KAssetVersionControl.TryCheckNeedBuildWithMeta(assetPath);
-        //}
-        //[Obsolete("Please use KAssetVersionControl")]
-        //public static void MarkBuildVersion(string assetPath)
-        //{
-        //    KAssetVersionControl.TryMarkBuildVersion(assetPath);
-        //}
     }
 
 }
