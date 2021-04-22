@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 [assembly: AssemblyTitle("KSFrameowork (http://github.com/mr-kelly/KSFramework)")]
-[assembly: AssemblyDescription("KSFramework - KEngine + SLua")]
+[assembly: AssemblyDescription("KSFramework - KEngine + SLua/xLua")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kelly")]
 [assembly: AssemblyProduct("KSFramework")]
