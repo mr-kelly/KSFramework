@@ -59,12 +59,30 @@ public class BaseImporter : AssetPostprocessor
         {
             setting.loadType = AudioClipLoadType.DecompressOnLoad;
             var dirName = Path.GetDirectoryName(path).ToLower();
-            //特殊处理放在sounds根目录的音频，如果刚好有个子目录也叫sounds则去除
+            //特殊处理放在sounds根目录的音频把包到sounds/目录下，如果刚好有个子目录也叫sounds则需要特殊处理
             if (dirName == "sounds")
                 dirName = "sounds/sounds";
             importer.assetBundleName = dirName + AppConfig.AssetBundleExt;
         }
 
         importer.defaultSampleSettings = setting;
+    }
+
+    public void OnPreprocessModel()
+    {
+        ModelImporter importer = assetImporter as ModelImporter;
+        if (importer == null)
+            return;
+        //TODO 根据情况是否导入动画
+        // importer.importAnimation = false;
+        // importer.importBlendShapes = false;
+        //非effect目录，则不勾选Read/Write
+        if (importer.assetPath.Contains(KEngineDef.EffectPath))
+            return;
+        if (importer.isReadable)
+        {
+            importer.isReadable = false;
+            importer.SaveAndReimport();
+        }
     }
 }
