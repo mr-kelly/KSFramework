@@ -149,11 +149,11 @@ lzma也可以loadfromfile
 
 ### lua调试
 
-在我们的项目中是通过[emmylua](https://github.com/EmmyLua/IntelliJ-EmmyLua)+idea来调试lua，如果是mac os无法调试请参考：[dynamic libraries not enabled; check your Lua installation #725](https://github.com/Tencent/xLua/issues/725)
+在我们的项目中是通过[emmylua](https://github.com/EmmyLua/IntelliJ-EmmyLua)+idea来调试lua，也可以使用rider2020+emmylua1.3.5及以上版本调试，请把emmylua的调试代码写在Init.lua的底部
 
-KSFramework中xlua的lib是从作者的仓库中拉取的(加入了一些常用lua库)：https://github.com/chexiongsheng/build_xlua_with_libs 
+如果mac os无法调试报错，请参考：[dynamic libraries not enabled; check your Lua installation #725](https://github.com/Tencent/xLua/issues/725)
 
-在KSFramework中，请把emmylua需要的调试代码写在Init.lua的底部
+KSFramework中xlua的lib是从xlua作者的仓库中拉取的(加入了一些常用lua库)：https://github.com/chexiongsheng/build_xlua_with_libs 
 
  [从Lua调试切换为C#调试时,Unity会报错~ #275](https://github.com/EmmyLua/IntelliJ-EmmyLua/issues/275)
 
