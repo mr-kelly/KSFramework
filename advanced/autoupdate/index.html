@@ -224,7 +224,8 @@
 <p>把ab删除后，重新打包，md5不会变化</p>
 <h2 id="_4">制作差异补丁</h2>
 <h2 id="ab">ab资源</h2>
-<p>按照ab划分粒度不要太细的原则，在实际项目中ab文件不会出现太多小文件，所以采用下载单个ab的方式</p>
+<p>按照ab划分粒度不要太细的原则，在实际项目中ab文件不会出现太多小文件，所以采用下载单个ab的方式。</p>
+<p>在使用http下载大量文件时，可以在header添加keep-alive用于复用socket，减少大量的connect(如果是http1.0则需要http1.1则默认开启)</p>
 <p>用法：</p>
 <p>生成filelist脚本放置在build_tools目录，在jenkins中根据平台来执行对应的bat脚本，底层是调用python脚本gen_filelist.py来生成filelist</p>
 <h3 id="versiontxt">version.txt</h3>
