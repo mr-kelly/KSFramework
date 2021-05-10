@@ -257,8 +257,8 @@ namespace KEngine.Editor
     {
         public static string StreamingPath = "Assets/StreamingAssets/";
         public static string AssetBundlesLinkPath = StreamingPath + AppConfig.StreamingBundlesFolderName;
-        public static string LuaLinkPath = StreamingPath + AppConfig.LuaPath + "/";
-        public static string SettingLinkPath = StreamingPath + AppConfig.SettingResourcesPath + "/";
+        public static string LuaLinkPath = StreamingPath + AppConfig.LuaPath ;//NOTE mac os下不需要/结尾
+        public static string SettingLinkPath = StreamingPath + AppConfig.SettingResourcesPath ;
         //WeakReference ins
         //public static object ins;
         
@@ -302,7 +302,7 @@ namespace KEngine.Editor
             var  dstPath = Application.streamingAssetsPath + "/" + AppConfig.VersionTxtName;
             if (File.Exists(dstPath)) File.Delete(dstPath);
             File.Copy(AppConfig.VersionTextPath, dstPath);
-            Log.Info("拷贝version.txt完成");
+            Log.Info($"拷贝version.txt完成,File.Exists:{File.Exists(dstPath)}");
             AssetDatabase.Refresh();
         }
 
