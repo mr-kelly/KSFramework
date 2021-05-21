@@ -289,14 +289,15 @@ namespace KEngine
         {
             if (LogLevel > emLevel)
                 return;
-            if (args != null)
+            if (args != null && args.Length > 0)
                 szMsg = string.Format(szMsg, args);
+            //NOTE 如果报错string.Format 且整条日志是json格式的需要进行转义: {{代替{，用}}代替}
             szMsg = string.Format("[{0}] {1}(frame:{2},mem:{3:0.##}MB){4}",
                 emLevel,DateTime.Now.ToString("HH:mm:ss.fff"), TotalFrame,GetMonoUseMemory(),szMsg);
-#if UNITY_EDITOR
+#if UNITY_EDITOR && (UNITY_5 || UNITY2017)
             StackTrace stackTrace = new StackTrace(true);
             var stackFrame = stackTrace.GetFrame(2);
-            //s_LogStackFrameList.Add(stackFrame);
+            s_LogStackFrameList.Add(stackFrame);
 #endif
             switch (emLevel)
             {
