@@ -24,6 +24,8 @@ set codePath=%~dp0\HotFix_Project\HotFix_Project.csproj
 
 set msbuild_path="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
 c:
+REM set msbuild_path="D:\Program Files\JetBrains\JetBrains Rider 2020.3.4\tools\MSBuild\Current\Bin\"
+REM cd d:\
 cd %msbuild_path%
 @echo on
 msbuild /m %codePath% /t:clean;Rebuild /p:Configuration=Release  /fl /flp:logfile=%log_file%;verbosity=diagnostic
