@@ -24,12 +24,14 @@
 
 #endregion
 
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using KUnityEditorTools;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
+//using Unity.EditorCoroutines.Editor; //package:com.unity.editorcoroutines ,package中勾选:Show preview packages
 
 namespace KEngine.Editor
 {
@@ -142,11 +144,9 @@ namespace KEngine.Editor
                 Directory.CreateDirectory(fullDir);
 
             Log.Info("Start Build Client {0} to: {1}", tag, Path.GetFullPath(fullPath));
-
-            //NOTE xlua在编辑器开发不生成代码，因为.NET Standard 2.0不支持emit会导致某些CSharpCallLua注册失败，所以需要改成.Net4.X，在打包时如果有需要再修改回
-            //NOTE xlua打包前生成Lua绑定代码
 #if xLua
-            //先clear，再gen，避免同一个class修改后，再gen会报错
+         	// NOTE xlua在编辑器开发模式不生成代码，因为.NET Standard 2.0不支持emit，会导致某些CSharpCallLua注册失败，Api要改成.Net4.X，在打包时如果有需要再修改回
+         	// 需要先clear，再gen，避免同一个class修改后，覆盖gen会报错
             XLua.DelegateBridge.Gen_Flag = true;
             CSObjectWrapEditor.Generator.ClearAll();
             CSObjectWrapEditor.Generator.GenAll();
@@ -180,14 +180,14 @@ namespace KEngine.Editor
         [MenuItem("KEngine/AutoBuilder/WindowsX86 Dev")] 
         public static void PerformWinBuild()
         {
-            PerformBuild("Apps/Win_Dev/KSFramework_Dev.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows,
+            PerformBuild("Apps/Windows_Dev/KSFramework_Dev.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows,
                 BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler);
         }
 
         [MenuItem("KEngine/AutoBuilder/WindowsX86")]
         public static void PerformWinReleaseBuild()
         {
-        	PerformBuild("Apps/Win/KSFramework.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
+        	PerformBuild("Apps/Windows/KSFramework.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
         }
 
         [MenuItem("KEngine/AutoBuilder/iOS")]
@@ -224,23 +224,23 @@ namespace KEngine.Editor
             return PerformBuild(path,BuildTargetGroup.Android, BuildTarget.Android, opt);
         }
 
-        [MenuItem("KEngine/Clear PC PersistentDataPath")]
+        [MenuItem("KEngine/Clear PC PersistentDataPath",false,99)]
         public static void ClearPersistentDataPath()
         {
-            foreach (string dir in Directory.GetDirectories(KResourceModule.GetAppDataPath()))
+            foreach (string dir in Directory.GetDirectories(KResourceModule.AppDataPath))
             {
                 Directory.Delete(dir, true);
             }
-            foreach (string file in Directory.GetFiles(KResourceModule.GetAppDataPath()))
+            foreach (string file in Directory.GetFiles(KResourceModule.AppDataPath))
             {
                 File.Delete(file);
             }
         }
 
-        [MenuItem("KEngine/Open PC PersistentDataPath Folder")]
+        [MenuItem("KEngine/Open PC PersistentDataPath Folder",false,98)]
         public static void OpenPersistentDataPath()
         {
-            System.Diagnostics.Process.Start(KResourceModule.GetAppDataPath());
+            System.Diagnostics.Process.Start(KResourceModule.AppDataPath);
         }
 
         [MenuItem("KEngine/Clear Prefs")]
@@ -272,7 +272,7 @@ namespace KEngine.Editor
 
         public static string GetResourceExportPath()
         {
-            var resourcePath = BuildTools.GetExportPath(EditorUserBuildSettings.activeBuildTarget, KResourceModule.Quality);
+            var resourcePath = BuildTools.GetExportPath(KResourceModule.Quality);
             return resourcePath;
         }
 
@@ -283,7 +283,7 @@ namespace KEngine.Editor
             var exportPath = GetResourceExportPath();
             var linkPath = GetABLinkPath();
             KSymbolLinkHelper.SymbolLinkFolder(exportPath, linkPath);
-            //NOTE 特别无解，同步下无法link这两个目录，使用协程处理后目录内容是空，如果2018及以下版本无EditorCoroutine使用脚本进行link
+            //NOTE 特别无解，无法同步link这两个目录，使用协程处理后目录内容是空，如果2018及以下版本无EditorCoroutine使用脚本进行link
             /*Log.Info("Add Symbol Link Assetbundle.");
             ins = new object();
             EditorCoroutineUtility.StartCoroutine(LinkLua(), ins);
