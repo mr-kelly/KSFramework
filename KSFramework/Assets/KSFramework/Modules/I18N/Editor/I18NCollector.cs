@@ -28,6 +28,7 @@ namespace KSFramework.Editor
     /// <summary>
     /// 编辑环境，会编译所有程序集找出所有的Collector，并自动执行Collector的收集方法进行多语言收集
     /// </summary>
+    [System.Obsolete]
     public interface I18NCollector
     {
         /// <summary>
