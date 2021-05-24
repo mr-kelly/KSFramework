@@ -60,7 +60,7 @@ nav:
     - "版本号与版本管理": advanced/versioning.md
     - "Excel如何进行SVN协作、差异比较？": advanced/excel-diff.md
     - "编译客户端时的内部细节": advanced/app-compile.md
-    - "资源包更新": advanced/autoupdate.md
+    - "下载更新和制作差异包": advanced/autoupdate.md
     - "Lua脚本热重载，内存状态数据丢失？": advanced/script-reload.md
     - "编辑器强化": advanced/editor.md
     - "假定角色需求": advanced/roles.md
