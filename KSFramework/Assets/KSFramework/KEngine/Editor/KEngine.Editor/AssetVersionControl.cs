@@ -32,11 +32,6 @@ using Object = UnityEngine.Object;
 
 namespace KEngine.Editor
 {
-    [Obsolete("Please use AssetVersionControl instead!")]
-    public class KAssetVersionControl : AssetVersionControl
-    {
-    }
-
     /// <summary>
     /// 基于Tab表格的纯文本简单资源差异管理器
     /// </summary>
