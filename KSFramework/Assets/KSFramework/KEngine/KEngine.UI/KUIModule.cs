@@ -85,15 +85,19 @@ namespace KEngine.UI
         public static Action<UIController> OnOpenEvent;
         public static Action<UIController> OnCloseEvent;
         /// <summary>
-        /// 每个界面打开都会+1，新打开的界面始终在最顶层
+        /// 同类型的每个界面打开都会+1，新打开的界面始终在最顶层
+        /// PanelType层级顺序：TipsUI > NormalUI > MainUI
         /// </summary>
-        public static int sortOrder = 0;
+        public static int sortOrderMainUI = 0;
+        public static int sortOrderNormal = 0;
+        public static int sortOrderTips = 0;
 
         
         public UIModule()
         {
             UiBridge = new GUIBridge();
             UiBridge.InitBridge();
+            ResetUIOrder();
             CreateRoot();
         }
         
@@ -700,6 +704,44 @@ namespace KEngine.UI
             CallUI(uiName, (_uibase, _args) => { callback(_uibase as T, _args); }, args);
         }
 
+        /// <summary>
+        /// 可以在从主城切到副本时，重置一下order
+        /// </summary>
+        public void ResetUIOrder()
+        {
+            sortOrderMainUI = UIDefs.UIOrder_MainUI_Start;
+            sortOrderNormal = UIDefs.UIOrder_Normal_Start;
+            sortOrderTips = UIDefs.UIOrder_Tips_Start;
+        }
+
+        public void SetUIOrder(UIController uiBase)
+        {
+            if (uiBase != null && uiBase.Canvas && uiBase.WindowAsset)
+            {
+                if (uiBase.WindowAsset.PanelType == PanelType.MainUI)
+                {
+                    if (sortOrderMainUI > UIDefs.UIOrder_MainUI_Max) sortOrderMainUI = UIDefs.UIOrder_MainUI_Start;
+                    uiBase.Canvas.sortingOrder = sortOrderMainUI++;
+                }
+                else if (uiBase.WindowAsset.PanelType == PanelType.NormalUI)
+                {
+                    if (sortOrderNormal > UIDefs.UIOrder_Normal_Max) sortOrderNormal = UIDefs.UIOrder_Normal_Start;
+                    uiBase.Canvas.sortingOrder = sortOrderNormal++;
+                }
+                else if (uiBase.WindowAsset.PanelType == PanelType.TipsUI)
+                {
+                    if (sortOrderTips > UIDefs.UIOrder_Tips_Max) sortOrderTips = UIDefs.UIOrder_Tips_Start;
+                    uiBase.Canvas.sortingOrder = sortOrderTips++;
+                }
+ 
+                uiBase.Canvas.enabled = true;
+            }
+            else
+            {
+                if(uiBase!=null) Log.LogError($"Set {uiBase} Canvas sortingOrder Faild!");
+            }
+        }
+        
         private void OnOpen(UILoadState uiState, params object[] args)
         {
             if (uiState.IsLoading)
@@ -719,17 +761,7 @@ namespace KEngine.UI
             uiBase.BeforeOpen(args);
             //TODO 播放界面出现动画
             uiBase.gameObject.SetActiveX(true);
-            if (uiBase.Canvas)
-            {
-                uiBase.Canvas.enabled = true;
-                if (sortOrder >= int.MaxValue)
-                {
-                    sortOrder = 0;
-                }
-
-                uiBase.Canvas.sortingOrder = sortOrder++;
-            }
-
+            SetUIOrder(uiBase);
             if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.OnOpen");
             uiBase.OnOpen(args);
             KWatchResult profilerData = null;

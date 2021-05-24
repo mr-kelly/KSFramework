@@ -202,9 +202,9 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("创建UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        if (GUILayout.Button("创建常规UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            KUGUIBuilder.CreateNewUI();
+            KUGUIBuilder.CreateNormalUI();
         }
 #if xLua || SLUA
         if (GUILayout.Button("为当前UI创建Lua脚本", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
@@ -213,7 +213,18 @@ public class KQuickWindowEditor : EditorWindow
         }
 #endif
         GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("创建主界面UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KUGUIBuilder.CreateMainUI();
+        }
 
+        if (GUILayout.Button("创建Tips界面", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            KUGUIBuilder.CreateTipsUI();
+        }
+
+        GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("导出当前UI", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))

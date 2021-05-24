@@ -255,10 +255,32 @@ namespace KEngine.Editor
                 KUGUIBuilder.UISceneToPrefabs();
             }
         }
-
-
-        [MenuItem("KEngine/UI(UGUI)/Create UI(UGUI)")]
-        public static void CreateNewUI()
+        
+        [MenuItem("KEngine/UI(UGUI)/Create Main Panel")]
+        public static void CreateMainUI()
+        {
+            CreateNewUI(PanelType.MainUI);
+        }
+        
+        [MenuItem("KEngine/UI(UGUI)/Create Normal Panel")]
+        public static void CreateNormalUI()
+        {
+            CreateNewUI(PanelType.NormalUI);
+        }
+        
+        [MenuItem("KEngine/UI(UGUI)/Create Tips Panel")]
+        public static void CreateTipsUI()
+        {
+            CreateNewUI(PanelType.TipsUI);
+        }
+        
+        [MenuItem("KEngine/UI(UGUI)/Create HUD Panel")]
+        public static void CreateHUDUI()
+        {
+            CreateNewUI(PanelType.HeadInfoUI);
+        }
+        
+        public static void CreateNewUI(PanelType panelType)
         {
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
             var currentScene = EditorSceneManager.GetActiveScene().path;
@@ -277,7 +299,15 @@ namespace KEngine.Editor
 
             GameObject uiObj = new GameObject(uiName);
             uiObj.layer = (int) UnityLayerDef.UI;
-            uiObj.AddComponent<UIWindowAsset>();
+            var windowAsset = uiObj.AddComponent<UIWindowAsset>();
+            windowAsset.IsUIEditor = true;
+            windowAsset.PanelType = panelType;
+            if (panelType != PanelType.NormalUI)
+            {
+                windowAsset.MoneyBar = MoneyBarType.None;
+                windowAsset.IsShowTabBar = false;
+                windowAsset.TabBarId = 0;
+            }
 
             var uiPanel = new GameObject("Image").AddComponent<Image>();
             uiPanel.transform.parent = uiObj.transform;
