@@ -70,7 +70,22 @@ namespace KEngine.UI
                 return _canvas;
             }
         }
+        private UIWindowAsset _windowAsset;
+        /// <summary>
+        /// 除HUD外，每个界面都有一个UIWindowAsset
+        /// </summary>
+        public UIWindowAsset WindowAsset
+        {
+            get
+            {
+                if (_windowAsset == null && gameObject)
+                {
+                    _windowAsset = gameObject.GetComponent<UIWindowAsset>();
+                }
 
+                return _windowAsset;
+            }
+        }
         private bool isVisiable;
         /// <summary>
         /// 是否显示，对于一些外部调用，如果未显示，则不调用
@@ -154,7 +169,7 @@ namespace KEngine.UI
                 if (visiable)
                 {
                     gameObject.SetActiveX(true);
-                    Canvas.enabled = true;
+                    UIModule.Instance.SetUIOrder(this);
                     OnOpen();
                 }
                 else
