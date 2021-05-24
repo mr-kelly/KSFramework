@@ -269,7 +269,7 @@ namespace KEngine
             IsAppPlaying = false;
             if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.OSXPlayer)
              LogFileManager.Destory();
-            LogFileRecorder.CloseStream();
+            LogFileManager.CloseStream();
         }
         
         void OnApplicationFocus(bool focus)

@@ -804,7 +804,7 @@ namespace KEngine.UI
             dict.Add(type,uiBase);
             var res_path = KResourceModule.GetAbFullPath($"ui/{uiBase.UITemplateName.ToLower()}");
             var assetBundle = AssetBundle.LoadFromFile(res_path);
-            Debuger.Assert(assetBundle == null,$"load ab error ,file:{res_path}");
+            Debuger.Assert(assetBundle != null,$"load ab error ,file:{res_path}");
             var  t = assetBundle.LoadAsset<GameObject>(uiBase.UITemplateName);
             GameObject uiObj = GameObject.Instantiate(t);
             
