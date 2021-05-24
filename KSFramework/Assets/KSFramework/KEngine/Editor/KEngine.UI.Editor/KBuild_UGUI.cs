@@ -310,7 +310,7 @@ namespace KEngine.Editor
             }
 
             var uiPanel = new GameObject("Image").AddComponent<Image>();
-            uiPanel.transform.parent = uiObj.transform;
+            uiPanel.transform.SetParent(uiObj.transform);
             KTool.ResetLocalTransform(uiPanel.transform);
 
             var canvas = uiObj.AddComponent<Canvas>();

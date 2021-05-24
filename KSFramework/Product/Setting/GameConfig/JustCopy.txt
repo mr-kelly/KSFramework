@@ -1,0 +1,3 @@
+#格式：key=value
+#下载和更新
+download_title_tips=资源更新
