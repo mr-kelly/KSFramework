@@ -77,12 +77,15 @@ namespace KEngine
         {
             if (!result)
             {
-                string formatMsg = "Assert Failed! ";
+                string formatMsg = $"[Error]{DateTime.Now.ToString("HH:mm:ss.fff")} Assert Failed! ";
                 if (!string.IsNullOrEmpty(msg))
-                    formatMsg += string.Format(msg, args);
+                {
+                    if (args != null && args.Length > 0)
+                        msg = string.Format(msg, args);
+                    formatMsg += msg;
+                }
 
-                Log.LogErrorWithStack(formatMsg, 2);
-
+                //Log.LogErrorWithStack(formatMsg, 2); //Exception会打印error，这里不再打印error
                 throw new Exception(formatMsg); // 中断当前调用
             }
         }
