@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !ILRuntime
+using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 using KSFramework;
@@ -168,6 +169,5 @@ public class UILuaOutletEditor : Editor
             Undo.RecordObject(target, "GUI Change Check");
         }
     }
-
-
 }
+#endif
