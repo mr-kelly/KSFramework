@@ -52,8 +52,10 @@ public class AppConfig
     /// </summary>
      public static string resUrl = "http://127.0.0.1:8080/cdn/";
     //public static string resUrl = "http://192.168.190.112:8080/cdn/";
-
-    public static bool IsDownloadRes = true;
+    /// <summary>
+    /// 是否开启下载更新的功能，doc:https://mr-kelly.github.io/KSFramework/advanced/autoupdate/
+    /// </summary>
+    public static bool IsDownloadRes = false;
 
     public static string VersionTextPath
     {
