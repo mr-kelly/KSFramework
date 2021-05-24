@@ -6,18 +6,19 @@ using UnityEngine;
 
 namespace KEngine
 {
+    public enum LogState
+    {
+        LoadAB = 0,
+        LoadAsset,
+        OnInit,
+        OnOpen
+    }
+    
     /// <summary>
     /// 写入日志到文件中
     /// </summary>
     public class LogFileRecorder
     {
-        public enum UIState
-        {
-            LoadAB = 0,
-            LoadAsset,
-            OnInit,
-            OnOpen
-        }
         private StreamWriter writer;
         /// <summary>
         /// 初始化记录器，在游戏退出时调用Close
@@ -52,9 +53,71 @@ namespace KEngine
             writer.Flush();
             writer.Close();
         }
+        
+    }
+    
+    /// <summary>
+    /// 监听Unity的日志事件
+    ///     用于在调试阶段写入Unity的所有日志到文件中，Log.LogToFile只会记录手动调用的，而它会记录所有的日志。
+    /// </summary>
+    public static class LogFileManager
+    {
+        static LogFileRecorder logWritter;
+        
+        public static void Start()
+        {
+            Application.logMessageReceivedThreaded += OnLogCallback;
+        }
+        
+        public static void Destory()
+        {
+            Application.logMessageReceivedThreaded -= OnLogCallback;
+            if (logWritter != null) logWritter.Close();
+        }
 
+        #region Unity的日志回调
 
-        #region 记录函数执行耗时
+        public static string GetLogFilePath()
+        {
+            string filePath = "";
+            var logName = "/log_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".log";
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android:
+                case RuntimePlatform.IPhonePlayer:
+                    filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
+                    break;
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.WindowsEditor:
+                case RuntimePlatform.OSXEditor:
+                    filePath = string.Format("{0}/../logs/{1}", Application.dataPath, logName);
+                    break;
+                default:
+                    filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
+                    break;
+            }
+
+            return filePath;
+        }
+        
+        //把Unity所有的日志都保存起来
+        private static void OnLogCallback(string condition, string stackTrace, LogType type)
+        {
+            if (logWritter == null)
+            {
+                string filePath = GetLogFilePath();
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                    Directory.CreateDirectory(filePath);
+                logWritter = new LogFileRecorder(filePath, FileMode.Append);
+            }
+            
+            //NOTE System.Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError都是没有堆栈，可以通过StackTrace加上堆栈。 by qingqing.zhao test in unity2019.3.7
+            logWritter.WriteLine(string.Format("{0}\n{1}",  condition,  stackTrace));
+        }
+        
+        #endregion
+        
+        #region 记录某种行为的耗时到csv用于分析
 
         private static Dictionary<string, LogFileRecorder> loggers = new Dictionary<string, LogFileRecorder>();
 
@@ -64,12 +127,19 @@ namespace KEngine
             {
                 kv.Value.Close();
             }
+
+            loggers.Clear();
         }
         
         /// <summary>
-        /// 保存UI的一些数据到文件中
+        /// 记录UI的一些数据到csv中，方便统计，格式如下：
+        ///     UI名字	操作(函数)	耗时(ms)
+        ///     Billboard	LoadAB	0.127
+        ///     Login	LoadAB	0.516
+        ///     Login	OnInit	0.004
+        ///     Navbar	LoadAB	0.109
         /// </summary>
-        public static void WriteUILog(string uiName,UIState state, float time)
+        public static void WriteUILog(string uiName,LogState state, float time)
         {
             LogFileRecorder logger;
             var logType = "ui";
@@ -110,64 +180,5 @@ namespace KEngine
         }
 
         #endregion
-    }
-    
-    /// <summary>
-    /// 监听Unity的日志事件
-    ///     用于在调试阶段写入Unity的所有日志到文件中，Log.LogToFile只会记录手动调用的，而它会记录所有的日志。
-    /// </summary>
-    public static class LogFileManager
-    {
-        static LogFileRecorder logWritter;
-        
-        public static void Start()
-        {
-            Application.logMessageReceivedThreaded += OnLogCallback;
-            // Application.logMessageReceived += OnLogCallback;
-        }
-        
-        public static void Destory()
-        {
-            Application.logMessageReceivedThreaded -= OnLogCallback;
-            if (logWritter != null) logWritter.Close();
-        }
-        
-        public static string GetLogFilePath()
-        {
-            string filePath = "";
-            var logName = "/log_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".log";
-            switch (Application.platform)
-            {
-                case RuntimePlatform.Android:
-                case RuntimePlatform.IPhonePlayer:
-                    filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
-                    break;
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXEditor:
-                    filePath = string.Format("{0}/../logs/{1}", Application.dataPath, logName);
-                    break;
-                default:
-                    filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
-                    break;
-            }
-
-            return filePath;
-        }
-        
-        //把Unity所有的日志都保存起来
-        private static void OnLogCallback(string condition, string stackTrace, LogType type)
-        {
-            if (logWritter == null)
-            {
-                string filePath = GetLogFilePath();
-                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                    Directory.CreateDirectory(filePath);
-                logWritter = new LogFileRecorder(filePath, FileMode.Append);
-            }
-            
-            //NOTE System.Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError都是没有堆栈，可以通过StackTrace加上堆栈。 by qingqing.zhao test in unity2019.3.7
-            logWritter.WriteLine(string.Format("{0}\n{1}",  condition,  stackTrace));
-        }
     }
 }

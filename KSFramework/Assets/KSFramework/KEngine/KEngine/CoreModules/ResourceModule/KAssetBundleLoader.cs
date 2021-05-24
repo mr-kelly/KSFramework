@@ -215,7 +215,7 @@ namespace KEngine
             if (assetBundle == null)
                 Log.Error("assetBundle is NULL: {0}", RelativeResourceUrl);
             if (AppConfig.IsLogAbLoadCost) Log.Info("[Finish] Load AssetBundle {0}, CostTime {1}s {2}", relativeUrl, Time.realtimeSinceStartup - beginTime,dependFrom);
-            if (AppConfig.IsSaveCostToFile && !relativeUrl.StartsWith("ui/"))  LogFileRecorder.WriteLoadAbLog(relativeUrl, Time.realtimeSinceStartup - beginTime);
+            if (AppConfig.IsSaveCostToFile && !relativeUrl.StartsWith("ui/"))  LogFileManager.WriteLoadAbLog(relativeUrl, Time.realtimeSinceStartup - beginTime);
             OnFinish(assetBundle);
         }
 

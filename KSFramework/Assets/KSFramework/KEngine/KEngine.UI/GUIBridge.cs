@@ -111,7 +111,7 @@ namespace KEngine.UI
                 if (AppConfig.IsLogAbLoadCost)
                     Log.Info("{0} Load AB, cost:{1:0.000}s", loadState.TemplateName,Time.realtimeSinceStartup - beginTime);
                 if (AppConfig.IsSaveCostToFile)
-                    LogFileRecorder.WriteUILog(loadState.TemplateName, LogFileRecorder.UIState.LoadAB,Time.realtimeSinceStartup - beginTime);
+                    LogFileManager.WriteUILog(loadState.TemplateName, LogState.LoadAB,Time.realtimeSinceStartup - beginTime);
                 if (loader.Bundle == null)
                 {
                     yield break;
@@ -151,7 +151,7 @@ namespace KEngine.UI
             {
                 var cost = Time.realtimeSinceStartup - beginTime;
                 Log.Info($"Load Asset from {0}, cost:{1:0.###} s", loadState.TemplateName, cost);
-                LogFileRecorder.WriteUILog(loadState.TemplateName,LogFileRecorder.UIState.LoadAsset, cost);
+                LogFileManager.WriteUILog(loadState.TemplateName,LogState.LoadAsset, cost);
          
             }
         }

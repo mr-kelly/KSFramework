@@ -737,7 +737,7 @@ namespace KEngine.UI
             if (AppConfig.IsSaveCostToFile)
             {
                 if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-                LogFileRecorder.WriteUILog(uiBase.UIName, LogFileRecorder.UIState.OnOpen, profilerData.costTime);
+                LogFileManager.WriteUILog(uiBase.UIName, LogState.OnOpen, profilerData.costTime);
             }
 
             if (OnOpenEvent != null)
@@ -754,7 +754,7 @@ namespace KEngine.UI
             if (AppConfig.IsSaveCostToFile)
             {
                 if(profilerData == null) profilerData = KProfiler.EndWatch("UI.Init",string.Concat(uiState.InstanceName,".OnInit"));
-                LogFileRecorder.WriteUILog(uiState.InstanceName,LogFileRecorder.UIState.OnInit,profilerData.costTime);
+                LogFileManager.WriteUILog(uiState.InstanceName,LogState.OnInit,profilerData.costTime);
             }
             if (OnInitEvent != null)
                 OnInitEvent(uiBase);
@@ -804,7 +804,8 @@ namespace KEngine.UI
             dict.Add(type,uiBase);
             var res_path = KResourceModule.GetAbFullPath($"ui/{uiBase.UITemplateName.ToLower()}");
             var assetBundle = AssetBundle.LoadFromFile(res_path);
-            var  t= assetBundle.LoadAsset<GameObject>(uiBase.UITemplateName);
+            Debuger.Assert(assetBundle == null,$"load ab error ,file:{res_path}");
+            var  t = assetBundle.LoadAsset<GameObject>(uiBase.UITemplateName);
             GameObject uiObj = GameObject.Instantiate(t);
             
             //TODO 管理图集
