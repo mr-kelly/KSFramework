@@ -25,7 +25,12 @@ public class UIManager : Singleton<UIManager>
     {
         return UIModule.Instance.OpenWindow(typeof(T).Name.Remove(0, 2), args);
     }
-
+    
+    public UILoadState OpenWindow(string uiName,params object[] args)
+    {
+        return UIModule.Instance.OpenWindow(uiName, args);
+    }
+    
     //隐藏时打开，打开时隐藏
     public void ToggleWindow<T>(params object[] args)
     {

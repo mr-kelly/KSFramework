@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using KEngine;
-using KSFramework;
+﻿using KSFramework;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 /// Author：qingqing.zhao (569032731@qq.com)
-/// Date：2021/2/4 16:29
-/// Desc：相当于主界面中的一部分，对于mmo建议把主界面拆到多个UI中
+/// Date：2021/5/24 18:39
+/// Desc：关闭就销毁的面板
 /// </summary>
-public class UIMain : ILRuntimeUIBase
+public class UIRoleInfo : ILRuntimeUIBase
 {
     public override void OnInit()
     {
-        UIClickLister.Get(gameObject.FindChild<Button>("BtnHead"), OnClick);
+        UIClickLister.Get(gameObject.FindChild<Button>("btn_close"), OnClick);
     }
 
     public override void BeforeOpen(object[] onOpenArgs)
@@ -32,9 +29,9 @@ public class UIMain : ILRuntimeUIBase
     void OnClick(MonoBehaviour behaviour)
     {
         var id = behaviour.name.Trim();
-        if (id == "BtnHead")
+        if (id == "btn_close")
         {
-            UIManager.Instance.OpenWindow("UIRoleInfo");
+            DisPlay(false);
         }
     }
 }
