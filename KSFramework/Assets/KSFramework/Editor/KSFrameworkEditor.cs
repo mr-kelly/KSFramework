@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using KEngine;
 using KEngine.UI;
+using KUnityEditorTools;
 using UnityEditor;
 using Debug = UnityEngine.Debug;
 #if UNITY_5 || UNITY_2017_1_OR_NEWER
@@ -319,7 +320,7 @@ return $UI_NAME
         /// <summary>
         /// 提供一个独立的gui工具编译excel
         /// </summary>
-        [MenuItem("KEngine/Get Or Open Tableml GUI(a gui tool compile excel)")]
+        [MenuItem("KEngine/Get Or Open Tableml GUI (gui compile excel)")]
         public static void GetTablemlGUI()
         {
             var path = Path.GetFullPath(Application.dataPath +"./../Product/Tableml_GUI/TableMLGUI.exe");
@@ -329,9 +330,30 @@ return $UI_NAME
             }
             else
             {
-                //下载tablemlgui,放在.\Product\目录下
+                //下载tablemlgui,然后放在.\Product\目录下
                 Application.OpenURL("https://github.com/zhaoqingqing/TableML/releases");
             }
+        }
+        
+        /// <summary>
+        /// unity editor引擎写入的日志
+        /// </summary>
+        [MenuItem("KEngine/Open Unity Editor Log")]
+        public static void OpenEditorLog()
+        {
+            //windows10下editor log目录在：@"%USERPROFILE%\AppData\Local\Unity\Editor\"
+            var dir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + @"\Unity\Editor";
+            System.Diagnostics.Process.Start(dir);
+            //if mac os see:https://answers.unity.com/questions/1484445/how-do-i-find-the-player-log-file-from-code.html
+        }
+        
+        /// <summary>
+        /// 自己写入的日志
+        /// </summary>
+        [MenuItem("KEngine/Open Custom Log")]
+        public static void OpenCustomLog()
+        {
+            System.Diagnostics.Process.Start(Path.GetDirectoryName(LogFileManager.GetLogFilePath()));
         }
     }
 }

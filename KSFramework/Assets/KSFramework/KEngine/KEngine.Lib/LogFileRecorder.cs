@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace KEngine
 {
+    /// <summary>
+    /// 写入日志到文件中
+    /// </summary>
     public class LogFileRecorder
     {
         public enum UIState
@@ -111,44 +114,12 @@ namespace KEngine
     
     /// <summary>
     /// 监听Unity的日志事件
-    ///     用于在调试中写入Unity的所有日志到文件中
+    ///     用于在调试阶段写入Unity的所有日志到文件中，Log.LogToFile只会记录手动调用的，而它会记录所有的日志。
     /// </summary>
     public static class LogFileManager
     {
         static LogFileRecorder logWritter;
-
-        //把Unity所有的日志都保存起来
-        private static void OnLogCallback(string condition, string stackTrace, LogType type)
-        {
-            if (logWritter == null)
-            {
-                string filePath = "";
-                var logName = "/log_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".log";
-                switch (Application.platform)
-                {
-                    case RuntimePlatform.Android:
-                    case RuntimePlatform.IPhonePlayer:
-                        filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
-                        break;
-                    case RuntimePlatform.WindowsPlayer:
-                    case RuntimePlatform.WindowsEditor:
-                    case RuntimePlatform.OSXEditor:
-                        filePath = string.Format("{0}/../logs/{1}", Application.dataPath, logName);
-                        break;
-                    default:
-                        filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
-                        break;
-                }
-                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                    Directory.CreateDirectory(filePath);
-                logWritter = new LogFileRecorder(filePath, FileMode.Append);
-            }
-            
-            //NOTE System.Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError都是没有堆栈，可以通过StackTrace加上堆栈。 by qingqing.zhao test in unity2019.3.7
-            logWritter.WriteLine(string.Format("{0}\n{1}",  condition,  stackTrace));
-        }
-
-
+        
         public static void Start()
         {
             Application.logMessageReceivedThreaded += OnLogCallback;
@@ -158,7 +129,45 @@ namespace KEngine
         public static void Destory()
         {
             Application.logMessageReceivedThreaded -= OnLogCallback;
-            logWritter.Close();
+            if (logWritter != null) logWritter.Close();
+        }
+        
+        public static string GetLogFilePath()
+        {
+            string filePath = "";
+            var logName = "/log_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".log";
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android:
+                case RuntimePlatform.IPhonePlayer:
+                    filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
+                    break;
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.WindowsEditor:
+                case RuntimePlatform.OSXEditor:
+                    filePath = string.Format("{0}/../logs/{1}", Application.dataPath, logName);
+                    break;
+                default:
+                    filePath = string.Format("{0}/{1}", Application.persistentDataPath, logName);
+                    break;
+            }
+
+            return filePath;
+        }
+        
+        //把Unity所有的日志都保存起来
+        private static void OnLogCallback(string condition, string stackTrace, LogType type)
+        {
+            if (logWritter == null)
+            {
+                string filePath = GetLogFilePath();
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                    Directory.CreateDirectory(filePath);
+                logWritter = new LogFileRecorder(filePath, FileMode.Append);
+            }
+            
+            //NOTE System.Environment.StackTrace是非常完整的堆栈包括Unity底层调用栈，而stackTrace只有exception才有堆栈，对于Log/LogWarning/LogError都是没有堆栈，可以通过StackTrace加上堆栈。 by qingqing.zhao test in unity2019.3.7
+            logWritter.WriteLine(string.Format("{0}\n{1}",  condition,  stackTrace));
         }
     }
 }
