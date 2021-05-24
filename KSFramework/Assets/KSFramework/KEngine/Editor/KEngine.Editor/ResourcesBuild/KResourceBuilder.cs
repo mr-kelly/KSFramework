@@ -96,17 +96,14 @@ namespace KEngine.Editor
                 if (ext.StartsWith("dir:")) // 目錄下的所有文件，包括子文件夾
                 {
                     string newExt = ext.Replace("dir:", "");
-                    itemArray = Directory.GetFiles("Assets/" + export.GetResourceBuildDir() + "/" + export.GetDirectory(),
-                        newExt, SearchOption.AllDirectories);
+                    itemArray = Directory.GetFiles("Assets/" + export.GetResourceBuildDir() + "/" + export.GetDirectory(), newExt, SearchOption.AllDirectories);
                 }
                 else if (ext == "dir")
-                    itemArray =
-                        Directory.GetDirectories("Assets/" + export.GetResourceBuildDir() + "/" + export.GetDirectory());
+                    itemArray =  Directory.GetDirectories("Assets/" + export.GetResourceBuildDir() + "/" + export.GetDirectory());
                 else if (ext == "")
                     itemArray = new string[0];
                 else
-                    itemArray = Directory.GetFiles("Assets/" + export.GetResourceBuildDir() + "/" + export.GetDirectory(),
-                        export.GetExtention()); // 不包括子文件夾
+                    itemArray = Directory.GetFiles("Assets/" + export.GetResourceBuildDir() + "/" + export.GetDirectory(), export.GetExtention()); // 不包括子文件夾
 
                 export.BeforeExport();
                 int okItemCount = 0;
@@ -132,9 +129,7 @@ namespace KEngine.Editor
                 }
                 export.AfterExport();
 
-
-                Log.Info("Finish Auto Build: {0}, ItemsCount: {1}, Used Time: {2}", export.GetType().Name,
-                    okItemCount, DateTime.Now - time);
+                Log.Info("Finish Auto Build: {0}, ItemsCount: {1}, Used Time: {2}", export.GetType().Name,okItemCount, DateTime.Now - time);
             }
             catch (Exception e)
             {

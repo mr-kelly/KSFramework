@@ -224,7 +224,7 @@ namespace KEngine.Editor
             return PerformBuild(path,BuildTargetGroup.Android, BuildTarget.Android, opt);
         }
 
-        [MenuItem("KEngine/Clear PC PersistentDataPath",false,99)]
+        [MenuItem("KEngine/Clear PersistentDataPath",false,99)]
         public static void ClearPersistentDataPath()
         {
             foreach (string dir in Directory.GetDirectories(KResourceModule.AppDataPath))
@@ -237,13 +237,13 @@ namespace KEngine.Editor
             }
         }
 
-        [MenuItem("KEngine/Open PC PersistentDataPath Folder",false,98)]
+        [MenuItem("KEngine/Open PersistentDataPath Folder",false,98)]
         public static void OpenPersistentDataPath()
         {
             System.Diagnostics.Process.Start(KResourceModule.AppDataPath);
         }
 
-        [MenuItem("KEngine/Clear Prefs")]
+        [MenuItem("KEngine/Clear PlayerPrefs")]
         public static void ClearPlayerPrefs()
         {
             PlayerPrefs.DeleteAll();
