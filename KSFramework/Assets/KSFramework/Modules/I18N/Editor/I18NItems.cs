@@ -2,7 +2,7 @@
 
 namespace KSFramework.Editor
 {
-
+    [System.Obsolete]
     public class I18NItems
     {
         /// <summary>

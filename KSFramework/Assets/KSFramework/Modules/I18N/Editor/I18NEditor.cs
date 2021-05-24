@@ -35,6 +35,11 @@ using UnityEditor;
 
 namespace KSFramework.Editor
 {
+    /// <summary>
+    /// 此方式已废弃，建议在开发过程中文字就从语言包中读取:I18N.Get()
+    /// 历史：有个项目是把文字写在代码中，多语言版本做法是从代码中收集文字到excel进行翻译，运行时再替换为翻译后的内容，后面项目已改进，所以废弃此方法。
+    /// </summary>
+    [Obsolete]
     public class I18NEditor
     {
         // default collector
@@ -57,7 +62,7 @@ namespace KSFramework.Editor
             return list;
         }
         
-        [MenuItem("KEngine/I18N/Collect All")]
+        //[MenuItem("KEngine/I18N/Collect All")]
         public static void CollectAll()
         {
             // 如果没有，先确保创建新的
