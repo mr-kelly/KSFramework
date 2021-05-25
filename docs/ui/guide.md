@@ -2,18 +2,17 @@
 
 ## UI约定
 
-在KSFramework中，每个UI都是一个场景文件，保存时，会自动把绑定UIWindowAsset脚本的节点下的所有内容另存为prefab放在BundleResource目录下，所以请不要直接修改BundleResource下的UI Prefab，而是修改UI场景然后按保存，会自动更新Prefab。
+在KSFramework中，每个UI界面都是一个以UI开头的场景文件，在保存场景时会自动把绑定UIWindowAsset节点下的所有内容另存为prefab保存到BundleResource目录下，所以请不要修改BundleResource下的UI Prefab，而是修改UI场景然后保存场景，就会自动更新Prefab。
 
 每个UI对应一个同名的Lua文件，可通过 **KEngine** - **UI(UGUI)** - **Auto Make UI Lua Scripts(Current Scene)** 创建模版脚本
 
-UI默认有三个函数，**OnInit** ，**OnOpen**，**OnClose**，并没有使用Unity的Start来管理生命周期
+UI的生命周期有三个函数：**OnInit** ，**OnOpen**，**OnClose**，并没有使用Unity的MonoBehaviour来管理生命周期
 
 ## UI的打开、关闭、调用都是异步的
 
 类似资源模块，UI模块是接口，大部分异步的， 主要采用CPS异步回调的风格。常用接口：
 
 ```csharp
-
 // 异步打开UI，向UI控制器的OnOpen函数传入3个参数, 分别是1,2,3
 UIModule.Instance.OpenWindow("ExampleUI", 1, 2, 3)
 
@@ -24,7 +23,7 @@ UIModule.Instance.OpenDynamicWindow("ExampleUI", "ExampleUI-Clone", 1, 2, 3)
 UIModule.Instance.CloseWindow("ExampleUI")
 ```
 
-UIModule暴露的外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。
+UIModule暴露给外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。
 
 ## OpenWindow
 
@@ -47,9 +46,9 @@ UIModule.Instance.CallUI("ExampleUI", (uiController) =>{
 
 当一个UI已经加载过，CallUI方法将会同步进入回调。
 
-## 禁用canvas代替SetActive
+## 禁用Canvas代替SetActive
 
-对一个gameobject进行SetActive(true)，SetActive(false)会调用Monobehaviour的OnEnable和OnDisable函数，会造成一定的堆内存分配和耗时较高，根据多个项目的经验，在KSFramework中处理UI的显示和隐藏，我们是通过禁用和启用canvas来实现的，实现代码在UIModule.OnOpen
+对一个gameobject进行SetActive(true)和SetActive(false)会调用Monobehaviour的OnEnable和OnDisable函数，会造成一定的堆内存分配和耗时较高，根据多个项目的经验，在KSFramework中处理UI的显示和隐藏，我们是通过禁用和启用canvas来实现的，具体实现代码在UIModule.OnOpen
 
 ```c#
 private void OnOpen(UILoadState uiState, params object[] args)
