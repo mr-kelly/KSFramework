@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -34,8 +35,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using KEngine;
-using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace KEngine
 {
@@ -1410,6 +1411,99 @@ namespace KEngine
                 Application.Quit();
             }
         }
+        
+         #region 批处理程序
+        
+        /// <summary>
+        /// 执行批处理命令
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="workingDirectory"></param>
+        public static void ExecuteCommand(string command, bool showProgressBar = true,string workingDirectory = null)
+        {
+            var fProgress = .1f;
+#if UNITY_EDITOR
+           if(showProgressBar) UnityEditor.EditorUtility.DisplayProgressBar("KEditorUtils.ExecuteCommand", command, fProgress);
+#endif
+            try
+            {
+                string cmd;
+                string preArg;
+                var os = Environment.OSVersion;
+                if (os.ToString().Contains("Windows"))
+                {
+                    cmd = "cmd";
+                    preArg = " /c  ";
+                }
+                else
+                {
+                    cmd = "sh";
+                    preArg = "-c ";
+                }
+                Debug.Log($"[ExecuteCommand] os:{os.ToString()},cmd:{command}");
+                
+                using (var process = new Process())
+                {
+                    System.Console.InputEncoding = System.Text.Encoding.UTF8;
+                    if (workingDirectory != null)
+                        process.StartInfo.WorkingDirectory = workingDirectory;
+                    process.StartInfo.FileName = cmd;
+                    process.StartInfo.Arguments = preArg /*+ "\"" */+ command /*+ "\""*/;
+                    process.StartInfo.UseShellExecute = false;//false:运行时不显示cmd窗口
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.RedirectStandardInput = true;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.StandardOutputEncoding = Encoding.UTF8; //设置标准输出编码
+                    process.StartInfo.StandardErrorEncoding = Encoding.UTF8;
+                    if(showProgressBar) process.OutputDataReceived += new DataReceivedEventHandler(OutputReceived);
+                    process.ErrorDataReceived += new DataReceivedEventHandler(ErrorReceived);
+                    process.Start();
+                    
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+    
+                    process.WaitForExit();//NOTE CMD执行中会卡住Unity主线程，如果无响应需要结束进程
+                    process.Close();
+                }
+            }
+            finally
+            {
+                #if UNITY_EDITOR
+                if(showProgressBar) UnityEditor.EditorUtility.ClearProgressBar();
+                #endif
+            }
+        }
+        
+        private static void OutputReceived(object sender,DataReceivedEventArgs e)
+        {
+            Debug.Log(e.Data);
+        }
+        
+        private static void ErrorReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data!=null&&e.Data!=string.Empty)
+            {
+                Debug.LogError("Error::" + e.Data);
+            }
+        }
+        
+        private static void ExitReceived(object sender, EventArgs e)
+        {
+            //Debug.Log("Exit::"+e.ToString());
+        }
+
+        public static void ExecuteFile(string filePath)
+        {
+            Debug.Log("[ExecuteFile]" + filePath);
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = filePath;
+                process.Start();
+            }
+        }
+        
+        #endregion
     }
     
     
