@@ -77,20 +77,21 @@ namespace KEngine.UI
         /// A bridge for different UI System, for instance, you can use NGUI or EZGUI or UGUI etc.. UI Plugin through UIBridge
         /// </summary>
         public GUIBridge UiBridge;
-
+        /// <summary>
+        /// 所有打开过的UI, uiName->instance
+        /// </summary>
         public Dictionary<string, UILoadState> UIWindows = new Dictionary<string, UILoadState>();
 
         public static Action<UIController> OnInitEvent;
-
         public static Action<UIController> OnOpenEvent;
         public static Action<UIController> OnCloseEvent;
         /// <summary>
         /// 同类型的每个界面打开都会+1，新打开的界面始终在最顶层
         /// PanelType层级顺序：TipsUI > NormalUI > MainUI
         /// </summary>
-        public static int sortOrderMainUI = 0;
-        public static int sortOrderNormal = 0;
-        public static int sortOrderTips = 0;
+        public static int sortOrderMainUI { get; private set; } = 0;
+        public static int sortOrderNormal { get; private set; } = 0;
+        public static int sortOrderTips { get; private set; } = 0;
 
         
         public UIModule()
@@ -252,14 +253,17 @@ namespace KEngine.UI
         
         #endregion
 
-        #region 公共接口
-
+        #region 打开界面接口
+        //[Obsolete("Use string ui name instead for more flexible!")]
+        public UILoadState OpenWindow<T>(params object[] args) where T : UIController
+        {
+            string uiName = typeof(T).Name; // ILRuntime传过来的type为：ILRuntimeAdapter.UIControllerAdapter+Adapter
+            return OpenWindow(uiName, args);
+        }
+        
         /// <summary>
         /// 打开窗口（非复制）
         /// </summary>
-        /// <param name="uiName"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
         public UILoadState OpenWindow(string uiName, params object[] args)
         {
             UILoadState uiState;
@@ -281,6 +285,15 @@ namespace KEngine.UI
             return uiState;
         }
         
+        /// <summary>
+        /// 隐藏时打开，打开时隐藏
+        /// </summary>
+        public void ToggleWindow<T>(params object[] args)
+        {
+            string uiName = typeof(T).Name;
+            ToggleWindow(uiName, args);
+        }
+        
         public void ToggleWindow(string uiName, params object[] args)
         {
             if (IsOpen(uiName))
@@ -292,7 +305,17 @@ namespace KEngine.UI
                 OpenWindow(uiName, args);
             }
         }
+        
+        private UILoadState _GetUIState(string name)
+        {
+            UILoadState uiState;
+            UIWindows.TryGetValue(name, out uiState);
+            if (uiState != null)
+                return uiState;
 
+            return null;
+        }
+        
         /// <summary>
         /// // Dynamic动态窗口，复制基准面板
         /// </summary>
@@ -322,16 +345,16 @@ namespace KEngine.UI
             {
                 // _args useless
 
-					UILoadState newUiInstanceState = _GetUIState(instanceName);
-					UILoadState templateState = _GetUIState(uiName);
+                UILoadState newUiInstanceState = _GetUIState(instanceName);
+                UILoadState templateState = _GetUIState(uiName);
 
                 // 组合template和name的参数 和args外部参数
-					object[] totalArgs = new object[newUiInstanceState.OpenArgs.Length + 2];
-                	totalArgs[0] = uiName;
-	                totalArgs[1] = instanceName;
-					newUiInstanceState.OpenArgs.CopyTo(totalArgs, 2);
+                object[] totalArgs = new object[newUiInstanceState.OpenArgs.Length + 2];
+                totalArgs[0] = uiName;
+                totalArgs[1] = instanceName;
+                newUiInstanceState.OpenArgs.CopyTo(totalArgs, 2);
 
-					OnDynamicWindowCallback(templateState.UIWindow, totalArgs);
+                OnDynamicWindowCallback(templateState.UIWindow, totalArgs);
             });
 
             return uiInstanceState;
@@ -358,6 +381,68 @@ namespace KEngine.UI
             InitWindow(instanceUIState, uiBase, instanceUIState.OpenWhenFinish, originArgs);
         }
         
+        /// <summary>
+        /// 等待并获取UI实例，执行callback
+        /// 源起Loadindg UI， 在加载过程中，进度条设置方法会失效
+        /// 如果是DynamicWindow,，使用前务必先要Open!
+        /// </summary>
+        /// <param name="uiName"></param>
+        /// <param name="callback"></param>
+        /// <param name="args"></param>
+        public void CallUI(string uiName, Action<UIController, object[]> callback, params object[] args)
+        {
+            Debuger.Assert(callback);
+            UILoadState uiState;
+            if (!UIWindows.TryGetValue(uiName, out uiState))
+            {
+                uiState = LoadWindow(uiName, false); // 加载，这样就有UIState了, 但注意因为没参数，不要随意执行OnOpen
+            }
+
+            uiState.DoCallback(callback, args);
+        }
+
+        /// <summary>
+        /// DynamicWindow专用, 不会自动加载，会提示报错
+        /// </summary>
+        /// <param name="uiName"></param>
+        /// <param name="callback"></param>
+        /// <param name="args"></param>
+        public void CallDynamicUI(string uiName, Action<UIController, object[]> callback, params object[] args)
+        {
+            Debuger.Assert(callback);
+            UILoadState uiState;
+            if (!UIWindows.TryGetValue(uiName, out uiState))
+            {
+                Log.Error("找不到UIState: {0}", uiName);
+                return;
+            }
+
+            UILoadState openState = UIWindows[uiName];
+            openState.DoCallback(callback, args);
+        }
+
+        [Obsolete("Use string ui name instead for more flexible!")]
+        public void CallUI<T>(Action<T> callback) where T : UIController
+        {
+            CallUI<T>((_ui, _args) => callback(_ui));
+        }
+
+        // 使用泛型方式
+        [Obsolete("Use string ui name instead for more flexible!")]
+        public void CallUI<T>(Action<T, object[]> callback, params object[] args) where T : UIController
+        {
+            string uiName = typeof(T).Name; 
+
+            CallUI(uiName, (_uibase, _args) => { callback(_uibase as T, _args); }, args);
+        }
+        #endregion
+        
+        #region 关闭界面接口
+        
+        public void CloseWindow<T>()
+        {
+            CloseWindow(typeof(T).Name);
+        }
 
         public void CloseWindow(string uiName)
         {
@@ -402,18 +487,15 @@ namespace KEngine.UI
         /// </summary>
         public void DestroyAllWindows()
         {
-            List<string> LoadList = new List<string>();
-
+            Log.LogToFile("destory all window");
             foreach (KeyValuePair<string, UILoadState> uiWindow in UIWindows)
             {
+                //NOTE 可以根据游戏业务排除特定的界面
                 if (IsLoad(uiWindow.Key))
                 {
-                    LoadList.Add(uiWindow.Key);
+                    DestroyWindow(uiWindow.Key, true);
                 }
             }
-
-            foreach (string item in LoadList)
-                DestroyWindow(item, true);
         }
         
         /// <summary>
@@ -421,67 +503,27 @@ namespace KEngine.UI
         /// </summary>
         public void CloseAllWindows()
         {
-            List<string> toCloses = new List<string>();
-
+            Log.LogToFile("close all window");
             foreach (KeyValuePair<string, UILoadState> uiWindow in UIWindows)
             {
+                //NOTE 可以根据游戏业务排除特定的界面
                 if (IsOpen(uiWindow.Key))
                 {
-                    toCloses.Add(uiWindow.Key);
+                    CloseWindow(uiWindow.Key);
                 }
             }
-
-            for (int i = toCloses.Count - 1; i >= 0; i--)
-            {
-                CloseWindow(toCloses[i]);
-            }
         }
         
         #endregion
         
-        #region 泛形接口
-
-        //[Obsolete("Use string ui name instead for more flexible!")]
-        public UILoadState OpenWindow(Type type, params object[] args)
-        {
-            string uiName = type.Name; // ILRuntime传过来的type为：ILRuntimeAdapter.UIControllerAdapter+Adapter
-            return OpenWindow(uiName, args);
-        }
         
-        //[Obsolete("Use string ui name instead for more flexible!")]
-        public UILoadState OpenWindow<T>(params object[] args) where T : UIController
-        {
-            return OpenWindow(typeof(T), args);
-        }
-        
-        //隐藏时打开，打开时隐藏
-        public void ToggleWindow<T>(params object[] args)
-        {
-            string uiName = typeof(T).Name;
-            ToggleWindow(uiName, args);
-        }
-        
-        public void CloseWindow(Type t)
-        {
-            CloseWindow(t.Name);
-        }
 
-        public void CloseWindow<T>()
-        {
-            CloseWindow(typeof(T));
-        }
-        #endregion
+
+        #region 公共接口
         
-        private UILoadState _GetUIState(string name)
-        {
-            UILoadState uiState;
-            UIWindows.TryGetValue(name, out uiState);
-            if (uiState != null)
-                return uiState;
-
-            return null;
-        }
-
+        /// <summary>
+        /// 获取已经打开过的UI
+        /// </summary>
         private UIController GetUIBase(string uiName)
         {
             UILoadState uiState;
@@ -491,13 +533,10 @@ namespace KEngine.UI
 
             return null;
         }
-
-        public bool IsOpen<T>() where T : UIController
-        {
-            string uiName = typeof(T).Name;
-            return IsOpen(uiName);
-        }
-
+        
+        /// <summary>
+        /// 判断UI是否在显示状态
+        /// </summary>
         public bool IsOpen(string uiName)
         {
             UIController uiBase = GetUIBase(uiName);
@@ -511,25 +550,57 @@ namespace KEngine.UI
 
             return false;
         }
-
-        public UIController GetOpenedWindow(string name)
+        
+        /// <summary>
+        /// 判断UI是否在显示状态
+        /// </summary>
+        public bool IsOpen<T>() where T : UIController
         {
-            UIController uiBase = GetUIBase(name);
-            if (uiBase != null)
-            {
-                if (uiBase.Canvas != null && uiBase.Canvas.enabled)
-                    return uiBase;
-                if (uiBase.gameObject && uiBase.gameObject.activeSelf)
-                    return uiBase;
-            }
-            return null;
+            string uiName = typeof(T).Name;
+            return IsOpen(uiName);
         }
 		
         public bool IsLoad(string uiName)
         {
             return UIWindows.ContainsKey(uiName);
         }
+        
+        internal class PanelTemp
+        {
+            public string UIName;
+            public int SortOrder;
+        }
+        
+        /// <summary>
+        /// 获取某个类型的最顶层界面
+        /// </summary>
+        public  UIController GetTopUI(PanelType panelType)
+        {
+            List<PanelTemp> panels = null;
+            foreach (KeyValuePair<string, UILoadState> uiWindow in UIWindows)
+            {
+                //NOTE 可以根据游戏业务排除特定的界面
+                if (uiWindow.Value.WindowAsset!=null && uiWindow.Value.WindowAsset.PanelType == panelType && IsOpen(uiWindow.Key))
+                {
+                    if (panels == null) panels = new List<PanelTemp>();
+                    PanelTemp t = new PanelTemp() {UIName = uiWindow.Key, SortOrder = uiWindow.Value.UIWindow.Canvas.sortingOrder};
+                    panels.Add(t);
+                }
+            }
 
+            if (panels != null && panels.Count > 0)
+            {
+                panels.Sort((a, b) => { return b.SortOrder - a.SortOrder;});
+                return GetUIBase(panels[0].UIName);
+            }
+
+            return null;
+        }
+        
+        #endregion
+        
+        #region 加载UI资源
+        
         public UILoadState LoadWindow(string uiName, bool openWhenFinish, params object[] args)
         {
             if (UIWindows.ContainsKey(uiName))
@@ -615,95 +686,8 @@ namespace KEngine.UI
             }
             return KResourceModule.Instance.StartCoroutine(LoadUIAssetBundle(uiTemplateName, uiState));
         }
-
-        public void DestroyWindow(string uiName, bool destroyImmediate=false)
-        {
-            UILoadState uiState;
-            UIWindows.TryGetValue(uiName, out uiState);
-            if (uiState == null || uiState.UIWindow == null)
-            {
-                UIWindows.Remove(uiName);
-                Log.Info("{0} has been destroyed", uiName);
-                return;
-            }
-
-            //if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
-            {
-                //NOTE 按照约定SpriteAtlas和UI在同一个ab中，无需处理
-            }
-            uiState.UIWindow.OnDestroy();
-            if (destroyImmediate)
-            {
-                UnityEngine.Object.DestroyImmediate(uiState.UIWindow.gameObject);
-            }
-            else
-            {
-                UnityEngine.Object.Destroy(uiState.UIWindow.gameObject);
-            }
-
-            // Instance UI State has no Resources loader, so fix here
-            if (uiState.UIResourceLoader != null)
-                uiState.UIResourceLoader.Release();
-            uiState.UIWindow = null;
-            uiState.WindowAsset = null;
-
-            UIWindows.Remove(uiName);
-        }
-
-        /// <summary>
-        /// 等待并获取UI实例，执行callback
-        /// 源起Loadindg UI， 在加载过程中，进度条设置方法会失效
-        /// 如果是DynamicWindow,，使用前务必先要Open!
-        /// </summary>
-        /// <param name="uiName"></param>
-        /// <param name="callback"></param>
-        /// <param name="args"></param>
-        public void CallUI(string uiName, Action<UIController, object[]> callback, params object[] args)
-        {
-            Debuger.Assert(callback);
-            UILoadState uiState;
-            if (!UIWindows.TryGetValue(uiName, out uiState))
-            {
-                uiState = LoadWindow(uiName, false); // 加载，这样就有UIState了, 但注意因为没参数，不要随意执行OnOpen
-            }
-
-            uiState.DoCallback(callback, args);
-        }
-
-        /// <summary>
-        /// DynamicWindow专用, 不会自动加载，会提示报错
-        /// </summary>
-        /// <param name="uiName"></param>
-        /// <param name="callback"></param>
-        /// <param name="args"></param>
-        public void CallDynamicUI(string uiName, Action<UIController, object[]> callback, params object[] args)
-        {
-            Debuger.Assert(callback);
-            UILoadState uiState;
-            if (!UIWindows.TryGetValue(uiName, out uiState))
-            {
-                Log.Error("找不到UIState: {0}", uiName);
-                return;
-            }
-
-            UILoadState openState = UIWindows[uiName];
-            openState.DoCallback(callback, args);
-        }
-
-        [Obsolete("Use string ui name instead for more flexible!")]
-        public void CallUI<T>(Action<T> callback) where T : UIController
-        {
-            CallUI<T>((_ui, _args) => callback(_ui));
-        }
-
-        // 使用泛型方式
-        [Obsolete("Use string ui name instead for more flexible!")]
-        public void CallUI<T>(Action<T, object[]> callback, params object[] args) where T : UIController
-        {
-            string uiName = typeof(T).Name; 
-
-            CallUI(uiName, (_uibase, _args) => { callback(_uibase as T, _args); }, args);
-        }
+        
+        #endregion
 
         /// <summary>
         /// 可以在从主城切到副本时，重置一下order
@@ -742,42 +726,9 @@ namespace KEngine.UI
                 if(uiBase!=null) Log.LogError($"Set {uiBase} Canvas sortingOrder Faild!");
             }
         }
+
+        #region UI生命周期函数
         
-        private void OnOpen(UILoadState uiState, params object[] args)
-        {
-            if (uiState.IsLoading)
-            {
-                uiState.OpenWhenFinish = true;
-                uiState.OpenArgs = args;
-                return;
-            }
-
-            UIController uiBase = uiState.UIWindow;
-            if (uiBase.Canvas != null && uiBase.Canvas.enabled)
-            {
-                //已经打开无需再次打开
-				return;
-            }
-
-            uiBase.BeforeOpen(args);
-            //TODO 播放界面出现动画
-            uiBase.gameObject.SetActiveX(true);
-            SetUIOrder(uiBase);
-            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.OnOpen");
-            uiBase.OnOpen(args);
-            KWatchResult profilerData = null;
-            if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-            if (AppConfig.IsSaveCostToFile)
-            {
-                if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
-                LogFileManager.WriteUILog(uiBase.UIName, LogState.OnOpen, profilerData.costTime);
-            }
-
-            if (OnOpenEvent != null)
-                OnOpenEvent(uiBase);
-        }
-
-
         private void InitWindow(UILoadState uiState, UIController uiBase, bool open, params object[] args)
         {
             if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.Init");
@@ -805,8 +756,10 @@ namespace KEngine.UI
                 }
                 else
                 {
-                    if(uiBase.Canvas!=null)
+                    if (uiBase.Canvas != null)
+                    {
                         uiBase.Canvas.enabled = false;
+                    }
                     else
                     {
                         uiBase.gameObject.SetActiveX(false);
@@ -816,6 +769,76 @@ namespace KEngine.UI
 
             uiState.OnUIWindowLoadedCallbacks(uiState, uiBase);
         }
+        
+        private void OnOpen(UILoadState uiState, params object[] args)
+        {
+            if (uiState.IsLoading)
+            {
+                uiState.OpenWhenFinish = true;
+                uiState.OpenArgs = args;
+                return;
+            }
+
+            UIController uiBase = uiState.UIWindow;
+            if (uiBase.Canvas != null && uiBase.Canvas.enabled)
+            {
+                //已经打开无需再次打开
+                return;
+            }
+
+            uiBase.BeforeOpen(args);
+            //TODO 播放界面出现动画
+            uiBase.gameObject.SetActiveX(true);
+            SetUIOrder(uiBase);
+            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.OnOpen");
+            uiBase.OnOpen(args);
+            KWatchResult profilerData = null;
+            if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+            if (AppConfig.IsSaveCostToFile)
+            {
+                if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+                LogFileManager.WriteUILog(uiBase.UIName, LogState.OnOpen, profilerData.costTime);
+            }
+
+            if (OnOpenEvent != null)
+                OnOpenEvent(uiBase);
+        }
+        
+        public void DestroyWindow(string uiName, bool destroyImmediate=false)
+        {
+            UILoadState uiState;
+            UIWindows.TryGetValue(uiName, out uiState);
+            if (uiState == null || uiState.UIWindow == null)
+            {
+                UIWindows.Remove(uiName);
+                Log.Info("{0} has been destroyed", uiName);
+                return;
+            }
+
+            //if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
+            {
+                //NOTE 按照约定SpriteAtlas和UI在同一个ab中，无需处理
+            }
+            uiState.UIWindow.OnDestroy();
+            if (destroyImmediate)
+            {
+                UnityEngine.Object.DestroyImmediate(uiState.UIWindow.gameObject);
+            }
+            else
+            {
+                UnityEngine.Object.Destroy(uiState.UIWindow.gameObject);
+            }
+
+            // Instance UI State has no Resources loader, so fix here
+            if (uiState.UIResourceLoader != null)
+                uiState.UIResourceLoader.Release();
+            uiState.UIWindow = null;
+            uiState.WindowAsset = null;
+
+            UIWindows.Remove(uiName);
+        }
+        
+        #endregion
         
         #region TODO新的UI打开方式
         
@@ -880,6 +903,7 @@ namespace KEngine.UI
             return null;
         }
         #endregion
+        
     }
 
     /// <summary>

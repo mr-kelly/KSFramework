@@ -90,12 +90,9 @@ namespace KEngine
         //        return _appVersion;
         //    }
         //}
-
+        
         /// <summary>
-        /// Read Tab file (CEngineConfig.txt), cache to here
-        /// </summary>
-        /// <summary>
-        /// Modules passed from the CosmosEngine.New function. All your custom game logic modules
+        /// Modules passed from the AppEngine.New function. All your custom game logic modules
         /// </summary>
         public IList<IModuleInitable> GameModules { get; private set; }
 
