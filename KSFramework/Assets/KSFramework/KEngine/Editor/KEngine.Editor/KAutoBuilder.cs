@@ -298,7 +298,7 @@ namespace KEngine.Editor
             {
                 linkFile = Application.dataPath + "/../AssetLink.bat";
             }
-            KEditorUtils.ExecuteFile(linkFile);
+            KTool.ExecuteFile(linkFile);
             var  dstPath = Application.streamingAssetsPath + "/" + AppConfig.VersionTxtName;
             if (File.Exists(dstPath)) File.Delete(dstPath);
             File.Copy(AppConfig.VersionTextPath, dstPath);

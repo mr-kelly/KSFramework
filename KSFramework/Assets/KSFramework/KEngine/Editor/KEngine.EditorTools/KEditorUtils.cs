@@ -85,97 +85,6 @@ namespace KUnityEditorTools
             MethodInfo method = type.GetMethod("Clear");
             method.Invoke(new object(), null);
         }
-
-        #region 批处理程序
-        
-        /// <summary>
-        /// 执行批处理命令
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="workingDirectory"></param>
-        public static void ExecuteCommand(string command, string workingDirectory = null)
-        {
-            var fProgress = .1f;
-            EditorUtility.DisplayProgressBar("KEditorUtils.ExecuteCommand", command, fProgress);
-
-            try
-            {
-                string cmd;
-                string preArg;
-                var os = Environment.OSVersion;
-
-                Debug.Log(String.Format("[ExecuteCommand]Command on OS: {0}", os.ToString()));
-                if (os.ToString().Contains("Windows"))
-                {
-                    cmd = "cmd.exe";
-                    preArg = "/C ";
-                }
-                else
-                {
-                    cmd = "sh";
-                    preArg = "-c ";
-                }
-                Debug.Log("[ExecuteCommand]" + command);
-                
-                using (var process = new Process())
-                {
-                    System.Console.InputEncoding = System.Text.Encoding.UTF8;
-                    if (workingDirectory != null)
-                        process.StartInfo.WorkingDirectory = workingDirectory;
-                    process.StartInfo.FileName = cmd;
-                    process.StartInfo.Arguments = preArg + "\"" + command + "\"";
-                    process.StartInfo.UseShellExecute = false;
-                    process.StartInfo.CreateNoWindow = true;
-                    process.StartInfo.RedirectStandardOutput = true;
-                    process.StartInfo.RedirectStandardError = true;
-                    process.StartInfo.StandardOutputEncoding = Encoding.UTF8; //设置标准输出编码
-                    process.StartInfo.StandardErrorEncoding = Encoding.UTF8;
-                    process.OutputDataReceived += new DataReceivedEventHandler(OutputReceived);
-                    process.ErrorDataReceived += new DataReceivedEventHandler(ErrorReceived);
-                    process.Start();
-                    
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-    
-                    process.WaitForExit();//NOTE CMD执行中会卡住Unity主线程，如果无响应需要结束进程
-                }
-            }
-            finally
-            {
-                EditorUtility.ClearProgressBar();
-            }
-        }
-        
-        private static void OutputReceived(object sender,DataReceivedEventArgs e)
-        {
-            Debug.Log(e.Data);
-        }
-        
-        private static void ErrorReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (e.Data!=null&&e.Data!=string.Empty)
-            {
-                Debug.LogError("Error::" + e.Data);
-            }
-        }
-        
-        private static void ExitReceived(object sender, EventArgs e)
-        {
-            //Debug.Log("Exit::"+e.ToString());
-        }
-
-        public static void ExecuteFile(string filePath)
-        {
-            Debug.Log("[ExecuteFile]" + filePath);
-
-            using (var process = new Process())
-            {
-                process.StartInfo.FileName = filePath;
-                process.Start();
-            }
-        }
-        
-        #endregion
         
         public delegate void EachDirectoryDelegate(string fileFullPath, string fileRelativePath);
 
@@ -219,7 +128,7 @@ namespace KUnityEditorTools
         }
         
         /// <summary>
-        /// 在指定目录中搜寻字符串并返回匹配}
+        /// 在指定目录中搜寻字符串并返回匹配
         /// </summary>
         /// <param name="sourceFolder"></param>
         /// <param name="searchWord"></param>
