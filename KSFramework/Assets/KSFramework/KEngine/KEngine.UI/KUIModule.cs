@@ -444,7 +444,7 @@ namespace KEngine.UI
         //[Obsolete("Use string ui name instead for more flexible!")]
         public UILoadState OpenWindow(Type type, params object[] args)
         {
-            string uiName = type.Name.Remove(0, 2); // 去掉"UI",ILRuntime传过来的type为：ILRuntimeAdapter.UIControllerAdapter+Adapter
+            string uiName = type.Name; // ILRuntime传过来的type为：ILRuntimeAdapter.UIControllerAdapter+Adapter
             return OpenWindow(uiName, args);
         }
         
@@ -457,13 +457,13 @@ namespace KEngine.UI
         //隐藏时打开，打开时隐藏
         public void ToggleWindow<T>(params object[] args)
         {
-            string uiName = typeof(T).Name.Remove(0, 2);
+            string uiName = typeof(T).Name;
             ToggleWindow(uiName, args);
         }
         
         public void CloseWindow(Type t)
         {
-            CloseWindow(t.Name.Remove(0, 2));
+            CloseWindow(t.Name);
         }
 
         public void CloseWindow<T>()
@@ -494,7 +494,7 @@ namespace KEngine.UI
 
         public bool IsOpen<T>() where T : UIController
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉"KUI"
+            string uiName = typeof(T).Name;
             return IsOpen(uiName);
         }
 
@@ -622,6 +622,7 @@ namespace KEngine.UI
             UIWindows.TryGetValue(uiName, out uiState);
             if (uiState == null || uiState.UIWindow == null)
             {
+                UIWindows.Remove(uiName);
                 Log.Info("{0} has been destroyed", uiName);
                 return;
             }
@@ -699,7 +700,7 @@ namespace KEngine.UI
         [Obsolete("Use string ui name instead for more flexible!")]
         public void CallUI<T>(Action<T, object[]> callback, params object[] args) where T : UIController
         {
-            string uiName = typeof(T).Name.Remove(0, 3); // 去掉 "KUI"
+            string uiName = typeof(T).Name; 
 
             CallUI(uiName, (_uibase, _args) => { callback(_uibase as T, _args); }, args);
         }

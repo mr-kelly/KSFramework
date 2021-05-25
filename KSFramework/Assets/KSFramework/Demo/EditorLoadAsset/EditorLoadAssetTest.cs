@@ -28,13 +28,13 @@ public class EditorLoadAssetTest : MonoBehaviour
             yield break;
         }
 
-        var path = "UI/Login";
+        var path = "UI/UILogin";
         loader_prefab = AssetBundleLoader.Load(path, (isOk, ab) =>
         {
             Log.Info("load complete");
             if (isOk)
             {
-                var request = ab.LoadAsset<GameObject>("Login");
+                var request = ab.LoadAsset<GameObject>("UILogin");
                 loadObj = GameObject.Instantiate(request);
                 if (loadObj)
                     loadObj.transform.SetParent(null);
