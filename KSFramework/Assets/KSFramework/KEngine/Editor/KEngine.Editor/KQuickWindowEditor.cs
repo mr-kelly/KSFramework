@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.IO;
 using AppSettings;
 using KEngine;
 using KEngine.Editor;
+using KEngine.UI;
 using KSFramework.Editor;
 using KUnityEditorTools;
 using UnityEditor;
@@ -14,7 +16,9 @@ public class KQuickWindowEditor : EditorWindow
     [SerializeField] private string reloadUIScript;
     private GUIStyle textFieldStyle;
     private bool init = false;
-
+    private PanelType panelType;
+    private UIController topUI;
+    
     [MenuItem("KEngine/Open Quick Window %&Q")]
     static void DoIt()
     {
@@ -124,6 +128,13 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("UI名字:", GUILayout.Width(40));
         reloadUIScript = EditorGUILayout.TextField(reloadUIScript, GUILayout.MinWidth(120),GUILayout.MaxHeight(30));
+        panelType = (PanelType)EditorGUILayout.EnumPopup("",PanelType.HeadInfoUI, GUILayout.MinWidth(80),GUILayout.MinHeight(30));
+        if (panelType != PanelType.HeadInfoUI && Application.isPlaying)
+        {
+            topUI = UIModule.Instance.GetTopUI(panelType);
+            Log.Info($"now top ui:{topUI?.UIName}");
+            if (topUI != null) reloadUIScript = topUI.UIName;
+        }
         if (GUILayout.Button("重载Lua脚本", GUILayout.MinWidth(100), GUILayout.MaxHeight(30)))
         {
             KSFrameworkEditor.ReloadUIScript(reloadUIScript);
@@ -312,7 +323,7 @@ public class KQuickWindowEditor : EditorWindow
                 var platform = KResourceModule.GetBuildPlatformName();
                 //执行bat
                 var path = $"{pyPath}/生成filelist-{platform}.bat";
-                KEditorUtils.ExecuteCommand(path);
+                KTool.ExecuteCommand(path);
                 //执行py传的参数有些错误
                 // var abPath = KResourceModule.ProductPathWithoutFileProtocol+"/Bundles/"+platform;
                 // BuildTools.ExecutePyFile(pyPath + "/gen_filelist.py",$"{pyPath} {abPath} {platform}");
