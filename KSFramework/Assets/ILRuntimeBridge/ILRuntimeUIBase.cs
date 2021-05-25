@@ -30,7 +30,7 @@ namespace KSFramework
         public override void OnInit()
         {
             base.OnInit();
-            instance = ILRuntimeModule.Instance.appdomain.Instantiate<ILRuntimeUIBase>($"UI{UITemplateName}");//NOTE 如果有Namespace需要加上
+            instance = ILRuntimeModule.Instance.appdomain.Instantiate<ILRuntimeUIBase>(UITemplateName);//NOTE 如果有Namespace需要加上
             Debuger.Assert(instance != null,$"{UIName} is null");
             instance.gameObject = gameObject;
             instance.transform = gameObject.transform;

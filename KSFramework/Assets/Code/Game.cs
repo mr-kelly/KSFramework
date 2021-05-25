@@ -120,7 +120,7 @@ public class Game : KSGame
         });
         yield return null;
         
-        UIModule.Instance.OpenWindow("Login", 888);
+        UIModule.Instance.OpenWindow("UILogin", 888);
 
         // Test Load a scene in asset bundle
         SceneLoader.Load("Scene/Scene1001/Scene1001");

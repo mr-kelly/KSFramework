@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 329359724}
   - component: {fileID: 329359729}
   m_Layer: 5
-  m_Name: Billboard
+  m_Name: UIBillboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -290,7 +290,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StringArgument: 
   PanelType: 1
+  SizeType: 0
   IsUIEditor: 1
+  IsHidenWhenLeaveScene: 1
+  MoneyBar: 2
+  IsShowTabBar: 1
+  TabBarId: 0
   atals_arr: atlas_common,Billboard
 --- !u!224 &329359728
 RectTransform:
