@@ -23,7 +23,7 @@ public class UIManager : Singleton<UIManager>
 {
     public UILoadState OpenWindow<T>(params object[] args) where T : UIController
     {
-        return UIModule.Instance.OpenWindow(typeof(T).Name.Remove(0, 2), args);
+        return UIModule.Instance.OpenWindow(typeof(T).Name, args);
     }
     
     public UILoadState OpenWindow(string uiName,params object[] args)
@@ -34,7 +34,7 @@ public class UIManager : Singleton<UIManager>
     //隐藏时打开，打开时隐藏
     public void ToggleWindow<T>(params object[] args)
     {
-        string uiName = typeof(T).Name.Remove(0, 2);
+        string uiName = typeof(T).Name;
         ToggleWindow(uiName, args);
     }
 
@@ -52,6 +52,6 @@ public class UIManager : Singleton<UIManager>
 
     public void CloseWindow<T>() where T : UIController
     {
-        UIModule.Instance.CloseWindow(typeof(T).Name.Remove(0, 2));
+        UIModule.Instance.CloseWindow(typeof(T).Name);
     }
 }

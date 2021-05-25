@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KEngine;
 using KEngine.UI;
 using UnityEngine;
 
@@ -18,8 +19,9 @@ public class LogicApp
 
     public static void Start()
     {
-        UIModule.Instance.OpenWindow("Billboard","hotfix");
+        UIModule.Instance.OpenWindow("UIBillboard","hotfix");
         UIManager.Instance.OpenWindow<UIMain>("aabb");
+        AppEngine.UpdateEvent += Update;
     }
 
     public static void Update()
@@ -29,6 +31,7 @@ public class LogicApp
         {
             UpdatePer1sEvent?.Invoke();
             time_per_1s = Time.time + 1.0f;
+            //Log.Info("fire per1s event");
         }
 
         if (Time.time >= time_per_500ms)
