@@ -16,7 +16,7 @@ public class KQuickWindowEditor : EditorWindow
     [SerializeField] private string reloadUIScript;
     private GUIStyle textFieldStyle;
     private bool init = false;
-    private PanelType panelType;
+    private PanelType panelType = PanelType.HeadInfoUI;
     private UIController topUI;
     
     [MenuItem("KEngine/Open Quick Window %&Q")]
@@ -128,7 +128,7 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("UI名字:", GUILayout.Width(40));
         reloadUIScript = EditorGUILayout.TextField(reloadUIScript, GUILayout.MinWidth(120),GUILayout.MaxHeight(30));
-        panelType = (PanelType)EditorGUILayout.EnumPopup("",PanelType.HeadInfoUI, GUILayout.MinWidth(80),GUILayout.MinHeight(30));
+        panelType = (PanelType)EditorGUILayout.EnumPopup("",panelType, GUILayout.MinWidth(80),GUILayout.MinHeight(30));
         if (panelType != PanelType.HeadInfoUI && Application.isPlaying)
         {
             topUI = UIModule.Instance.GetTopUI(panelType);
