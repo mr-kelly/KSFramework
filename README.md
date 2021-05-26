@@ -24,8 +24,8 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 | [仙剑奇侠传4手游](http://www.9game.cn/xjqxcs/)    | [天域幻想](http://www.9game.cn/xjhmjh/)    | [巴清传](http://hh.sdo.com/w2/) | [少年剑影](http://www.9game.cn/shaonianjianying/)  | [撞击女神](http://u.360.cn/zjns_1) | [七七捕鱼](http://www.9game.cn/qiqibuyu/) |
 | ----------- | ----------- |----------- |----------- | ----------- | ----------- |
 | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/仙剑4-手游-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/天域幻想-icon.png) |  ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/巴清传-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/少年剑影-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/撞击女神-icon.png) | ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/七七捕鱼-icon.png) |
-| 命运抉择VR | [我的冒险屋](https://www.taptap.com/app/200744) |  |  |  |  |
-| ![](Docs/showcase/命运抉择.png) | ![](Docs/showcase/我的冒险屋.png) |  |  |  |  |
+| 命运抉择VR | [我的冒险屋](https://www.taptap.com/app/200744) | Moba游戏                                                     |                                                              |  |  |
+| ![](Docs/showcase/命运抉择.png) | ![](Docs/showcase/我的冒险屋.png) | 开发中 |  |  |  |
 
 ### KSFramework
 
@@ -87,15 +87,15 @@ showcase 列表：https://github.com/mr-kelly/KSFramework/wiki
 
 1. 重新生成Assetbundle，方法如下：点击菜单项 **KEngine** - **AssetBundle** - **Bulld All**
 
-2. 删除xLua、SLua、ILRuntime的生成代码，重新生成，生成的代码不同的Unity版本有差异
+2. 删除xLua、SLua、ILRuntime的生成代码，重新生成，不同Unity版本生成出来的代码有差异
 
-3. 如果前两步不能解决问题，请上传报错信息到issuse。
+3. 如果前两步不能解决问题，请上传报错信息到[issues](https://github.com/mr-kelly/KSFramework/issues)。
 
 
 
 KSFramework常见问题解答篇：https://mr-kelly.github.io/KSFramework/faq/
 
-如果发现框架中存在的问题或有改进的地方，欢迎pull requests到仓库中，或提issuse。
+如果发现框架中存在的问题或有改进的地方，欢迎把你的修改[pull request](https://github.com/mr-kelly/KSFramework/pulls)到仓库中，或提[issues](https://github.com/mr-kelly/KSFramework/issues)。
 
 ## 教程和文档
 
@@ -119,13 +119,13 @@ KSFramework常见问题解答篇：https://mr-kelly.github.io/KSFramework/faq/
 
 ## 涉及第三方库
 
-- [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua), master分支已切换为默认使用xLua
+- [xLua is a lua programming solution for C# ( Unity, .Net, Mono) , it supports android, ios, windows, linux, osx, etc.](https://github.com/Tencent/xLua), master分支已为默认使用xLua
 - [SLua:基于Unity的Lua引擎，也可用于C#独立程序](https://github.com/pangweiwei/slua)  在slua分支
 - [ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新](https://github.com/Ourpalm/ILRuntime) ,在ILRuntime分支
-- [KEngine:AssetBundle打包加载框架](https://github.com/mr-kelly/KEngine)
+- [KEngine:AssetBundle打包加载框架](https://github.com/mr-kelly/KEngine) (作者自己开发的)
   - [ini-parser:Ini配置文件解析器，支持多文件合并](https://github.com/rickyah/ini-parser)
   - [Premake:VS工程生成](https://github.com/premake/premake-core)
-- [TableML:表格标记语言，运行时与编译器](https://github.com/mr-kelly/TableML)
+- [TableML:表格标记语言，运行时与编译器](https://github.com/mr-kelly/TableML) (作者自己开发的)
   - [NPOI:强大的Excel读写库](http://npoi.codeplex.com/)
     - [ISharpZipLib:Zip格式读写库](https://github.com/icsharpcode/SharpZipLib)
   - [DotLiquid:模板语言引擎](https://github.com/dotliquid/dotliquid)
