@@ -8,6 +8,10 @@
 
 如果需要调试AB资源泄漏问题，请打包AB。
 
+### 是否所有要打包的资源都需要放到BundleResources？
+
+不是的，BundleResources中的所有资源都会设置abName然后导出，但是按照BaseImporter.cs中约定的目录下的prefab，shader，audio也会设置abName然后导出ab。
+
 ### 如何打包APK？
 
 1. 点击菜单栏 **KEngine** - **AutoBuilder** - **Android**/**iOS**/**Windows**
@@ -18,7 +22,7 @@
 
 ### 从StreamingAssets目录同步读取文件
 
-对于其它的文件，请使用`KResourceModule.LoadAssetsSync`，针对安卓平台有做特殊处理，java源代码在：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java
+对于其它的文件，请使用`KResourceModule.LoadAssetsSync`，针对安卓平台有做特殊处理，java源代码在[KEngine](https://github.com/mr-kelly/KEngine)：KEngine\KEngine.UnityProject\PluginsSrc\KEngine.Android\src\com\github\KEngine\AndroidHelper.java
 
 如果是加载ab，请使用这个接口
 

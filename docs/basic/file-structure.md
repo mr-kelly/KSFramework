@@ -1,32 +1,54 @@
 ## 代码放置目录
 
+### KEngine
+
+KEngine的所有运行时代码放置在**Assets/KSFramework/KEngine**中，编辑器代码放置在**KEngine/Editor**中。
+
+### KSFramework
+
+对比KEngine新加的功能，所有运行时代码放置在**Assets/KSFramework**中，编辑器相关的代码放置在**KSFramework/Editor**中。
+
 ### SLua
 
 KSFramework中SLua采用其默认的目录结构，即C#运行时代码放置在Assets/Plugins/Slua_Managed中，编辑器相关代码放置在Assets/SLua中。
 
 ### XLua
 
-XLua放置在Assets/XLua目录下，结构和官方保持
+XLua放置在Assets/XLua目录下，结构和官方保持同步
 
-### KEngine
+### Lua代码
 
-KEngine的所有运行时代码放置在**Assets/KSFramework/KEngine**中，相关的编辑器代码放置在**Assets/KSFramework/KEngine/Editor**中。
+所有的Lua代码放在**Product\Lua**目录下，开发期间修改代码后，就会生效，代码无需打包，生成APK时会拷贝到StreamingAssets。
 
-### KSFramework
+### ILRuntime热更代码
 
-对比KEngine新加的功能，所有运行时代码放置在**Assets/KSFramework**中，相关的编辑器代码放置在**Assets/KSFramework/Editor**中。
+ILRuntime热更工程的代码放在**HotFix_Project\scripts**目录下，注：只有ILRuntime分支有此目录
 
-### 为什么都放在Plugins中？
+### 为什么代码要放在Plugins中？
 
-脚本的修改，会触发Unity的重新编译。一般的项目逻辑，都在非Plugins目录进行的，随着项目的发展，非Plugins目录的代码越来越多，编译越来越慢。把代码放进Plugins目录，可以节约一定的编译时间，改善开发效率。
+脚本的修改，会触发Unity的重新编译。一般的项目逻辑都放在非Plugins目录，随着项目的发展，非Plugins目录的代码越来越多，编译越来越慢。把代码放进Plugins目录，可以节约一定的编译时间，改善开发效率。
 
 注：对于unity2018及更高的版本中可以对不同的目录设置Assemly。
+
+## 其它目录
+
+### 配置表
+
+策划配置表excel放在 **Product\SettingSource**，excel转换后的中间文件放在**Product\Setting**，独立编译配置表的工具放在**Product\Tableml_GUI**(需要自己从Release下载)
+
+### AB文件(Assetbundle)
+
+打包后的ab文件放在**Product\Bundles**下
+
+### build_tools
+
+打更新包和自动化生成ab的脚本目录，里面有python和cmd脚本。
 
 ## 资源目录约定
 
 - **Assets/BundleEdting**: 一些编辑性的、需要配合编译过程的美术资源。比如UI在保存时自动导出Prefab到Assets/BundleResources目录下
-- **Assets/BundleResources:** Asset Bundle全自动化导出的关键，此目录下所有的文件都会设置上abName，然后进行导出，并使用Unity管理依赖。
-- **Product/**: 默认的产品导出目录，包括Asset Bundle、Lua脚本、配置表，统一放置在这个目录。 编译客户端时，这些资源将被拷贝到StreamingAssets目录后才进行编译打包。
+- **Assets/BundleResources:** Asset Bundle全自动化导出的关键，此目录下所有的文件都会设置上abName，然后进行导出，并使用Unity管理依赖。KSFramework约定这几个目录：角色，特效，shader，声音中的prefab也会设置abName，在生成ab时一并导出。
+- **Product**: 默认的产品导出目录，包括Asset Bundle、Lua脚本、配置表，统一放置在这个目录。 编译客户端时，这些资源将被拷贝到StreamingAssets目录后才进行编译打包。
 
 BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngineDef.cs的路径定义即可。
 
@@ -43,11 +65,9 @@ BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngi
 ​	...更多面板
 -系统B
 -更多系统...
-
-
 </pre>
 
-上述UI场景在保存时，会导出为prefab放到**Assets/BundleResources/UI**下：
+所有的UI场景在保存时，会导出为prefab放到**Assets/BundleResources/UI**下：
 
 <pre>
 -系统A的面板1.prefab
@@ -57,7 +77,6 @@ BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngi
 ======== 每个面板打包成一个ab，atlas单独打包到一个ab中 ==========
 
 
-
 -系统A只有一个同名面板.prefab
 -系统A.spriteatlas
 ======= 这两个文件会打包到一个ab中 ========
@@ -65,9 +84,7 @@ BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngi
 
 ## 场景资源
 
-所有需要打包成ab的场景文件都放在**Assets/BundleResources/Scene**下
-
-如果多个场景都有用到的共用小物件，建议这些小物件打到共用prefab中
+所有需要打包成ab的场景文件都放在**Assets/BundleResources/Scene**下，如果多个场景都有用到的共用小物件，建议这些小物件打到共用prefab中
 
 <pre>
     -场景1001.unity
@@ -78,7 +95,7 @@ BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngi
 
 </pre>
 
-如果非editor下直接加载场景，则无需将sene.unity添加到Build Settings - Scenes In Build下
+如果是在editor下不通过ab加载场景则需要将每个sene.unity添加到Build Settings - Scenes In Build中
 
 ## 角色/NPC/怪物资源
 

@@ -1,7 +1,7 @@
 Online Doc: https://mr-kelly.github.io/KSFramework/
 ## KSFramework ShowCase(商业案例)
 
-KSFramework不包含.so，.dll文件，无法很好地查询使用KSFramework开发的游戏，这份showcase列表包括但并不完整，欢迎各位补充使用KSFramework开发的游戏。
+KSFramework不包含.so，.dll文件，无法很好地查询使用KSFramework开发的游戏，这份showcase列表包括但并不完整，欢迎各位补充使用KSFramework开发的游戏，可加QQ群(538722494)或联系我(569032731@qq.com)。
 
 使用KSFramework开发的项目列表（排名不分先后）：
 
@@ -31,3 +31,13 @@ KSFramework不包含.so，.dll文件，无法很好地查询使用KSFramework开
 [七七捕鱼](http://www.9game.cn/qiqibuyu/)
 
 ![](https://raw.githubusercontent.com/wiki/mr-kelly/KSFramework/images/showcase/七七捕鱼-icon.png)
+
+命运抉择VR
+
+![](https://github.com/mr-kelly/KSFramework/raw/master/Docs/showcase/%E5%91%BD%E8%BF%90%E6%8A%89%E6%8B%A9.png)
+
+[我的冒险屋](https://www.taptap.com/app/200744)
+
+![](https://github.com/mr-kelly/KSFramework/raw/master/Docs/showcase/%E6%88%91%E7%9A%84%E5%86%92%E9%99%A9%E5%B1%8B.png)
+
+一款在开发的中Moba游戏
