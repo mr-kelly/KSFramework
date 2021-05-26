@@ -89,7 +89,7 @@
                 </ul>
                 <p class="caption"><span class="caption-text">基础约定</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">Ini配置文件</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">框架配置文件</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../basic/file-structure/">目录结构和约定规范</a>
                     </li>
@@ -224,20 +224,22 @@
             <div class="section">
               
                 <h1 id="_1">功能特性</h1>
-<p>KSFramework中包含（不限于）以下开箱即用的功能特性。</p>
+<p>KSFramework中包含（不限于）以下开箱即用的功能特性，大大减少你重复造轮子的时间，代码可读性高。</p>
 <h2 id="_2">资源模块</h2>
 <ul>
-<li>Unity 5及更新版本中一键打包Asset Bundle</li>
+<li>Unity引擎的一键打包Asset Bundle</li>
 <li>AssetBundle加载器，加载时自动处理依赖关系</li>
-<li>资源路径约定，含热更新资源机制</li>
+<li>资源路径约定，自动设置abName</li>
+<li>热更新资源(下载和制作更新包)</li>
 <li>手动的、引用计数的资源释放策略</li>
 <li>~~资源运行时重载（减引用计数）~~</li>
 </ul>
 <h2 id="_3">配置表模块</h2>
 <ul>
-<li>自动编译Excel，支持在表中添加注释</li>
+<li>提供可视化且对策划非常友好的导表工具TableML GUI</li>
+<li>自动编译Excel，支持在表中添加注释，注释行，列</li>
 <li>Excel表头，可设置数据类型（如int, array的声明）</li>
-<li>自动生成配置表读取代码</li>
+<li>自动生成配置表读取代码、Luatable、SQLite</li>
 <li>支持惰式加载，无初始化的时间消耗</li>
 <li>支持热重载，运行时修改配置表无需重启</li>
 </ul>
@@ -250,6 +252,7 @@
 </ul>
 <h2 id="_4">脚本模块</h2>
 <ul>
+<li>支持多种热更新方案，减少集成难度</li>
 <li>路径约定，通过import函数进行加载</li>
 <li>缓存机制配合import函数，可实现所有脚本的热重载</li>
 <li>Lua新增using函数类似于C#中的using，暴露使用table中的属性为全局使用</li>
@@ -263,7 +266,7 @@
 </ul>
 <h2 id="unity">Unity编辑器强化</h2>
 <ul>
-<li>编辑代码后，返回正在运行的游戏，强制停掉正在运行的游戏，避免崩溃的出现</li>
+<li>UI编辑器，一键生成APK</li>
 <li>封装Unity编辑器的各种事件，如编译前、播放前、暂停时等</li>
 </ul>
 <h2 id="_6">下载资源更新</h2>

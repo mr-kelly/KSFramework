@@ -73,19 +73,23 @@
                 </ul>
                 <p class="caption"><span class="caption-text">基础约定</span></p>
                 <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../config/">Ini配置文件</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../config/">框架配置文件</a>
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">目录结构和约定规范</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#slua">SLua</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#xlua">XLua</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#kengine">KEngine</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#ksframework">KSFramework</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#plugins">为什么都放在Plugins中？</a>
+    <li class="toctree-l2"><a class="reference internal" href="#slua">SLua</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#xlua">XLua</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#lua">Lua代码</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ilruntime">ILRuntime热更代码</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#plugins">为什么代码要放在Plugins中？</a>
     </li>
     </ul>
                     </li>
@@ -220,22 +224,33 @@
             <div class="section">
               
                 <h2 id="_1">代码放置目录</h2>
+<h3 id="kengine">KEngine</h3>
+<p>KEngine的所有运行时代码放置在<strong>Assets/KSFramework/KEngine</strong>中，编辑器代码放置在<strong>KEngine/Editor</strong>中。</p>
+<h3 id="ksframework">KSFramework</h3>
+<p>对比KEngine新加的功能，所有运行时代码放置在<strong>Assets/KSFramework</strong>中，编辑器相关的代码放置在<strong>KSFramework/Editor</strong>中。</p>
 <h3 id="slua">SLua</h3>
 <p>KSFramework中SLua采用其默认的目录结构，即C#运行时代码放置在Assets/Plugins/Slua_Managed中，编辑器相关代码放置在Assets/SLua中。</p>
 <h3 id="xlua">XLua</h3>
-<p>XLua放置在Assets/XLua目录下，结构和官方保持</p>
-<h3 id="kengine">KEngine</h3>
-<p>KEngine的所有运行时代码放置在<strong>Assets/KSFramework/KEngine</strong>中，相关的编辑器代码放置在<strong>Assets/KSFramework/KEngine/Editor</strong>中。</p>
-<h3 id="ksframework">KSFramework</h3>
-<p>对比KEngine新加的功能，所有运行时代码放置在<strong>Assets/KSFramework</strong>中，相关的编辑器代码放置在<strong>Assets/KSFramework/Editor</strong>中。</p>
-<h3 id="plugins">为什么都放在Plugins中？</h3>
-<p>脚本的修改，会触发Unity的重新编译。一般的项目逻辑，都在非Plugins目录进行的，随着项目的发展，非Plugins目录的代码越来越多，编译越来越慢。把代码放进Plugins目录，可以节约一定的编译时间，改善开发效率。</p>
+<p>XLua放置在Assets/XLua目录下，结构和官方保持同步</p>
+<h3 id="lua">Lua代码</h3>
+<p>所有的Lua代码放在<strong>Product\Lua</strong>目录下，开发期间修改代码后，就会生效，代码无需打包，生成APK时会拷贝到StreamingAssets。</p>
+<h3 id="ilruntime">ILRuntime热更代码</h3>
+<p>ILRuntime热更工程的代码放在<strong>HotFix_Project\scripts</strong>目录下，注：只有ILRuntime分支有此目录</p>
+<h3 id="plugins">为什么代码要放在Plugins中？</h3>
+<p>脚本的修改，会触发Unity的重新编译。一般的项目逻辑都放在非Plugins目录，随着项目的发展，非Plugins目录的代码越来越多，编译越来越慢。把代码放进Plugins目录，可以节约一定的编译时间，改善开发效率。</p>
 <p>注：对于unity2018及更高的版本中可以对不同的目录设置Assemly。</p>
-<h2 id="_2">资源目录约定</h2>
+<h2 id="_2">其它目录</h2>
+<h3 id="_3">配置表</h3>
+<p>策划配置表excel放在 <strong>Product\SettingSource</strong>，excel转换后的中间文件放在<strong>Product\Setting</strong>，独立编译配置表的工具放在<strong>Product\Tableml_GUI</strong>(需要自己从Release下载)</p>
+<h3 id="abassetbundle">AB文件(Assetbundle)</h3>
+<p>打包后的ab文件放在<strong>Product\Bundles</strong>下</p>
+<h3 id="build_tools">build_tools</h3>
+<p>打更新包和自动化生成ab的脚本目录，里面有python和cmd脚本。</p>
+<h2 id="_4">资源目录约定</h2>
 <ul>
 <li><strong>Assets/BundleEdting</strong>: 一些编辑性的、需要配合编译过程的美术资源。比如UI在保存时自动导出Prefab到Assets/BundleResources目录下</li>
-<li><strong>Assets/BundleResources:</strong> Asset Bundle全自动化导出的关键，此目录下所有的文件都会设置上abName，然后进行导出，并使用Unity管理依赖。</li>
-<li><strong>Product/</strong>: 默认的产品导出目录，包括Asset Bundle、Lua脚本、配置表，统一放置在这个目录。 编译客户端时，这些资源将被拷贝到StreamingAssets目录后才进行编译打包。</li>
+<li><strong>Assets/BundleResources:</strong> Asset Bundle全自动化导出的关键，此目录下所有的文件都会设置上abName，然后进行导出，并使用Unity管理依赖。KSFramework约定这几个目录：角色，特效，shader，声音中的prefab也会设置abName，在生成ab时一并导出。</li>
+<li><strong>Product</strong>: 默认的产品导出目录，包括Asset Bundle、Lua脚本、配置表，统一放置在这个目录。 编译客户端时，这些资源将被拷贝到StreamingAssets目录后才进行编译打包。</li>
 </ul>
 <p>BundleEdting和BundleResources的名称可自定义，修改AppConfig.cs和KEngineDef.cs的路径定义即可。</p>
 <h2 id="ui">UI资源</h2>
@@ -249,11 +264,9 @@
 ​   ...更多面板
 -系统B
 -更多系统...
-
-
 </pre>
 
-<p>上述UI场景在保存时，会导出为prefab放到<strong>Assets/BundleResources/UI</strong>下：</p>
+<p>所有的UI场景在保存时，会导出为prefab放到<strong>Assets/BundleResources/UI</strong>下：</p>
 <pre>
 -系统A的面板1.prefab
 -系统A的面板2.prefab
@@ -262,15 +275,13 @@
 ======== 每个面板打包成一个ab，atlas单独打包到一个ab中 ==========
 
 
-
 -系统A只有一个同名面板.prefab
 -系统A.spriteatlas
 ======= 这两个文件会打包到一个ab中 ========
 </pre>
 
-<h2 id="_3">场景资源</h2>
-<p>所有需要打包成ab的场景文件都放在<strong>Assets/BundleResources/Scene</strong>下</p>
-<p>如果多个场景都有用到的共用小物件，建议这些小物件打到共用prefab中</p>
+<h2 id="_5">场景资源</h2>
+<p>所有需要打包成ab的场景文件都放在<strong>Assets/BundleResources/Scene</strong>下，如果多个场景都有用到的共用小物件，建议这些小物件打到共用prefab中</p>
 <pre>
     -场景1001.unity
         -navmesh.asset
@@ -280,7 +291,7 @@
 
 </pre>
 
-<p>如果非editor下直接加载场景，则无需将sene.unity添加到Build Settings - Scenes In Build下</p>
+<p>如果是在editor下不通过ab加载场景则需要将每个sene.unity添加到Build Settings - Scenes In Build中</p>
 <h2 id="npc">角色/NPC/怪物资源</h2>
 <p>所有的角色资源放在BundleEditing/Character/下，每个角色一个文件夹，一个角色中包含几个子文件夹，并且把制作好的prefab放到BundleResources目录下</p>
 <pre>
@@ -295,7 +306,7 @@
 </pre>
 
 <p>对于大多数单个的npc，怪物等，可以将贴图，材质，动作，Mesh打包到一个ab中(只对prefab设置abName即可)</p>
-<h2 id="_4">特效资源</h2>
+<h2 id="_6">特效资源</h2>
 <p>所有的特效资源放在BundleEditing/Effect/下，建议将单个effect打包一个ab，如果effect中包含的贴图和材质在多个prefab中用到，则把这些共用的放在Assets/BundleResources/Effect/common下</p>
 <pre>
     -character/(所有的角色特效,包括战斗特效、武器上的特效)
@@ -314,7 +325,7 @@
 <p>KSFramework中建议把所有的shader放在BundleEditing/Shader下，在打包时会把整个目录的shader打包到一个ab中，这样就不会有shader冗余。</p>
 <p>TODO 计划：在游戏启动时进行shader预热</p>
 <p>如果需要自定义规则：<code>BaseImporter.cs OnPostprocessAssets</code></p>
-<h2 id="_5">声音资源</h2>
+<h2 id="_7">声音资源</h2>
 <p>KSFramework中建议把所有的声音放在BundleEditing/Sounds下，然后在打包时除BGM目录外，其它每个子目录中的声音文件会打包到一个ab中</p>
 <p>如果是某个界面特有的音效可以和界面打包到一个ab中，BGM(背景音乐)目录下的音频会每个单独打成一个ab包</p>
 <p>如果需要自定义规则：<code>BaseImporter.cs OnPreprocessAudio</code></p>
@@ -333,7 +344,7 @@
         <a href="../../setting/guide/" class="btn btn-neutral float-right" title="策划指南：配置表的使用">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../config/" class="btn btn-neutral" title="Ini配置文件"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../config/" class="btn btn-neutral" title="框架配置文件"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   

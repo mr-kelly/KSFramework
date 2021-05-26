@@ -73,7 +73,7 @@
                 </ul>
                 <p class="caption"><span class="caption-text">基础约定</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">Ini配置文件</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">框架配置文件</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../basic/file-structure/">目录结构和约定规范</a>
                     </li>
@@ -210,13 +210,12 @@
             <div class="section">
               
                 <h2 id="ui">UI约定</h2>
-<p>在KSFramework中，每个UI都是一个场景文件，保存时，会自动把绑定UIWindowAsset脚本的节点下的所有内容另存为prefab放在BundleResource目录下，所以请不要直接修改BundleResource下的UI Prefab，而是修改UI场景然后按保存，会自动更新Prefab。</p>
+<p>在KSFramework中，每个UI界面都是一个以UI开头的场景文件，在保存场景时会自动把绑定UIWindowAsset节点下的所有内容另存为prefab保存到BundleResource目录下，所以请不要修改BundleResource下的UI Prefab，而是修改UI场景然后保存场景，就会自动更新Prefab。</p>
 <p>每个UI对应一个同名的Lua文件，可通过 <strong>KEngine</strong> - <strong>UI(UGUI)</strong> - <strong>Auto Make UI Lua Scripts(Current Scene)</strong> 创建模版脚本</p>
-<p>UI默认有三个函数，<strong>OnInit</strong> ，<strong>OnOpen</strong>，<strong>OnClose</strong>，并没有使用Unity的Start来管理生命周期</p>
+<p>UI的生命周期有三个函数：<strong>OnInit</strong> ，<strong>OnOpen</strong>，<strong>OnClose</strong>，并没有使用Unity的MonoBehaviour来管理生命周期</p>
 <h2 id="ui_1">UI的打开、关闭、调用都是异步的</h2>
 <p>类似资源模块，UI模块是接口，大部分异步的， 主要采用CPS异步回调的风格。常用接口：</p>
-<pre><code class="language-csharp">
-// 异步打开UI，向UI控制器的OnOpen函数传入3个参数, 分别是1,2,3
+<pre><code class="language-csharp">// 异步打开UI，向UI控制器的OnOpen函数传入3个参数, 分别是1,2,3
 UIModule.Instance.OpenWindow(&quot;ExampleUI&quot;, 1, 2, 3)
 
 // 异步打开UI，与普通OpenWindow不一样的是，这是拷贝一个UI进行打开。对一些重复性的UI，比如角色血条，有重要作用。
@@ -225,7 +224,7 @@ UIModule.Instance.OpenDynamicWindow(&quot;ExampleUI&quot;, &quot;ExampleUI-Clone
 // 同步关闭UI,
 UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
 </code></pre>
-<p>UIModule暴露的外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。</p>
+<p>UIModule暴露给外部接口不多，KSFramework中建议提高UI逻辑的独立性、内聚性，减少外部的调用。</p>
 <h2 id="openwindow">OpenWindow</h2>
 <p>异步打开UI</p>
 <h2 id="opendynamicwindow">OpenDynamicWindow</h2>
@@ -238,8 +237,8 @@ UIModule.Instance.CloseWindow(&quot;ExampleUI&quot;)
 });
 </code></pre>
 <p>当一个UI已经加载过，CallUI方法将会同步进入回调。</p>
-<h2 id="canvassetactive">禁用canvas代替SetActive</h2>
-<p>对一个gameobject进行SetActive(true)，SetActive(false)会调用Monobehaviour的OnEnable和OnDisable函数，会造成一定的堆内存分配和耗时较高，根据多个项目的经验，在KSFramework中处理UI的显示和隐藏，我们是通过禁用和启用canvas来实现的，实现代码在UIModule.OnOpen</p>
+<h2 id="canvassetactive">禁用Canvas代替SetActive</h2>
+<p>对一个gameobject进行SetActive(true)和SetActive(false)会调用Monobehaviour的OnEnable和OnDisable函数，会造成一定的堆内存分配和耗时较高，根据多个项目的经验，在KSFramework中处理UI的显示和隐藏，我们是通过禁用和启用canvas来实现的，具体实现代码在UIModule.OnOpen</p>
 <pre><code class="language-c#">private void OnOpen(UILoadState uiState, params object[] args)
 {
     uiBase.gameObject.SetActiveX(true);

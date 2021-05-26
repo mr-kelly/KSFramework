@@ -73,7 +73,7 @@
                 </ul>
                 <p class="caption"><span class="caption-text">基础约定</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">Ini配置文件</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../basic/config/">框架配置文件</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../basic/file-structure/">目录结构和约定规范</a>
                     </li>
@@ -224,12 +224,12 @@
 <tr>
 <td>Unity 4.X</td>
 <td>支持</td>
-<td></td>
+<td>请使用KEngine</td>
 </tr>
 <tr>
 <td>Unity 5.x</td>
 <td>支持</td>
-<td>部分版本API有差异，建议使用5.3.7及以上版本</td>
+<td>部分版本的API有差异，建议使用5.3.7及以上版本</td>
 </tr>
 <tr>
 <td>Unity 2017</td>
@@ -241,9 +241,22 @@
 <td>支持</td>
 <td>2018.2.7f1已测试</td>
 </tr>
+<tr>
+<td>Unity 2019</td>
+<td>支持</td>
+<td>2019.3.7f1已测试</td>
+</tr>
+<tr>
+<td>Unity2020</td>
+<td>支持</td>
+<td>Unity 2020.1.2f1已测试</td>
+</tr>
 </tbody>
 </table>
+<p><br />
+如果是Unity 4.x建议使用KEngine</p>
 <h2 id="_2">操作系统</h2>
+<p>建议的操作系统</p>
 <ul>
 <li>
 <p>Windows 7 x64 sp1</p>
@@ -252,7 +265,7 @@
 <p>Windows 10 x64 专业版/企业版本</p>
 </li>
 <li>
-<p>Mac OS X 10.x</p>
+<p>Mac OS X 10.x及更高版本</p>
 </li>
 </ul>
 <h2 id="android">Android 平台</h2>
@@ -264,6 +277,7 @@
 <p>Android 4.3.3</p>
 </li>
 </ul>
+<p>理论上KSFramework是支持任意安卓版本的</p>
 <h2 id="ios">IOS平台</h2>
 <ul>
 <li>
@@ -273,15 +287,17 @@
 <p>IOS 8.3</p>
 </li>
 </ul>
+<p>理论上KSFramework是支持任意IOS版本的</p>
 <h2 id="slua">SLua方案</h2>
 <p>支持SLua截止目前的最新版本，理论上KSFramework可以支持任意版本的SLua，因为KSFramework封装了一层LuaModule、LuaBehaviour，执行代码逻辑，对于开发者使用那种Lua热更热方案是没有直接影响的，可以兼容适配。</p>
 <p>PS.github上的slua版本较旧，大家可自己更新slua的版本，并执行安装。</p>
 <h2 id="xlua">XLua方案</h2>
 <p>支持XLua截止目前的最新版本，理论上KSFramework可以支持任意版本的XLua，因为KSFramework封装了一层LuaModule、LuaBehaviour，执行代码逻辑，对于开发者使用那种Lua热更热方案是没有直接影响的，可以兼容适配。</p>
+<p>PS.大家可自己更新xlua的版本</p>
 <h2 id="ilruntime">ILRuntime方案</h2>
-<p>目前基于ILRuntime的最新版本，在ILRuntime分支进行测试，正在进行中。</p>
+<p>基于ILRuntime的最新版本，已加入常见适配器。</p>
 <h2 id="_3">其它热更新方案</h2>
-<p>理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案。</p>
+<p>理论上只需要修改LuaModule的部分代码，就可以支持其它任意的热更新方案，比如有群友已自己动手把Lua方案改为<a href="https://github.com/topameng/tolua">tolua</a>。</p>
 <ul>
 <li><code>KSFramework/Modules/LuaModule/LuaBehaviour.cs</code>  </li>
 <li><code>KSFramework/Modules/LuaModule/LuaModule.cs</code></li>
