@@ -869,7 +869,7 @@ namespace KEngine
         //获取从父节点到自己的完整路径
         public static string GetRootPathName(UnityEngine.Transform transform)
         {
-            var pathName = "/" + transform.name;
+            var pathName = transform.name;
             while (transform.parent != null)
             {
                 transform = transform.parent;

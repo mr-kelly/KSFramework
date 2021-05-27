@@ -1,3 +1,4 @@
+using KSFramework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,82 +21,10 @@ namespace KEngine.Editor
     {
         private const string menu = "GameObject/UI/";
 
-        #region My Extension
-
-        private const float kWidth = 160f;
-        private const float kThickHeight = 30f;
-
-        private static Vector2 s_ThickGUIElementSize = new Vector2(kWidth, kThickHeight);
-        private static Vector2 ScrollRectSize = new Vector2(400, 100);
-
-        static public T FindInParents<T>(GameObject go) where T : Component
-        {
-            if (go == null)
-                return null;
-
-            T comp = null;
-            Transform t = go.transform;
-            while (t != null && comp == null)
-            {
-                comp = t.GetComponent<T>();
-                t = t.parent;
-            }
-
-            return comp;
-        }
-
-        // Helper function that returns the selected root object.
-        static public GameObject GetParentActiveCanvasInSelection(bool createIfMissing)
-        {
-            GameObject go = Selection.activeGameObject;
-
-            // Try to find a gameobject that is the selected GO or one if ots parents
-            Canvas p = (go != null) ? FindInParents<Canvas>(go) : null;
-            // Only use active objects
-            if (p != null && p.gameObject.activeInHierarchy)
-                go = p.gameObject;
-
-            // No canvas in selection or its parents? Then use just any canvas.
-            if (go == null)
-            {
-                Canvas canvas = Object.FindObjectOfType(typeof(Canvas)) as Canvas;
-                if (canvas != null)
-                    go = canvas.gameObject;
-            }
-
-            // No canvas present? Create a new one.
-            if (createIfMissing && go == null)
-                go = CreateNewUI();
-
-            return go;
-        }
-
-        private static GameObject CreateUIElementRoot(string name, MenuCommand menuCommand, Vector2 size)
-        {
-            GameObject parent = menuCommand.context as GameObject;
-            if (parent == null || FindInParents<Canvas>(parent) == null)
-            {
-                parent = GetParentActiveCanvasInSelection(true);
-            }
-
-            GameObject child = new GameObject(name);
-
-            Undo.RegisterCreatedObjectUndo(child, "Create " + name);
-            Undo.SetTransformParent(child.transform, parent.transform, "Parent " + child.name);
-            GameObjectUtility.SetParentAndAlign(child, parent);
-
-            RectTransform rectTransform = child.AddComponent<RectTransform>();
-            rectTransform.sizeDelta = size;
-            if (parent != menuCommand.context) // not a context click, so center in sceneview
-            {
-                SetPositionVisibleinSceneView(parent.GetComponent<RectTransform>(), rectTransform);
-            }
-
-            Selection.activeGameObject = child;
-            return child;
-        }
+        #region KSFramework Extension
 
 
+        
         [MenuItem(menu + "EmptyImage(空Image用于点击)", false, 1001)]
         public static void AddEmptyImage(MenuCommand menuCommand)
         {
@@ -180,6 +109,8 @@ namespace KEngine.Editor
 
         #endregion
 
+        #region default ui resources
+        
         private const string kUILayerName = "UI";
 
         private const string kStandardSpritePath = "UI/Skin/UISprite.psd";
@@ -189,7 +120,32 @@ namespace KEngine.Editor
         private const string kCheckmarkPath = "UI/Skin/Checkmark.psd";
         private const string kDropdownArrowPath = "UI/Skin/DropdownArrow.psd";
         private const string kMaskPath = "UI/Skin/UIMask.psd";
+        private const float kWidth = 160f;
+        private const float kThickHeight = 30f;
 
+        private static Vector2 s_ThickGUIElementSize = new Vector2(kWidth, kThickHeight);
+        private static Vector2 ScrollRectSize = new Vector2(400, 100);
+        private static Color   s_DefaultSelectableColor = new Color(1f, 1f, 1f, 1f);
+        private static Sprite _buttonSprite;
+        private static Sprite buttonSprite
+        {
+            get
+            {
+                if (_buttonSprite == null)
+                    _buttonSprite = AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/{KEngineDef.ResourcesEditDir}/UI/atlas_common/btn_panel_02.png");
+                return _buttonSprite;
+            }
+        }
+        private static Sprite _closeSprite;
+        private static Sprite closeSprite
+        {
+            get
+            {
+                if (_closeSprite == null)
+                    _closeSprite = AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/{KEngineDef.ResourcesEditDir}/UI/atlas_common/btn_win_close.png");
+                return _closeSprite;
+            }
+        }
         static private DefaultControls.Resources s_StandardResources;
 
         static private DefaultControls.Resources GetStandardResources()
@@ -207,7 +163,9 @@ namespace KEngine.Editor
 
             return s_StandardResources;
         }
-
+        
+        #endregion
+        
         private static void SetPositionVisibleinSceneView(RectTransform canvasRTransform, RectTransform itemTransform)
         {
             SceneView sceneView = SceneView.lastActiveSceneView;
@@ -309,16 +267,28 @@ namespace KEngine.Editor
             //GameObject go = DefaultControls.CreateText(GetStandardResources());
             //PlaceUIElementRoot(go, menuCommand);
             var go = CreateUIElementRoot("Text", menuCommand, s_ThickGUIElementSize);
-            var lbl = go.AddComponent<MyText>();
-            lbl.raycastTarget = false;
-            lbl.horizontalOverflow = HorizontalWrapMode.Overflow;
-            lbl.verticalOverflow = VerticalWrapMode.Overflow;
-            lbl.alignment = TextAnchor.MiddleCenter;
-            lbl.color = Color.black;
-            lbl.fontSize = 18;
-            //lbl.font = Resources.Load<Font>("xxx"); //TODO 设置游戏中的字体
+            SetDefaultTextValues(go);
         }
-
+        
+        static  MyText SetDefaultTextValues(GameObject go,string langId = null)
+        {
+            var text = go.AddComponent<MyText>();
+            if (!string.IsNullOrEmpty(langId))
+            {
+                text.LangId = langId;
+                text.text = I18N.Get(langId);
+                text.UseLangId = true;
+            }
+            text.raycastTarget = false;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.black;
+            text.fontSize = 18;
+            //lbl.font = Resources.Load<Font>("xxx"); //TODO 设置游戏中的字体
+            return text;
+        }
+        
         [MenuItem("GameObject/UI/Image/创建", false, 2001)]
         static public void AddImage(MenuCommand menuCommand)
         {
@@ -337,17 +307,50 @@ namespace KEngine.Editor
             image.raycastTarget = false;
         }
         
-        // Controls
-
-        // Button and toggle are controls you just click on.
-
-        //[MenuItem("GameObject/UI/Button", false, 2030)]
+        /// <summary>
+        /// Create the basic UI button.
+        /// </summary>
+        /// <remarks>
+        /// Hierarchy:
+        /// (root)
+        ///     Button
+        ///         -Text
+        /// </remarks>
+        [MenuItem(menu+"/Button/创建", false, 2030)]
         static public void AddButton(MenuCommand menuCommand)
         {
-            GameObject go = DefaultControls.CreateButton(GetStandardResources());
-            PlaceUIElementRoot(go, menuCommand);
+            AddButton(menuCommand, buttonSprite, "common_ok");
         }
+        
+        [MenuItem(menu+"/Button/创建关闭按钮", false, 2030)]
+        static public void AddCloseButton(MenuCommand menuCommand)
+        {
+            AddButton(menuCommand, closeSprite, null);
+        }
+        
+        static public Button AddButton(MenuCommand menuCommand, Sprite sprite, string langId = "")
+        {
+            var buttonRoot = CreateUIElementRoot("Button", menuCommand, s_ThickGUIElementSize);
+            Image image = buttonRoot.AddComponent<Image>();
+            image.sprite = sprite;
+            image.type = Image.Type.Simple;
+            image.color = s_DefaultSelectableColor;
+            image.SetNativeSize();
+            Button button = buttonRoot.AddComponent<Button>();
+            SetDefaultColorTransitionValues(button);
+            
+            //text
+            if (langId == null) return button;
+            GameObject childText = CreateUIObject("Text", buttonRoot);
+            SetDefaultTextValues(childText,langId);
 
+            RectTransform textRectTransform = childText.GetComponent<RectTransform>();
+            textRectTransform.anchorMin = Vector2.zero;
+            textRectTransform.anchorMax = Vector2.one;
+            textRectTransform.sizeDelta = Vector2.zero;
+            return button;
+        }
+        
         //[MenuItem("GameObject/UI/Toggle", false, 2031)]
         static public void AddToggle(MenuCommand menuCommand)
         {
@@ -528,5 +531,106 @@ namespace KEngine.Editor
 
             return true;
         }
+
+        #region ugui sources code
+static public T FindInParents<T>(GameObject go) where T : Component
+        {
+            if (go == null)
+                return null;
+
+            T comp = null;
+            Transform t = go.transform;
+            while (t != null && comp == null)
+            {
+                comp = t.GetComponent<T>();
+                t = t.parent;
+            }
+
+            return comp;
+        }
+
+        // Helper function that returns the selected root object.
+        static public GameObject GetParentActiveCanvasInSelection(bool createIfMissing)
+        {
+            GameObject go = Selection.activeGameObject;
+
+            // Try to find a gameobject that is the selected GO or one if ots parents
+            Canvas p = (go != null) ? FindInParents<Canvas>(go) : null;
+            // Only use active objects
+            if (p != null && p.gameObject.activeInHierarchy)
+                go = p.gameObject;
+
+            // No canvas in selection or its parents? Then use just any canvas.
+            if (go == null)
+            {
+                Canvas canvas = Object.FindObjectOfType(typeof(Canvas)) as Canvas;
+                if (canvas != null)
+                    go = canvas.gameObject;
+            }
+
+            // No canvas present? Create a new one.
+            if (createIfMissing && go == null)
+                go = CreateNewUI();
+
+            return go;
+        }
+
+        private static GameObject CreateUIElementRoot(string name, MenuCommand menuCommand, Vector2 size)
+        {
+            GameObject parent = menuCommand.context as GameObject;
+            if (parent == null || FindInParents<Canvas>(parent) == null)
+            {
+                parent = GetParentActiveCanvasInSelection(true);
+            }
+
+            GameObject child = new GameObject(name);
+
+            Undo.RegisterCreatedObjectUndo(child, "Create " + name);
+            Undo.SetTransformParent(child.transform, parent.transform, "Parent " + child.name);
+            GameObjectUtility.SetParentAndAlign(child, parent);
+
+            RectTransform rectTransform = child.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = size;
+            if (parent != menuCommand.context) // not a context click, so center in sceneview
+            {
+                SetPositionVisibleinSceneView(parent.GetComponent<RectTransform>(), rectTransform);
+            }
+
+            Selection.activeGameObject = child;
+            return child;
+        }
+        
+        public static GameObject CreateUIObject(string name, GameObject parent)
+        {
+            GameObject go = new GameObject(name);
+            go.AddComponent<RectTransform>();
+            SetParentAndAlign(go, parent);
+            return go;
+        }
+        public static void SetParentAndAlign(GameObject child, GameObject parent)
+        {
+            if (parent == null)
+                return;
+
+            child.transform.SetParent(parent.transform, false);
+            SetLayerRecursively(child, parent.layer);
+        }
+
+        public static void SetLayerRecursively(GameObject go, int layer)
+        {
+            go.layer = layer;
+            Transform t = go.transform;
+            for (int i = 0; i < t.childCount; i++)
+                SetLayerRecursively(t.GetChild(i).gameObject, layer);
+        }
+        
+        public static void SetDefaultColorTransitionValues(Selectable slider)
+        {
+            ColorBlock colors = slider.colors;
+            colors.highlightedColor = new Color(0.882f, 0.882f, 0.882f);
+            colors.pressedColor     = new Color(0.698f, 0.698f, 0.698f);
+            colors.disabledColor    = new Color(0.521f, 0.521f, 0.521f);
+        }
+        #endregion
     }
 }
