@@ -306,10 +306,17 @@ namespace KEngine.Editor
         [MenuItem("GameObject/UI/Text/创建", false, 2000)]
         static public void AddText(MenuCommand menuCommand)
         {
-            GameObject go = DefaultControls.CreateText(GetStandardResources());
-            PlaceUIElementRoot(go, menuCommand);
-            var lbl = go.GetComponent<Text>();
+            //GameObject go = DefaultControls.CreateText(GetStandardResources());
+            //PlaceUIElementRoot(go, menuCommand);
+            var go = CreateUIElementRoot("Text", menuCommand, s_ThickGUIElementSize);
+            var lbl = go.AddComponent<MyText>();
             lbl.raycastTarget = false;
+            lbl.horizontalOverflow = HorizontalWrapMode.Overflow;
+            lbl.verticalOverflow = VerticalWrapMode.Overflow;
+            lbl.alignment = TextAnchor.MiddleCenter;
+            lbl.color = Color.black;
+            lbl.fontSize = 18;
+            //lbl.font = Resources.Load<Font>("xxx"); //TODO 设置游戏中的字体
         }
 
         [MenuItem("GameObject/UI/Image/创建", false, 2001)]
