@@ -40,7 +40,7 @@ namespace KSFramework
     /// </summary>
     public class I18N
     {
-        private static  Dictionary<string, string> Strs = new Dictionary<string, string>();
+        private static  Dictionary<string, string> dict = new Dictionary<string, string>();
         
         /// <summary>
         /// 是否已经初始化完成
@@ -54,12 +54,12 @@ namespace KSFramework
         {
             if (_isInited)
                 return;
-            Strs.Clear();
+            dict.Clear();
             //读取语言包
             var lang_file = $"I18N/lang{AppConfig.LangFileFlag}.txt";
             var bytes = KResourceModule.LoadAssetsSync(SettingModule.GetSettingFilePath(lang_file));
             var fileContent = Encoding.UTF8.GetString(bytes);
-            TextParser.ParseText(fileContent,Strs);
+            TextParser.ParseText(fileContent,dict);
 
 #if UNITY_EDITOR
             // 开发热重载
@@ -86,17 +86,26 @@ namespace KSFramework
             if (!_isInited) Init();
 
             string value;
-            if (Strs.TryGetValue(str, out value))
+            if (dict.TryGetValue(str, out value))
             {
-                if (args != null && !string.IsNullOrEmpty(value)) return String.Format(value, args);
+                if (args != null && args.Length > 0 && !string.IsNullOrEmpty(value)) 
+                    return String.Format(value, args);
                 return value;
             }
 
-            Log.LogError($"not find lang_id:{str}");
+            //Log.LogError($"not find lang_id:{str}");
             return $"lang_id:{str}";
         }
 
-     
+        /// <summary>
+        /// clear cache ,reload
+        /// </summary>
+        public static void ReLoad()
+        {
+            if (!Application.isEditor) return;
+            _isInited = false;
+            Init();
+        }
     }
 
 }
