@@ -7,7 +7,9 @@ using UnityEngine.UI;
 namespace UnityEditor.UI
 {
     /// <summary>
-    /// 扩展Unity的Text Inspector
+    /// Author：qingqing.zhao (569032731@qq.com)
+    /// Date：2021/5/27 15:02
+    /// Desc：扩展Unity的Text Inspector
     /// </summary>
     [CustomEditor(typeof(MyText), true)]
     [CanEditMultipleObjects]

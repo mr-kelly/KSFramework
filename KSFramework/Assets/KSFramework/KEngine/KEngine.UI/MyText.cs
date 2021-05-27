@@ -17,7 +17,7 @@ namespace UnityEngine.UI
         [SerializeField] public string LangId;
         [SerializeField] public string[] LangParams;
 
-        void Awake()
+        void Start()
         {
             if (UseLangId && string.IsNullOrEmpty(text))
             {
