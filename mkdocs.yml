@@ -24,6 +24,8 @@ nav:
   - 配置表模块:    
     - "策划指南：配置表的使用": setting/guide.md
     - "配置表的条件编译": setting/condition-compile.md
+    - "多语言": setting/i18n.md
+    - "Excel如何进行SVN协作、差异比较？": setting/compare_table.md
     - "惰式加载": setting/lazy-load.md
     - "使用TSV，不用Excel作为源表": setting/tsv-instead-excel.md
     - "自定义与扩展配置表的解析": setting/custom-table-reader.md

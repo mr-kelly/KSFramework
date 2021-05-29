@@ -4,9 +4,11 @@
 KSFramework 0.9版本中，为KEngine的配置表的编译机制加入预编译指令功能，可以采用类似C#中#if预编译指令，来告诉配置表编译工具，哪些行是无需编译的：
 
 ![配置表的预编译指令](../images/setting/condition-compile-1.png)
+
 如上图，Excel的配置过程中，可以像C#的预编译指令一样，通过#if...#endif，条件式编译来控制哪些行会被编译出去生成csv。
 
 ![为配置表编译工具灌入预编译变量](../images/setting/condition-compile-2.png)
+
 为预编译指令加入变量，只需修改静态数组SettingModuleEditor.CompileSettingConditionVars就可以了。可以自定义KSFrameworkCustom.cs来实现。
 
 
@@ -15,6 +17,6 @@ KSFramework 0.9版本中，为KEngine的配置表的编译机制加入预编译�
 
 ## 多语言
 
-PS.新版本中每种语言对应一个语言包文件，对于图片或其它资源，则以--en(英文)，--th(泰文)命名结尾。
+PS.新版本中每种语言对应一个语言包文件，对于图片或其它资源，则以--en(英文)，--th(泰文)命名结尾，如果找不到多语言文件，则会读取不带多语言的文件。
 
-TODO 计划，在UI编辑器中加入多语言
+在KSFramework的UI编辑器中已支持文字多语言的编辑，详细见 [多语言模块](./i18n.md)

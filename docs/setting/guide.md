@@ -164,4 +164,4 @@ KEngine配置表提供一种方法，可以在不重启游戏的前提下，重�
 
 ## 其他
 
-既然KEngine中使用了Excel这种非纯文本格式进行配置表的编辑，那么在配合SVN等版本管理工具时，如何进行差异化的配置表比较？可参详：[《KEngine：Excel如何进行SVN协作、差异比较？》](http://www.jianshu.com/p/2ea5468e9d5b)
+既然KEngine中使用了Excel这种非纯文本格式进行配置表的编辑，那么在配合SVN等版本管理工具时，如何进行差异化的配置表比较？可参详：[《KEngine：Excel如何进行SVN协作、差异比较？》](./compare_table.md)
