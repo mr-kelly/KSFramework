@@ -86,6 +86,10 @@
     <ul class="current">
     </ul>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../i18n/">多语言</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compare_table/">Excel如何进行SVN协作、差异比较？</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../lazy-load/">惰式加载</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
@@ -212,14 +216,14 @@
                 <p>游戏开发中，经常会为不同的地区，推出不同的版本，比如中国版、英文版、日文版。 除了语言上的本地化，往往不同的地区发行商，还会提出一些自己地区版本的一些特定功能。
 编程的代码，可以通过if来判断，可是，配置表这种静态的东西，却缺少if的机制来区别出不同的版本了。</p>
 <p>KSFramework 0.9版本中，为KEngine的配置表的编译机制加入预编译指令功能，可以采用类似C#中#if预编译指令，来告诉配置表编译工具，哪些行是无需编译的：</p>
-<p><img alt="配置表的预编译指令" src="../../images/setting/condition-compile-1.png" />
-如上图，Excel的配置过程中，可以像C#的预编译指令一样，通过#if...#endif，条件式编译来控制哪些行会被编译出去生成csv。</p>
-<p><img alt="为配置表编译工具灌入预编译变量" src="../../images/setting/condition-compile-2.png" />
-为预编译指令加入变量，只需修改静态数组SettingModuleEditor.CompileSettingConditionVars就可以了。可以自定义KSFrameworkCustom.cs来实现。</p>
+<p><img alt="配置表的预编译指令" src="../../images/setting/condition-compile-1.png" /></p>
+<p>如上图，Excel的配置过程中，可以像C#的预编译指令一样，通过#if...#endif，条件式编译来控制哪些行会被编译出去生成csv。</p>
+<p><img alt="为配置表编译工具灌入预编译变量" src="../../images/setting/condition-compile-2.png" /></p>
+<p>为预编译指令加入变量，只需修改静态数组SettingModuleEditor.CompileSettingConditionVars就可以了。可以自定义KSFrameworkCustom.cs来实现。</p>
 <p>条件编译机制可以配合<a href="guide#_4">“拆分表格机制”</a>，为同一种配置，不同的配置环境，对应不同的配置文件</p>
 <h2 id="_1">多语言</h2>
-<p>PS.新版本中每种语言对应一个语言包文件，对于图片或其它资源，则以--en(英文)，--th(泰文)命名结尾。</p>
-<p>TODO 计划，在UI编辑器中加入多语言</p>
+<p>PS.新版本中每种语言对应一个语言包文件，对于图片或其它资源，则以--en(英文)，--th(泰文)命名结尾，如果找不到多语言文件，则会读取不带多语言的文件。</p>
+<p>在KSFramework的UI编辑器中已支持文字多语言的编辑，详细见 <a href="../i18n/">多语言模块</a></p>
               
             </div>
           </div>
@@ -227,7 +231,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../lazy-load/" class="btn btn-neutral float-right" title="惰式加载">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../i18n/" class="btn btn-neutral float-right" title="多语言">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../guide/" class="btn btn-neutral" title="策划指南：配置表的使用"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -259,7 +263,7 @@
         <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../lazy-load/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../i18n/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

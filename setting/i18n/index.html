@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>2.拖拽绑定控件 - KSFramework Documentation</title>
+  <title>多语言 - KSFramework Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "2.\u62d6\u62fd\u7ed1\u5b9a\u63a7\u4ef6";
-    var mkdocs_page_input_path = "ui\\lua-outlet.md";
+    var mkdocs_page_name = "\u591a\u8bed\u8a00";
+    var mkdocs_page_input_path = "setting\\i18n.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -79,22 +79,24 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">配置表模块</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/guide/">策划指南：配置表的使用</a>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../guide/">策划指南：配置表的使用</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/condition-compile/">配置表的条件编译</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../condition-compile/">配置表的条件编译</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/i18n/">多语言</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">多语言</a>
+    <ul class="current">
+    </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/compare_table/">Excel如何进行SVN协作、差异比较？</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compare_table/">Excel如何进行SVN协作、差异比较？</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/lazy-load/">惰式加载</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../lazy-load/">惰式加载</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../tsv-instead-excel/">使用TSV，不用Excel作为源表</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/custom-table-reader/">自定义与扩展配置表的解析</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../custom-table-reader/">自定义与扩展配置表的解析</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../setting/tableml_gui/">配置表编译GUI工具</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../tableml_gui/">配置表编译GUI工具</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">资源模块</span></p>
@@ -109,20 +111,18 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">UI模块</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../guide/">UI模块使用指南</a>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/guide/">UI模块使用指南</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../ui-bind-vs-outlet/">两种UI控件绑定方式</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-bind-vs-outlet/">两种UI控件绑定方式</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../ui-binding/">1.手工代码绑定控件</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-binding/">1.手工代码绑定控件</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">2.拖拽绑定控件</a>
-    <ul class="current">
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/lua-outlet/">2.拖拽绑定控件</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../data-binding/">单向数据绑定</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/data-binding/">单向数据绑定</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../ui-plan/">UI模块计划</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-plan/">UI模块计划</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">脚本指南</span></p>
@@ -198,11 +198,11 @@
     
       
         
-          <li>UI模块 &raquo;</li>
+          <li>配置表模块 &raquo;</li>
         
       
     
-    <li>2.拖拽绑定控件</li>
+    <li>多语言</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -213,49 +213,45 @@
           <div role="main">
             <div class="section">
               
-                <p>拖拽绑定控件有以下几个规则：</p>
-<ul>
-<li>需要手动在UI编辑器中拖拽UI控件，而无需手写FindChild代码就可以使用</li>
-<li>在同一个UI中不允许出现相同的Name(即不能有相同名字的变量)，否则Name会出现红色提示</li>
-<li>当Object为空时(未赋值或丢失)，会出现红色提示</li>
-</ul>
-<h2 id="luaoutlet">LuaOutlet 拖拽绑定控件</h2>
-<p>在KSFramework中，拖拽绑定控件的步骤如下：</p>
+                <p>游戏里出现文字，包括代码中用到文字，UI上的文本，全部从语言包读取，而不写在代码或UI中，这样做有以下几点好处：</p>
 <ol>
-<li>打开UI界面，选中UI的根节点，查看Inspect面板，它上面绑定了LuaOutlet脚本</li>
-<li>如果是新界面则点击Add New outlet，如果已有控件则点击+号，创建一个新变量</li>
-<li>拖拽要绑定的控件到Object处，在Component处下拉选择你的控件类型</li>
-<li>在UI代码中使用self.变量名就可以访问这个控件了，而无需写FindChild</li>
+<li>方便策划调整文字，而不需要找技术修改</li>
+<li>当项目大到一定程度时，直接改语言包就可以，减少打开UI或查找代码的时间</li>
+<li>方便的提供给翻译员翻译成其它语言（外包翻译服务是按字收费）</li>
 </ol>
-<p>每个变量都有三个内容：</p>
-<pre><code class="language-lua">Name：在Lua代码中访问这个对象的变量名
-Object：控件指向Unity的Object
-ComponentType：控件的类型，比如它是按钮还是文本，还是输入框
+<p>语言包放在SettingSource\I18N\下，每增加一种语言则增加一个<strong>lang--语言.txt</strong>，默认是lang.txt(中文)</p>
+<p>语言包的配置格式为key=value，#开头为注释行，示例如下：</p>
+<pre><code class="language-json">#格式：key=value
+#下载和更新
+download_title_tips=资源更新
 </code></pre>
-<p>创建一个变量</p>
-<p><img alt="创建一个变量" src="../../images/ui/luaoutlet.png" /></p>
-<p>拖动控件给变量赋值和选择类型</p>
-<p><img alt="给变量赋值和选择类型" src="../../images/ui/add_object.png" /></p>
-<h2 id="_1">在代码里引用拖拽的控件</h2>
-<p>在Editor中绑定控件之后，在UI代码里可以直接self.xxx使用这个控件了，比如：</p>
-<pre><code class="language-Lua">self.txtTitle = &quot;标题文字&quot;
-self.btnLogin.onClick:AddListener()
+<h3 id="ui">UI编辑器中使用多语言</h3>
+<p>在KSFramework中的文本多语言和正常操作一样，通过Unity的菜单创建一个Text，你的使用习惯不需要改变。</p>
+<p>当我们在KSFramework中创建Text时，它有一个使用语言包的勾选框，默认是勾选的，然后就可以输入语言包中的id，文字就从语言包读取到文本中了。</p>
+<p>常见的语言包有这几种情况</p>
+<ol>
+<li>输入lang.txt中的id，就会读取到Text上，示例语言包：<code>common_ok=确定</code></li>
+</ol>
+<p><img alt="输入语言包" src="../../images/setting/i18n_normal.png" /></p>
+<ol>
+<li>如果这条文本有参数，则填上参数个数，参数会填充到占位符上，示例语言包：<code>text_datetime=后面是一个占位符:{0}</code></li>
+</ol>
+<p><img alt="输入语言包" src="../../images/setting/i18n_format.png" /></p>
+<ol>
+<li>如果语言包id输入错误或者不存在，则会有提示</li>
+</ol>
+<p><img alt="输入语言包" src="../../images/setting/i18n_not_find_langid.png" /></p>
+<h2 id="_1">代码中使用多语言</h2>
+<p>在C#中的占位符是{0}，而lua中是%s或%d来占位(当然lua也可以全部使用%s来占位)。</p>
+<p>建议在配置表中使用占位符时，如果该表是C#中用就使用{0}{1}，而如果只在lua中读取的表，就使用%s来代表占位。</p>
+<pre><code class="language-c#">gameobject.GetComponent&lt;MyText&gt;().SetText(I18N.Get(&quot;common_ok&quot;));
 </code></pre>
-<p>拖拽绑定的变量框架在界面初始化时会自动对进行赋值，调用luaTable.Set，压入self作用域中。</p>
-<p>实现代码可查看：<strong>LuaUIController.SetOutlet</strong></p>
-<h2 id="_2">可视化查找引用丢失</h2>
-<p>在代码中通过路径查找控件，而如果这个控件后来因于UI的结构修改而被删除了，或者美术、策划调整了UI层级结构，这个路径就找不到对应的控件，从而变量变成了Null， 程序对变量的访问就会引发NullReferenceException。 如果经常出现这种问题的话，让技术同学去检查路径是一种浪费不必要的时间。</p>
-<p>而outlet则提供可视化的方法，在Inspect面板会<strong>以红色标识丢失的引用，和具有同名的变量</strong>。</p>
-<p><img alt="outlet-error" src="../../images/ui/outlet-error.png" /></p>
-<h2 id="outlet">多个outlet</h2>
-<p>当UI界面比较复杂时，如果全部的控件都绑定在一个outlet，那么后续的维护成本会增加，不易查找到指定的控件，根据实际项目我们有以下建议：</p>
-<ul>
-<li>界面的<em>每个块级元素</em>使用一个outlet</li>
-<li>每个功能点一个outlet</li>
-<li>每个区域一个outlet(顶部，中部，左侧，右侧)</li>
-</ul>
-<p>在界面的根节点增加UILuaOutletCollection，并把当前界面中用到的outlet拖到这里来</p>
-<p><img alt="luaoutlet-collection" src="../../images/ui/luaoutlet-collection.png" /></p>
+<h2 id="_2">配置表多语言</h2>
+<p>配置表多语言有两种做法，项目可根据自己实际情况来选择：</p>
+<ol>
+<li>所有语言都使用同一份配置表，通过配置表条件编译，为每个需要翻译的字段增加一列</li>
+<li>每个语言都有一份配置表，里面的差异就是要翻译的字段内容不同，或者进行小范围的数值调整，如果某表不需要翻译则可以不提供，会读取默认名字的配置表</li>
+</ol>
               
             </div>
           </div>
@@ -263,10 +259,10 @@ self.btnLogin.onClick:AddListener()
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../data-binding/" class="btn btn-neutral float-right" title="单向数据绑定">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../compare_table/" class="btn btn-neutral float-right" title="Excel如何进行SVN协作、差异比较？">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../ui-binding/" class="btn btn-neutral" title="1.手工代码绑定控件"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../condition-compile/" class="btn btn-neutral" title="配置表的条件编译"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -292,10 +288,10 @@ self.btnLogin.onClick:AddListener()
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../ui-binding/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../condition-compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../data-binding/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../compare_table/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
