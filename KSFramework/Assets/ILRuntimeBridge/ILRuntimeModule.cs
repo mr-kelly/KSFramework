@@ -77,9 +77,10 @@ public class ILRuntimeModule : IModuleInitable
         appdomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
         SetupCLRRedirection();
-        ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
+        
         InitBinders(appdomain);
-
+		//初始化CLR绑定请放在初始化的最后一步
+		ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
 #if UNITY_EDITOR //打开调试端口
         appdomain.DebugService.StartDebugService(56000);
 #endif
