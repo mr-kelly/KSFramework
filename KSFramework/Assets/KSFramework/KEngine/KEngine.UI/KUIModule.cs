@@ -815,11 +815,11 @@ namespace KEngine.UI
                 return;
             }
 
-            //if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
+            /*if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
             {
                 //NOTE 按照约定SpriteAtlas和UI在同一个ab中，无需处理
-            }
-            uiState.UIWindow.OnDestroy();
+            }*/
+           
             if (destroyImmediate)
             {
                 UnityEngine.Object.DestroyImmediate(uiState.UIWindow.gameObject);
@@ -828,7 +828,8 @@ namespace KEngine.UI
             {
                 UnityEngine.Object.Destroy(uiState.UIWindow.gameObject);
             }
-
+            //先销毁gameobject，因为OnDestory中会清空filed的值，这时uiState.UIWindow.gameObject为null
+            uiState.UIWindow.OnDestroy();
             // Instance UI State has no Resources loader, so fix here
             if (uiState.UIResourceLoader != null)
                 uiState.UIResourceLoader.Release();
