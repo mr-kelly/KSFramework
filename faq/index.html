@@ -347,6 +347,11 @@ return TestLuaBehaivour
 </code></pre>
 <p>解决办法：把Api Compatiblity Level从.NET Standard2.0改成.NET 4.x，这是因为.net standard不支持反射调用，原因可看：https://github.com/Tencent/xLua/issues/784#event-3628025061</p>
 <p>更多xlua相关的知识，请查看xlua的官方文档</p>
+<h2 id="ilruntime">ILRuntime相关</h2>
+<p>Q：ILRuntime分支怎样开始使用？</p>
+<p>A：1. 从github拉取ilruntime分支代码，2.用Unity打开工程，3.点击打包ab，4.再点击生成Dll，然后就可以运行游戏</p>
+<p>Q：dll生成失败？</p>
+<p>A：如果有安装vs，请把msbuild配置到环境变量中，如果仅安装了Rider，请看我这篇《<a href="https://www.cnblogs.com/zhaoqingqing/p/14832889.html">没有安装vs通过Rider编译Dll</a>》</p>
 <h2 id="_6">遇到报错</h2>
 <h3 id="targetexception-non-static-field-reqires-a-target">TargetException: Non-static field reqires a target</h3>
 <p>调用堆栈 KEngine.Log.Logger</p>
