@@ -184,6 +184,18 @@ LuaException: c# exception:This type must add to CSharpCallLua: System.Action<bo
 
 更多xlua相关的知识，请查看xlua的官方文档
 
+## ILRuntime相关
+
+Q：ILRuntime分支怎样开始使用？
+
+A：1. 从github拉取ilruntime分支代码，2.用Unity打开工程，3.点击打包ab，4.再点击生成Dll，然后就可以运行游戏
+
+
+
+Q：dll生成失败？
+
+A：如果有安装vs，请把msbuild配置到环境变量中，如果仅安装了Rider，请看我这篇《[没有安装vs通过Rider编译Dll](https://www.cnblogs.com/zhaoqingqing/p/14832889.html)》
+
 ## 遇到报错
 
 ### TargetException: Non-static field reqires a target 
