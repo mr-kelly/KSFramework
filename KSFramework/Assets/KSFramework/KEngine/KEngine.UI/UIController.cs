@@ -139,8 +139,7 @@ namespace KEngine.UI
 
         public virtual void OnDestroy()
         {
-            //if(AppEngine.EngineInstance.UseDevFunc) 
-			ClearHeapValues();
+            ClearHeapValues();
             if (this.IsGameBaseUI) UIModule.Instance.dict.Remove(this.GetType());
         }
 
