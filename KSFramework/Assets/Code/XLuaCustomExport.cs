@@ -86,7 +86,7 @@ public static class XLuaCustomExport
         typeof(UnityEngine.Events.UnityAction<string>),
         typeof(System.Collections.IEnumerator),
         typeof(System.Action<Transform,int>),
-        //typeof(KEngine.SpriteLoader.CSpriteLoaderDelegate),
+        typeof(KEngine.KSpriteAtlasLoader.CKSpriteAtlasLoaderDelegate),
         typeof(System.Action<KEngine.UI.UIController, object[]>),
         typeof(UnityAction<string,string>),
     };
