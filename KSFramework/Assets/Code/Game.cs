@@ -59,20 +59,20 @@ public class Game : KSGame
     /// <returns></returns>
     public override IEnumerator OnBeforeInit()
     {
+        var loader = AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
+        {
+            if (isOk && ab)
+            {
+                var atlas = ab.LoadAsset<SpriteAtlas>("atlas_common");
+                ABManager.SpriteAtlases["atlas_common"] = atlas;
+            }
+        });
+        while (!loader.IsCompleted)
+        {
+            yield return null;
+        }
         if (AppConfig.IsDownloadRes)
         {
-            var loader = AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
-            {
-                if (isOk && ab)
-                {
-                    var atlas = ab.LoadAsset<SpriteAtlas>("atlas_common");
-                    ABManager.SpriteAtlases["atlas_common"] = atlas;
-                }
-            });
-            while (!loader.IsCompleted)
-            {
-                yield return null;
-            }
             yield return  StartCoroutine(DownloadManager.Instance.CheckDownload());
             if (DownloadManager.Instance.ErrorType != UpdateErrorType.None)
             {
