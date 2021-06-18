@@ -24,10 +24,14 @@ public class ILRuntimeModule : IModuleInitable
     public static ILRuntimeModule Instance = new ILRuntimeModule();
 
     /// <summary>
-    /// AppDomain是ILRuntime的入口，整个游戏全局唯一
+    /// AppDomain是ILRuntime的入口，整个游戏全局唯一，注意：在源代码模式下，appdomain为null，外部访问需要做特殊处理
     /// </summary>
-    public AppDomain appdomain;
-
+    private AppDomain appdomain;
+    /// <summary>
+    /// 是否使用源代码开发
+    /// </summary>
+    public bool IsUseSources { get; private set; } = false;
+    
     System.IO.MemoryStream fs;
     System.IO.MemoryStream p;
 
@@ -37,10 +41,49 @@ public class ILRuntimeModule : IModuleInitable
 
     public IEnumerator Init()
     {
+        //尝试从主工程中获取热更工程中的类，如果能获取到，就是跑的源代码而不是ilruntime
+        var type = Type.GetType("LogicApp");
+        if (type != null)
+        {
+            IsUseSources = true;
+            Log.LogToFile("游戏运行在源代码模式");
+            yield break;
+        }
+        IsUseSources = false;
         LoadHotFixAssembly();
+        Log.LogToFile("游戏运行在ILRuntime模式");
         yield return null;
     }
 
+    #region 对外接口
+
+    public ILRuntimeUIBase GetUIBase(string className)
+    {
+        if (IsUseSources)
+        {
+            Type t = Type.GetType(className);
+            if (t != null)
+            {
+                //创建实例对象
+                var obj = t.Assembly.CreateInstance(className);
+                return obj as ILRuntimeUIBase;
+            }
+            Log.LogError($"create class instance failed! {className}");
+            return null;
+
+        }
+        else
+        {
+            //NOTE 如果有Namespace需要加上
+           var instance = ILRuntimeModule.Instance.appdomain.Instantiate<ILRuntimeUIBase>(className);
+           return instance;
+        }
+    }
+
+    #endregion
+	
+    #region ILRuntime初始化
+    
     public double InitProgress { get; }
 
     void LoadHotFixAssembly()
@@ -170,7 +213,8 @@ public class ILRuntimeModule : IModuleInitable
             return new Action<MonoBehaviour>((behaviour) => { ((Action<MonoBehaviour>) act)(behaviour); });
         });
     }
-
+    #endregion
+    
     #region GetCompoent重定向
 
     unsafe void SetupCLRRedirection()

@@ -40,6 +40,13 @@ LuaProfilerPrecompileSetting.asset.meta
 /BC4Key.txt
 
 
+#ILRuntime
+/KSFramework/Assets/hotfix
+/KSFramework/Assets/hotfix.meta
+/HotFix_Project/scripts/*.meta
+/HotFix_Project/scripts/**/*.meta
+
+
 #Rider Debug dll files
 JetBrains*
 JetBrains.meta
