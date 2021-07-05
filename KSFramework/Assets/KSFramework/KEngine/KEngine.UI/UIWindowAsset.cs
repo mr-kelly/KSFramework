@@ -37,7 +37,7 @@ namespace KEngine.UI
     public enum PanelType
     {
         /// <summary>
-        /// 主界面，一般像摇杆，任务，聊天，活动提示等界面
+        /// 主界面类型，比如：摇杆，任务，聊天，活动/穿戴提示，主界面入口图标等界面
         /// </summary>
         MainUI, 
         /// <summary>
@@ -49,24 +49,67 @@ namespace KEngine.UI
         /// </summary>
         HeadInfoUI,
         /// <summary>
-        /// tips 在最顶层显示，像系统飘字提示，系统公告/广播，停服维护等
+        /// tips层级，在最顶层显示，比如：系统飘字提示，系统公告/广播，停服维护等
         /// </summary>
         TipsUI,
     }
     
+    #region 枚举配置定义
+
+    /// <summary>
+    /// 比如在rpg游戏中，标识当前界面是否会挡住主界面
+    /// </summary>
+    public enum PanelSize
+    {
+        /// <summary>
+        /// 非全屏界面，不会挡住主界面，比如穿戴提示，活动推送，领取红包
+        /// </summary>
+        SmallPanel,
+        /// <summary>
+        /// 遮挡了主界面的80%，上下和两边的空隙可利用截屏一张图后，就可以隐藏Main Camera
+        /// </summary>
+        SinglePanel,
+        /// <summary>
+        /// 处于全屏界面，可以禁用Main Camera，减少开销
+        /// </summary>
+        FullScreen, 
+    }
+    
+    /// <summary>
+    /// 通用的货币栏，可配置位置和样式
+    /// </summary>
+    public enum MoneyBarType
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        None,
+        /// <summary>
+        /// 货币栏在左侧
+        /// </summary>
+        InLeft, 
+        /// <summary>
+        /// 货币栏在右侧
+        /// </summary>
+        InRight, 
+    }
+    
+    #endregion
+    
     /// <summary>
     /// Mark for build UI window
-    /// 可扩展更多UI的配置项，供UI编辑器
+    /// 界面配置文件，尽可能地把一些样式或通用配置放在UI编辑器中配置而非写在代码中，方便把界面拼接工作交接给策划和美术拼接。
     /// </summary>
     [AddComponentMenu("KEngine/KUIWindowAsset")]
     public class UIWindowAsset : MonoBehaviour
     {
         public string StringArgument;
+        [HideInInspector]
         public PanelType PanelType = PanelType.NormalUI;
         /// <summary>
         /// 是否为全屏界面
         /// </summary>
-        public PanelSizeType SizeType = PanelSizeType.Ignore;
+        public PanelSize panelSize = PanelSize.SmallPanel;
         public bool IsUIEditor = true;
         /// <summary>
         /// 切换场景时是否关闭当前界面
@@ -79,14 +122,22 @@ namespace KEngine.UI
         /// <summary>
         /// 当前界面是否有左侧切页栏，只有NormalUI有效
         /// </summary>
-        public bool IsShowTabBar = true;
+        [HideInInspector] //另一种方法不显示在Inspector，把字段改成property
+        public bool IsShowTabBar = false;
+        [HideInInspector]
         public int TabBarId = 0;
+        [Range(1,5)]
+        public int MAX_Atlas = 3;
         /// <summary>
-        /// 当前界面包含的图集，在导出UI时会自动赋值
+        /// 当前界面包含的图集，在导出UI时会自动赋值，不需要处理
         /// </summary>
-        public string atals_arr = "";
-        
+        [HideInInspector]
+        public string Atals_arr = "";
+
+        #region Editor下预览图片
+
 #if UNITY_EDITOR
+        #region SpriteAtlas Preview In Editor
         public void InitEvent()
         {
             if (IsUIEditor)
@@ -139,37 +190,21 @@ namespace KEngine.UI
                 Log.LogError($"找不到名字为{tag}的SpriteAtlas");
             }
         }
+        #endregion
+        
+        [InitializeOnLoadMethod]
+        static void OnUpdatePrefab()
+        {
+            //TODO 当直接更改Bundle目录下Prefab时发出提示，请修改UI/xx.Scene
+            PrefabUtility.prefabInstanceUpdated = delegate(GameObject instance)
+            {
+                Debug.Log($"prefab be update {instance.name}");
+            };
+        }
 #endif
+        #endregion
+        
+        
     }
 
-    #region 枚举定义
-
-    /// <summary>
-    /// 比如在mmo中，常用来判断当前是否停在主界面，也就是没有打开全屏界面
-    /// </summary>
-    public enum PanelSizeType
-    {
-        Ignore,
-        FullScreen, 
-    }
-    
-    /// <summary>
-    /// 货币栏类型
-    /// </summary>
-    public enum MoneyBarType
-    {
-        /// <summary>
-        /// 无
-        /// </summary>
-        None,
-        /// <summary>
-        /// 货币栏在左侧
-        /// </summary>
-        InLeft, 
-        /// <summary>
-        /// 货币栏在右侧
-        /// </summary>
-        InRight, 
-    }
-    #endregion
 }

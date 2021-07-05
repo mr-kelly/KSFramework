@@ -149,7 +149,7 @@ namespace KEngine.Editor
                 }
             }
 
-            asset.atals_arr = string.Join(",", atlasNames);
+            asset.Atals_arr = string.Join(",", atlasNames);
         }
 
         private static string GetSpriteAtlasName(Image img)

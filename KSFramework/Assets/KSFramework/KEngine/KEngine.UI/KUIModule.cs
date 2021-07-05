@@ -815,7 +815,7 @@ namespace KEngine.UI
                 return;
             }
 
-            /*if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.atals_arr))
+            /*if (uiState.WindowAsset != null && !string.IsNullOrEmpty(uiState.WindowAsset.Atals_arr))
             {
                 //NOTE 按照约定SpriteAtlas和UI在同一个ab中，无需处理
             }*/
@@ -869,9 +869,9 @@ namespace KEngine.UI
             if (uiObj)
             {
                 var windowAsset = uiObj.GetComponent<UIWindowAsset>();
-                if (windowAsset && !string.IsNullOrEmpty(windowAsset.atals_arr))
+                if (windowAsset && !string.IsNullOrEmpty(windowAsset.Atals_arr))
                 {
-                    string[] arr = windowAsset.atals_arr.Split(',');
+                    string[] arr = windowAsset.Atals_arr.Split(',');
                     int sprite_count = 0;
                     for (int i = 0; i < arr.Length; i++)
                     {
@@ -884,7 +884,8 @@ namespace KEngine.UI
                         }
                     }
 
-                    if (sprite_count >= 2) Log.LogError($"UI:{uiBase.UITemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                    if (sprite_count > windowAsset.MAX_Atlas)
+                        Log.LogError($"UI:{uiBase.UITemplateName}包括过多图集({windowAsset.Atals_arr})会减慢加载速度，请处理");
                 }
             }
             assetBundle.Unload(false);

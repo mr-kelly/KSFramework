@@ -90,9 +90,9 @@ namespace KEngine.UI
                     //TODO unity2019.3.7f1 图片已设置上去了，但无法显示，勾选atlas中的Include In Build就可以正常显示，但打包AB时需要强制去掉勾选
                     windowAsset.IsUIEditor = true;
                     windowAsset.InitEvent();//监听atlasRequested事件
-                    if (!string.IsNullOrEmpty(windowAsset.atals_arr))
+                    if (!string.IsNullOrEmpty(windowAsset.Atals_arr))
                     {
-                        string[] arr = windowAsset.atals_arr.Split(',');
+                        string[] arr = windowAsset.Atals_arr.Split(',');
                         int sprite_count = 0;
                         for (int i = 0; i < arr.Length; i++)
                         {
@@ -100,8 +100,8 @@ namespace KEngine.UI
                             if (!UIModule.Instance.CommonAtlases.Contains(atlas_name)) sprite_count++;
                         }
 
-                        if (sprite_count >= 2)
-                            Log.LogError($"UI:{loadState.TemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                        if (sprite_count > windowAsset.MAX_Atlas)
+                            Log.LogError($"UI:{loadState.TemplateName}包括过多图集({windowAsset.Atals_arr})会减慢加载速度，请处理");
                     }
                 }
             }
@@ -128,9 +128,9 @@ namespace KEngine.UI
                 if (go)
                 {
                     var windowAsset = go.GetComponent<UIWindowAsset>();
-                    if (windowAsset && !string.IsNullOrEmpty(windowAsset.atals_arr))
+                    if (windowAsset && !string.IsNullOrEmpty(windowAsset.Atals_arr))
                     {
-                        string[] arr = windowAsset.atals_arr.Split(',');
+                        string[] arr = windowAsset.Atals_arr.Split(',');
                         int sprite_count = 0;
                         for (int i = 0; i < arr.Length; i++)
                         {
@@ -140,8 +140,8 @@ namespace KEngine.UI
                             if (atlas != null) ABManager.SpriteAtlases[atlas_name] = atlas;
                         }
 
-                        if (sprite_count >= 2)
-                            Log.LogError($"UI:{loadState.TemplateName}包括多个图集({windowAsset.atals_arr})，请处理");
+                        if (sprite_count > windowAsset.MAX_Atlas)
+                            Log.LogError($"UI:{loadState.TemplateName}包括过多图集({windowAsset.Atals_arr})会减慢加载速度，请处理");
                     }
                 }
             }

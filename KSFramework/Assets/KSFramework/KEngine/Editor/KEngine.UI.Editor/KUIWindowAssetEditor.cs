@@ -56,14 +56,39 @@ internal class KUIPanelAssetEditorInitializer
 }
 
 [CustomEditor(typeof (UIWindowAsset))]
+[CanEditMultipleObjects]
 public class UIWindowAssetEditor : Editor
 {
 	public static System.Action<UIWindowAsset> CustomInspectorGUIAfter;
 	public static System.Action<UIWindowAsset> CustomInspectorGUIBefore;
+    
+    private SerializedProperty IsShowTabBar, TabBarId, Atals_arr, m_Text;
+    
+    protected void OnEnable()
+    {
+        IsShowTabBar = serializedObject.FindProperty("IsShowTabBar");
+        TabBarId = serializedObject.FindProperty("TabBarId");
+        Atals_arr = serializedObject.FindProperty("Atals_arr");
+       
+    }
+    
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
 		if (CustomInspectorGUIBefore != null) CustomInspectorGUIBefore(target as UIWindowAsset);
         EditorGUILayout.HelpBox("A UI Will be build for name: " + target.name, MessageType.Info);
+        
+        //add custom editor 
+        IsShowTabBar.boolValue = EditorGUILayout.Toggle("是否有侧边栏:", IsShowTabBar.boolValue);
+        if (IsShowTabBar.boolValue)
+        {
+            TabBarId.intValue = EditorGUILayout.IntField("侧边栏id:", TabBarId.intValue);
+        }
+        Atals_arr.stringValue = EditorGUILayout.TextField("包含的图集(打包会自动赋值):", Atals_arr.stringValue);
+        //TODO 在分开两个工程之后，添加宏定义在Client工程不可修改IsUIEditor的属性值
+        
+        
+        serializedObject.ApplyModifiedProperties();
         base.OnInspectorGUI();
 		if (CustomInspectorGUIAfter != null) CustomInspectorGUIAfter(target as UIWindowAsset);
     }
