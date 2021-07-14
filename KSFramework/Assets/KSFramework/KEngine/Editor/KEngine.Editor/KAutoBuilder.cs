@@ -27,6 +27,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using KUnityEditorTools;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -318,6 +319,27 @@ namespace KEngine.Editor
 
             string path = exportASProject ? $"Apps/Android/{apkName}" : $"Apps/Android/{apkName}.apk";
             return PerformBuild(path,BuildTargetGroup.Android, BuildTarget.Android, opt);
+        }
+
+        public static void CreateGradleBatScript(string asPrjectPath)
+        {
+            //NOTE unity2019之后版本导出的android studio工程结构与2018有差异。see:https://www.cnblogs.com/zhaoqingqing/p/14968513.html
+            StringBuilder cmd = new StringBuilder();
+            cmd.AppendLine("cd %~dp0");
+            cmd.AppendLine("gradle assembleRelease");
+            //gradle build success后面的cmd没有执行???
+            cmd.AppendLine("start \"\" explorer \"launcher\\build\\outputs\\apk\\release\"");
+            cmd.AppendLine("pause");
+
+            string savePath = asPrjectPath + "/" + "build_apk.bat";
+            File.WriteAllText(savePath, cmd.ToString(), Encoding.Default);
+            
+            //折中方法:再创建一个bat open build apk folder
+            cmd.Clear();
+            cmd.AppendLine("cd %~dp0");
+            cmd.AppendLine("start \"\" explorer \"launcher\\build\\outputs\\apk\\release\"");
+            savePath = asPrjectPath + "/" + "open_apk.bat";
+            File.WriteAllText(savePath, cmd.ToString(), Encoding.Default);
         }
 
         [MenuItem("KEngine/Clear PersistentDataPath",false,99)]

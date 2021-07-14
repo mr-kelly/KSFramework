@@ -189,11 +189,21 @@ namespace KEngine.Editor
             }
         }
         
-        private static void OnAfterBuildPlayerEvent(BuildTarget buildTarget, string str)
+        private static void OnAfterBuildPlayerEvent(BuildTarget buildTarget, string pathToBuiltProject)
         {
             if (Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
             {
                 ResourcesSymbolLinkHelper.RemoveSymbolLinkResource();
+            }
+
+            if (buildTarget == BuildTarget.Android)
+            {
+                if (!pathToBuiltProject.EndsWith(".apk"))
+                {
+                    //android studio project: create gradle script
+                    Log.Info($"Android Studio工程导出完成，创建Gradle打包脚本到{pathToBuiltProject}");
+                    KAutoBuilder.CreateGradleBatScript(pathToBuiltProject);
+                }
             }
         }
         
