@@ -350,7 +350,10 @@ public class KQuickWindowEditor : EditorWindow
         {
             KAutoBuilder.PerformWinBuild();
         }
-
+        if (GUILayout.Button("打PC版-IL2CPP", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KAutoBuilder.PerformWinIL2CPPBuild();
+        }
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
@@ -358,7 +361,10 @@ public class KQuickWindowEditor : EditorWindow
         {
             KAutoBuilder.PerformAndroidBuild();
         }
-
+        if (GUILayout.Button("Android-IL2CPP", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            KAutoBuilder.PerformAndroidIL2CPPBuild();
+        }
         if (GUILayout.Button("打IOS版", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             KAutoBuilder.PerformiOSBuild();

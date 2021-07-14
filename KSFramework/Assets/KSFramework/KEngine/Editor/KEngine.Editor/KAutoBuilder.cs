@@ -30,7 +30,10 @@ using System.IO;
 using KUnityEditorTools;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering;
+
 //using Unity.EditorCoroutines.Editor; //package:com.unity.editorcoroutines ,package中勾选:Show preview packages
 
 namespace KEngine.Editor
@@ -130,6 +133,14 @@ namespace KEngine.Editor
 #else
 			EditorUserBuildSettings.SwitchActiveBuildTarget(tag);
 #endif
+            //for release build min log output ,can modify 
+            PlayerSettings.SetStackTraceLogType(LogType.Error,StackTraceLogType.ScriptOnly);
+            PlayerSettings.SetStackTraceLogType(LogType.Exception,StackTraceLogType.ScriptOnly);
+            PlayerSettings.SetStackTraceLogType(LogType.Warning,StackTraceLogType.ScriptOnly);
+            PlayerSettings.SetStackTraceLogType(LogType.Assert,StackTraceLogType.ScriptOnly);
+            //建议所有的log.info日志前都要添加 if(AppConfig.isEditor)的判断，上线产品中关闭log。PS.不判断的话关闭输出后还有调用log接口传递字符串拼接的消耗
+            PlayerSettings.SetStackTraceLogType(LogType.Log,StackTraceLogType.ScriptOnly /*StackTraceLogType.None*/);
+            
             if(AppConfig.IsDownloadRes && !File.Exists(AppConfig.VersionTextPath))
             {
                 Log.LogError("打包失败，可下载更新的包，需要先生成vresion.txt");
@@ -189,10 +200,39 @@ namespace KEngine.Editor
         {
         	PerformBuild("Apps/Windows/KSFramework.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
         }
+        
+        [MenuItem("KEngine/AutoBuilder/Windows IL2CPP")]
+        public static void PerformWinIL2CPPBuild()
+        {
+            //TODO install checklist: 1. il2cpp support 2.win7/win10 sdk (vs setup.exe install c++ desktop dev env)
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone,ScriptingImplementation.IL2CPP);
+            PerformBuild("Apps/WindowsIL2CPP/KSFramework_IL2CPP.exe", BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows, BuildOptions.None);
+        }
 
         [MenuItem("KEngine/AutoBuilder/iOS")]
         public static void PerformiOSBuild()
         {
+            //apple store need x64
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS,ScriptingImplementation.IL2CPP);
+            PlayerSettings.stripEngineCode = false;
+            PlayerSettings.SetManagedStrippingLevel(BuildTargetGroup.iOS,ManagedStrippingLevel.Disabled);//不裁剪代码
+            PlayerSettings.applicationIdentifier = "com.github.ksframework";//todo read from config or param to fill appid
+            PlayerSettings.iOS.scriptCallOptimization = ScriptCallOptimizationLevel.SlowAndSafe;
+            PlayerSettings.iOS.targetDevice = iOSTargetDevice.iPhoneAndiPad;
+
+            //todo custom you project render settings
+            #if UNITY_2017_1_OR_NEWER
+            //PlayerSettings.colorSpace = ColorSpace.Gamma;
+            //PlayerSettings.gpuSkinning = true;
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.iOS,new GraphicsDeviceType[]{UnityEngine.Rendering.GraphicsDeviceType.Metal});
+            UnityEditor.Rendering.TierSettings ts = new TierSettings();
+            ts.hdr = true;
+            ts.hdrMode = CameraHDRMode.R11G11B10;
+            ts.renderingPath = RenderingPath.Forward;
+            ts.realtimeGICPUUsage = RealtimeGICPUUsage.Low;
+            UnityEditor.Rendering.EditorGraphicsSettings.SetTierSettings(BuildTargetGroup.iOS,UnityEngine.Rendering.GraphicsTier.Tier3,ts);
+            #endif
+            
             PerformiOSBuild("KSFramework",false);
         }
 
@@ -214,13 +254,69 @@ namespace KEngine.Editor
         {
             PerformAndroidBuild("KSFramework",false);
         }
-
-        public static string PerformAndroidBuild(string apkName, bool isDevelopment = true)
+        
+        [MenuItem("KEngine/AutoBuilder/Android IL2CPP")]
+        public static void PerformAndroidIL2CPPBuild()
         {
-            BuildOptions opt = isDevelopment
-                ? (BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler)
-                : BuildOptions.None;
-            var path = string.Format("Apps/{0}/{1}.apk", "Android", apkName);
+            PerformAndroidBuild("KSFrameworkProject",false,true,true);
+        }
+        
+        public static string PerformAndroidBuild(string apkName, bool isDevelopment = true,bool isIL2CPP = false,bool exportASProject = false)
+        {
+            BuildOptions opt = BuildOptions.None;
+            if (isDevelopment)
+            {
+                opt = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler;
+            }
+            if (isIL2CPP)
+            {
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isDevelopment ? Il2CppCompilerConfiguration.Debug : Il2CppCompilerConfiguration.Release);
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP );
+                PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64;
+            }
+            else
+            {
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x);
+                //x86是平板和安卓模拟器
+                PlayerSettings.Android.targetArchitectures = AndroidArchitecture.All;
+            }
+
+            if (exportASProject)
+            {
+                opt = opt | BuildOptions.AcceptExternalModificationsToPlayer;
+                EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
+            }
+            //export android studio project,use gradle to build apk
+            EditorUserBuildSettings.exportAsGoogleAndroidProject = exportASProject;
+
+            //settings
+            EditorUserBuildSettings.development = isDevelopment;
+            EditorUserBuildSettings.androidCreateSymbolsZip = true;
+            PlayerSettings.Android.forceSDCardPermission = true;//申请工信部版号时，可关闭
+            PlayerSettings.Android.forceInternetPermission = true;
+            PlayerSettings.Android.renderOutsideSafeArea = true; //刘海屏
+            PlayerSettings.Android.startInFullscreen = true;
+            PlayerSettings.stripEngineCode = false;
+            PlayerSettings.SetManagedStrippingLevel(BuildTargetGroup.Android,ManagedStrippingLevel.Disabled);
+
+            //render settings
+#if UNITY_2017_1_OR_NEWER
+            //PlayerSettings.colorSpace = ColorSpace.Linear;
+            //PlayerSettings.gpuSkinning = true;
+            //opengl 3
+            /*PlayerSettings.SetGraphicsAPIs(BuildTarget.Android,new GraphicsDeviceType[]{UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3});
+            PlayerSettings.openGLRequireES31 = false;
+            PlayerSettings.openGLRequireES31AEP = false;*/
+            
+            UnityEditor.Rendering.TierSettings ts = new TierSettings();
+            ts.hdr = true;
+            ts.hdrMode = CameraHDRMode.R11G11B10;
+            ts.renderingPath = RenderingPath.Forward;
+            ts.realtimeGICPUUsage = RealtimeGICPUUsage.Low;
+            UnityEditor.Rendering.EditorGraphicsSettings.SetTierSettings(BuildTargetGroup.Android,UnityEngine.Rendering.GraphicsTier.Tier3,ts);
+#endif
+
+            string path = exportASProject ? $"Apps/Android/{apkName}" : $"Apps/Android/{apkName}.apk";
             return PerformBuild(path,BuildTargetGroup.Android, BuildTarget.Android, opt);
         }
 
