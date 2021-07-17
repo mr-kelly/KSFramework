@@ -15,7 +15,7 @@ function UIBillboard:OnInit(controller)
     end
     Tools.SetButton(self.btn_close, function()
         print('Click the button!!!')
-        UIModule.Instance:CloseWindow("Billboard")
+        UIModule.Instance:CloseWindow("UIBillboard")
         --UIModule.Instance:OpenWindow("Login")
         --尝试从Billboard.lua中读取配置数据
         ---@type Billboard

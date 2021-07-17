@@ -39,6 +39,9 @@ UIModule = CS.KEngine.UI.UIModule
 SceneLoader = CS.KEngine.SceneLoader
 ---@type KEngine.LoaderMode
 LoaderMode = CS.KEngine.LoaderMode
+---@type KEngine.KSpriteAtlasLoader
+KSpriteAtlasLoader = CS.KEngine.KSpriteAtlasLoader
+
 ---@type AppSettings.BillboardSettings
 BillboardSettings = CS.AppSettings.BillboardSettings
 ---@type AppSettings.GameConfigSettings

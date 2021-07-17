@@ -33,24 +33,23 @@ function UILogin:OnInit(controller)
     end)
     Tools.SetButton(self.btnBillboard, function()
         print('Click the button!!!')
-        UIModule.Instance:OpenWindow("Billboard")
+        UIModule.Instance:OpenWindow("UIBillboard")
     end)
 
     Tools.SetButton(self.btnSwithUI, function()
-        UIModule.Instance:CloseWindow("Login")
-        UIModule.Instance:OpenWindow("Main", "user1")
+        UIModule.Instance:CloseWindow("UILogin")
+        UIModule.Instance:OpenWindow("UIMain", "user1")
     end)
     Tools.SetButton(self.btnLoadSprite, function()
-        --UIModule.Instance:CloseWindow("Login")
-        UIModule.Instance:OpenWindow("LoadUISprite")
+        UIModule.Instance:OpenWindow("UILoadUISprite")
     end)
     
 end
 
 function UILogin:OnOpen(num1)
     print("UILogin:OnOpen, arg1: " .. tostring(num1))
-    UIModule.Instance:OpenWindow("Navbar")
-    UIModule.Instance:OpenWindow("Main", 888);
+    UIModule.Instance:OpenWindow("UINavbar")
+    UIModule.Instance:OpenWindow("UIMain", 888);
     
     if AppSettings then
         using("AppSettings") -- namespace all
