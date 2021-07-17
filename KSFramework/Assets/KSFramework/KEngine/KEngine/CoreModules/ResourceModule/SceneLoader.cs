@@ -164,7 +164,6 @@ namespace KEngine
         protected override void DoDispose()
         {
             base.DoDispose();
-            _assetFileBridge.Release();
             if (_loadedSceneName == _sceneName)
             {
                 SceneManager.UnloadSceneAsync(_sceneName);
