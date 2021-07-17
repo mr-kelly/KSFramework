@@ -396,6 +396,7 @@ namespace KEngine
                 Log.Warning("[ForceDisose]Use force dispose to dispose loader, recommend this loader RefCount == 1");
             }
             Dispose();
+            IsReadyDisposed = true;
         }
 
         /// <summary>
