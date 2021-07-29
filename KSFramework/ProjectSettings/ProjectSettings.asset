@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: KSFramework
   productName: KSFramework
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -63,7 +63,7 @@ PlayerSettings:
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
   androidStartInFullscreen: 1
-  androidRenderOutsideSafeArea: 0
+  androidRenderOutsideSafeArea: 1
   androidUseSwappy: 0
   androidBlitType: 0
   defaultIsNativeResolution: 1
@@ -174,11 +174,11 @@ PlayerSettings:
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
-  stripEngineCode: 1
+  stripEngineCode: 0
   iPhoneStrippingLevel: 0
   iPhoneScriptCallOptimization: 0
-  ForceInternetPermission: 0
-  ForceSDCardPermission: 0
+  ForceInternetPermission: 1
+  ForceSDCardPermission: 1
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
@@ -259,7 +259,7 @@ PlayerSettings:
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
   templateDefaultScene: 
-  AndroidTargetArchitectures: 5
+  AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: '{inproject}: '
@@ -721,11 +721,13 @@ PlayerSettings:
   platformArchitecture:
     iPhone: 2
   scriptingBackend:
-    Android: 0
-    Standalone: 0
+    Android: 1
+    Standalone: 1
     iPhone: 1
-  il2cppCompilerConfiguration: {}
-  managedStrippingLevel: {}
+  il2cppCompilerConfiguration:
+    Android: 1
+  managedStrippingLevel:
+    Android: 0
   incrementalIl2cppBuild:
     iPhone: 1
   allowUnsafeCode: 0
