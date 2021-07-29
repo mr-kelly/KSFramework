@@ -107,6 +107,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../resource/edit_mode/">Editor下无需打包</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../resource/benchmark_monitor/">性能监控模块</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">UI模块</span></p>
                 <ul>
@@ -121,6 +123,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../ui/data-binding/">单向数据绑定</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../ui/ui-plan/">UI模块计划</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../artist/ui_edit/">UI编辑器</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">脚本指南</span></p>
@@ -220,14 +224,16 @@
 <li>[ ] 文档的完善，补充近期新增的功能</li>
 <li>[ ] 增加一些组件，比如UI上显示3D模型，UI上显示特效</li>
 <li>[ ] 开发DEMO小游戏，延伸热重载的范围</li>
-<li>[ ] 对lua config 进行热重载</li>
-<li>[ ] Editor脚本限制使用Standard Shader</li>
+<li>[ ] 对lua 配置表进行热重载</li>
+<li>[ ] 在Editor脚本中限制使用Standard Shader</li>
 <li>[ ] 对常见ab资源进行缓存</li>
-<li>[ ] #if UNITY_5 || UNITY_2017_1_OR_NEWER 改成只有一个宏</li>
+<li>[ ] ~~#if UNITY_5 || UNITY_2017_1_OR_NEWER 改成只有一个宏~~</li>
 <li>[ ] 去掉所有未到的代码，减少IL2CPP的出包时间</li>
 <li>[ ] 场景加载的管理</li>
 <li>[ ] 下载更新脚本在mac上的正常运行</li>
 <li>[ ] 全部的www升级为UnityWebRequest</li>
+<li>[ ] 配置表升级为不直接读入tsv，改成二进制/序列化对象，减少解析字符串的开销</li>
+<li>[ ] 对于AB相互引用的情况在打包前处理</li>
 </ul>
 <h3 id="ui">UI方面</h3>
 <ul>

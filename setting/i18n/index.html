@@ -109,6 +109,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../resource/edit_mode/">Editor下无需打包</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../resource/benchmark_monitor/">性能监控模块</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">UI模块</span></p>
                 <ul>
@@ -123,6 +125,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/data-binding/">单向数据绑定</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-plan/">UI模块计划</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../artist/ui_edit/">UI编辑器</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">脚本指南</span></p>
@@ -213,18 +217,33 @@
           <div role="main">
             <div class="section">
               
-                <p>游戏里出现文字，包括代码中用到文字，UI上的文本，全部从语言包读取，而不写在代码或UI中，这样做有以下几点好处：</p>
+                <h2 id="_1">游戏语言包</h2>
+<p>游戏里出现文字，包括代码中用到文字，UI上的文本，全部从语言包读取，而不写在代码或UI中，这样做有以下几点好处：</p>
 <ol>
 <li>方便策划调整文字，而不需要找技术修改</li>
 <li>当项目大到一定程度时，直接改语言包就可以，减少打开UI或查找代码的时间</li>
 <li>方便的提供给翻译员翻译成其它语言（外包翻译服务是按字收费）</li>
+<li>多语言不使用excel，直接放到txt中，方便上线运营后的版本迭代进行diff</li>
 </ol>
-<p>语言包放在SettingSource\I18N\下，每增加一种语言则增加一个<strong>lang--语言.txt</strong>，默认是lang.txt(中文)</p>
+<p>当然在其它的配置表也是依然会出现文字的，这也是支持的，并不是说要把其它配置表中的文字全部提取到一起，而是对于游戏内的提示文字或者UI上描述放在单独的语言包中配置，避免拼到界面或写到代码中。</p>
+<p>语言包放在<strong>SettingSource\I18N</strong>下，每增加一种语言就增加一个<strong>lang--语言.txt</strong>，默认是lang.txt(中文)</p>
 <p>语言包的配置格式为key=value，#开头为注释行，示例如下：</p>
 <pre><code class="language-json">#格式：key=value
 #下载和更新
 download_title_tips=资源更新
 </code></pre>
+<h2 id="_2">配置表多语言</h2>
+<p>SettingSource下有很多的配置表(excel)，每张表都有不同的内容。</p>
+<p>配置表多语言有两种做法，项目可根据自己实际情况来选择：</p>
+<ol>
+<li>所有语言都使用同一份配置表，通过配置表条件编译，为每个需要翻译的字段增加一列</li>
+<li>每个语言都有一份配置表，里面的差异就是要翻译的字段内容不同，或者进行小范围的数值调整，如果某表不需要翻译则可以不提供，会读取默认名字的配置表</li>
+</ol>
+<p>对于方案1或或2，在商业项目中打包时我们是写了python脚本根据语言拷贝要的资源到APK包内。(注：python脚本还未提供，因为里面有些要根据项目实际情况来处理)</p>
+<h2 id="_3">为什么每个语言一份配置表？</h2>
+<p>在多个项目中实践下来，这套模式在维护成本和自由度比较适合我们团队，当然之前的模式还是支持的，用户可根据项目情况来选择适合的模式。</p>
+<p>在之前版本中KSFramework对于同一份配置表，不同语言通过if条件编译符来区分，这套模式还是支持的。原理是在导表的时候根据语言导出指定的内容。</p>
+<p>现在新的模式是一张配置表，在每个语言都有一份同名但后面加了--cn，--en，--hk的配置，这样自由度是比较大的，可以把配置发给外包进行翻译。</p>
 <h3 id="ui">UI编辑器中使用多语言</h3>
 <p>在KSFramework中的文本多语言和正常操作一样，通过Unity的菜单创建一个Text，你的使用习惯不需要改变。</p>
 <p>当我们在KSFramework中创建Text时，它有一个使用语言包的勾选框，默认是勾选的，然后就可以输入语言包中的id，文字就从语言包读取到文本中了。</p>
@@ -241,17 +260,11 @@ download_title_tips=资源更新
 <li>如果语言包id输入错误或者不存在，则会有提示</li>
 </ol>
 <p><img alt="输入语言包" src="../../images/setting/i18n_not_find_langid.png" /></p>
-<h2 id="_1">代码中使用多语言</h2>
+<h2 id="_4">代码中使用多语言</h2>
 <p>在C#中的占位符是{0}，而lua中是%s或%d来占位(当然lua也可以全部使用%s来占位)。</p>
 <p>建议在配置表中使用占位符时，如果该表是C#中用就使用{0}{1}，而如果只在lua中读取的表，就使用%s来代表占位。</p>
 <pre><code class="language-c#">gameobject.GetComponent&lt;MyText&gt;().SetText(I18N.Get(&quot;common_ok&quot;));
 </code></pre>
-<h2 id="_2">配置表多语言</h2>
-<p>配置表多语言有两种做法，项目可根据自己实际情况来选择：</p>
-<ol>
-<li>所有语言都使用同一份配置表，通过配置表条件编译，为每个需要翻译的字段增加一列</li>
-<li>每个语言都有一份配置表，里面的差异就是要翻译的字段内容不同，或者进行小范围的数值调整，如果某表不需要翻译则可以不提供，会读取默认名字的配置表</li>
-</ol>
               
             </div>
           </div>

@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>I18n - KSFramework Documentation</title>
+  <title>性能监控模块 - KSFramework Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "I18n";
-    var mkdocs_page_input_path = "advanced\\i18n.md";
+    var mkdocs_page_name = "\u6027\u80fd\u76d1\u63a7\u6a21\u5757";
+    var mkdocs_page_input_path = "resource\\benchmark_monitor.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -98,14 +98,24 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">资源模块</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../resource/guide/">使用资源模块打包、加载</a>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../guide/">使用资源模块打包、加载</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../resource/debug/">资源实时调试监控</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../debug/">资源实时调试监控</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../resource/gc/">垃圾回收机制</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../gc/">垃圾回收机制</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../resource/edit_mode/">Editor下无需打包</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../edit_mode/">Editor下无需打包</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">性能监控模块</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">操作步骤</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">界面打开耗时统计表</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">加载资源耗时统计表</a>
+    </li>
+    </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">UI模块</span></p>
@@ -121,6 +131,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/data-binding/">单向数据绑定</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-plan/">UI模块计划</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../artist/ui_edit/">UI编辑器</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">脚本指南</span></p>
@@ -147,21 +159,21 @@
                 </ul>
                 <p class="caption"><span class="caption-text">开发经验</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../seperate-unity-projects/">使用两个Unity工程</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/seperate-unity-projects/">使用两个Unity工程</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../versioning/">版本号与版本管理</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/versioning/">版本号与版本管理</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../excel-diff/">Excel如何进行SVN协作、差异比较？</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/excel-diff/">Excel如何进行SVN协作、差异比较？</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../app-compile/">编译客户端时的内部细节</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/app-compile/">编译客户端时的内部细节</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../autoupdate/">下载更新和制作差异包</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/autoupdate/">下载更新和制作差异包</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/script-reload/">Lua脚本热重载，内存状态数据丢失？</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../editor/">编辑器强化</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/editor/">编辑器强化</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../roles/">假定角色需求</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../advanced/roles/">假定角色需求</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">扩展资料</span></p>
@@ -195,8 +207,12 @@
     <li><a href="../..">Docs</a> &raquo;</li>
     
       
+        
+          <li>资源模块 &raquo;</li>
+        
+      
     
-    <li>I18n</li>
+    <li>性能监控模块</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -207,29 +223,117 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="unity">Unity编辑器强化</h2>
-<ul>
-<li>UI编辑器，一键生成APK</li>
-<li>封装Unity编辑器的各种事件，如编译前、播放前、暂停时等</li>
-</ul>
-<h2 id="_1">快捷窗口</h2>
-<p>通过点击 KEngine - Open Quick Window 可以打开一个窗口，里面集成了KSFramework常用的功能</p>
-<p><img alt="快捷窗口" src="../../images/advanced/quick_window.png" /></p>
-<h3 id="ui">快速重载当前打开的顶层UI脚本</h3>
-<p>在运行期间，在下拉列表中选择界面类型，会自动把选中类型中的最顶层UI名字填充到要重载的输入框内，再点击重载Lua脚本，就可以重载特定的脚本啦</p>
-<p><img alt="重载顶层UI" src="../../images/advanced/reload_topui.png" /></p>
-<h2 id="_2">键盘快捷键</h2>
-<ul>
-<li>Ctrl+Alt+E: 在编辑UI场景时，导出UI成AssetBundle</li>
-<li>Ctrl+Alt+R: 在运行时，热重载所有LuaUIController</li>
-<li>Ctrl+Alt+Shift+R: 在运行时，热重载所有LuaUIController，并且把所有打开状态UI关闭后重新开启</li>
-<li>Ctrl+Alt+I: 在编辑器，打开Game.unity主运行场景</li>
-<li>Ctrl+Alt+O: 在编辑器，打开Ctrl+Alt+I前的一个场景</li>
-</ul>
+                <h1 id="_1">性能统计器</h1>
+<h2 id="_2">操作步骤</h2>
+<ol>
+<li>打开Appconfig.cs把IsSaveCostToFile开关打开</li>
+<li>运行游戏，耗时统计数据就会记录下来</li>
+<li>在Editor下中菜单栏点击 <strong>KEngine</strong> - <strong>Open PresistenDataPath Folder</strong>，就能看到记录的数据文件了</li>
+</ol>
+<p><img alt="资源加载和函数执行耗时表" src="../../images/resource/benchmark_monitor_files.png" /></p>
+<h2 id="_3">界面打开耗时统计表</h2>
+<p>监视器统计到的界面耗时数据如下所示，对应profiler_ui_2021-7-29 17.40.49.csv</p>
+<table>
+<thead>
+<tr>
+<th>UI名字</th>
+<th>操作(函数)</th>
+<th>耗时(ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Billboard</td>
+<td>LoadAB</td>
+<td>0.127</td>
+</tr>
+<tr>
+<td>Login</td>
+<td>LoadAB</td>
+<td>0.516</td>
+</tr>
+<tr>
+<td>Login</td>
+<td>OnInit</td>
+<td>0.004</td>
+</tr>
+<tr>
+<td>Navbar</td>
+<td>LoadAB</td>
+<td>0.109</td>
+</tr>
+<tr>
+<td>Main</td>
+<td>LoadAB</td>
+<td>0.103</td>
+</tr>
+<tr>
+<td>Navbar</td>
+<td>OnInit</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Main</td>
+<td>OnInit</td>
+<td>0.003</td>
+</tr>
+<tr>
+<td>UIRoleInfo</td>
+<td>LoadAB</td>
+<td>0.008</td>
+</tr>
+<tr>
+<td>UIRoleInfo</td>
+<td>OnInit</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">加载资源耗时统计表</h2>
+<p>监视器统计到的加载资源耗时数据如下所示，对应profiler_loadab_2021-7-29 17.40.48.csv</p>
+<table>
+<thead>
+<tr>
+<th>AB资源</th>
+<th>耗时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uiatlas/atlas_common.ab</td>
+<td>2.623</td>
+</tr>
+<tr>
+<td>uiatlas/anim1/0002.ab</td>
+<td>4.169</td>
+</tr>
+<tr>
+<td>uiatlas/anim1/0004.ab</td>
+<td>4.169</td>
+</tr>
+<tr>
+<td>scene/scene1001/scene1001.ab</td>
+<td>4.17</td>
+</tr>
+<tr>
+<td>scene/scene1002/scene1002.ab</td>
+<td>10.911</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../ui/guide/" class="btn btn-neutral float-right" title="UI模块使用指南">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../edit_mode/" class="btn btn-neutral" title="Editor下无需打包"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -253,6 +357,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
+        <span><a href="../edit_mode/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../ui/guide/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

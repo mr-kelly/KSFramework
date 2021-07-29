@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Ui edit - KSFramework Documentation</title>
+  <title>UI编辑器 - KSFramework Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Ui edit";
+    var mkdocs_page_name = "UI\u7f16\u8f91\u5668";
     var mkdocs_page_input_path = "artist\\ui_edit.md";
     var mkdocs_page_url = null;
   </script>
@@ -107,9 +107,11 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../resource/edit_mode/">Editor下无需打包</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../resource/benchmark_monitor/">性能监控模块</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">UI模块</span></p>
-                <ul>
+                <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/guide/">UI模块使用指南</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-bind-vs-outlet/">两种UI控件绑定方式</a>
@@ -121,6 +123,10 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/data-binding/">单向数据绑定</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../ui/ui-plan/">UI模块计划</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">UI编辑器</a>
+    <ul class="current">
+    </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">脚本指南</span></p>
@@ -195,8 +201,12 @@
     <li><a href="../..">Docs</a> &raquo;</li>
     
       
+        
+          <li>UI模块 &raquo;</li>
+        
+      
     
-    <li>Ui edit</li>
+    <li>UI编辑器</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -207,15 +217,36 @@
           <div role="main">
             <div class="section">
               
-                <p>+++
-date = "2016-08-11T20:27:05+08:00"
-draft = true
-title = "ui_edit"</p>
-<p>+++</p>
+                <h2 id="ui">定制UI编辑器</h2>
+<p>在我们的商业项目中，对UGUI进行了定制开发，提供了非常友好的编辑器界面给策划来拼接界面（对，我们是策划拼界面 v~v）。</p>
+<p>出于线上项目的保密性质，现阶段不过多展示讲述这部分，大概情况就是对UGUI进行了全面封装，并且重写UGUI的Inspector，改善了整个UI工作流，让策划能够所见即所得的编辑UI，并在游戏中呈现出来，简要描述一下所做的改动，当然商业项目中不仅仅是这些。</p>
+<ol>
+<li>对常见的组件重写或扩展，比如Button，Text，富文本，文本类全部支持多语言</li>
+<li>对水平/垂直，格子等列表组件重写，可复用，代码可控</li>
+<li>增加无限滑动列表，对象池循环复用</li>
+<li>增加UI动画编辑器，可编辑大面板的出现，消失动画曲线，时长，列表展开动画，按钮出现等等动画，在编辑器中就可预览</li>
+<li>增加面板配置项，面板是否需要货币栏，拖动条，或者标题栏等等，全部在UI编辑器中配置</li>
+<li>增加面板层级配置项，比如这个界面是否全屏界面， 是否点空白可以关闭，切换场景是否要关闭？是一级还是二级界面？</li>
+<li>增加3DRoom组件，比如界面上显示3D模型，模型是否带3D场景做为背景，还是以某个2D图片做为背景？资源名在UI中配置</li>
+<li>增加UIEffectRes组件，组件内部会处理UI与特效的层级，在编辑器中配置特效的名字，要给图标加特效，换特效？等等需求策划自行就搞定了</li>
+<li>对Image进行重写，编辑器可设定图片是否需要灰阶显示，美术不用出两套图片(色彩图和置灰图)</li>
+<li>增加播放序列帧组件，可用序列帧来代替某些高开销的粒子效果</li>
+<li>图片融合组件，比如人物血条，有两管不同颜色的血，合到一张图片中，可动态更新图片长度</li>
+<li>等等，还有很多组件</li>
+</ol>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../scripting/functions/" class="btn btn-neutral float-right" title="Lua内置函数列表">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../ui/ui-plan/" class="btn btn-neutral" title="UI模块计划"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -239,6 +270,10 @@ title = "ui_edit"</p>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
+        <span><a href="../../ui/ui-plan/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../scripting/functions/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
