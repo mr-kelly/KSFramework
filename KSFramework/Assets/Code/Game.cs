@@ -109,17 +109,6 @@ public class Game : KSGame
             Debug.Log(string.Format("C# Read Setting, Key: {0}, Value: {1}", setting.Id, setting.Title));
         }
         
-        //加载公共图集
-        AssetBundleLoader.Load($"uiatlas/{UIModule.Instance.CommonAtlases[0]}", (isOk, ab) =>
-        {
-            if (isOk && ab)
-            {
-                var atlas = ab.LoadAsset<SpriteAtlas>("atlas_common");
-                ABManager.SpriteAtlases["atlas_common"] = atlas;
-            }
-        });
-        yield return null;
-        
         UIModule.Instance.OpenWindow("UILogin", 888);
 
         // Test Load a scene in asset bundle
