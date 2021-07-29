@@ -36,6 +36,7 @@ nav:
     - "资源实时调试监控": resource/debug.md
     - "垃圾回收机制": resource/gc.md
     - "Editor下无需打包": resource/edit_mode.md
+    - "性能监控模块": resource/benchmark_monitor.md
 
   - UI模块:    
     - "UI模块使用指南": ui/guide.md
@@ -44,6 +45,7 @@ nav:
     - "2.拖拽绑定控件": ui/lua-outlet.md
     - "单向数据绑定": ui/data-binding.md
     - "UI模块计划": ui/ui-plan.md
+    - "UI编辑器": artist/ui_edit.md
   
   - 脚本指南:    
     - "Lua内置函数列表": scripting/functions.md
