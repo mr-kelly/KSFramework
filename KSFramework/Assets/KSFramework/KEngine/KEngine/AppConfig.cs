@@ -32,12 +32,16 @@ public class AppConfig
     /// <summary>
     /// 是否记录到文件中，包括：UI的ab加载耗时，UI函数执行耗时
     /// </summary>
-    public static bool IsSaveCostToFile = false;
+    public static bool IsSaveCostToFile = Application.isEditor;
 
     /// <summary>
     /// 是否调试模式，可与Unity的Debug区分开
     /// </summary>
     public static bool IsDebugBuild = Debug.isDebugBuild;
+    /// <summary>
+    /// 是否Editor模式，可在某些情况下与Unity的isEditor区分，比如详细/网络日志调试模式下在真机输出
+    /// </summary>
+    public static bool isEditor = Application.isEditor;
 
     /// <summary>
     /// 是否创建AssetDebugger

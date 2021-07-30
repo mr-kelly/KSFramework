@@ -46,6 +46,7 @@ namespace KEngine
     /// <summary>
     /// 功能：
     ///     1.监视代码运行耗时，内存变化
+    ///     2.TODO 加入对象池减少运行时的new
     /// </summary>
     public class KProfiler
     {
@@ -105,9 +106,9 @@ namespace KEngine
         /// 默认输出内容：[Watcher] {0}, CostTime: {1}s, MemDiff: {2}KB
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="custom">自定义日志内容，可为空</param>
+        /// <param name="customLogInfo">自定义日志内容，可为空</param>
         /// <returns>返回一个json格式的结果</returns>
-        public static KWatchResult EndWatch(string key, string custom = null)
+        public static KWatchResult EndWatch(string key, string customLogInfo = null,bool writeToFile = true)
         {
             if (m_WachterDictionary == null)
                 m_WachterDictionary = new Dictionary<string, Stopwatch>();
@@ -128,8 +129,8 @@ namespace KEngine
             
             string format = "[Watcher] {0}, CostTime: {1}s, MemDiff: {2}KB";
             var memDiff = GC.GetTotalMemory(false) - lastMem; // byte
-            Log.LogToFile(string.Format(format,
-                string.IsNullOrEmpty(custom) ? key : custom, costTime.ToString("F7"),
+            if(writeToFile) Log.LogToFile(string.Format(format,
+                string.IsNullOrEmpty(customLogInfo) ? key : customLogInfo, costTime.ToString("F7"),
                 memDiff*0.0001f)); // 7位精度
             
             //clear data
