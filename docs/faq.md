@@ -149,11 +149,11 @@ lzma也可以loadfromfile
 
 更多版本信息可查看：https://mr-kelly.github.io/KSFramework/overview/environment-other-hotfix-solution/
 
-## xlua相关
+## slua和xlua相关
 
 ### lua调试
 
-在我们的项目中是通过[emmylua](https://github.com/EmmyLua/IntelliJ-EmmyLua)+idea来调试lua，也可以使用rider2020+emmylua1.3.5及以上版本调试，请把emmylua的调试代码写在Init.lua的底部
+在我们的项目中是通过[emmylua](https://github.com/EmmyLua/IntelliJ-EmmyLua)+idea来调试lua，也可以使用rider2020+emmylua(1.3.5及以上版本)调试，请把emmylua的调试代码写在Init.lua的顶部或底部
 
 如果mac os无法调试报错，请参考：[dynamic libraries not enabled; check your Lua installation #725](https://github.com/Tencent/xLua/issues/725)
 
