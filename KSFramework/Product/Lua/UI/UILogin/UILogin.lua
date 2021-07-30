@@ -73,8 +73,7 @@ function UILogin:OnOpen(num1)
 end
 
 function UILogin:OnClose()
-    print(self.btnTest)
-    print(self.sceneIndex)
+    print(string.format("btnBillboard=%s ,sceneIndex=%s",self.btnBillboard,self.sceneIndex))
 end
 
 function UILogin:TestJson()
