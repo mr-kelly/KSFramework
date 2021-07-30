@@ -544,6 +544,7 @@ namespace KEngine.UI
             {
                 if (uiBase.Canvas != null) 
                     return uiBase.Canvas.enabled;
+                //TODO 后续优化，减少gameObject的访问，调用uiBase.IsVisiable
                 var gameObject = uiBase.gameObject;
                 return gameObject && gameObject.activeSelf;
             }
@@ -790,13 +791,18 @@ namespace KEngine.UI
             //TODO 播放界面出现动画
             uiBase.gameObject.SetActiveX(true);
             SetUIOrder(uiBase);
-            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile) KProfiler.BeginWatch("UI.OnOpen");
+            string watchKey = null;
+            if (AppConfig.IsLogFuncCost || AppConfig.IsSaveCostToFile)
+            {
+                watchKey = string.Concat(uiBase.UIName, ".OnOpen");
+                KProfiler.BeginWatch(watchKey);
+            }
             uiBase.OnOpen(args);
             KWatchResult profilerData = null;
-            if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+            if (AppConfig.IsLogFuncCost) profilerData = KProfiler.EndWatch(watchKey);
             if (AppConfig.IsSaveCostToFile)
             {
-                if (profilerData == null) profilerData = KProfiler.EndWatch("UI.OnOpen", string.Concat(uiBase.UIName, ".OnOpen"));
+                if (profilerData == null) profilerData = KProfiler.EndWatch(watchKey,null,false);
                 LogFileManager.WriteUILog(uiBase.UIName, LogState.OnOpen, profilerData.costTime);
             }
 
