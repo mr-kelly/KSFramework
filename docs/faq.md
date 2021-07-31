@@ -48,6 +48,8 @@ KSFramework\Assets\slua
 
 ### OnInit会调用两次？
 
+> 近期在计划重构这个功能：运行时修改代码后，无感热重载lua脚本，且不重复调用多次OnInit
+
 如果OnInit被调用两次，它是设计用于热重载后，在OnOpen中重新调用一次OnInit。
 
 如果你不希望被调用两次，在**LuaUIController.OnOpen**中注释掉这两行
