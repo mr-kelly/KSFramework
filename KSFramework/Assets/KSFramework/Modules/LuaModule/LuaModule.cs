@@ -79,13 +79,13 @@ namespace KSFramework
 #endif
 
         /// <summary>
-        /// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，也可以通过编辑器的Reload来进行强制刷新缓存
+        /// 是否开启缓存模式，默认true，首次执行将把执行结果table存起来；在非缓存模式下，可以通过编辑器的Reload来进行强制刷新缓存
         /// 对实时性重载要求高的，可以把开关设置成false，长期都进行Lua脚本重载，理论上会消耗额外的性能用于语法解析
         /// 
         /// 一般的脚本语言，如Python, NodeJS中，其import, require关键字都会对加载过的模块进行缓存(包括Lua原生的require)；如果不缓存，要注意状态的保存问题
         /// 该值调用频繁，就不放ini了
         /// </summary>
-        public static bool CacheMode = false;
+        public static bool CacheMode = true;
 
         /// <summary>
         /// Import result object caching
@@ -105,161 +105,8 @@ namespace KSFramework
             _luaEnv = new LuaEnv();
 #endif
         }
-
-        /// <summary>
-        /// Execute lua script directly!
-        /// </summary>
-        /// <param name="scriptCode"></param>
-        /// <param name="ret">return result</param>
-        /// <returns></returns>
-        public bool ExecuteScript(byte[] scriptCode, out object ret, string file = "chunk")
-        {
-#if SLUA
-            return _luaSvr.luaState.doBuffer(scriptCode, Encoding.UTF8.GetString(scriptCode), out ret);
-#else
-            var results = _luaEnv.DoString(Encoding.UTF8.GetString(scriptCode), file);
-
-            if (results != null && results.Length == 1)
-            {
-                ret = results[0];
-            }
-            else
-            {
-                ret = results;
-            }
-            return true;
-#endif
-        }
-
-        /// <summary>
-        /// Execute lua script directly!
-        /// </summary>
-        /// <param name="scriptCode"></param>
-        /// <returns></returns>
-        public object ExecuteScript(byte[] scriptCode, string file = "chunk")
-        {
-            object ret;
-            ExecuteScript(scriptCode, out ret, file);
-            return ret;
-        }
-
-        /// <summary>
-        /// Call script of script path (relative) specify
-        /// 
-        /// We don't recommend use this method, please use ImportScript which has Caching!
-        /// </summary>
-        /// <param name="scriptRelativePath"></param>
-        /// <returns></returns>
-        public object CallScript(string scriptRelativePath)
-        {
-            if (string.IsNullOrEmpty(scriptRelativePath))
-            {
-                return null;
-            }
-            var scriptPath = GetScriptPath(scriptRelativePath);
-            if (!KResourceModule.IsResourceExist(scriptPath))
-            {
-                return null;
-            }
-            byte[] script =  KResourceModule.LoadAssetsSync(scriptPath);
-            Debuger.Assert(script!=null,$"ExecuteScript error,script byte null,path:{scriptPath}");
-            var ret = ExecuteScript(script, scriptRelativePath);
-            return ret;
-        }
-
-        /// <summary>
-        /// Get script full path
-        /// </summary>
-        /// <param name="scriptRelativePath"></param>
-        /// <returns></returns>
-        static string GetScriptPath(string scriptRelativePath)
-        {
-            return string.Format("{0}/{1}.lua", AppConfig.LuaPath, scriptRelativePath);
-        }
-
-        /// <summary>
-        /// whether the script file exists?
-        /// </summary>
-        /// <param name="scriptRelativePath"></param>
-        /// <returns></returns>
-        public bool HasScript(string scriptRelativePath)
-        {
-            var scriptPath = GetScriptPath(scriptRelativePath);
-            return KResourceModule.IsResourceExist(scriptPath);
-        }
-
-        /// <summary>
-        /// Import script, with caching
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public object Import(string fileName)
-        {
-            object obj;
-			//NOTE 优先从cache中取
-            if(_importCache.TryGetValue(fileName, out obj))
-            {
-                return obj;
-            }
-			if (!HasScript (fileName))
-                throw new FileNotFoundException(string.Format("Not found Lua Script: {0}", fileName));
-
-            return DoImportScript(fileName);
-        }
-
-        /// <summary>
-        /// Try import script, if 
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public bool TryImport(string fileName, out object result)
-        {
-            result = null;
-
-            if (!HasScript(fileName))
-            {
-                Log.LogError("{0} not exist !",fileName);
-                return false;
-            }
-
-            result = DoImportScript(fileName);
-            return true;
-        }
-
-        object DoImportScript(string fileName)
-        {
-            object obj;
-            if (!_importCache.TryGetValue(fileName, out obj))
-            {
-                obj = this.CallScript(fileName);
-                if (CacheMode)
-                    _importCache[fileName] = obj;
-            }
-
-            return obj;
-        }
-
-
-        /// <summary>
-        /// Clear all imported cache
-        /// </summary>
-        public void ClearAllCache()
-        {
-            _importCache.Clear();
-        }
-
-        /// <summary>
-        /// Clear dest lua script cache
-        /// </summary>
-        /// <param name="uiLuaPath"></param>
-        /// <returns></returns>
-        public bool ClearCache(string uiLuaPath)
-        {
-            return _importCache.Remove(uiLuaPath);
-        }
-
-        public IEnumerator Init()
+        
+        public void InitSLua()
         {
 #if SLUA
             int frameCount = 0;
@@ -277,12 +124,21 @@ namespace KSFramework
             LuaDLL.lua_setglobal(L, "using"); // same as SLua's import, using namespace
             LuaDLL.lua_pushcfunction(L, ImportCSharpType);
             LuaDLL.lua_setglobal(L, "import_type"); // same as SLua's SLua.GetClass(), import C# type
+#endif
+        }
+            
+        
+        public IEnumerator Init()
+        {
+#if SLUA
+            InitSLua();
 #else
             var L = _luaEnv.L;
+            //在lua G中增加import函数
             LuaDLL.lua_pushstdcallcfunction(L, LuaImport);
             LuaDLL.xlua_setglobal(L, "import");
             
-            //TODO lua中需要require的第三方库加到这里
+            //TODO lua中需要require的第三方库加到这里，如果不需要则删除已添加的这几行
             _luaEnv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
             _luaEnv.AddBuildin("lpeg", XLua.LuaDLL.Lua.LoadLpeg);
             _luaEnv.AddBuildin("pb", XLua.LuaDLL.Lua.LoadLuaProfobuf);
@@ -295,8 +151,14 @@ namespace KSFramework
             IsInited = true;
         }
 
+        public void ClearData()
+        {
+            ClearAllCache();
+        }
 
+        #region c/csharp import
 #if SLUA
+#region slua
 		[LuaInterface.MonoPInvokeCallback(typeof(LuaCSFunction))]
 		static public int ImportCSharpType(IntPtr l)
 		{
@@ -393,7 +255,12 @@ namespace KSFramework
             return 2;
 
         }
+#endregion
 #else
+
+
+        #region xlua
+        
         [MonoPInvokeCallback(typeof(lua_CSFunction))]
         internal static int LuaImport(IntPtr L)
         {
@@ -409,7 +276,178 @@ namespace KSFramework
             return 2;
 
         }
+        #endregion
 #endif
+  
+        #endregion
+        /// <summary>
+        /// Execute lua script directly!
+        /// </summary>
+        /// <param name="scriptCode"></param>
+        /// <param name="ret">return result</param>
+        /// <returns></returns>
+        public bool ExecuteScript(byte[] scriptCode, out object ret, string file = "chunk")
+        {
+#if SLUA
+            return _luaSvr.luaState.doBuffer(scriptCode, Encoding.UTF8.GetString(scriptCode), out ret);
+#else
+            var results = _luaEnv.DoString(Encoding.UTF8.GetString(scriptCode), file);
+
+            if (results != null && results.Length == 1)
+            {
+                ret = results[0];
+            }
+            else
+            {
+                ret = results;
+            }
+            return true;
+#endif
+        }
+
+        /// <summary>
+        /// Execute lua script directly!
+        /// </summary>
+        /// <param name="scriptCode"></param>
+        /// <returns></returns>
+        public object ExecuteScript(byte[] scriptCode, string file = "chunk")
+        {
+            object ret;
+            ExecuteScript(scriptCode, out ret, file);
+            return ret;
+        }
+        
+        /// <summary>
+        /// Get script full path
+        /// </summary>
+        /// <param name="scriptRelativePath"></param>
+        /// <returns></returns>
+        static string GetScriptPath(string scriptRelativePath)
+        {
+            return string.Format("{0}/{1}.lua", AppConfig.LuaPath, scriptRelativePath);
+        }
+
+        /// <summary>
+        /// whether the script file exists?
+        /// </summary>
+        /// <param name="scriptRelativePath"></param>
+        /// <returns></returns>
+        public bool HasScript(string scriptRelativePath)
+        {
+            var scriptPath = GetScriptPath(scriptRelativePath);
+            return KResourceModule.IsResourceExist(scriptPath);
+        }
+        
+        /// <summary>
+        /// Call script of script path (relative) specify
+        /// 
+        /// We don't recommend use this method, please use ImportScript which has Caching!
+        /// </summary>
+        /// <param name="scriptRelativePath"></param>
+        /// <returns></returns>
+        public object CallScript(string scriptRelativePath)
+        {
+            if (scriptRelativePath == null || string.IsNullOrEmpty(scriptRelativePath))
+            {
+                return null;
+            }
+            var scriptPath = GetScriptPath(scriptRelativePath);
+            if (!KResourceModule.IsResourceExist(scriptPath))
+            {
+                return null;
+            }
+            byte[] script =  KResourceModule.LoadAssetsSync(scriptPath);
+            Debuger.Assert(script!=null,$"ExecuteScript error,script byte null,path:{scriptPath}");
+            var ret = ExecuteScript(script, scriptRelativePath);
+            return ret;
+        }
+        
+        #region import lua file
+        
+        /// <summary>
+        /// Import script, with caching
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public object Import(string fileName)
+        {
+            object obj;
+
+            //NOTE 优先从cache获取
+            if (CacheMode && _importCache.TryGetValue(fileName, out obj))
+            {
+                return obj;
+            }
+
+            if (!HasScript(fileName))
+                throw new FileNotFoundException(string.Format("Not found Lua Script: {0}", fileName));
+
+            return DoImportScript(fileName);
+        }
+
+        /// <summary>
+        /// Try import script, if 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool TryImport(string fileName, out object result)
+        {
+            result = null;
+
+            if (!HasScript(fileName))
+            {
+                Log.LogError("{0} not exist !",fileName);
+                return false;
+            }
+
+            result = DoImportScript(fileName);
+            return true;
+        }
+
+        object DoImportScript(string fileName)
+        {
+            object obj;
+            if (CacheMode)
+            {
+                if (!_importCache.TryGetValue(fileName, out obj))
+                {
+                    obj = CallScript(fileName);
+                    _importCache[fileName] = obj;
+                }    
+            }
+            else
+            {
+                obj = CallScript(fileName);
+            }
+            
+            return obj;
+        }
+
+
+        /// <summary>
+        /// Clear all imported cache
+        /// </summary>
+        public void ClearAllCache()
+        {
+            if (!CacheMode) return;
+            _importCache.Clear();
+            if(AppConfig.isEditor) Log.Info("Call Clear All Lua Import Cache");
+        }
+
+        /// <summary>
+        /// Clear dest lua script cache
+        /// </summary>
+        /// <param name="uiLuaPath"></param>
+        /// <returns></returns>
+        public bool ClearCache(string uiLuaPath)
+        {
+            if (!CacheMode) return false;
+            return _importCache.Remove(uiLuaPath);
+        }
+        
+        #endregion
+        
     }
 
 }

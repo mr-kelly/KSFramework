@@ -54,6 +54,7 @@ namespace KSFramework
             base.OnOpen(args);
             if (_luaTable == null)
             {
+                //NOTE 如果需要每次都自动热重载，则每次都调用CheckInitScript，达到修改代码后实时生效
                 if (!CheckInitScript())
                     return;
             }
@@ -146,6 +147,7 @@ namespace KSFramework
 #else
              SetOutlet(_luaTable);
 #endif
+            //TODO 优化:只有代码变化才重新执行OnInit函数
             var luaInitObj = _luaTable.Get<LuaFunction>("OnInit");
             Debuger.Assert(luaInitObj is LuaFunction, "Must have OnInit function - {0}", UIName);
 
@@ -331,7 +333,7 @@ namespace KSFramework
         {
             _luaTable = null;
             LuaModule.Instance.ClearCache(UILuaPath);
-            if(Application.isEditor && show_log) Log.Info("Reload Lua: {0}", UILuaPath);
+            if(AppConfig.isEditor && show_log) Log.Info("Reload Lua: {0}", UILuaPath);
         }
 
     }
