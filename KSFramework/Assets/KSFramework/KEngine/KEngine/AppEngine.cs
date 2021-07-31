@@ -267,11 +267,25 @@ namespace KEngine
             if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.OSXPlayer)
              LogFileManager.Destory();
             LogFileManager.CloseStream();
+            
+            
         }
         
         void OnApplicationFocus(bool focus)
         {
             IsApplicationFocus = focus;
+        }
+        
+        /// <summary>
+        /// 清除数据，比如切换帐号/低内存等清空缓存数据
+        /// </summary>
+        public void ClearModuleData()
+        {
+            var modules = GameModules;
+            foreach (IModuleInitable initModule in modules)
+            {
+                initModule.ClearData();
+            }
         }
     }
 

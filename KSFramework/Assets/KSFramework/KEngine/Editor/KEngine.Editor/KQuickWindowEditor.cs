@@ -132,7 +132,7 @@ public class KQuickWindowEditor : EditorWindow
         if (panelType != PanelType.HeadInfoUI && Application.isPlaying)
         {
             topUI = UIModule.Instance.GetTopUI(panelType);
-            Log.Info($"now top ui:{topUI?.UIName}");
+            //Log.Info($"now top ui:{topUI?.UIName}");
             if (topUI != null) reloadUIScript = topUI.UIName;
         }
         if (GUILayout.Button("重载Lua脚本", GUILayout.MinWidth(100), GUILayout.MaxHeight(30)))
