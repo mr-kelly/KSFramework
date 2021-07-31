@@ -142,6 +142,7 @@ namespace KEngine
                 {
                     //文档：https://docs.unity3d.com/Manual/StreamingAssets.html
                     //注意，StramingAsset在Android平台是在apk中，无法通过File读取请使用LoadAssetsSync，如果要同步读取ab请使用GetAbFullPath
+                    //NOTE 我见到一些项目的做法是把apk包内的资源放到Assets的上层res内，读取时使用 jar:file://+Application.dataPath + "!/assets/res/"，editor上则需要/../res/
                     AppBasePath = Application.dataPath + "!/assets/";
                     AppBasePathWithProtocol = fileProtocol + AppBasePath;
                 }
