@@ -61,21 +61,56 @@ public class AppConfig
     /// </summary>
     public static bool IsDownloadRes = false;
 
+    private static string versionTextPath = null;
     public static string VersionTextPath
     {
-        get { return KResourceModule.AppBasePath + "/" + VersionTxtName; }
+        get
+        {
+            if (string.IsNullOrEmpty(versionTextPath))
+                versionTextPath = KResourceModule.AppBasePath + "/" + VersionTxtName;
+            return versionTextPath;
+        }
     }
+
+    private static string versionTxtName = null;
     public static string VersionTxtName
     {
-        get { return KResourceModule.GetBuildPlatformName() + "-version.txt"; }
+        get
+        {
+            if(string.IsNullOrEmpty(versionTxtName))
+                versionTxtName = KResourceModule.GetBuildPlatformName() + "-version.txt";
+            return versionTxtName;
+        }
     }
+
+    private static string filelistPath = null;
     /// <summary>
     /// filelist.txt的相对路径
     /// </summary>
-    public static string FilelistName
+    public static string FilelistPath
     {
-        get { return $"Bundles\\{KResourceModule.GetBuildPlatformName()}\\filelist.txt"; }
+        get
+        {
+            if(string.IsNullOrEmpty(filelistPath))
+                filelistPath =  $"Bundles\\{KResourceModule.GetBuildPlatformName()}\\filelist.txt";
+            return filelistPath;
+        }
     }
+    
+    private static string buildScriptPath = null;
+    /// <summary>
+    /// 打包脚本的路径(python脚本)
+    /// </summary>
+    public static string BuildScriptPath
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(buildScriptPath))
+                buildScriptPath =  System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(Application.dataPath + "/../../build_tools/"));
+            return buildScriptPath;
+        }
+    }
+    
     #region AppConfig.txt中的内容
 
     //TODO 制作一个edit工具，可在运行时修改值，

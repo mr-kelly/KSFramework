@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Author: zhaoqingqing(569032731@qq.com)
 Date: 2019/11/23 19:26
@@ -8,7 +9,6 @@ Desc: 1.遍历当前目录下的所有文件生成filelist
      在python3.7.4+win10下测试通过
 """
 
-# coding=utf-8
 import hashlib
 import os
 import shutil
@@ -110,12 +110,13 @@ if __name__ == "__main__":
         print("参数列表：", str(sys.argv))
         # 未传入参数则使用脚本所在路径
         dst_path = r"E:\Code\KSFramework\KSFramework\Product\Bundles\Windows\\"
-        bak_path = sys.argv[0]
+        bak_path = r"E:\Code\KSFramework\build_tools\\"
         platform = "Windows"
         if (len(sys.argv) >= 3):
-            dst_path = sys.argv[1]
-            bak_path = sys.argv[2]
-            platform = sys.argv[3]
+			dst_path = sys.argv[1]
+			bak_path = sys.argv[2]
+			platform = sys.argv[3]
+			print "use args to set path."
         dir = os.path.abspath(os.path.dirname(dst_path)) + "\\"
         bak_dir = os.path.abspath(os.path.dirname(bak_path)) + "\\"
         bak_filelist = bak_dir + filelist_name + '.bak'

@@ -1,3 +1,6 @@
+@echo off
 cd %~dp0
 set start_path=%~dp0
-py gen_hotfix_res.py %start_path% "Android"
+@echo on
+python gen_hotfix_res.py %start_path% "Android"
+REM pause
