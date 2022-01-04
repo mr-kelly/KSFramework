@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Author: zhaoqingqing(569032731@qq.com)
 Date: 2021/3/3 20:01
@@ -7,7 +8,6 @@ Desc:发布热更新资源到cdn
     在python3.7.4+win10下测试通过
 """
 
-# coding=utf-8
 import os
 import shutil
 from shutil import copytree, ignore_patterns

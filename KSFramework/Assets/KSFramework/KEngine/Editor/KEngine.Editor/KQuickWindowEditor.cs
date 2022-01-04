@@ -290,7 +290,7 @@ public class KQuickWindowEditor : EditorWindow
         if (GUILayout.Button("打开AB目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             var path = AppConfig.ProductRelPath + "/Bundles/" + KResourceModule.GetBuildPlatformName();
-            OpenFolder(path);
+            OpenFolder(path,true);
         }
 
         GUILayout.EndHorizontal();
@@ -313,30 +313,34 @@ public class KQuickWindowEditor : EditorWindow
         if (GUILayout.Button("打开安装包目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
             var path = AppConfig.ProductRelPath + "/Apps/" + KResourceModule.GetBuildPlatformName();
-            OpenFolder(path);
+            OpenFolder(path,true);
         }
-        if (GUILayout.Button("下载更新调试", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        if (GUILayout.Button("生成Version.txt", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
+            string batPath = null;
             if (!File.Exists(AppConfig.VersionTextPath))
             {
-                var pyPath = Path.GetDirectoryName(Path.GetFullPath(Application.dataPath + "/../../build_tools/"));
                 var platform = KResourceModule.GetBuildPlatformName();
                 //执行bat
-                var path = $"{pyPath}/生成filelist-{platform}.bat";
-                KTool.ExecuteCommand(path);
-                //执行py传的参数有些错误
-                // var abPath = KResourceModule.ProductPathWithoutFileProtocol+"/Bundles/"+platform;
+                batPath = $"{AppConfig.BuildScriptPath}/生成filelist-{platform}.bat";
+                KTool.ExecuteCommand(batPath);
+                //ps.执行py传的参数有些错误，所以通过cmd来执行py
+                // var abPath = KResourceModule.EditorProductFullPath+"/Bundles/"+platform;
                 // BuildTools.ExecutePyFile(pyPath + "/gen_filelist.py",$"{pyPath} {abPath} {platform}");
             }
             if (!File.Exists(AppConfig.VersionTextPath))
             {
-                Log.LogError($"未生成filelist，请再试一次或手动执行py脚本");
+                Log.LogError($"未找到{AppConfig.VersionTextPath}，请查看报错信息或手动执行脚本{batPath}");
                 return;
             }
             var dstPath = KResourceModule.AppDataPath + AppConfig.VersionTxtName;
             if(File.Exists(dstPath)) File.Delete(dstPath);
             File.Copy(AppConfig.VersionTextPath,dstPath);
             Log.Info($"文件拷贝成功，{AppConfig.VersionTextPath}->{dstPath}");
+        }
+        if (GUILayout.Button("打包脚本目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+        {
+            OpenFolder(AppConfig.BuildScriptPath,true);
         }
         GUILayout.EndHorizontal();
         
@@ -369,14 +373,8 @@ public class KQuickWindowEditor : EditorWindow
         {
             KAutoBuilder.PerformiOSBuild();
         }
-
         GUILayout.EndHorizontal();
-
-
-        GUILayout.BeginHorizontal();
-
-
-        GUILayout.EndHorizontal();
+        
     }
 
     void DrawDebugUI()
@@ -392,22 +390,32 @@ public class KQuickWindowEditor : EditorWindow
         }
         if (GUILayout.Button("打开AB加载耗时记录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
         {
-            OpenFolder(Application.persistentDataPath);
+            OpenFolder(Application.persistentDataPath,true);
         }
-
-
         GUILayout.EndHorizontal();
     }
 
-    void OpenFolder(string path)
+    /// <summary>
+    /// 打开目录
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="createNew">如果指定的目录不存在则创建</param>
+    void OpenFolder(string path,bool createNew = false)
     {
         var fullPath = Path.GetFullPath(path);
         if (Directory.Exists(fullPath) == false)
         {
-            Log.Info("{0} 目录不存在，尝试定位到父目录。", fullPath);
-
-            DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
-            if (directoryInfo.Parent != null) fullPath = directoryInfo.Parent.FullName;
+            if (createNew)
+            {
+                Directory.CreateDirectory(fullPath);
+                Log.Info("{0} 目录不存在，已创建。", fullPath);
+            }
+            else
+            {
+                Log.Info("{0} 目录不存在，尝试定位到父目录。", fullPath);
+                DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
+                if (directoryInfo.Parent != null) fullPath = directoryInfo.Parent.FullName;
+            }
         }
 
         Log.Info("open: {0}", fullPath);

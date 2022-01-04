@@ -150,7 +150,7 @@ public class DownloadManager : KSingleton<DownloadManager>
         {
             //对比ab列表
             string remote_filelist = null;
-            url = AppConfig.resUrl + AppConfig.FilelistName;
+            url = AppConfig.resUrl + AppConfig.FilelistPath;
             loader = KWWWLoader.Load(url);
             while (!loader.IsCompleted)
             {
@@ -159,7 +159,7 @@ public class DownloadManager : KSingleton<DownloadManager>
 
             if (!loader.IsError) remote_filelist = loader.Www.text;
             else ErrorType = UpdateErrorType.FilelistnError;
-            url = KResourceModule.GetResourceFullPath(AppConfig.FilelistName, false);
+            url = KResourceModule.GetResourceFullPath(AppConfig.FilelistPath, false);
             loader = KWWWLoader.Load(url);
             while (!loader.IsCompleted)
             {
@@ -238,9 +238,9 @@ public class DownloadManager : KSingleton<DownloadManager>
             //更新filelist
             if (filelistBuilder.Length > 0)
             {
-                var dirName = Path.GetDirectoryName(appDataPath + AppConfig.FilelistName);
+                var dirName = Path.GetDirectoryName(appDataPath + AppConfig.FilelistPath);
                 if (Directory.Exists(dirName) == false) Directory.CreateDirectory(dirName);
-                File.WriteAllText(appDataPath + AppConfig.FilelistName, filelistBuilder.ToString());
+                File.WriteAllText(appDataPath + AppConfig.FilelistPath, filelistBuilder.ToString());
                 Log.LogToFile("filelist更新完成");
             }
             else

@@ -287,3 +287,4 @@ Temp
 #not contains sln?
 *.sln
 *.csproj
+/build_tools/*.pyc
