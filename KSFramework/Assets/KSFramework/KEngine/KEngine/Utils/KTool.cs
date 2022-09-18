@@ -1493,12 +1493,13 @@ namespace KEngine
             //Debug.Log("Exit::"+e.ToString());
         }
 
-        public static void ExecuteFile(string filePath)
+        public static void ExecuteFile(string filePath,string args = "")
         {
             Debug.Log("[ExecuteFile]" + filePath);
             using (var process = new Process())
             {
-                process.StartInfo.FileName = filePath;
+                var info = new ProcessStartInfo(filePath, args);
+                process.StartInfo = info;
                 process.Start();
             }
         }

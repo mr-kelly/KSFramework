@@ -382,14 +382,24 @@ namespace KEngine.Editor
         
         public static string GetABLinkPath()
         {
+            return AssetBundlesLinkPath + "/" + KResourceModule.GetBuildPlatformName() + "/";
+        }
+        
+        public static void InitABLinkPath()
+        {
             if (!Directory.Exists(AssetBundlesLinkPath))
             {
                 Directory.CreateDirectory(AssetBundlesLinkPath);
-                Log.Info("Create StreamingAssets Bundles Director {0}", AssetBundlesLinkPath);
+                Log.Info("Create StreamingAssets Bundles Root Dir {0}", AssetBundlesLinkPath);
             }
-            return AssetBundlesLinkPath + "/" + KResourceModule.GetBuildPlatformName() + "/";
+            var path= AssetBundlesLinkPath + "/" + KResourceModule.GetBuildPlatformName() + "/";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                Log.Info("Create StreamingAssets Bundles Platform Dir {0}", path);
+            }
         }
-
+        
         public static string GetResourceExportPath()
         {
             var resourcePath = BuildTools.GetExportPath(KResourceModule.Quality);
@@ -399,49 +409,22 @@ namespace KEngine.Editor
         [MenuItem("KEngine/Symbol Link Resources/Link Builded Resource -> StreamingAssets or Resources")]
         public static void SymbolLinkResource()
         {
-            KSymbolLinkHelper.DeleteAllLinks(AssetBundlesLinkPath);
-            var exportPath = GetResourceExportPath();
-            var linkPath = GetABLinkPath();
-            KSymbolLinkHelper.SymbolLinkFolder(exportPath, linkPath);
-            //NOTE 特别无解，无法同步link这两个目录，使用协程处理后目录内容是空，如果2018及以下版本无EditorCoroutine使用脚本进行link
-            /*Log.Info("Add Symbol Link Assetbundle.");
-            ins = new object();
-            EditorCoroutineUtility.StartCoroutine(LinkLua(), ins);
-            Log.Info("Add Symbol Link Lua.");
-            EditorCoroutineUtility.StartCoroutine(LinkSettings(), ins);
-            Log.Info("Add Symbol Link Settings.");*/
-
+            InitABLinkPath();
             var linkFile = Application.dataPath + "/../AssetLink.sh";
             if (System.Environment.OSVersion.ToString().Contains("Windows"))
             {
                 linkFile = Application.dataPath + "/../AssetLink.bat";
             }
-            KTool.ExecuteFile(linkFile);
+            KTool.ExecuteFile(linkFile,KResourceModule.GetBuildPlatformName());
+            Log.Info("Link Bundle/Lua/Settings Resources Path");
+            
             var  dstPath = Application.streamingAssetsPath + "/" + AppConfig.VersionTxtName;
             if (File.Exists(dstPath)) File.Delete(dstPath);
             File.Copy(AppConfig.VersionTextPath, dstPath);
-            Log.Info($"拷贝version.txt完成,File.Exists:{File.Exists(dstPath)}");
+            Log.Info($"Copy version.txt ,File.Exists:{File.Exists(dstPath)}");
             AssetDatabase.Refresh();
         }
-
-        private static IEnumerator LinkLua()
-        {
-            KSymbolLinkHelper.DeleteAllLinks(LuaLinkPath);
-            yield return new WaitForSeconds(1.0f);
-            var exportPath = KResourceModule.AppBasePath + AppConfig.LuaPath + "/";
-            if (!Directory.Exists(LuaLinkPath)) Directory.CreateDirectory(LuaLinkPath);
-            KSymbolLinkHelper.SymbolLinkFolder(exportPath, LuaLinkPath);
-        }
-
-        private static IEnumerator LinkSettings()
-        {
-            KSymbolLinkHelper.DeleteAllLinks(SettingLinkPath);
-            yield return new WaitForSeconds(1.0f);
-           var exportPath = KResourceModule.AppBasePath + AppConfig.SettingResourcesPath + "/";
-            if (!Directory.Exists(SettingLinkPath)) Directory.CreateDirectory(SettingLinkPath);
-            KSymbolLinkHelper.SymbolLinkFolder(exportPath, SettingLinkPath);
-        }
-       
+        
 		[MenuItem("KEngine/Symbol Link Resources/Remove StreamingAssets or Resources links")]
 		public static void RemoveSymbolLinkResource()
 		{

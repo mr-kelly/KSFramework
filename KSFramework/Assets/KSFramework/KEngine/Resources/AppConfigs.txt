@@ -1,3 +1,4 @@
+;move to Appconfig.cs
 [KEngine]
 AssetBundleExt = .ab
 ProductRelPath	= Product

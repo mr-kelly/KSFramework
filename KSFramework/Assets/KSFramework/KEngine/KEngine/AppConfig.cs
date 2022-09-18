@@ -111,7 +111,7 @@ public class AppConfig
         }
     }
     
-    #region AppConfig.txt中的内容
+    #region AppConfigs.txt中的内容,AssetLink.bat也有一份
 
     //TODO 制作一个edit工具，可在运行时修改值，
     /**
