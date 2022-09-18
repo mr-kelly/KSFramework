@@ -43,9 +43,7 @@ public class KQuickWindowEditor : EditorWindow
     {
         InitStyle();
         scrollPos = GUI.BeginScrollView(new Rect(10, 10, position.width, position.height), scrollPos, new Rect(0, 0, 360, 1000));
-        DrawKEngineInit();
-        GUILayout.Space(20);
-        
+
 #if ILRuntime
         DrawILRuntime();
         GUILayout.Space(20);
@@ -66,25 +64,7 @@ public class KQuickWindowEditor : EditorWindow
         GUILayout.Space(20);
         GUI.EndScrollView();
     }
-
-
-    public void DrawKEngineInit()
-    {
-        GUILayout.BeginHorizontal("HelpBox");
-        EditorGUILayout.LabelField("== KEngine ==");
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("初始化资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-        {
-            ResourcesSymbolLinkHelper.SymbolLinkResource();
-        }
-        if (GUILayout.Button("删除资源链接", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-        {
-            ResourcesSymbolLinkHelper.RemoveSymbolLinkResource();
-        }
-        GUILayout.EndHorizontal();
-    }
-
+    
     public void DrawHotReLoadUI()
     {
         GUILayout.BeginHorizontal("HelpBox");

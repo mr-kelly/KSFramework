@@ -181,12 +181,9 @@ namespace KEngine.Editor
 
         private static void OnBeforeBuildPlayerEvent()
         {
-            // Auto Link resources when play! //NOTE 打包ab时不link资源，在Editor可以从磁盘中直接读取
-            //if (!Directory.Exists(ResourcesSymbolLinkHelper.GetABLinkPath()))
-            {
-                Log.Info("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetABLinkPath());
-                ResourcesSymbolLinkHelper.SymbolLinkResource();
-            }
+            // Auto Link resources when build!   生成/打包ab时不link资源，在Editor开发模式时直接从磁盘读取
+            Log.Info("Auto Link Bundle Resources Path... {0}", ResourcesSymbolLinkHelper.GetABLinkPath());
+            ResourcesSymbolLinkHelper.SymbolLinkResource();
         }
         
         private static void OnAfterBuildPlayerEvent(BuildTarget buildTarget, string pathToBuiltProject)
